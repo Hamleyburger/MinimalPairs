@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block main %}
+
+
+
+<div class="content-section">
+    <! --insert novalidate as attribute if you only want to user server side validation-->
+        <form id="addForm" method="POST" action="" novalidate>
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend>Add a word</legend>
+                <div class="form-group">
+                    {{ form.word(class="form-control", autocomplete="off", autofocus=true, placeholder="Word") }}
+                </div>
+                <div class="form-group">
+                    {{ form.cue(class="form-control", autocomplete="off", placeholder="Cue") }}
+                </div>
+                <div class="form-group">
+                    {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name") }}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary btn-outline-info") }}
+            </div>
+        </form>
+</div>
+
+
+
+{% endblock %}
