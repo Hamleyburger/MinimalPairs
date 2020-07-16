@@ -1,0 +1,7 @@
+IPA.code-workspace
+dbfun.py
+.vscode
+*.pyc
+venv/
+__pycache__*
+styles.css.map
