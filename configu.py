@@ -29,7 +29,7 @@ class DevelopmentConfig(Config):
     DEBUG = 1
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     SECRET_KEY = "thiskeyissecreter"
-    SQLALCHEMY_DATABASE_URI = "sqlite:////Users/MacDuck/Documents/Projects/GitHub/IPA/minimalpairs.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:////Users/MacDuck/Documents/Projects/GitHub/MinimalPairs/minimalpairs.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

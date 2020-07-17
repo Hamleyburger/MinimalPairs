@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}
+: Change word
+{% endblock %}
+
+{% block main %}
+
+<!-- Popup form-->
+<div class="form-popup" id="myForm">
+    <form action="/action_page.php" class="form-container">
+        <h1 id="formtitle"></h1>
+
+        <label for="newword"><b>Change spelling</b></label>
+        <input type="text" placeholder="jinjaoldword" name="newword">
+
+        <label for="newcue"><b>Change cue</b></label>
+        <input type="text" placeholder="jinjaoldcue" name="newcue">
+
+        <label for="newimg"><b>Change image</b></label>
+        <input type="text" placeholder="jinjaoldimg" name="newimg" required>
+
+        <button type="submit" class="btn">Save</button>
+        <button type="submit" class="btn delete">Delete</button>
+        <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+</div>
+
+<!-- DataTable with words-->
+<div class="container mb-3 mt-3" style="text-align: left !important;">
+    <table id="changetable" class="table table-striped table-bordered" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Spelling</th>
+                <th>Cue</th>
+                <th>Image</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in words %}
+
+            <tr>
+                <!-- I'm using jinja to pass the id of td 0 to the function for onclick in td 3 -->
+                <td id="word{{ entry.id }}">{{ entry.word }}</td>
+                <td>{{ entry.cue }}</td>
+                <td>{{ entry.image.name }}</td>
+                <td><button class="open-button" onclick="openForm(this, '{{ entry.id }}')">:-D</button></td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Spelling</th>
+                <th>Cue</th>
+                <th>Image</th>
+                <th>Change</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<!-- Initialize DataTable -->
+<script>
+    // Necessary imports: jquery, DataTables, DataTables plugin:
+    // "Responsive" - see Layout.hmtl
+    $(document).ready(function () {
+        $('#changetable').DataTable();
+    });
+    $('#changetable').dataTable({
+        "columns": [
+            null,
+            null,
+            null,
+            { "width": "5%" }
+        ],
+        responsive: true
+    });
+</script>
+
+<!-- Popup form onclick generation -->
+<script>
+    function openForm(element, word_id) {
+        document.getElementById("myForm").style.display = "block";
+        $('#formtitle').html($("#word" + word_id).html());
+        $('input[name ="newword"]').attr("placeholder", "Yo mama");
+
+        // TODO: Make an ajax call that gets the object directly
+        // from the server for displaying placeholders.
+
+    }
+
+    function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+
+        // TODO: Make an ajax call that changes objects.
+        // Also stops if image not legal?
+
+    } 
+</script>
+{% endblock %}

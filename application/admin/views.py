@@ -2,12 +2,13 @@ from flask import Blueprint, session, request, redirect, render_template, flash,
 #from .helpers import clearSessionExcept
 from application.models import Word
 from .forms import AddForm
+from application import db
 
 admin_blueprint = Blueprint("admin_blueprint", __name__)
 
 
-@admin_blueprint.route("/admin", methods=["GET", "POST"])
-def admin():
+@admin_blueprint.route("/add", methods=["GET", "POST"])
+def add():
     """admin stuff"""
     if session.get("homonyms"):
         session.pop("homonyms")
@@ -18,3 +19,9 @@ def admin():
                      cue=form.cue.data, image=form.image.data)
 
     return render_template("add.html", form=form)
+
+
+@admin_blueprint.route("/change", methods=["GET", "POST"])
+def change():
+    words = Word.query.all()
+    return render_template("change.html", words=words)
