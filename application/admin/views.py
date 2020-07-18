@@ -25,3 +25,20 @@ def add():
 def change():
     words = Word.query.all()
     return render_template("change.html", words=words)
+
+
+@admin_blueprint.route("/ajax_word_changer", methods=["POST"])
+# Receives changes from user and makes changes in database
+def ajax():
+    print("running ajax")
+    newword = request.form["newword"]
+    newcue = request.form["newcue"]
+    newimg = request.form["newimg"]
+    word_id = request.form["id"]
+
+    if newimg is "":
+        print("no new image")
+    else:
+        print("new image is: {}".format(newimg))
+
+    return jsonify({"id": word_id})

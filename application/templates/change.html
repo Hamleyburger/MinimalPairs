@@ -8,7 +8,7 @@
 
 <!-- Popup form-->
 <div class="form-popup" id="myForm">
-    <form action="/action_page.php" class="form-container">
+    <form name="myform" class="form-container">
         <h1 id="formtitle"></h1>
 
         <label for="newword"><b>Change spelling</b></label>
@@ -18,11 +18,11 @@
         <input type="text" placeholder="jinjaoldcue" name="newcue">
 
         <label for="newimg"><b>Change image</b></label>
-        <input type="text" placeholder="jinjaoldimg" name="newimg" required>
+        <input type="text" placeholder="jinjaoldimg" name="newimg">
 
-        <button type="submit" class="btn">Save</button>
-        <button type="submit" class="btn delete">Delete</button>
-        <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+        <button type="button" class="btn save" onclick="sendChanges()">Save</button>
+        <button type="button" class="btn delete">Delete</button>
+        <button id="closeForm" type="submit" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
 </div>
 
@@ -45,7 +45,9 @@
                 <td id="word{{ entry.id }}">{{ entry.word }}</td>
                 <td>{{ entry.cue }}</td>
                 <td>{{ entry.image.name }}</td>
-                <td><button class="open-button" onclick="openForm(this, '{{ entry.id }}')">:-D</button></td>
+                <td><button class="open-button"
+                        onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">:-D</button>
+                </td>
             </tr>
 
             {% endfor %}
@@ -78,21 +80,50 @@
         ],
         responsive: true
     });
-</script>
 
-<!-- Popup form onclick generation -->
-<script>
-    function openForm(element, word_id) {
+    // Popup form onclick generation -->
+
+    //var current_word_id;
+
+    function openForm(element, word_id, word, cue, image) {
         document.getElementById("myForm").style.display = "block";
         $('#formtitle').html($("#word" + word_id).html());
-        $('input[name ="newword"]').attr("placeholder", "Yo mama");
+        $('input[name ="newword"]').attr("placeholder", word);
+        $('input[name ="newcue"]').attr("placeholder", cue);
+        $('input[name ="newimg"]').attr("placeholder", image);
+        console.log(word + cue + image);
 
-        // TODO: Make an ajax call that gets the object directly
-        // from the server for displaying placeholders.
+        //current_word_id = word_id;
 
     }
 
+    function sendChanges() {
+        console.log("ajax call from js");
+        $.ajax({
+            // Username is posted to server
+            data: {
+                newword: $('input[name ="newword"]').val(),
+                newcue: $('input[name ="newcue"]').val(),
+                newimg: $('input[name ="newimg"]').val(),
+                id: "1"
+            },
+            // ajax is the name of the view function that processes the incoming ajax call
+            url: "/ajax_word_changer",
+            type: "POST"
+
+        }).done(function (data) {
+            /* Server check: with parents().length I check if element has any parent with this ID
+            because an existing username is good (green) in Login but bad (red) in register. */
+
+            console.log("done");
+
+        });
+        document.myform.reset();
+        closeForm();
+    }
+
     function closeForm() {
+
         document.getElementById("myForm").style.display = "none";
 
         // TODO: Make an ajax call that changes objects.
