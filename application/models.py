@@ -108,6 +108,33 @@ class Word(db.Model):
 
         db.session.commit()
 
+    def change(id, newword="", newcue="", newimg=""):
+        """ id, newword, newcue, newimg """
+
+        word = Word.query.filter_by(id=id).first()
+        if newword is not "":
+            word.word = newword
+        if newcue is not "":
+            word.cue = newcue
+        if newimg is not "":
+            image = db.session.query(Image).filter_by(name=newimg).first()
+
+            if not image:
+                print("image does not exist. Fail!")
+                return False
+            else:
+                word.image = image
+
+        db.session.commit()
+
+        images = db.session.query(Image).all()
+        for image in images:
+            if len(image.words) is 0:
+                print(
+                    "Warning: this image has no connected words: {}".format(image.name))
+
+        return True
+
     def get(spelling):
         if not isinstance(spelling, str):
             raise Exception("Word must be a string")

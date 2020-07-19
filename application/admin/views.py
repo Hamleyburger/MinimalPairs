@@ -1,5 +1,5 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify
-#from .helpers import clearSessionExcept
+# from .helpers import clearSessionExcept
 from application.models import Word
 from .forms import AddForm
 from application import db
@@ -36,9 +36,14 @@ def ajax():
     newimg = request.form["newimg"]
     word_id = request.form["id"]
 
-    if newimg is "":
-        print("no new image")
-    else:
-        print("new image is: {}".format(newimg))
+    print("id: {}, new word: {}, new cue: {}, new image: {}".format(
+        word_id, newword, newcue, newimg))
 
-    return jsonify({"id": word_id})
+    Word.change(id=int(word_id), newword=newword, newcue=newcue, newimg=newimg)
+
+    return jsonify(
+        id=word_id,
+        newword=newword,
+        newcue=newcue,
+        newimg=newimg
+    )

@@ -83,7 +83,7 @@
 
     // Popup form onclick generation -->
 
-    //var current_word_id;
+    var current_word_id;
 
     function openForm(element, word_id, word, cue, image) {
         document.getElementById("myForm").style.display = "block";
@@ -93,7 +93,7 @@
         $('input[name ="newimg"]').attr("placeholder", image);
         console.log(word + cue + image);
 
-        //current_word_id = word_id;
+        current_word_id = word_id;
 
     }
 
@@ -105,7 +105,7 @@
                 newword: $('input[name ="newword"]').val(),
                 newcue: $('input[name ="newcue"]').val(),
                 newimg: $('input[name ="newimg"]').val(),
-                id: "1"
+                id: current_word_id
             },
             // ajax is the name of the view function that processes the incoming ajax call
             url: "/ajax_word_changer",
