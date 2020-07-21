@@ -7,10 +7,12 @@ nav .navbar-brand {
 .open-button {
   background-color: #555;
   color: white;
+  padding: 2px;
+  margin: 2px;
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  width: 50px;
+  width: 30px;
 }
 
 /* The popup form - hidden by default */

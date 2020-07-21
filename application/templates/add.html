@@ -12,34 +12,59 @@
     <! --insert novalidate as attribute if you only want to user server side validation-->
         <form id="addForm" method="POST" action="" novalidate>
             {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <legend>Add a word</legend>
-                <div class="form-group">
-                    {{ form.word(class="form-control", autocomplete="off", autofocus=true, placeholder="Word") }}
-                </div>
-                <div class="form-group">
-                    {{ form.cue(class="form-control", autocomplete="off", placeholder="Cue") }}
-                </div>
-                <div class="form-group">
-                    {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name") }}
-                </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.add(class="btn btn-primary btn-outline-info") }}
-            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <fieldset class="form-group">
+                            <legend>Add a word</legend>
+                            <div class="form-group">
+                                {{ form.word(class="form-control", autocomplete="off", autofocus=true, placeholder="Word") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.cue(class="form-control", autocomplete="off", placeholder="Cue") }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name") }}
+                            </div>
+                        </fieldset>
 
-            {% if ("homonyms" in session) %}
-            {% set homonyms = session.homonyms %}
-            <p>There is one or more words in the database spelled this way:</p>
-            {% for row in homonyms %}
-            <li>{{row.word}}: "{{ row.cue }}" ({{row.image.name}})</li>
-            {% endfor %}
-            <p>Add a new word?</p>
-            <div class="form-group">
-                {{ form.addAnyway(class="btn btn-primary btn-outline-info") }}
+
+                        <div class="form-group">
+                            {{ form.add(class="btn btn-primary btn-outline-info") }}
+                        </div>
+
+                        {% if ("homonyms" in session) %}
+                        {% set homonyms = session.homonyms %}
+                        <p>There is one or more words in the database spelled this way:</p>
+                        {% for row in homonyms %}
+                        <li>{{row.word}}: "{{ row.cue }}" ({{row.image.name}})</li>
+                        {% endfor %}
+                        <p>Add a new word?</p>
+                        <div class="form-group">
+                            {{ form.addAnyway(class="btn btn-primary btn-outline-info") }}
+                        </div>
+                        <p>Add - Never mind</p>
+                        {% endif %}
+                    </div>
+                    <!-- end of col add-->
+
+                    <div class="col-6">
+                        <fieldset>
+                            <label for="cars">Choose a car:</label>
+
+                            <select name="cars" id="cars" multiple>
+                                <option value="volvo">Volvo</option>
+                                <option value="saab">Saab</option>
+                                <option value="opel">Opel</option>
+                                <option value="audi">Audi</option>
+                            </select>
+                        </fieldset>
+                    </div>
+                    <!-- end of col select field-->
+                </div>
+                <!--end of row-->
             </div>
-            <p>Add - Never mind</p>
-            {% endif %}
+            <!-- end of container-->
         </form>
 </div>
 

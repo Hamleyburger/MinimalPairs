@@ -15,8 +15,11 @@ class Pair(db.Model):
     word_sound = db.Column(db.String(), nullable=False)
     partner_sound = db.Column(db.String(), nullable=False)
 
+    # explicit/composite unique constraint.  'name' is optional.
+    db.UniqueConstraint('word_id', 'partner_id')
+
     # Each word will have a partner. Many to many.
-    @classmethod
+    @ classmethod
     def pair(cls, word1, word2, sound1, sound2):
         db.session.flush()
         print("words passed in: {}".format(word1.__dict__))
@@ -50,7 +53,8 @@ class Word(db.Model):
         backref=db.backref('words')
     )
 
-    def homonyms(word):
+    @classmethod
+    def homonyms(cls, word):
         """ Returns a list of homonyms or None if no homonyms """
         homonyms = db.session.query(Word).filter_by(word=word).all()
         if homonyms:
@@ -58,7 +62,8 @@ class Word(db.Model):
         else:
             return None
 
-    def add(word, image=None, cue=None):
+    @classmethod
+    def add(cls, word, image=None, cue=None):
         """ Adds string as word to database and an optional image name\n
         If any of them exist, asks whether to replace or make homonymous entry """
 
@@ -108,38 +113,48 @@ class Word(db.Model):
 
         db.session.commit()
 
-    def change(id, newword="", newcue="", newimg=""):
-        """ id, newword, newcue, newimg """
+    @classmethod
+    def change(cls, id, newword="", newcue="", newimg=""):
+        """ For admin to change entries. Anything goes.\n
+        id(required), newword, newcue, newimg\n
+        returns word or None if trying to link to unexisting image"""
 
+        # Finds the word to change
         word = Word.query.filter_by(id=id).first()
+
+        # Changes what must be changed
         if newword is not "":
             word.word = newword
         if newcue is not "":
             word.cue = newcue
         if newimg is not "":
             image = db.session.query(Image).filter_by(name=newimg).first()
-
+            # Image is special since we're changing the relationship
             if not image:
                 print("image does not exist. Fail!")
-                return False
+                return None
             else:
                 word.image = image
 
         db.session.commit()
 
+        # Check if there are idle images lying around
         images = db.session.query(Image).all()
         for image in images:
             if len(image.words) is 0:
                 print(
                     "Warning: this image has no connected words: {}".format(image.name))
 
-        return True
+        return word
 
-    def get(spelling):
-        if not isinstance(spelling, str):
-            raise Exception("Word must be a string")
-
-        db.session.query(Word).filter_by(word=spelling).first()
+    def pair(self, word2, sound1, sound2):
+        db.session.flush()
+        print("word calling: {}".format(self))
+        pair = Pair(word_id=self.id, partner_id=word2.id,
+                    word_sound=sound1, partner_sound=sound2)
+        db.session.add(pair)
+        print("word 1 partners: {}".format(self.partners))
+        print("Word 2 partners: {}".format(word2.words))
 
 
 class Image(db.Model):

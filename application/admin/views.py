@@ -27,6 +27,13 @@ def change():
     return render_template("change.html", words=words)
 
 
+@admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])
+def pairs(word_id):
+    word = Word.query.filter_by(id=word_id).first()
+    print(word.partners)
+    return render_template("pairs.html", words=word.partners)
+
+
 @admin_blueprint.route("/ajax_word_changer", methods=["POST"])
 # Receives changes from user and makes changes in database
 def ajax():
@@ -39,11 +46,12 @@ def ajax():
     print("id: {}, new word: {}, new cue: {}, new image: {}".format(
         word_id, newword, newcue, newimg))
 
-    Word.change(id=int(word_id), newword=newword, newcue=newcue, newimg=newimg)
+    word = Word.change(id=int(word_id), newword=newword,
+                       newcue=newcue, newimg=newimg)
 
     return jsonify(
-        id=word_id,
-        newword=newword,
-        newcue=newcue,
-        newimg=newimg
+        id=word.id,
+        newword=word.word,
+        newcue=word.cue,
+        newimg=word.image.name
     )
