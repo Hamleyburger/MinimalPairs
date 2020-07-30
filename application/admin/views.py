@@ -1,4 +1,4 @@
-from flask import Blueprint, session, request, redirect, render_template, flash, jsonify
+from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
 # from .helpers import clearSessionExcept
 from application.models import Word
 from .forms import AddForm
@@ -7,16 +7,34 @@ from application import db
 admin_blueprint = Blueprint("admin_blueprint", __name__)
 
 
+@admin_blueprint.route("/", methods=["GET", "POST"])
+def index():
+    """admin stuff"""
+    return redirect(url_for("admin_blueprint.add"))
+
+
 @admin_blueprint.route("/add", methods=["GET", "POST"])
 def add():
     """admin stuff"""
     if session.get("homonyms"):
         session.pop("homonyms")
     form = AddForm()
+    form.pairs.choices = [(str(word.id), word.word + " (" + word.cue + ")")
+                          for word in db.session.query(Word).all()]
+
     if request.method == "POST":
+        if form.cancel.data:
+            return redirect(url_for("admin_blueprint.add"))
         if form.validate_on_submit():
-            Word.add(word=form.word.data,
-                     cue=form.cue.data, image=form.image.data)
+            print("was valid")
+            if form.add.data or form.addAnyway.data:
+                print("adding from view")
+                Word.add(word=form.word.data,
+                         cue=form.cue.data, image=form.image.data)
+            db.session.commit()
+            return redirect(url_for("admin_blueprint.add"))
+        else:
+            flash(u"{}".format(form.errors), "danger")
 
     return render_template("add.html", form=form)
 
@@ -30,8 +48,7 @@ def change():
 @admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])
 def pairs(word_id):
     word = Word.query.filter_by(id=word_id).first()
-    print(word.partners)
-    return render_template("pairs.html", words=word.partners)
+    return render_template("pairs.html", words=word.allPartners())
 
 
 @admin_blueprint.route("/ajax_word_changer", methods=["POST"])

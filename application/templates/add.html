@@ -28,9 +28,23 @@
                             </div>
                         </fieldset>
 
+                    </div>
+                    <!-- end of col add-->
 
+                    <div class="col-6">
+                        <fieldset>
+                            <legend for="pairs">Find all matching words:</legend>
+                            {{ form.pairs(class="chosen-select") }}
+                        </fieldset>
+                    </div>
+                    <!-- end of col select field-->
+                </div>
+                <!--end of row-->
+                <div class="row">
+                    <div class="col-6">
                         <div class="form-group">
                             {{ form.add(class="btn btn-primary btn-outline-info") }}
+                            {{ form.cancel(class="btn btn-primary btn-outline-info") }}
                         </div>
 
                         {% if ("homonyms" in session) %}
@@ -43,30 +57,27 @@
                         <div class="form-group">
                             {{ form.addAnyway(class="btn btn-primary btn-outline-info") }}
                         </div>
-                        <p>Add - Never mind</p>
                         {% endif %}
                     </div>
-                    <!-- end of col add-->
-
                     <div class="col-6">
-                        <fieldset>
-                            <label for="cars">Choose a car:</label>
-
-                            <select name="cars" id="cars" multiple>
-                                <option value="volvo">Volvo</option>
-                                <option value="saab">Saab</option>
-                                <option value="opel">Opel</option>
-                                <option value="audi">Audi</option>
-                            </select>
-                        </fieldset>
+                        {% if form.pairSounds.data %}
+                        {% for field in form.pairSounds %}
+                        {{ field.label }}
+                        {{ field(class_="pairSoundTable") }}
+                        {% endfor %}
+                        {{ form.addSounds(class="btn btn-primary btn-outline-info") }}
+                        {% endif %}
                     </div>
-                    <!-- end of col select field-->
                 </div>
-                <!--end of row-->
             </div>
             <!-- end of container-->
         </form>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $(".chosen-select").chosen();
+    });
+</script>
 
 {% endblock %}

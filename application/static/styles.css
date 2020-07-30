@@ -68,4 +68,12 @@ nav .navbar-brand {
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
+
+.chosen-select {
+  width: 100%;
+}
+
+.pairSoundTable tbody tr td input {
+  width: 25%;
+}
 /*# sourceMappingURL=styles.css.map */

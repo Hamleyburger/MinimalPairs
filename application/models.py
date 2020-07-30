@@ -89,7 +89,7 @@ class Word(db.Model):
         # If added img is in db already connect it, but ask first.
         if image is not None and image is not "":
 
-            print("Image is not none.")
+            print("Image is not none or ''.")
             img = db.session.query(Image).filter_by(name=image).first()
             if not img:
                 print("Image does not exist in database")
@@ -110,8 +110,12 @@ class Word(db.Model):
             print("adding new image to word")
             entry.image = img
             db.session.add(img)
+        print(entry)
+        print("committing to session")
+        # db.session.commit()
 
-        db.session.commit()
+        # Returning word object for optional use
+        return entry
 
     @classmethod
     def change(cls, id, newword="", newcue="", newimg=""):
@@ -135,7 +139,7 @@ class Word(db.Model):
                 return None
             else:
                 word.image = image
-
+        print("Commit from 'change'")
         db.session.commit()
 
         # Check if there are idle images lying around
@@ -148,13 +152,32 @@ class Word(db.Model):
         return word
 
     def pair(self, word2, sound1, sound2):
+        """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound """
         db.session.flush()
         print("word calling: {}".format(self))
         pair = Pair(word_id=self.id, partner_id=word2.id,
                     word_sound=sound1, partner_sound=sound2)
         db.session.add(pair)
-        print("word 1 partners: {}".format(self.partners))
-        print("Word 2 partners: {}".format(word2.words))
+        db.session.flush()
+        print("'" + self.word + "' partners:")
+        for partner in self.partners:
+            print("p: " + partner.word)
+        for word in self.words:
+            print("w: " + word.word)
+        print("'" + word2.word + "' partners:")
+        for partner in word2.partners:
+            print("p: " + partner.word)
+        for word in word2.words:
+            print("w: " + word.word)
+
+        #print("word 1 partners: {}".format(self.partners))
+        # print("Word 2 partners: {}".format(word2.words))
+
+    def allPartners(self):
+        partners = self.partners
+        words = self.words
+        allPartners = partners + words
+        return allPartners
 
 
 class Image(db.Model):
