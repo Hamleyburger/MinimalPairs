@@ -33,42 +33,41 @@ def isHomonym(form, field):
                 "User must choose whether to add new or use old")
 
 
-def pairsDefined(form, field):
+def makePairList(form, field):
     # Ensures that the "choose pairs" field is invalid if pairs are chosen but not filled out.
     # Generates fields to fill out based on chosen pairs
-    # TODO: tidy up the actual "add sounds" part
-    # TODO: generate sound pairs from list and add to db (no empty fields)./
-    # TODO: Apply to "add anyway": only "add sounds" can be valid, but s word added?
+    # TODO: split in two: One validation for "define pairs" and a second for "addSounds"
+    # TODO: word must be defined from select field or session after submitting new word
+
+    # check only for pairs.data and notify if empty "must select pairs"
 
     # Check if cue and word are valid and if user has chosen any pairs
     if form.word.data and form.cue.data and form.pairs.data:
-
-        word1 = form.word.data + " (" + form.cue.data + ")"
-        # If user has not clicked "Add sounds", refresh list from pairs
-        if not form.addSounds.data:
+        # get some word from session or select field?
+        word1 = Word.query.get(1)
+        # If user has clicked "Add sounds", refresh list from pairs
+        if form.addSounds.data:  # This must be "define pairs"
             # Make new list from chosen pairs
             repopulateFieldList(form.pairSounds, form.pairs, word1)
 
         else:
-            # User clicked "Add sounds"
-
-            # TODO: Check if each field is filled out. If any field is not filled out,
-            # don't store anything. Else store all in database.
+            # User clicked "Submit Pairs/add sounds"
+            # This is for "add sounds" (first btn)
 
             if form.pairSounds.data:
-                print("WORD 1: '{}'".format(word1))
+                print("WORD 1: '{}'".format(word1.word))
                 for word in form.pairSounds:
                     if word.sound1.data is "" or word.sound2.data is "":
-                        print("Screw this")
+                        print("Screw this, empty fields")
                         return
                 print("adding but not committing yet")
-                db_word1 = Word.add(
-                    form.word.data, form.image.data, form.cue.data)
+
                 for word in form.pairSounds:
-                    db_word2 = Word.query.get(int(word.word2_id.data))
+                    # get word2 from db with word id in hidden field and pair them up
+                    word2 = Word.query.get(int(word.word2_id.data))
                     print("pairing words in db: 1: {} ({}), 2: {} ({})".format(
-                        db_word1.word, word.sound1.data, db_word2.word, word.sound2.data))
-                    db_word1.pair(db_word2, word.sound1.data, word.sound2.data)
+                        word1.word, word.sound1.data, word2.word, word.sound2.data))
+                    word1.pair(word2, word.sound1.data, word.sound2.data)
 
             else:
                 raise ValidationError("Sounds must be filled out")
@@ -94,11 +93,15 @@ class AddForm(FlaskForm):
     add = SubmitField("Add")
     addAnyway = SubmitField("Add homonym")
     cancel = SubmitField("Cancel")
-    addSounds = SubmitField("Add sounds")
+
+
+class AddPairForm(FlaskForm):
 
     pairs = SelectMultipleField(
-        "Add pairs", choices=[], validators=[pairsDefined])
+        "Add pairs", choices=[])
 
     pairSounds = FieldList(
         FormField(PairSoundForm)
     )
+    addSounds = SubmitField("Submit pairs", validators=[makePairList])
+    definePairs = SubmitField("Define sounds")
