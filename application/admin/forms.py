@@ -1,6 +1,6 @@
 from flask import session
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectMultipleField, Form, FieldList, FormField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectMultipleField, SelectField, Form, FieldList, FormField, HiddenField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from application.models import Word
 
@@ -20,7 +20,7 @@ def repopulateFieldList(formPairSounds, formPairs, word1):
         field = formPairSounds[i]
         field.word2_id.data = wordid  # This field is hidden
         field.label.text = "Differing sounds:"
-        field.sound1.label.text = "'" + word1 + "':"
+        field.sound1.label.text = "'" + word1.word + "':"
         field.sound2.label.text = "'" + word2 + "':"
 
 
@@ -28,25 +28,34 @@ def isHomonym(form, field):
     homonyms = Word.homonyms(form.word.data)
     if homonyms:
         session["homonyms"] = homonyms
-        if form.add.data or form.addSounds.data:
+        if not form.addAnyway.data:
             raise ValidationError(
                 "User must choose whether to add new or use old")
 
 
 def makePairList(form, field):
-    # Ensures that the "choose pairs" field is invalid if pairs are chosen but not filled out.
+    print("running makePairs")
     # Generates fields to fill out based on chosen pairs
+    # TODO: this function must be spit in two:
+    #   1) multiple select is invalid if there are none selected
+    # and otherwise render the fieldList of sound inputs.
+    #   2) "add sounds" is invalid if sounds are missing (where should pais be added?)
     # TODO: split in two: One validation for "define pairs" and a second for "addSounds"
     # TODO: word must be defined from select field or session after submitting new word
+    # TODO: Submitpairs doesn't empty list or sth. Still need to go through whole function
+    # TODO: The multiselect must reveal (and grey out?) the already existing pairs
 
     # check only for pairs.data and notify if empty "must select pairs"
-
     # Check if cue and word are valid and if user has chosen any pairs
-    if form.word.data and form.cue.data and form.pairs.data:
-        # get some word from session or select field?
-        word1 = Word.query.get(1)
+    print("pairsounds list before check: {}".format(form.pairSounds))
+    if not form.pairs.data:
+        emptyFiedList(form.pairSounds)
+        raise ValidationError("Choose what words to pair with")
+    else:
+        # There are pairs to do stuff with
+        word1 = Word.query.get(int(form.word1.data))
         # If user has clicked "Add sounds", refresh list from pairs
-        if form.addSounds.data:  # This must be "define pairs"
+        if form.definePairs.data:  # This must be "define pairs"
             # Make new list from chosen pairs
             repopulateFieldList(form.pairSounds, form.pairs, word1)
 
@@ -58,8 +67,8 @@ def makePairList(form, field):
                 print("WORD 1: '{}'".format(word1.word))
                 for word in form.pairSounds:
                     if word.sound1.data is "" or word.sound2.data is "":
-                        print("Screw this, empty fields")
-                        return
+                        repopulateFieldList(form.pairSounds, form.pairs, word1)
+                        return ValidationError("No empty sound fields allowed")
                 print("adding but not committing yet")
 
                 for word in form.pairSounds:
@@ -70,7 +79,7 @@ def makePairList(form, field):
                     word1.pair(word2, word.sound1.data, word.sound2.data)
 
             else:
-                raise ValidationError("Sounds must be filled out")
+                raise ValidationError("Sounds cannot be null")
 
         # raise ValidationError("Need to define pair sound")
         return
@@ -97,11 +106,13 @@ class AddForm(FlaskForm):
 
 class AddPairForm(FlaskForm):
 
+    word1 = SelectField("Word to pair", choices=[], default="7")
     pairs = SelectMultipleField(
-        "Add pairs", choices=[])
+        "Words to be paired with", choices=[], validators=[
+            makePairList, DataRequired()])
 
     pairSounds = FieldList(
         FormField(PairSoundForm)
     )
-    addSounds = SubmitField("Submit pairs", validators=[makePairList])
+    addSounds = SubmitField("Submit pairs", validators=[])
     definePairs = SubmitField("Define sounds")

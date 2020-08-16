@@ -20,8 +20,13 @@ def add():
         session.pop("homonyms")
     form = AddForm()
     pairForm = AddPairForm()
+    pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
+                              for word in db.session.query(Word).all()]
     pairForm.pairs.choices = [(str(word.id), word.word + " (" + word.cue + ")")
                               for word in db.session.query(Word).all()]
+    wordToRemember_id = session.get("word1") if session.get("word1") else None
+    pairForm.word1.default = wordToRemember_id
+    pairForm.process()
 
     return render_template("add.html", form=form, pairForm=pairForm)
 
@@ -32,6 +37,8 @@ def add_word():
         session.pop("homonyms")
     form = AddForm()
     pairForm = AddPairForm()
+    pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
+                              for word in db.session.query(Word).all()]
     pairForm.pairs.choices = [(str(word.id), word.word + " (" + word.cue + ")")
                               for word in db.session.query(Word).all()]
 
@@ -41,9 +48,11 @@ def add_word():
         print("was valid")
         if form.add.data or form.addAnyway.data:
             print("adding from view")
-            Word.add(word=form.word.data,
-                     cue=form.cue.data, image=form.image.data)
+            wordToRemember = Word.add(word=form.word.data,
+                                      cue=form.cue.data, image=form.image.data)
+        session["word1"] = str(wordToRemember.id)
         db.session.commit()
+
         return redirect(url_for("admin_blueprint.add"))
     else:
         flash(u"{}".format(form.errors), "danger")
@@ -57,8 +66,18 @@ def add_pairs():
         session.pop("homonyms")
     form = AddForm()
     pairForm = AddPairForm()
+    pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
+                              for word in db.session.query(Word).all()]
     pairForm.pairs.choices = [(str(word.id), word.word + " (" + word.cue + ")")
                               for word in db.session.query(Word).all()]
+
+    if pairForm.validate_on_submit():
+        print("pairform valid")
+        db.session.commit()
+        return redirect(url_for("admin_blueprint.add"))
+    else:
+        print("Pairform errors: {}".format(pairForm.errors))
+
     return render_template("add.html", form=form, pairForm=pairForm)
 
 
