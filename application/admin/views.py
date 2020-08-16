@@ -16,8 +16,8 @@ def index():
 @admin_blueprint.route("/add", methods=["GET"])
 def add():
     """admin stuff"""
-    if session.get("homonyms"):
-        session.pop("homonyms")
+    session.pop("homonyms", None)
+    session.pop("existingPairs", None)
     form = AddForm()
     pairForm = AddPairForm()
     pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
@@ -33,8 +33,8 @@ def add():
 
 @admin_blueprint.route("/add_word", methods=["POST"])
 def add_word():
-    if session.get("homonyms"):
-        session.pop("homonyms")
+    session.pop("homonyms", None)
+    session.pop("existingPairs", None)
     form = AddForm()
     pairForm = AddPairForm()
     pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
@@ -62,8 +62,8 @@ def add_word():
 
 @admin_blueprint.route("/add_pairs", methods=["POST"])
 def add_pairs():
-    if session.get("homonyms"):
-        session.pop("homonyms")
+    session.pop("homonyms", None)
+    session.pop("existingPairs", None)
     form = AddForm()
     pairForm = AddPairForm()
     pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")

@@ -13,13 +13,31 @@ def emptyFiedList(fieldList):
 def repopulateFieldList(formPairSounds, formPairs, word1):
     emptyFiedList(formPairSounds)
 
-    for i, wordid in enumerate(formPairs.data):
+    existingPairs = []
+    newPairIds = []
+
+    for word in word1.allPartners():
+        existingPairs.append(word)
+
+    session["existingPairs"] = existingPairs
+
+    for wordid in formPairs.data:
+        illegalWord = False
+        for word in existingPairs:
+            if int(wordid) == word.id:
+                print("already paired: {}".format(wordid))
+                illegalWord = True
+        if illegalWord:
+            continue
+        newPairIds.append(wordid)
+
+    for i, wordid in enumerate(newPairIds):
         # Add word2 as new entry in pairSounds
         word2 = dict(formPairs.choices).get(wordid)
+        print("processing newPairs: {}".format(wordid))
         formPairSounds.append_entry()
         field = formPairSounds[i]
         field.word2_id.data = wordid  # This field is hidden
-        field.label.text = "Differing sounds:"
         field.sound1.label.text = "'" + word1.word + "':"
         field.sound2.label.text = "'" + word2 + "':"
 
@@ -87,8 +105,8 @@ def makePairList(form, field):
 
 
 class PairSoundForm(Form):
-    sound1 = StringField("Sound1", validators=[DataRequired()])
-    sound2 = StringField("Sound2", validators=[DataRequired()])
+    sound1 = StringField("Sound 1", validators=[DataRequired()])
+    sound2 = StringField("Sound 2", validators=[DataRequired()])
     word2_id = HiddenField("word2_id")
 
 

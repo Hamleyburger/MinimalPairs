@@ -62,11 +62,17 @@
 
                     {% if pairForm.pairSounds.data %}
                     {% for field in pairForm.pairSounds %}
-                    {{ field.label }}
+                    <label for="pairSounds-{{ loop.index }}">Differing sounds:</label>
                     {{ field(class_="pairSoundTable") }}
                     {% endfor %}
                     {{ pairForm.addSounds(class="btn btn-primary btn-outline-info") }}
                     {% endif %}
+                    {% if session.existingPairs %}
+                    {% for word in session.existingPairs %}
+                    {{ word.word }}
+                    {% endfor %}
+                    {% endif %}
+
                 </form>
             </div>
         </div>
