@@ -13,24 +13,27 @@ def emptyFiedList(fieldList):
 def repopulateFieldList(formPairSounds, formPairs, word1):
     emptyFiedList(formPairSounds)
 
-    existingPairs = []
     newPairIds = []
 
-    for word in word1.allPartners():
-        existingPairs.append(word)
+    session["existingPairs"] = word1.allPartners()
 
-    session["existingPairs"] = existingPairs
-
+    # Filter out illegal pairs (same word or existing pair)
     for wordid in formPairs.data:
         illegalWord = False
-        for word in existingPairs:
+        if (int(wordid) == word1.id):
+            print("these are the same word")
+            illegalWord = True
+        for word in word1.allPartners():
             if int(wordid) == word.id:
                 print("already paired: {}".format(wordid))
                 illegalWord = True
         if illegalWord:
+            # Break out and don't add pair if pair already exists
             continue
+        # add pair to "add list"
         newPairIds.append(wordid)
 
+    # Modify fieldList to display pairs to add so user can add sounds
     for i, wordid in enumerate(newPairIds):
         # Add word2 as new entry in pairSounds
         word2 = dict(formPairs.choices).get(wordid)
@@ -87,12 +90,11 @@ def makePairList(form, field):
                     if word.sound1.data is "" or word.sound2.data is "":
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
                         return ValidationError("No empty sound fields allowed")
-                print("adding but not committing yet")
 
                 for word in form.pairSounds:
                     # get word2 from db with word id in hidden field and pair them up
                     word2 = Word.query.get(int(word.word2_id.data))
-                    print("pairing words in db: 1: {} ({}), 2: {} ({})".format(
+                    print("Defined words: 1: {} ({}), 2: {} ({}), trying to pair...".format(
                         word1.word, word.sound1.data, word2.word, word.sound2.data))
                     word1.pair(word2, word.sound1.data, word.sound2.data)
 

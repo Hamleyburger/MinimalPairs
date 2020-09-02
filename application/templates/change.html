@@ -21,7 +21,7 @@
         <input type="text" placeholder="jinjaoldimg" name="newimg">
 
         <button type="button" class="btn save" onclick="sendChanges()">Save</button>
-        <button type="button" class="btn delete">Delete</button>
+        <button type="button" class="btn delete" onclick="requestDelete()">Delete</button>
         <button id="closeForm" type="submit" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
 </div>
@@ -45,8 +45,11 @@
                 <td id="word{{ entry.id }}">{{ entry.word }}</td>
                 <td id="cue{{ entry.id }}">{{ entry.cue }}</td>
                 <td id="image{{ entry.id }}">{{ entry.image.name }}</td>
-                <td style="text-align: center;"><button class="open-button"
-                        onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">;(</button>
+                <td style="text-align: center;">
+                    <button class="open-button"
+                        onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">
+                        ;(
+                    </button>
                     <button class="open-button" onclick="window.location.href='/pairs/{{ entry.id }}';">
                         PP
                     </button>
@@ -103,7 +106,6 @@
     function sendChanges() {
         console.log("ajax call from js");
         $.ajax({
-            // Username is posted to server
             data: {
                 newword: $('input[name ="newword"]').val(),
                 newcue: $('input[name ="newcue"]').val(),
@@ -126,6 +128,32 @@
         document.myform.reset();
         closeForm();
     }
+
+    function requestDelete() {
+        console.log("ajax call from js");
+        $.ajax({
+            // sending word ID to "deletion" route
+            data: {
+                id: current_word_id
+            },
+            // url is the ajax route in views.py
+            url: "/ajax_word_delete",
+            type: "POST"
+
+        }).done(function (data) {
+            /* Server check: with parents().length I check if element has any parent with this ID
+            because an existing username is good (green) in Login but bad (red) in register. */
+
+            console.log(data);
+            console.log(
+                $("#word" + current_word_id).parent()
+            )
+            $("#word" + current_word_id).parent().remove();
+        });
+        document.myform.reset();
+        closeForm();
+    }
+
 
     function closeForm() {
 

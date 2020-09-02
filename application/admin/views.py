@@ -16,6 +16,7 @@ def index():
 @admin_blueprint.route("/add", methods=["GET"])
 def add():
     """admin stuff"""
+
     session.pop("homonyms", None)
     session.pop("existingPairs", None)
     form = AddForm()
@@ -95,7 +96,7 @@ def pairs(word_id):
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])
 # Receives changes from user and makes changes in database
-def ajax():
+def ajax_change():
     print("running ajax")
     newword = request.form["newword"]
     newcue = request.form["newcue"]
@@ -113,4 +114,19 @@ def ajax():
         newword=word.word,
         newcue=word.cue,
         newimg=word.image.name
+    )
+
+
+@ admin_blueprint.route("/ajax_word_delete", methods=["POST"])
+# Receives changes from user and makes changes in database
+def ajax_delete():
+
+    print("getting word id with ajax")
+    word_id = request.form["id"]
+    word = Word.query.get(int(word_id))
+    print("Deleting: " + str(word.word))
+    word.remove()
+
+    return jsonify(
+        id=word.id
     )

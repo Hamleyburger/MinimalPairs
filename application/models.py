@@ -1,10 +1,12 @@
 from application import db
 import decimal
 from sqlalchemy.sql import func
+from sqlalchemy import or_
 
 
 class Pair(db.Model):
-    """ Contains a word and its partner - Contrast's first letter must be of lower value than the second """
+    """ Contains a word1 (caller) and its partner, word2 - \n
+    distinguished by sound1 (caller's sound) and sound2 """
     __tablename__ = "pairs"
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
@@ -17,17 +19,6 @@ class Pair(db.Model):
 
     # explicit/composite unique constraint.  'name' is optional.
     db.UniqueConstraint('word_id', 'partner_id')
-
-    # Each word will have a partner. Many to many.
-    @ classmethod
-    def pair(cls, word1, word2, sound1, sound2):
-        db.session.flush()
-        print("words passed in: {}".format(word1.__dict__))
-        pair = Pair(word_id=word1.id, partner_id=word2.id,
-                    word_sound=sound1, partner_sound=sound2)
-        db.session.add(pair)
-        print("word 1 partners: {}".format(word1.partners))
-        print("Word 2 partners: {}".format(word2.words))
 
 
 class Word(db.Model):
@@ -154,7 +145,9 @@ class Word(db.Model):
     def pair(self, word2, sound1, sound2):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound """
         db.session.flush()
-        print("word calling: {}".format(self))
+        if((self.id == word2.id) or (word2 in self.allPartners())):
+            print("Word is same or already paired")
+            return
         pair = Pair(word_id=self.id, partner_id=word2.id,
                     word_sound=sound1, partner_sound=sound2)
         db.session.add(pair)
@@ -174,10 +167,27 @@ class Word(db.Model):
         # print("Word 2 partners: {}".format(word2.words))
 
     def allPartners(self):
+        """ Returns a list of all words partnered with caller \n
+        Both ways are ocunted in ("partners" or "words") """
         partners = self.partners
         words = self.words
         allPartners = partners + words
         return allPartners
+
+    def remove(self):
+        """ Deletes given word and its associated pairs form database"""
+        pairs = db.session.query(Pair).filter(or_(
+            (Pair.word_id == self.id), (Pair.partner_id == self.id))).all()
+
+        # This query is not getting all the pairs. Can be done in two queries, but
+        # how to do it in one?
+        print("word to remove: " + self.word)
+        for pair in pairs:
+            print("deleting " + str(pair))
+            db.session.delete(pair)
+        print("deleting " + "'" + self.word + "'")
+        db.session.delete(self)
+        db.session.commit()
 
 
 class Image(db.Model):
