@@ -13,7 +13,8 @@
     <div class="container">
         <div class="row">
             <div class="col-6">
-                <form id="addForm" method="POST" action="{{ url_for('admin_blueprint.add_word') }}" novalidate>
+                <form id="addForm" method="POST" action="{{ url_for('admin_blueprint.add_word') }}"
+                    enctype="multipart/form-data" novalidate>
                     {{ form.hidden_tag() }}
                     <fieldset class="form-group">
                         <legend>Add a word</legend>
@@ -24,7 +25,10 @@
                             {{ form.cue(class="form-control", autocomplete="off", placeholder="Cue") }}
                         </div>
                         <div class="form-group">
-                            {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name") }}
+                            <div class="custom-file">
+                                {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name") }}
+                                <label class="custom-file-label" for="image">Image</label>
+                            </div>
                         </div>
 
                         <div class="form-group">

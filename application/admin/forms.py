@@ -3,6 +3,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectMultipleField, SelectField, Form, FieldList, FormField, HiddenField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from application.models import Word
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
 
 
 def emptyFiedList(fieldList):
@@ -118,7 +120,7 @@ class AddForm(FlaskForm):
         DataRequired(), Length(min=1, max=30), isHomonym])
     cue = StringField("Cue", validators=[
         DataRequired(), Length(min=0, max=30)])
-    image = StringField("Image")
+    image = FileField(validators=[FileRequired()])
     add = SubmitField("Add")
     addAnyway = SubmitField("Add homonym")
     cancel = SubmitField("Cancel")

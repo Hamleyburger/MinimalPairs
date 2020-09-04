@@ -16,6 +16,9 @@ class Config(object):
     SESSION_PERMANENT = False
     SESSION_TYPE = "filesystem"
 
+    # Specify path for uploading
+    IMAGE_UPLOADS = "application/static/images"
+
 
 class ProductionConfig(Config):
     DEBUG = 0

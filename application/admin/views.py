@@ -3,6 +3,7 @@ from flask import Blueprint, session, request, redirect, render_template, flash,
 from application.models import Word
 from .forms import AddForm, AddPairForm
 from application import db
+from .helpers import store_image
 
 admin_blueprint = Blueprint("admin_blueprint", __name__)
 
@@ -47,11 +48,18 @@ def add_word():
         return redirect(url_for("admin_blueprint.add"))
     if form.validate_on_submit():
         print("was valid")
+
+        image_name = None
+
+        if request.files["image"]:
+            image_name = store_image(request.files["image"])
+
         if form.add.data or form.addAnyway.data:
             print("adding from view")
             wordToRemember = Word.add(word=form.word.data,
-                                      cue=form.cue.data, image=form.image.data)
+                                      cue=form.cue.data, image=image_name)
         session["word1"] = str(wordToRemember.id)
+
         db.session.commit()
 
         return redirect(url_for("admin_blueprint.add"))
@@ -61,7 +69,7 @@ def add_word():
     return render_template("add.html", form=form, pairForm=pairForm)
 
 
-@admin_blueprint.route("/add_pairs", methods=["POST"])
+@ admin_blueprint.route("/add_pairs", methods=["POST"])
 def add_pairs():
     session.pop("homonyms", None)
     session.pop("existingPairs", None)
@@ -86,6 +94,11 @@ def add_pairs():
 def change():
     words = Word.query.all()
     return render_template("change.html", words=words)
+
+
+@ admin_blueprint.route("/upload_image", methods=["POST"])
+def upload_image():
+    return "Image uploaded"
 
 
 @ admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])

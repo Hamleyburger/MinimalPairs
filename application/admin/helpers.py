@@ -1,3 +1,6 @@
+from flask import request
+import os
+from flask import current_app
 # Helpers is being used by models
 # Helpers so far handles session, decorators for views and stock API
 
@@ -12,3 +15,15 @@
 #    for key in list(session):
 #        if key not in argv:
 #            session.pop(key)
+
+def store_image(image):
+    """ Stores image on server and saves name in database.\n Returns file name """
+
+    # Resize and save thumbnail separately with name modification
+    # Check if image exists rather than file name. If name is same and img
+    # different rename
+
+    image.save(os.path.join(
+        current_app.config["IMAGE_UPLOADS"], image.filename))
+
+    return image.filename
