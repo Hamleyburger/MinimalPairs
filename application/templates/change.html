@@ -44,7 +44,10 @@
                 <!-- I'm using jinja to pass the id of td 0 to the function for onclick in td 3 -->
                 <td id="word{{ entry.id }}">{{ entry.word }}</td>
                 <td id="cue{{ entry.id }}">{{ entry.cue }}</td>
-                <td id="image{{ entry.id }}">{{ entry.image.name }}</td>
+                <td id="image{{ entry.id }}">
+                    {{ entry.image.name }}
+                    <div><img src="static/images/{{ entry.image.name }}" class="img-thumbnail img-mpexample" /></div>
+                </td>
                 <td style="text-align: center;">
                     <button class="open-button"
                         onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">

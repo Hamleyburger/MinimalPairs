@@ -179,8 +179,6 @@ class Word(db.Model):
         pairs = db.session.query(Pair).filter(or_(
             (Pair.word_id == self.id), (Pair.partner_id == self.id))).all()
 
-        # This query is not getting all the pairs. Can be done in two queries, but
-        # how to do it in one?
         print("word to remove: " + self.word)
         for pair in pairs:
             print("deleting " + str(pair))
