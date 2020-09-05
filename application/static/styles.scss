@@ -91,8 +91,25 @@ nav .navbar-brand {
 
 
   // Having to do with displaying minimal pair images
-
   .img-mpexample {
     //border: 4px solid blue;
     width: 50%;
+  }
+
+  // The image upload input field
+  .custom-file-label {
+  // "Browse" button (pseudo element in WTForms FileField)
+    &::after {
+        color: #17a2b8;
+        background-color: transparent;
+        background-image: none;
+        border-color: #17a2b8;
+    }
+    &:hover {
+        &::after {
+            color: #fff;
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+    }
   }

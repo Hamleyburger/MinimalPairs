@@ -1,6 +1,7 @@
 from flask import request
 import os
 from flask import current_app
+from PIL import Image
 # Helpers is being used by models
 # Helpers so far handles session, decorators for views and stock API
 
@@ -23,7 +24,15 @@ def store_image(image):
     # Check if image exists rather than file name. If name is same and img
     # different rename
 
+    # Store original
     image.save(os.path.join(
         current_app.config["IMAGE_UPLOADS"], image.filename))
+
+    # Store thumbnail wil Pillow (PIL)
+    size = 128, 128
+    thumb = Image.open(image)
+    thumb.thumbnail(size)
+    thumb.save(os.path.join(
+        current_app.config["IMAGE_UPLOADS"] + "/thumbnails", "thumbnail_" + image.filename))
 
     return image.filename

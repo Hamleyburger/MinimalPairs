@@ -80,4 +80,17 @@ nav .navbar-brand {
 .img-mpexample {
   width: 50%;
 }
+
+.custom-file-label::after {
+  color: #17a2b8;
+  background-color: transparent;
+  background-image: none;
+  border-color: #17a2b8;
+}
+
+.custom-file-label:hover::after {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
 /*# sourceMappingURL=styles.css.map */
