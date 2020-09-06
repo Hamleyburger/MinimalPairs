@@ -8,8 +8,11 @@
 
 <!-- Popup form-->
 <div class="form-popup" id="myForm">
-    <form name="myform" class="form-container">
+    <form name="myform" class="form-container" method="POST" enctype="multipart/form-data"
+        action="{{ url_for('admin_blueprint.change') }}">
         <h1 id="formtitle"></h1>
+
+        <input type="hidden" id="custId" name="newwordid" value="">
 
         <label for="newword"><b>Change spelling</b></label>
         <input type="text" placeholder="jinjaoldword" name="newword">
@@ -22,7 +25,7 @@
 
         <button type="button" class="btn save" onclick="sendChanges()">Save</button>
         <button type="button" class="btn delete" onclick="requestDelete()">Delete</button>
-        <button id="closeForm" type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+        <button id="closeButton" type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
 </div>
 
@@ -101,6 +104,7 @@
         $('input[name ="newword"]').attr("placeholder", word);
         $('input[name ="newcue"]').attr("placeholder", cue);
         $('input[name ="newimg"]').attr("placeholder", image);
+        $('input[name ="newwordid"]').attr("value", word_id);
         console.log(word + cue + image);
 
         current_word_id = word_id;
@@ -108,6 +112,19 @@
     }
 
     function sendChanges() {
+        // Make it respond to file input instead
+        console.log("image value is " + $('input[name ="newimg"]').val());
+        if ($('input[name ="newimg"]').val() !== "") {
+            document.myform.submit();
+            console.log("resetting form")
+            document.myform.reset();
+            console.log(document.myform)
+            closeForm();
+
+            return
+        }
+
+
         console.log("ajax call from js");
         $.ajax({
             data: {
@@ -127,7 +144,7 @@
             console.log(data);
             $("#word" + current_word_id).html(data.newword);
             $("#cue" + current_word_id).html(data.newcue);
-            $("#image" + current_word_id).html(data.newimg);
+            //$("#image" + current_word_id).html(data.newimg);
         });
         document.myform.reset();
         closeForm();
@@ -160,8 +177,10 @@
 
 
     function closeForm() {
+        console.log("running closeform");
 
         document.getElementById("myForm").style.display = "none";
+        document.myform.reset();
 
         // TODO: Make an ajax call that changes objects.
         // Also stops if image not legal?
