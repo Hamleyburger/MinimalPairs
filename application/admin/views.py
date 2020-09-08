@@ -93,10 +93,11 @@ def add_pairs():
 @ admin_blueprint.route("/change", methods=["GET", "POST"])
 def change():
     if request.method == "POST":
-        print("U POSTED STH LOL")
-        id = int(request.form.get("newwordid"))
-        Word.change(id, newword=request.form.get("newword"),
-                    newcue=request.form.get("newcue"), newimg="default.jpg")
+
+        if request.files:
+            id = int(request.form.get("newwordid"))
+            Word.change(id, newword=request.form.get("newword"),
+                        newcue=request.form.get("newcue"), newimg=request.files["newimg"])
 
         # TODO: insert file input and store file name in database and store file
         # with helpers store_image.
@@ -104,6 +105,7 @@ def change():
         # right file name
         # Remember to change script "sendChanges" to check for a file and not
         # an empty string
+        # remember that file input label styling exists in change-upload
 
         return redirect(request.url)
 

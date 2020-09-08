@@ -27,7 +27,8 @@
                         <div class="form-group">
                             <div class="custom-file">
                                 {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name") }}
-                                <label class="custom-file-label" for="image">Image</label>
+                                <label class="custom-file-label file-label-name add-file-label"
+                                    for="image">Image</label>
                             </div>
                         </div>
 
@@ -90,20 +91,6 @@
         $(".chosen-select").chosen();
     });
 </script>
-<script>
 
-    $(document).ready(function () {
-
-        $('input[type="file"]').change(function (e) {
-
-            var fileName = e.target.files[0].name;
-            $('.custom-file-label').html(fileName);
-            //alert('The file "' + fileName + '" has been selected.');
-
-        });
-
-    });
-
-</script>
 
 {% endblock %}

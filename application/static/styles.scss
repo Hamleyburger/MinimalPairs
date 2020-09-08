@@ -39,12 +39,26 @@ nav .navbar-brand {
   }
   
   /* Full-width input fields */
-  .form-container input[type=text], .form-container input[type=password] {
+  .form-container input[type=text], .form-container input[type=password], .change-file-label {
     width: 100%;
+    max-height: 50px !important;
     padding: 15px;
     margin: 5px 0 22px 0;
     border: none;
     background: #f1f1f1;
+  }
+  .form-container input[type=file] {
+      display: none;
+  }
+  .change-file-label {
+      background-color: #a9e1ff;
+      border: 1px solid #a9e1ff;
+      border-radius: 0.25rem;
+      overflow: hidden;
+      
+      &:hover {
+          background-color: white;
+      }
   }
   
   /* When the inputs get focus, do something */
@@ -82,12 +96,8 @@ nav .navbar-brand {
 
 
   .pairSoundTable tbody tr td input {
-
     width: 25%;
-
   }
-
-
 
 
   // Having to do with displaying minimal pair images
@@ -97,7 +107,7 @@ nav .navbar-brand {
   }
 
   // The image upload input field
-  .custom-file-label {
+  .add-file-label {
   // "Browse" button (pseudo element in WTForms FileField)
     &::after {
         color: #17a2b8;

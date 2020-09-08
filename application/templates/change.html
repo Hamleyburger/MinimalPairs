@@ -20,8 +20,9 @@
         <label for="newcue"><b>Change cue</b></label>
         <input type="text" placeholder="jinjaoldcue" name="newcue">
 
-        <label for="newimg"><b>Change image</b></label>
-        <input type="text" placeholder="jinjaoldimg" name="newimg">
+        <label for="image"><b>Change image</b></label>
+        <input autocomplete="off" id="image" name="newimg" required="" type="file">
+        <label class="change-file-label file-label-name" for="image"></label>
 
         <button type="button" class="btn save" onclick="sendChanges()">Save</button>
         <button type="button" class="btn delete" onclick="requestDelete()">Delete</button>
@@ -103,7 +104,7 @@
         $('#formtitle').html($("#word" + word_id).html());
         $('input[name ="newword"]').attr("placeholder", word);
         $('input[name ="newcue"]').attr("placeholder", cue);
-        $('input[name ="newimg"]').attr("placeholder", image);
+        $('.file-label-name').html(image);
         $('input[name ="newwordid"]').attr("value", word_id);
         console.log(word + cue + image);
 

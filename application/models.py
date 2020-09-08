@@ -123,13 +123,9 @@ class Word(db.Model):
         if newcue is not "":
             word.cue = newcue
         if newimg is not "":
-            image = db.session.query(Image).filter_by(name=newimg).first()
-            # Image is special since we're changing the relationship
-            if not image:
-                print("image does not exist. Fail!")
-                return None
-            else:
-                word.image = image
+            image = Image.store(newimg)  # return appropriate image object
+            word.image = image
+
         print("Commit from 'change'")
         db.session.commit()
 
@@ -163,7 +159,7 @@ class Word(db.Model):
         for word in word2.words:
             print("w: " + word.word)
 
-        #print("word 1 partners: {}".format(self.partners))
+        # print("word 1 partners: {}".format(self.partners))
         # print("Word 2 partners: {}".format(word2.words))
 
     def allPartners(self):
@@ -199,3 +195,37 @@ class Image(db.Model):
 
     # is pointed to by at least one word. One-to-many with word.
     words = db.relationship("Word", back_populates="image")
+
+    def store(imageFile):
+        """ Stores file if it's new\n
+        Changes name if necessary\n
+        Stores in database\n 
+        Returns image object (not the actual file) """
+
+        image = db.session.query(Image).filter_by(
+            name=imageFile.filename).first()
+        if not image:
+            # scheck if file exists with different name
+            # if yes: set image to this image and print that it existed with different name
+            # if not:
+            # store image in folder
+            # set image to new image object
+            # add image object to db (image)
+
+            # delete the following:
+            print("New image name! Returning default for now")
+            image = db.session.query(Image).filter_by(
+                name="default.jpg").first()
+            return image
+
+        else:
+            # check if stored image with same name is the same.
+            # if yes: connect old image (image) and print that it existed with same name
+            # if no:
+            #   store image in folder
+            #   loop through possible file names to find next available and set
+            #   set image to new image
+            #   store image object to db
+            print("file name exists, but I'm on it! Connecting old img for now")
+
+        return image
