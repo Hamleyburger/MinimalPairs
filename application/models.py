@@ -2,6 +2,9 @@ from application import db
 import decimal
 from sqlalchemy.sql import func
 from sqlalchemy import or_
+from .admin.helpers import store_image
+import os
+import filecmp
 
 
 class Pair(db.Model):
@@ -199,33 +202,16 @@ class Image(db.Model):
     def store(imageFile):
         """ Stores file if it's new\n
         Changes name if necessary\n
-        Stores in database\n 
+        Adds to database (no commit)\n 
         Returns image object (not the actual file) """
 
-        image = db.session.query(Image).filter_by(
-            name=imageFile.filename).first()
+        # appropriate imageName - can be old or new
+        imageName = store_image(imageFile)
+        image = Image.query.filter_by(name=imageName).first()
+
         if not image:
-            # scheck if file exists with different name
-            # if yes: set image to this image and print that it existed with different name
-            # if not:
-            # store image in folder
-            # set image to new image object
-            # add image object to db (image)
-
-            # delete the following:
-            print("New image name! Returning default for now")
-            image = db.session.query(Image).filter_by(
-                name="default.jpg").first()
-            return image
-
-        else:
-            # check if stored image with same name is the same.
-            # if yes: connect old image (image) and print that it existed with same name
-            # if no:
-            #   store image in folder
-            #   loop through possible file names to find next available and set
-            #   set image to new image
-            #   store image object to db
-            print("file name exists, but I'm on it! Connecting old img for now")
+            print("Adding new image object to database")
+            image = Image(name=imageName)
+            db.session.add(image)
 
         return image
