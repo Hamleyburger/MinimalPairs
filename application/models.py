@@ -3,8 +3,6 @@ import decimal
 from sqlalchemy.sql import func
 from sqlalchemy import or_
 from .admin.helpers import store_image
-import os
-import filecmp
 
 
 class Pair(db.Model):
@@ -59,7 +57,9 @@ class Word(db.Model):
     @classmethod
     def add(cls, word, image=None, cue=None):
         """ Adds string as word to database and an optional image name\n
-        If any of them exist, asks whether to replace or make homonymous entry """
+        If any of them exist, asks whether to replace or make homonymous entry\n
+        Remember to first call store_image to get appropriate file name in\n
+        case of duplicates"""
 
         # If word exists, figure out if it's homonymous or same
         entry = db.session.query(Word).filter_by(word=word).all()
@@ -80,7 +80,7 @@ class Word(db.Model):
 
         db.session.flush()
 
-        # If added img is in db already connect it, but ask first.
+        # If added img is in db already connect old img
         if image is not None and image is not "":
 
             print("Image is not none or ''.")
@@ -162,9 +162,6 @@ class Word(db.Model):
         for word in word2.words:
             print("w: " + word.word)
 
-        # print("word 1 partners: {}".format(self.partners))
-        # print("Word 2 partners: {}".format(word2.words))
-
     def allPartners(self):
         """ Returns a list of all words partnered with caller \n
         Both ways are ocunted in ("partners" or "words") """
@@ -200,7 +197,7 @@ class Image(db.Model):
     words = db.relationship("Word", back_populates="image")
 
     def store(imageFile):
-        """ Stores file if it's new\n
+        """ Stores file in folder if it's new\n
         Changes name if necessary\n
         Adds to database (no commit)\n 
         Returns image object (not the actual file) """
@@ -210,7 +207,6 @@ class Image(db.Model):
         image = Image.query.filter_by(name=imageName).first()
 
         if not image:
-            print("Adding new image object to database")
             image = Image(name=imageName)
             db.session.add(image)
 

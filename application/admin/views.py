@@ -161,3 +161,18 @@ def ajax_delete():
     return jsonify(
         id=word.id
     )
+
+
+@ admin_blueprint.route("/ajax_possible_pairs", methods=["POST"])
+# Receives a word id and returns words in a way so client can see which pairs already exist
+def ajax_possible_pairs():
+    word_id = request.form["id"]
+    word = Word.query.get(int(word_id))
+    partners = word.allPartners()
+    partner_ids = []
+    for partner in partners:
+        partner_ids.append(partner.id)
+        partner_ids.append(word.id)
+    return jsonify(
+        id=partner_ids
+    )

@@ -128,7 +128,7 @@ class AddForm(FlaskForm):
 
 class AddPairForm(FlaskForm):
 
-    word1 = SelectField("Word to pair", choices=[], default="7")
+    word1 = SelectField("Word to pair", choices=[], default="1")
     pairs = SelectMultipleField(
         "Words to be paired with", choices=[], validators=[
             makePairList, DataRequired()])
