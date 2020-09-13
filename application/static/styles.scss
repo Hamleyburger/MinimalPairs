@@ -95,9 +95,27 @@ nav .navbar-brand {
   }
 
 
-  .pairSoundTable tbody tr td input {
-    width: 25%;
+  .pairSoundTable {
+    .sound_input_field {
+        margin-right: 30px;
+    }
+    input, label {
+        display: block;
+    }
+    label {
+        height: 2.5em;
+    }
+
+    .row {
+        margin-bottom: 30px;
+    }
+    .vs {
+        font-weight: bolder;
+        padding-top: 30px;
+    }
+
   }
+
 
 
   // Having to do with displaying minimal pair images
@@ -122,4 +140,15 @@ nav .navbar-brand {
             border-color: #17a2b8;
         }
     }
+  }
+
+
+  .ipa_picker {
+      a {
+
+          color: black;
+          font-size: 30px;
+          padding: 5px;
+          font-family: "Times New Roman";
+      }
   }

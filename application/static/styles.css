@@ -89,8 +89,25 @@ nav .navbar-brand {
   width: 100%;
 }
 
-.pairSoundTable tbody tr td input {
-  width: 25%;
+.pairSoundTable .sound_input_field {
+  margin-right: 30px;
+}
+
+.pairSoundTable input, .pairSoundTable label {
+  display: block;
+}
+
+.pairSoundTable label {
+  height: 2.5em;
+}
+
+.pairSoundTable .row {
+  margin-bottom: 30px;
+}
+
+.pairSoundTable .vs {
+  font-weight: bolder;
+  padding-top: 30px;
 }
 
 .img-mpexample {
@@ -108,5 +125,12 @@ nav .navbar-brand {
   color: #fff;
   background-color: #17a2b8;
   border-color: #17a2b8;
+}
+
+.ipa_picker a {
+  color: black;
+  font-size: 30px;
+  padding: 5px;
+  font-family: "Times New Roman";
 }
 /*# sourceMappingURL=styles.css.map */

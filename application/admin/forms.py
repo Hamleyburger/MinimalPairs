@@ -5,6 +5,7 @@ from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from application.models import Word
 from flask_wtf.file import FileField, FileRequired
 from werkzeug.utils import secure_filename
+from ipapy import is_valid_ipa
 
 
 def emptyFiedList(fieldList):
@@ -59,18 +60,7 @@ def isHomonym(form, field):
 def makePairList(form, field):
     print("running makePairs")
     # Generates fields to fill out based on chosen pairs
-    # TODO: this function must be spit in two:
-    #   1) multiple select is invalid if there are none selected
-    # and otherwise render the fieldList of sound inputs.
-    #   2) "add sounds" is invalid if sounds are missing (where should pais be added?)
-    # TODO: split in two: One validation for "define pairs" and a second for "addSounds"
-    # TODO: word must be defined from select field or session after submitting new word
-    # TODO: Submitpairs doesn't empty list or sth. Still need to go through whole function
-    # TODO: The multiselect must reveal (and grey out?) the already existing pairs
 
-    # check only for pairs.data and notify if empty "must select pairs"
-    # Check if cue and word are valid and if user has chosen any pairs
-    print("pairsounds list before check: {}".format(form.pairSounds))
     if not form.pairs.data:
         emptyFiedList(form.pairSounds)
         raise ValidationError("Choose what words to pair with")
@@ -91,7 +81,9 @@ def makePairList(form, field):
                 for word in form.pairSounds:
                     if word.sound1.data is "" or word.sound2.data is "":
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
-                        return ValidationError("No empty sound fields allowed")
+                        raise ValidationError("No empty sound fields allowed")
+                    if (not is_valid_ipa(word.sound1.data)) or (not is_valid_ipa(word.sound2.data)):
+                        raise ValidationError("Not valid IPA")
 
                 for word in form.pairSounds:
                     # get word2 from db with word id in hidden field and pair them up

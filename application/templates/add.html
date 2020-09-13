@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from 'macros.html' import ipa_picker %}
 
 {% block title %}
 : Add word
@@ -66,10 +67,38 @@
                     </fieldset>
 
                     {% if pairForm.pairSounds.data %}
+                    <h5 style="margin-top: 20px;">Indsæt betydningsadskillende lyde:</h5>
                     {% for field in pairForm.pairSounds %}
-                    <label for="pairSounds-{{ loop.index }}">Differing sounds:</label>
-                    {{ field(class_="pairSoundTable") }}
+                    <div class="pairSoundTable">
+                        <div class="row">
+
+                            {% for subfield in field %}
+                            {% if (loop.index < 3) %}
+                            <div class="col-5">
+
+                                {{ subfield.label }}
+                                {{ subfield(class="sound_input_field", size="4") }}
+                            </div>
+                            {% if (loop.index == 1) %}
+                            <div class="col-2 vs">
+                                VS
+                            </div>
+                            {% endif %}
+
+                            {% else %}
+                            {{ subfield }}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
                     {% endfor %}
+
+
+
+
+
+
                     {{ pairForm.addSounds(class="btn btn-primary btn-outline-info") }}
                     {% endif %}
                     {% if session.existingPairs %}
@@ -82,10 +111,9 @@
             </div>
         </div>
         <!-- end of container-->
+        {{ ipa_picker() }}
     </div>
 </div>
 <!--end of row-->
-
-
 
 {% endblock %}

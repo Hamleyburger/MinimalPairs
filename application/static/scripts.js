@@ -53,3 +53,21 @@ $("#word1").change(function () {
     });
 });
 
+
+// INSERTING SYMBOLS TO STRING FIELD
+
+selected_input = "hej";
+
+
+$(".sound_input_field" ).focus(function() {
+    selected_input = this;
+    });  
+    
+function insertAtCursor(sound) {
+    if (typeof (selected_input) === "object") {
+        console.log(selected_input);
+        $(selected_input).val($(selected_input).val() + sound);
+    }
+};
+
+
