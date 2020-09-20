@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+: Change word
+{% endblock %}
+
+{% block main %}
+
+<!-- image 1, image 2, name 1, name 2, sound1, sound2 -->
+
+<div class="container-fluid text-center titlebox">
+    <p>
+
+        [{{ pairs[0].sound1 }}] vs [{{ pairs[0].sound2 }}]
+    </p>
+</div>
+<div class="container contentbox">
+    <!-- For loop "pairs" for iterating over pairs -->
+    {% for pair in pairs %}
+    <div class="row justify-content-center">
+        <div class="col-sm-4">
+            <div class="card text-center wordcard" style="width: 18rem;">
+                <div class="img-container">
+                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.word1.image.name }}"
+                        alt="image of '{{ pair.word1.word }}''">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ pair.word1.word }}</h5>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-center wordcard" style="width: 18rem;">
+                <div class="img-container">
+                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.word2.image.name }}"
+                        alt="image of '{{ pair.word2.word }}''">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ pair.word2.word }}</h5>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- For loop "pairs" end -->
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -133,4 +133,52 @@ nav .navbar-brand {
   padding: 5px;
   font-family: "Times New Roman";
 }
+
+.titlebox {
+  background-color: #c5ece6;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  font-size: 4rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  margin-bottom: 50px;
+}
+
+.contentbox [class*="col-"] {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.wordcard {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.wordcard .img-container {
+  height: 300px;
+  overflow: hidden;
+}
+
+.wordcard .img-container .card-img-top {
+  width: 100%;
+  /* width of container */
+  height: 100%;
+  /* height of container */
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 50% 50%;
+     object-position: 50% 50%;
+}
+
+.wordcard .card-title {
+  font-size: 2.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
 /*# sourceMappingURL=styles.css.map */

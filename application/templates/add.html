@@ -76,8 +76,18 @@
                             {% if (loop.index < 3) %}
                             <div class="col-5">
 
+                                {% if pairForm.addSounds.data %}
+                                {% if subfield.errors %}
+
+                                {{ subfield.label }}
+                                {{ subfield(class="sound_input_field", size="4", style="border: 1px solid red;") }}
+
+                                {% endif %}
+                                {% else %}
+
                                 {{ subfield.label }}
                                 {{ subfield(class="sound_input_field", size="4") }}
+                                {% endif %}
                             </div>
                             {% if (loop.index == 1) %}
                             <div class="col-2 vs">
@@ -102,10 +112,9 @@
                     {{ pairForm.addSounds(class="btn btn-primary btn-outline-info") }}
                     {% endif %}
                     {% if session.existingPairs %}
-                    {% for word in session.existingPairs %}
-                    {{ word.word }}
-                    {% endfor %}
-                    {% endif %}
+                    <br>Words already paired with {{pairForm.pairSounds[0].sound1.label.text }}
+                    {% for word in session.existingPairs %}{% if loop.index != 1 %},
+                    {% endif %}{{ word.word }}{% endfor %}{% endif %}
 
                 </form>
             </div>

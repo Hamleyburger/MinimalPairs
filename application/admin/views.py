@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
 # from .helpers import clearSessionExcept
-from application.models import Word
+from application.models import Word, Pair
 from .forms import AddForm, AddPairForm
 from application import db
 from .helpers import store_image
@@ -64,7 +64,8 @@ def add_word():
 
         return redirect(url_for("admin_blueprint.add"))
     else:
-        flash(u"{}".format(form.errors), "danger")
+        for name, error in form.errors.items():
+            flash(u"{}".format(str(name) + ": " + str(error[0])), "danger")
 
     return render_template("add.html", form=form, pairForm=pairForm)
 
@@ -84,8 +85,6 @@ def add_pairs():
         print("pairform valid")
         db.session.commit()
         return redirect(url_for("admin_blueprint.add"))
-    else:
-        print("Pairform errors: {}".format(pairForm.errors))
 
     return render_template("add.html", form=form, pairForm=pairForm)
 
@@ -123,6 +122,15 @@ def upload_image():
 def pairs(word_id):
     word = Word.query.filter_by(id=word_id).first()
     return render_template("pairs.html", words=word.allPartners())
+
+
+@ admin_blueprint.route("/contrasts", methods=["GET", "POST"])
+def contrasts():
+    # remove Pair from imports?
+    # Get sounds with POST
+
+    pairs = Pair.getContrasts("k", "t")
+    return render_template("contrasts.html", pairs=pairs)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])

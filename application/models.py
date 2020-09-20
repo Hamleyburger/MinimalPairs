@@ -1,7 +1,7 @@
 from application import db
 import decimal
 from sqlalchemy.sql import func
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from .admin.helpers import store_image
 
 
@@ -20,6 +20,45 @@ class Pair(db.Model):
 
     # explicit/composite unique constraint.  'name' is optional.
     db.UniqueConstraint('word_id', 'partner_id')
+
+    def getContrasts(sound1, sound2):
+        """ return a list of pairs with new attributes:\n
+        word1, sound1, word2, sound2\n
+        The list is sorted so all word1 have the same sound """
+
+        # Make a contrast class
+        class Contrast(Pair):
+            def __init__(self, word1=None, word2=None, sound1=None, sound2=None):
+                self.word1 = word1
+                self.word2 = word2
+                self.sound1 = sound1
+                self.sound2 = sound2
+
+        # Make a list for containing ordered contrasts
+        contrasts = []
+
+        # Make a query for populating the contrasts to be returned in the list
+        word1 = db.aliased(Word)
+        word2 = db.aliased(Word)
+        clauseA = and_(Pair.word_sound == sound1, Pair.partner_sound == sound2)
+        clauseB = and_(Pair.word_sound == sound2, Pair.partner_sound == sound1)
+
+        contrastsQuery = db.session.query(Pair, word1, word2).filter(or_(
+            clauseA, clauseB)).join(word1, word1.id == Pair.word_id).join(word2, word2.id == Pair.partner_id).all()
+
+        # Order the items returned from query, add to instances of Contrast and append to contrasts list
+        for pair, word1, word2 in contrastsQuery:
+
+            if pair.word_sound == sound1:
+                contrast = Contrast(
+                    word1=word1, word2=word2, sound1=pair.word_sound, sound2=pair.partner_sound)
+            else:
+                contrast = Contrast(
+                    word1=word2, word2=word1, sound1=pair.partner_sound, sound2=pair.word_sound)
+
+            contrasts.append(contrast)
+
+        return contrasts
 
 
 class Word(db.Model):
