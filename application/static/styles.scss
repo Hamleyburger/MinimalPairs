@@ -142,7 +142,6 @@ nav .navbar-brand {
         }
     }
     
-    
     // ipa picker used in add.html
     .ipa_picker {
         a {
@@ -154,20 +153,65 @@ nav .navbar-brand {
       }
   }
 
+// ipa container used in contrasts and add?
+.ipa-container {
+    padding: 10px;
+    border: 5px solid black;
+    border-radius: 20px;
+    background-color: rgba(194, 194, 194, 0.461);
+    //width: fit-content; 
+    margin: 0 auto;
+    @media only screen and (min-width: 600px) {
+        width: 600px;
+    }
+    width: 340px;    
+}
+span.line {
+    display: inline-block;
+}
 
 
   // For contrasts.html
   .titlebox {
-    background-color: #c5ece6;
-    align-content: center;
-    font-size: 4rem;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    padding-top: 60px;
-    padding-bottom: 60px;
-    margin-bottom: 50px;
+      .title-text {
+          
+          font-size: 4rem;
+          font-weight: 700;
+          padding-bottom: 30px;
+          
+        }
+        p {
+        padding-bottom: 20px;
+        }
+        button {
+            border-radius: 15px;
+            font-size: larger;
+        }
+      .search-sounds-field {
+          padding-top: 30px;
+          padding-bottom: 40px;
 
+          input {
+              margin-bottom: 15px;;
+              font-size: 20px;
+          }
+          button {
+              margin-left: 15px;
+              height: 38px;
+              width: 40px;
+              background: #000000;
+              color: white;
+              font-size: 17px;
+              border-radius: 10px;
+              border: 2px solid grey;
+          }
+      }
 
+      background-color: #c5ece6;
+      align-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      padding-top: 60px;
+      margin-bottom: 50px;
   }
 
   .contentbox {
