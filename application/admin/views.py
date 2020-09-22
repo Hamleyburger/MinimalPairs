@@ -5,11 +5,12 @@ from .forms import AddForm, AddPairForm
 from application import db
 from .helpers import store_image
 
-admin_blueprint = Blueprint("admin_blueprint", __name__)
+admin_blueprint = Blueprint(
+    "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
 
 
-@admin_blueprint.route("/", methods=["GET", "POST"])
-def index():
+@admin_blueprint.route("/admin", methods=["GET", "POST"])
+def admin():
     """admin stuff"""
     return redirect(url_for("admin_blueprint.add"))
 
@@ -122,15 +123,6 @@ def upload_image():
 def pairs(word_id):
     word = Word.query.filter_by(id=word_id).first()
     return render_template("pairs.html", words=word.allPartners())
-
-
-@ admin_blueprint.route("/contrasts", methods=["GET", "POST"])
-def contrasts():
-    # remove Pair from imports?
-    # Get sounds with POST
-
-    pairs = Pair.getContrasts("k", "t")
-    return render_template("contrasts.html", pairs=pairs)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])

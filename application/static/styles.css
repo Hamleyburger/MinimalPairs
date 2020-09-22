@@ -213,15 +213,36 @@ span.line {
 }
 
 .wordcard .img-container {
-  height: 300px;
   overflow: hidden;
 }
 
+@media only screen and (max-width: 576px) {
+  .wordcard .img-container {
+    height: 281.4px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .wordcard .img-container {
+    height: 148.9px;
+  }
+}
+
+@media (min-width: 768px) {
+  .wordcard .img-container {
+    height: 208.9px;
+  }
+}
+
+@media (min-width: 992px) {
+  .wordcard .img-container {
+    height: 281.4px;
+  }
+}
+
 .wordcard .img-container .card-img-top {
-  width: 100%;
+  max-width: 100%;
   /* width of container */
-  height: 100%;
-  /* height of container */
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: 50% 50%;
@@ -229,8 +250,14 @@ span.line {
 }
 
 .wordcard .card-title {
-  font-size: 2.5rem;
+  font-size: 4vw;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
+}
+
+@media only screen and (max-width: 576px) {
+  .wordcard .card-title {
+    font-size: 2rem;
+  }
 }
 /*# sourceMappingURL=styles.css.map */

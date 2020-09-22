@@ -28,8 +28,10 @@ db = SQLAlchemy(app)
 
 #from application.main.views import main
 #from application.transactions.views import transactions
+from application.user.views import user_blueprint
 from application.admin.views import admin_blueprint
 
 app.register_blueprint(admin_blueprint)
+app.register_blueprint(user_blueprint)
 # app.register_blueprint(transactions)
 # app.register_blueprint(main)

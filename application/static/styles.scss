@@ -221,23 +221,49 @@ span.line {
       }
   }
   .wordcard {
-      margin-top: 20px;
-      margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
     .img-container {
-    height: 300px;
+
+        // Adjusting image height the tedious way to align with width
+        @media only screen and (max-width: 576px) {
+            //border: 3px solid red;
+            height: 281.4px;
+        }
+        @media only screen and (min-width: 576px) {
+            //border: 3px solid rgb(0, 60, 255);
+            height: 148.9px;
+        }
+        @media (min-width: 768px) {
+            //border: 3px solid rgb(0, 153, 0);
+            height: 208.9px;
+        }
+        @media (min-width: 992px) {
+            //border: 3px solid rgb(146, 0, 190);
+            height: 281.4px;
+        }
+
     overflow: hidden;
-        .card-img-top {
-            // Finds the middle of the image and crops to fit container
-            width: 100%; /* width of container */
-            height: 100%; /* height of container */
-            object-fit: cover;
-            object-position: 50% 50%;
+    .card-img-top {
+        // Finds the middle of the image and crops to fit container
+        max-width: 100%; /* width of container */
+            //height: 100%; /* height of container */
+        object-fit: cover;
+        object-position: 50% 50%;
             
         }
     }
+
+
+
     .card-title {
-        font-size: 2.5rem;
+        font-size: 4vw;
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
+        @media only screen and (max-width: 576px) {
+            font-size: 2rem;
+        }
     }
+
   }

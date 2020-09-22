@@ -43,7 +43,7 @@
         crossorigin="anonymous" />
 
     <!-- my own custom styling -->
-    <link href="/static/styles.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='styles.css')}}" rel="stylesheet" />
 
 
 </head>
@@ -59,16 +59,16 @@
         <div class="collapse navbar-collapse" id="navbar">
 
             <ul class="navbar-nav mr-auto mt-2">
-                <li class="nav-item"><a class="nav-link" href="/add">Add</a></li>
-                <li class="nav-item"><a class="nav-link" href="/change">Change</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin">Sell</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin">Hi</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/add">Add</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/change">Change</a></li>
+                <li class="nav-item"><a class="nav-link" href="/pairs">Word pairs</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/index">Hi</a></li>
             </ul>
             <ul class="navbar-nav ml-auto mt-2">
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">Button</a>
+                    <a class="nav-link" href="/admin/index">Button</a>
                 </li>
             </ul>
         </div>
