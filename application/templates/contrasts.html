@@ -11,20 +11,34 @@
 
 <div class="container-fluid text-center titlebox">
     <p class="title-text">
+        {% if pairs %}
         [{{ pairs[0].sound1 }}] vs [{{ pairs[0].sound2 }}]
+        {% else %}
+        Search for sounds
+        {% endif %}
     </p>
     <button type="button" class="btn btn-dark">Search for sounds <i class="fas fa-angle-down rotate-icon"></i>
     </button>
-    <div class="search-sounds-field collapse.show">
-        <input class="sound_input_field" name="search-sound1" required="" size="1" type="text" value="">
-        vs.
-        <input class="sound_input_field" name="search-sound2" required="" size="1" type="text" value="">
-        <button type="submit"><i class="fa fa-search"></i></button>
-        <div class="ipa-container">
-            {{ ipa_picker() }}
+
+
+    <form id="searchSounds" method="POST" action="{{ url_for('user_blueprint.contrasts') }}" novalidate>
+
+        {{ form.hidden_tag() }}
+
+        <div class="search-sounds-field collapse.show">
+            {{ form.sound1(class="sound_input_field", size="1") }}
+            vs.
+            {{ form.sound2(class="sound_input_field", size="1") }}
+
+            <button type="submit"><i class="fa fa-search"
+                    formaction="{{ url_for('user_blueprint.contrasts') }}"></i></button>
+            <div class="ipa-container">
+                {{ ipa_picker() }}
+            </div>
         </div>
-    </div>
+    </form>
 </div>
+{% if pairs %}
 <div class="container contentbox">
     <!-- For loop "pairs" for iterating over pairs -->
     {% for pair in pairs %}
@@ -57,5 +71,6 @@
     <!-- For loop "pairs" end -->
     {% endfor %}
 </div>
+{% endif %}
 
 {% endblock %}

@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
 from application.models import Word, Pair
-# from .forms import AddForm, AddPairForm
+from .forms import SearchSounds
 # from .helpers import store_image
 # from .helpers import clearSessionExcept
 
@@ -19,5 +19,11 @@ def contrasts():
     # remove Pair from imports?
     # Get sounds with POST
 
-    pairs = Pair.getContrasts("k", "t")
-    return render_template("contrasts.html", pairs=pairs)
+    form = SearchSounds()
+    pairs = []
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            pairs = Pair.getContrasts(form.sound1.data, form.sound2.data)
+
+    return render_template("contrasts.html", pairs=pairs, form=form)
