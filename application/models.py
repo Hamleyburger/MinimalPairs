@@ -4,12 +4,49 @@ from sqlalchemy.sql import func
 from sqlalchemy import or_, and_
 from .admin.helpers import store_image
 
-word_grouping = db.Table('association',
+word_grouping = db.Table('groupwords',
                          db.Column('group_id', db.Integer,
                                    db.ForeignKey('groups.id')),
                          db.Column('word_id', db.Integer,
                                    db.ForeignKey('words.id'))
                          )
+
+group_sounds = db.Table('groupsounds',
+                        db.Column('group_id', db.Integer,
+                                  db.ForeignKey('groups.id')),
+                        db.Column('sound_id', db.Integer,
+                                  db.ForeignKey('sounds.id'))
+                        )
+
+group_pairs = db.Table('grouppairs',
+                       db.Column('group_id', db.Integer,
+                                 db.ForeignKey('groups.id')),
+                       db.Column('pair_id', db.Integer,
+                                 db.ForeignKey('pairs.id'))
+                       )
+
+
+class Sound(db.Model):
+    """ So far this table is made exclusively for association groups with all its sounds """
+    __tablename__ = "sounds"
+    __table_args__ = {'extend_existing': True}
+
+    id = db.Column(db.Integer, primary_key=True)
+    sound = db.Column(db.String(), nullable=False)
+
+    groups = db.relationship(
+        "Group",
+        secondary=group_sounds,
+        back_populates="sounds", lazy="dynamic")
+    db.UniqueConstraint('sound')
+
+    @ classmethod
+    def get(cls, soundString):
+        thisSound = cls.query.filter_by(sound=soundString).first()
+        if not thisSound:
+            thisSound = Sound(sound=soundString)
+            db.session.add(thisSound)
+        return thisSound
 
 
 class Group(db.Model):
@@ -21,6 +58,16 @@ class Group(db.Model):
     members = db.relationship(
         "Word",
         secondary=word_grouping,
+        back_populates="groups", lazy="dynamic")
+
+    sounds = db.relationship(
+        "Sound",
+        secondary=group_sounds,
+        back_populates="groups", lazy="dynamic")
+
+    pairs = db.relationship(
+        "Pair",
+        secondary=group_pairs,
         back_populates="groups", lazy="dynamic")
 
     def add(self, word=None, words=None):
@@ -42,10 +89,36 @@ class Group(db.Model):
                         print(member.word + ", ", end='')
                     print("")
 
+    def addPairs(self, pairs=[], pair=None):
+        """ Takes a list of pairs or a pair and adds to group's collection """
+        if pair:
+            pairs.append(pair)
+        if pairs:
+            for pair in pairs:
+                if pair not in self.pairs:
+                    self.pairs.append(pair)
+                    print("added pair '{}' to group".format(pair.textify()))
+
+    def updateSounds(self, pairs):
+        """ Extracts sounds from pairs, adds to group. Also adds to database if new. """
+        print("running updatesounds")
+        soundSet = set()
+        newSoundSet = set()
+        for pair in pairs:
+            soundSet.update(pair.word_sound, pair.partner_sound)
+
+        for sound in soundSet:
+            print("sound found: {}".format(sound))
+            newSoundSet.add(Sound.get(sound))
+
+        for newSound in newSoundSet:
+            self.sounds.append(newSound)
+
     @classmethod
     def check(cls, ko):
         """ Checks a word and its partners to see if they can be grouped.\n
         Adds to or creates a group if they can. """
+
         db.session.flush()
         koCandidateSets = []
 
@@ -73,8 +146,19 @@ class Group(db.Model):
     def group(cls, candidateSets: list):
         """ Checks a list of SETS(!!) to see if a group already exists for this set\n
         Returns group """
+
         groups = cls.query.all()
         modifiedGroups = []
+
+        def addGroupAndAll(group, candidates):
+            group.add(words=list(candidates))
+            # Candidates should already be added to group
+            pairs = Pair.allPairCombinations(
+                set(group.members))
+            group.addPairs(pairs=pairs)
+            group.updateSounds(pairs)
+
+            return group
 
         for candidates in candidateSets:
             added = False
@@ -84,15 +168,24 @@ class Group(db.Model):
                     if member in candidates:
                         counter += 1
                         if counter == 2:
-                            group.add(words=list(candidates))
-                            modifiedGroups.append(group)
 
+                            print("\nI found a group that contains:")
+                            for member in group.members:
+                                print(" - " + member.word)
+
+                            group = addGroupAndAll(group, candidates)
+
+                            print("\n After addGroupAndAll it contains:")
+                            for member in group.members:
+                                print(" - " + member.word)
+
+                            modifiedGroups.append(group)
                             added = True
                             break
             if not added:
                 print("Making new group:")
-                group = Group()
-                group.add(words=list(candidates))
+                newGroup = Group()
+                group = addGroupAndAll(newGroup, candidates)
                 db.session.add(group)
 
                 db.session.flush()
@@ -102,6 +195,11 @@ class Group(db.Model):
                 modifiedGroups.append(group)
 
         return modifiedGroups
+
+    def updateMeta():
+        """ Finds all pairs in a group and updates its collection of pairs and sounds """
+        # TODO make it also find a list of orphans and overwrite to a file.
+        pass
 
 
 class Pair(db.Model):
@@ -119,6 +217,11 @@ class Pair(db.Model):
 
     # explicit/composite unique constraint.  'name' is optional.
     db.UniqueConstraint('word_id', 'partner_id', 'word_sound')
+
+    groups = db.relationship(
+        "Group",
+        secondary=group_pairs,
+        back_populates="pairs")
 
     @classmethod
     def getContrasts(cls, sound1, sound2):
@@ -163,6 +266,23 @@ class Pair(db.Model):
             print("This pair didn't exist. Suggestions?")
 
         return contrasts
+
+    @classmethod
+    def allPairCombinations(cls, wordSet):
+        """ Takes a set of words and returns a LIST of all possible existing pairs """
+        pairSet = set()
+        for word in wordSet:
+            for word2 in wordSet:
+                pairs = word.getPairs(word2)
+                if pairs:
+                    pairSet.update(pairs)
+        return list(pairSet)
+
+    # Some id is displayed even if pair is not committed yet
+    def textify(self):
+        string = "{}: {} ({}) vs. {} ({})".format(self.id, Word.query.get(
+            self.word_id).word, self.word_sound, Word.query.get(self.partner_id).word, self.partner_sound)
+        return string
 
 
 class Word(db.Model):
@@ -301,16 +421,15 @@ class Word(db.Model):
         if self.pairExists(word2, sound1):
             return
 
-        pair = Pair(word_id=self.id, partner_id=word2.id,
-                    word_sound=sound1, partner_sound=sound2)
-        pairs = self.getReducedPairs(word2, sound1, sound2)
+        newPair = Pair(word_id=self.id, partner_id=word2.id,
+                       word_sound=sound1, partner_sound=sound2)
 
-        pairs.append(pair)
+        pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[])
+
+        pairs.append(newPair)
 
         db.session.bulk_save_objects(pairs)
-
         # Prøv her (eller efter commit?) at lave rekursivt tjek af lydstrenge
-
         db.session.commit()
 
         Group.check(self)
@@ -333,52 +452,64 @@ class Word(db.Model):
 
         # This function returns if there are no clusters in any of the sounds.
         if (len(sound1) > 1) or (len(sound2) > 1):
-            print(sound1 + ", " + sound2 + " - There's a cluster. Processing...")
-            # fællesChars = []
+
+            # Find common chars
             commonChars = []
-            # newPair
-            # find (om der er) fælles tegn med loop
-            # for char i lyd1:
             for char in sound1:
                 if char in sound2:
-                    print("mutual sounds in '{}', '{}': {}".format(
-                        sound1, sound2, char))
                     commonChars.append(char)
 
-            for char in commonChars:
-                print("removing '{}'".format(char))
-                newSound1 = sound1.replace(char, "")
-                if newSound1 == "":
-                    newSound1 = "Ø"
-                newSound2 = sound2.replace(char, "")
-                if newSound2 == "":
-                    newSound2 = "Ø"
-                # Check if pair already exists in pairList:
-                existsInList = False
+            # Helper function for reducing clusters
+            def charSharesPlaces(char, sound1, sound2):
+                """ Returns boolean\n
+                Checks if char occurs in start vs end, and thus must not be removed """
+                approved = False
+                if not (sound1.startswith(char) and sound2.startswith(char)):
+                    if not (sound1.endswith(char) and sound2.endswith(char)):
+                        approved = False
+                        print(
+                            "Mutual char can't be removed because they don't share position")
+
+                return approved
+
+            def reduceSounds(char, cluster):
+                """ Returns new sound\n
+                Removes char from sound and replaces empty sounds with 'Ø' """
+                newSound = cluster.replace(char, "")
+                if newSound == "":
+                    newSound = "Ø"
+                return newSound
+
+            # Helper function to check if we already have a pair in list or database
+            def pairExists(pairList, sound1, sound2, word1, word2):
+                """ Returns boolean\n
+                Checks if pair exists first in current list and then in database """
+                exists = False
+                # Check if pair exists in list
                 for pair in pairList:
-                    if (pair.word_sound == newSound1) or (pair.word_sound == newSound2):
-                        existsInList = True
+                    if (pair.word_sound == sound1) or (pair.word_sound == sound2):
+                        exists = True
                 # And then check if it exists in database
-                if not existsInList:
-                    if not self.pairExists(word2, newSound1):
-                        print("Found new pair: {}, {}".format(
-                            newSound1, newSound2))
+                if not exists:
+                    if word1.pairExists(word2, sound1):
+                        exists = True
+                return exists
+
+            # Recursively remove removable chars until nothing left to remove
+            for char in commonChars:
+                if charSharesPlaces(char, sound1, sound2):
+                    print("removing '{}'".format(char))
+                    newSound1 = reduceSounds(char, sound1)
+                    newSound2 = reduceSounds(char, sound2)
+
+                    # Check if pair already exists in pairList:
+                    if not pairExists(pairList, newSound1, newSound2, self, word2):
                         pair = Pair(word_id=self.id, partner_id=word2.id,
                                     word_sound=newSound1, partner_sound=newSound2)
                         pairList.append(pair)
                         # Recursive call:
-                        print("Recursive call")
                         self.getReducedPairs(
                             word2, newSound1, newSound2, pairList)
-                    else:
-                        print("pair exists in database")
-                else:
-                    print("pair exists in list")
-            print("end of function. List is currently:")
-            if pairList:
-                for i, pair in enumerate(pairList):
-                    print("{}. {} ({}) vs. {} ({})".format(str(i), Word.query.get(
-                        pair.word_id).word, pair.word_sound, Word.query.get(pair.partner_id).word, pair.partner_sound))
         return pairList
 
     def defineAsPartner(self, pair):
