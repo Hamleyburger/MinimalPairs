@@ -58,7 +58,8 @@
                         onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">
                         ;(
                     </button>
-                    <button class="open-button" onclick="window.location.href='/pairs/{{ entry.id }}';">
+                    {% set url = url_for("admin_blueprint.pairs", word_id=entry.id) %}
+                    <button class="open-button" onclick="window.location.href='{{ url }}';">
                         PP
                     </button>
                 </td>

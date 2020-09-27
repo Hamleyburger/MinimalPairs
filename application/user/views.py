@@ -1,5 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
-from application.models import Word, Pair
+from application.models import Word, Pair, Group
+from application import db
 from .forms import SearchSounds
 # from .helpers import store_image
 # from .helpers import clearSessionExcept
@@ -11,6 +12,7 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 @user_blueprint.route("/", methods=["GET", "POST"])
 def index():
     """admin stuff"""
+
     return redirect(url_for("user_blueprint.contrasts"))
 
 

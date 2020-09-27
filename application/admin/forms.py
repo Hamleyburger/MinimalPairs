@@ -20,24 +20,8 @@ def repopulateFieldList(formPairSounds, formPairs, word1):
 
     session["existingPairs"] = word1.allPartners()
 
-    # Filter out illegal pairs (same word or existing pair)
-    for wordid in formPairs.data:
-        illegalWord = False
-        if (int(wordid) == word1.id):
-            print("these are the same word")
-            illegalWord = True
-        for word in word1.allPartners():
-            if int(wordid) == word.id:
-                print("already paired: {}".format(wordid))
-                illegalWord = True
-        if illegalWord:
-            # Break out and don't add pair if pair already exists
-            continue
-        # add pair to "add list"
-        newPairIds.append(wordid)
-
     # Modify fieldList to display pairs to add so user can add sounds
-    for i, wordid in enumerate(newPairIds):
+    for i, wordid in enumerate(formPairs.data):
         # Add word2 as new entry in pairSounds
         word2 = dict(formPairs.choices).get(wordid)
         print("processing newPairs: {}".format(wordid))
@@ -82,7 +66,8 @@ def makePairList(form, field):
                     if word.sound1.data is "" or word.sound2.data is "":
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
                         raise ValidationError("No empty sound fields allowed")
-                    if (not is_valid_ipa(word.sound1.data)) or (not is_valid_ipa(word.sound2.data)):
+                    if (not is_valid_ipa(word.sound1.data) and (word.sound1.data is not "Ø")) or (not is_valid_ipa(word.sound2.data) and (word.sound2.data is not "Ø")):
+                        repopulateFieldList(form.pairSounds, form.pairs, word1)
                         raise ValidationError("Not valid IPA")
 
                 for word in form.pairSounds:
@@ -112,7 +97,7 @@ class AddForm(FlaskForm):
         DataRequired(), Length(min=1, max=30), isHomonym])
     cue = StringField("Cue", validators=[
         DataRequired(), Length(min=0, max=30)])
-    image = FileField(validators=[FileRequired()])
+    image = FileField()
     add = SubmitField("Add")
     addAnyway = SubmitField("Add homonym")
     cancel = SubmitField("Cancel")

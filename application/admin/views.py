@@ -86,6 +86,8 @@ def add_pairs():
         print("pairform valid")
         db.session.commit()
         return redirect(url_for("admin_blueprint.add"))
+    else:
+        print(pairForm.errors)
 
     return render_template("add.html", form=form, pairForm=pairForm)
 
@@ -98,14 +100,6 @@ def change():
             id = int(request.form.get("newwordid"))
             Word.change(id, newword=request.form.get("newword"),
                         newcue=request.form.get("newcue"), newimg=request.files["newimg"])
-
-        # TODO: insert file input and store file name in database and store file
-        # with helpers store_image.
-        # Use change function in conjunction with store_image to input the
-        # right file name
-        # Remember to change script "sendChanges" to check for a file and not
-        # an empty string
-        # remember that file input label styling exists in change-upload
 
         return redirect(request.url)
 
@@ -121,8 +115,12 @@ def upload_image():
 
 @ admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])
 def pairs(word_id):
+    # update to actually contain contrasts
     word = Word.query.filter_by(id=word_id).first()
-    return render_template("pairs.html", words=word.allPartners())
+
+    groups = word.groups
+
+    return render_template("pairs.html", word=word, partners=word.allPartners(), groups=groups)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])
