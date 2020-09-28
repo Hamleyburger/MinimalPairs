@@ -44,6 +44,7 @@ class Sound(db.Model):
     def get(cls, soundString):
         thisSound = cls.query.filter_by(sound=soundString).first()
         if not thisSound:
+            print("'{}' is a new sound.".format(soundString))
             thisSound = Sound(sound=soundString)
             db.session.add(thisSound)
         return thisSound
@@ -70,47 +71,47 @@ class Group(db.Model):
         secondary=group_pairs,
         back_populates="groups", lazy="dynamic")
 
-    def add(self, word=None, words=None):
+    def add(self, word=None, words=[]):
         """ Adds word or word list to caller group. No commit. """
         if word:
-            if word not in self.members:
-                print("*****New group member***** -- \"{}\"".format(word.word))
-                self.members.append(word)
-                for member in self.members:
-                    print(member.word + ", ", end='')
-                print("")
+            words.append(word)
 
         if words:
             for word in words:
                 if word not in self.members:
-                    print("*****New group member!***** -- \"{}\"".format(word.word))
+                    print("- New group member! - \"{}\"".format(word.word))
                     self.members.append(word)
-                    for member in self.members:
-                        print(member.word + ", ", end='')
-                    print("")
+            for member in self.members:
+                print(member.word + ", ", end='')
+            print("")
 
     def addPairs(self, pairs=[], pair=None):
         """ Takes a list of pairs or a pair and adds to group's collection """
         if pair:
             pairs.append(pair)
         if pairs:
+            print("")
             for pair in pairs:
                 if pair not in self.pairs:
                     self.pairs.append(pair)
-                    print("added pair '{}' to group".format(pair.textify()))
+                    print("Group: added pair '{}'".format(pair.textify()))
 
     def updateSounds(self, pairs):
         """ Extracts sounds from pairs, adds to group. Also adds to database if new. """
-        print("running updatesounds")
+        print("\nGroup: Running updateSounds()")
         soundSet = set()
         newSoundSet = set()
-        for pair in pairs:
-            soundSet.update(pair.word_sound, pair.partner_sound)
 
+        # Make sure sounds are unique by adding to set
+        for pair in pairs:
+            soundSet.add(pair.word_sound)
+            soundSet.add(pair.partner_sound)
+
+        # Convert sounds to pairs (make new if necessary) and add to new set (to ensure uniqueness)
         for sound in soundSet:
-            print("sound found: {}".format(sound))
             newSoundSet.add(Sound.get(sound))
 
+        # Append these sounds to group
         for newSound in newSoundSet:
             self.sounds.append(newSound)
 
@@ -169,26 +170,29 @@ class Group(db.Model):
                         counter += 1
                         if counter == 2:
 
-                            print("\nI found a group that contains:")
+                            print(
+                                "\nI found a group ({}) that contains:".format(group.id))
                             for member in group.members:
                                 print(" - " + member.word)
 
                             group = addGroupAndAll(group, candidates)
 
-                            print("\n After addGroupAndAll it contains:")
+                            print(
+                                "\nAfter addGroupAndAll group {} contains:".format(group.id))
                             for member in group.members:
-                                print(" - " + member.word)
+                                print(" - " + member.word, end="")
+                            print("")
 
                             modifiedGroups.append(group)
                             added = True
                             break
             if not added:
-                print("Making new group:")
                 newGroup = Group()
                 group = addGroupAndAll(newGroup, candidates)
                 db.session.add(group)
-
                 db.session.flush()
+                print("\nMade new group ({}) (not committed):".format(group.id))
+
                 for member in group.members:
                     print(member.word + ", ", end='')
                 # Behøver jeg modifiedgroups?
@@ -214,6 +218,8 @@ class Pair(db.Model):
         db.Integer, db.ForeignKey('words.id'), nullable=False)
     word_sound = db.Column(db.String(), nullable=False)
     partner_sound = db.Column(db.String(), nullable=False)
+
+    # TODO: add relationships to set word objects with specified foreignkeys
 
     # explicit/composite unique constraint.  'name' is optional.
     db.UniqueConstraint('word_id', 'partner_id', 'word_sound')
@@ -280,8 +286,8 @@ class Pair(db.Model):
 
     # Some id is displayed even if pair is not committed yet
     def textify(self):
-        string = "{}: {} ({}) vs. {} ({})".format(self.id, Word.query.get(
-            self.word_id).word, self.word_sound, Word.query.get(self.partner_id).word, self.partner_sound)
+        string = "{}: {} / {} - ({} vs. {})".format(self.id, Word.query.get(
+            self.word_id).word, Word.query.get(self.partner_id).word, self.word_sound, self.partner_sound)
         return string
 
 
@@ -335,7 +341,7 @@ class Word(db.Model):
             entry = Word(word=word)
             if cue is not None:
                 entry.cue = cue
-            print("Adding new word: {}".format(entry.word))
+            print("Adding new word, id: '{}', '{}'".format(entry.id, entry.word))
             db.session.add(entry)
         else:
             if cue is "":
@@ -372,9 +378,6 @@ class Word(db.Model):
             print("adding new image to word")
             entry.image = img
             db.session.add(img)
-        print(entry)
-        print("committing to session")
-        # db.session.commit()
 
         # Returning word object for optional use
         return entry
@@ -434,6 +437,8 @@ class Word(db.Model):
 
         Group.check(self)
 
+        return pairs
+
     def pairExists(self, word2, sound1):
         """ Returns True if pair exists with these sounds """
         # check if this particular pair exists
@@ -463,14 +468,13 @@ class Word(db.Model):
             def charSharesPlaces(char, sound1, sound2):
                 """ Returns boolean\n
                 Checks if char occurs in start vs end, and thus must not be removed """
-                approved = False
+
                 if not (sound1.startswith(char) and sound2.startswith(char)):
                     if not (sound1.endswith(char) and sound2.endswith(char)):
-                        approved = False
                         print(
-                            "Mutual char can't be removed because they don't share position")
-
-                return approved
+                            "{} {} - '{}' has a bad position".format(sound1, sound2, char))
+                        return False
+                return True
 
             def reduceSounds(char, cluster):
                 """ Returns new sound\n
@@ -498,9 +502,10 @@ class Word(db.Model):
             # Recursively remove removable chars until nothing left to remove
             for char in commonChars:
                 if charSharesPlaces(char, sound1, sound2):
-                    print("removing '{}'".format(char))
                     newSound1 = reduceSounds(char, sound1)
                     newSound2 = reduceSounds(char, sound2)
+                    print("Reduction: {}, {} - {} = {} {}".format(sound1,
+                                                                  sound2, char, newSound1, newSound2))
 
                     # Check if pair already exists in pairList:
                     if not pairExists(pairList, newSound1, newSound2, self, word2):

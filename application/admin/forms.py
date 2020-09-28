@@ -24,7 +24,6 @@ def repopulateFieldList(formPairSounds, formPairs, word1):
     for i, wordid in enumerate(formPairs.data):
         # Add word2 as new entry in pairSounds
         word2 = dict(formPairs.choices).get(wordid)
-        print("processing newPairs: {}".format(wordid))
         formPairSounds.append_entry()
         field = formPairSounds[i]
         field.word2_id.data = wordid  # This field is hidden
@@ -42,7 +41,7 @@ def isHomonym(form, field):
 
 
 def makePairList(form, field):
-    print("running makePairs")
+    print("\nform.makePairList:")
     # Generates fields to fill out based on chosen pairs
 
     if not form.pairs.data:
@@ -61,7 +60,6 @@ def makePairList(form, field):
             # This is for "add sounds" (first btn)
 
             if form.pairSounds.data:
-                print("WORD 1: '{}'".format(word1.word))
                 for word in form.pairSounds:
                     if word.sound1.data is "" or word.sound2.data is "":
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
@@ -73,16 +71,17 @@ def makePairList(form, field):
                 for word in form.pairSounds:
                     # get word2 from db with word id in hidden field and pair them up
                     word2 = Word.query.get(int(word.word2_id.data))
-                    print("Defined words: 1: {} ({}), 2: {} ({}), trying to pair...".format(
-                        word1.word, word.sound1.data, word2.word, word.sound2.data))
-                    word1.pair(word2, word.sound1.data, word.sound2.data)
+                    addedPairs = word1.pair(
+                        word2, word.sound1.data, word.sound2.data)
+                    for pair in addedPairs:
+                        print("Added pair:" + pair.textify())
 
             else:
                 raise ValidationError("Sounds cannot be null")
 
         # raise ValidationError("Need to define pair sound")
         return
-    emptyFiedList(form.pairSounds)
+    # emptyFiedList(form.pairSounds)
 
 
 class PairSoundForm(Form):
