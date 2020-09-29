@@ -31,7 +31,7 @@ class Sound(db.Model):
     __tablename__ = "sounds"
     __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sound = db.Column(db.String(), nullable=False)
 
     groups = db.relationship(
@@ -54,7 +54,7 @@ class Group(db.Model):
     __tablename__ = "groups"
     __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     members = db.relationship(
         "Word",
@@ -211,18 +211,22 @@ class Pair(db.Model):
     distinguished by sound1 (caller's sound) and sound2 """
     __tablename__ = "pairs"
     __table_args__ = {'extend_existing': True}
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     word_id = db.Column(db.Integer, db.ForeignKey('words.id'), nullable=False)
     partner_id = db.Column(
         db.Integer, db.ForeignKey('words.id'), nullable=False)
+
+    # These sounds should be replaced
     word_sound = db.Column(db.String(), nullable=False)
     partner_sound = db.Column(db.String(), nullable=False)
 
     # TODO: add relationships to set word objects with specified foreignkeys
+    w1 = db.relationship("Word", primaryjoin="Pair.word_id==Word.id")
+    w2 = db.relationship("Word", primaryjoin="Pair.partner_id==Word.id")
 
     # explicit/composite unique constraint.  'name' is optional.
-    db.UniqueConstraint('word_id', 'partner_id', 'word_sound')
+    db.UniqueConstraint('word_id', 'partner_id', 'word_sound', 'sound1t')
 
     groups = db.relationship(
         "Group",
@@ -253,19 +257,19 @@ class Pair(db.Model):
         clauseA = and_(Pair.word_sound == sound1, Pair.partner_sound == sound2)
         clauseB = and_(Pair.word_sound == sound2, Pair.partner_sound == sound1)
 
-        contrastsQuery = db.session.query(Pair, word1, word2).filter(or_(
-            clauseA, clauseB)).join(word1, word1.id == Pair.word_id).join(word2, word2.id == Pair.partner_id).all()
+        contrastsQuery = db.session.query(Pair).filter(or_(
+            clauseA, clauseB)).all()
 
         # Order the items returned from query, add to instances of Contrast and append to contrasts list
         if contrastsQuery:
-            for pair, word1, word2 in contrastsQuery:
+            for pair in contrastsQuery:
 
                 if pair.word_sound == sound1:
                     contrast = Contrast(
-                        word1=word1, word2=word2, sound1=pair.word_sound, sound2=pair.partner_sound)
+                        word1=pair.w1, word2=pair.w2, sound1=pair.word_sound, sound2=pair.partner_sound)
                 else:
                     contrast = Contrast(
-                        word1=word2, word2=word1, sound1=pair.partner_sound, sound2=pair.word_sound)
+                        word1=pair.w2, word2=pair.w1, sound1=pair.partner_sound, sound2=pair.word_sound)
 
                 contrasts.append(contrast)
         else:
@@ -286,8 +290,8 @@ class Pair(db.Model):
 
     # Some id is displayed even if pair is not committed yet
     def textify(self):
-        string = "{}: {} / {} - ({} vs. {})".format(self.id, Word.query.get(
-            self.word_id).word, Word.query.get(self.partner_id).word, self.word_sound, self.partner_sound)
+        string = "{}: {} / {} - ({} vs. {})".format(self.id, self.w1.word,
+                                                    self.w2.word, self.word_sound, self.partner_sound)
         return string
 
 
@@ -296,7 +300,7 @@ class Word(db.Model):
     __tablename__ = "words"
     __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     word = db.Column(db.String(), nullable=False)
     cue = db.Column(db.String(), server_default="No cue")
     img_id = db.Column(db.Integer, db.ForeignKey(
@@ -415,6 +419,7 @@ class Word(db.Model):
     def pair(self, word2, sound1, sound2):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound\n
         Always put the longest cluster combinations as possible, so they can be reduced """
+        print("running pair from models")
         db.session.flush()
         if((self.id == word2.id)):
             print("Word is same")
@@ -424,9 +429,17 @@ class Word(db.Model):
         if self.pairExists(word2, sound1):
             return
 
-        newPair = Pair(word_id=self.id, partner_id=word2.id,
-                       word_sound=sound1, partner_sound=sound2)
+        # TODO: Det virker at indsætte id'erne. Nu mangler vi bare at konvertere lyde til objekter og indsætte i par alle steder.
+        print("inserting pair here for testing database model.")
 
+        newPair = Pair(w1=self, w2=word2,
+                       word_sound=sound1, partner_sound=sound2)
+        db.session.add(newPair)
+        db.session.commit()
+        print("printing pair.w1 '{}' and w2 '{}".format(
+            newPair.w1, newPair.w2))
+        print("w1.words: {}".format(newPair.w1.words))
+        print("w1.allPartners: {}".format(newPair.w1.allPartners()))
         pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[])
 
         pairs.append(newPair)
@@ -509,8 +522,11 @@ class Word(db.Model):
 
                     # Check if pair already exists in pairList:
                     if not pairExists(pairList, newSound1, newSound2, self, word2):
-                        pair = Pair(word_id=self.id, partner_id=word2.id,
+                        print("Adding reduced pair with all parameters")
+                        pair = Pair(w1=self, w2=word2,
                                     word_sound=newSound1, partner_sound=newSound2)
+                        db.session.add(pair)
+                        db.session.flush()
                         pairList.append(pair)
                         # Recursive call:
                         self.getReducedPairs(
@@ -519,10 +535,10 @@ class Word(db.Model):
 
     def defineAsPartner(self, pair):
         """ Returns this partner with relative sounds"""
-        if self.id == pair.partner_id:
+        if self == pair.w2:
             self.wordSound = pair.word_sound
             self.partnerSound = pair.partner_sound
-        elif self.id == pair.word_id:
+        elif self == pair.w1:
             self.wordSound = pair.partner_sound
             self.partnerSound = pair.word_sound
         return self
@@ -554,8 +570,8 @@ class Word(db.Model):
         Since two words can have more than one pairing (sk vs g / s vs Ø)\n
         Returns None if no pairs exist """
 
-        clause1 = and_(Pair.word_id == self.id, Pair.partner_id == word2.id)
-        clause2 = and_(Pair.word_id == word2.id, Pair.partner_id == self.id)
+        clause1 = and_(Pair.w1 == self, Pair.w2 == word2)
+        clause2 = and_(Pair.w1 == word2, Pair.w2 == self)
         pairs = Pair.query.filter(
             or_(clause1, clause2)).all()
 
@@ -563,11 +579,11 @@ class Word(db.Model):
             return None
 
         for pair in pairs:
-            if pair.word_id == word2.id:
+            if pair.w1 == word2:
                 # If sound 1 and 2 and swapped, swap them back
-                tempW = pair.partner_id
-                pair.partner_id = pair.word_id
-                pair.word_id = tempW
+                tempW = pair.w2
+                pair.w2 = pair.w1
+                pair.w1 = tempW
 
                 tempS = pair.partner_sound
                 pair.partner_sound = pair.word_sound
@@ -578,7 +594,7 @@ class Word(db.Model):
     def remove(self):
         """ Deletes given word and its associated pairs form database"""
         pairs = db.session.query(Pair).filter(or_(
-            (Pair.word_id == self.id), (Pair.partner_id == self.id))).all()
+            (Pair.w1 == self), (Pair.w2 == self))).all()
 
         print("word to remove: " + self.word)
         for pair in pairs:
@@ -593,7 +609,7 @@ class Image(db.Model):
     """ Image name must correspond to file name in image folder """
     __tablename__ = "images"
     __table_args__ = {'extend_existing': True}
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     name = db.Column(db.String(), nullable=False,
                      server_default='default.jpg', unique=True)
