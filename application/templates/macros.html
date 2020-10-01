@@ -54,3 +54,17 @@
 </div>
 
 {% endmacro %}
+
+{% macro group_card(group) %}
+<div class="card" style="width: 15rem; display: inline-block; height: 20rem;">
+    <div class="card-body">
+        <h5 class="card-title">Group</h5>
+        <p class="card-text">
+            {% for member in group.members %}
+            {{ member.word }} <br>
+            {% endfor %}
+        </p>
+        <a href="#" class="card-link">Card link</a>
+    </div>
+</div>
+{% endmacro %}

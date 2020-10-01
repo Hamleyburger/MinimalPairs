@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from 'macros.html' import group_card %}
 
 {% block title %}
 : Change word
@@ -8,25 +9,38 @@
 
 Ord: {{ word.word }}
 <br>
-{% for partner in partners %}
-({{ partner.wordSound }} vs. {{ partner.partnerSound }}): {{ partner.word }}
-<br>
-{% endfor %}
+<div class="row">
 
-{% for group in groups %}
+    {% for pairList in pairLists %}
 
-<div class="card" style="width: 10rem; display: inline-block;">
-    <div class="card-body">
-        <h5 class="card-title">Group</h5>
-        <p class="card-text">
-            {% for member in group.members %}
-            {{ member.word }} <br>
-            {% endfor %}
-        </p>
-        <a href="#" class="card-link">Card link</a>
+    <div class="card" style="width: 10rem; display: inline-block; height: 15rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ pairList[0].w1.word }} - {{ pairList[0].w2.word }}</h5>
+            <p class="card-text">
+                {% for pair in pairList %}
+                ({{ pair.s1.sound }} vs. {{ pair.s2.sound }})
+                <br>
+                {% endfor %}
+            </p>
+            <a href="#" class="card-link">Card link</a>
+        </div>
     </div>
+
+    {% endfor %}
 </div>
 
-{% endfor %}
+<div class="row">
+
+
+
+    {% for group in groups %}
+
+    {{group_card(group)}}
+
+    {% endfor %}
+
+</div>
+
+
 
 {% endblock %}

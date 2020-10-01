@@ -71,10 +71,13 @@ def makePairList(form, field):
                 for word in form.pairSounds:
                     # get word2 from db with word id in hidden field and pair them up
                     word2 = Word.query.get(int(word.word2_id.data))
+                    print("incoming data says that word *{}: {}* and word *{}: {}*".format(
+                        word1.word, word.sound1.data, word2.word, word.sound2.data))
                     addedPairs = word1.pair(
                         word2, word.sound1.data, word.sound2.data)
-                    for pair in addedPairs:
-                        print("Added pair:" + pair.textify())
+                    if addedPairs:
+                        for pair in addedPairs:
+                            print("Added pair:" + pair.textify())
 
             else:
                 raise ValidationError("Sounds cannot be null")

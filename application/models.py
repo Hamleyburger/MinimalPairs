@@ -47,6 +47,7 @@ class Sound(db.Model):
             print("'{}' is a new sound.".format(soundString))
             thisSound = Sound(sound=soundString)
             db.session.add(thisSound)
+            db.session.flush()
         return thisSound
 
 
@@ -79,11 +80,8 @@ class Group(db.Model):
         if words:
             for word in words:
                 if word not in self.members:
-                    print("- New group member! - \"{}\"".format(word.word))
+                    print("Adding \"{}\" to group {}".format(word.word, self.id))
                     self.members.append(word)
-            for member in self.members:
-                print(member.word + ", ", end='')
-            print("")
 
     def addPairs(self, pairs=[], pair=None):
         """ Takes a list of pairs or a pair and adds to group's collection """
@@ -98,22 +96,20 @@ class Group(db.Model):
 
     def updateSounds(self, pairs):
         """ Extracts sounds from pairs, adds to group. Also adds to database if new. """
-        print("\nGroup: Running updateSounds()")
+
         soundSet = set()
-        newSoundSet = set()
 
         # Make sure sounds are unique by adding to set
         for pair in pairs:
-            soundSet.add(pair.word_sound)
-            soundSet.add(pair.partner_sound)
-
-        # Convert sounds to pairs (make new if necessary) and add to new set (to ensure uniqueness)
-        for sound in soundSet:
-            newSoundSet.add(Sound.get(sound))
+            soundSet.add(pair.s1)
+            soundSet.add(pair.s2)
 
         # Append these sounds to group
-        for newSound in newSoundSet:
-            self.sounds.append(newSound)
+        bob = self.sounds
+        for sound in soundSet:
+            if sound not in bob:
+                print("added '{}' to group {}".format(sound.sound, self.id))
+                self.sounds.append(sound)
 
     @classmethod
     def check(cls, ko):
@@ -152,6 +148,7 @@ class Group(db.Model):
         modifiedGroups = []
 
         def addGroupAndAll(group, candidates):
+
             group.add(words=list(candidates))
             # Candidates should already be added to group
             pairs = Pair.allPairCombinations(
@@ -170,19 +167,7 @@ class Group(db.Model):
                         counter += 1
                         if counter == 2:
 
-                            print(
-                                "\nI found a group ({}) that contains:".format(group.id))
-                            for member in group.members:
-                                print(" - " + member.word)
-
                             group = addGroupAndAll(group, candidates)
-
-                            print(
-                                "\nAfter addGroupAndAll group {} contains:".format(group.id))
-                            for member in group.members:
-                                print(" - " + member.word, end="")
-                            print("")
-
                             modifiedGroups.append(group)
                             added = True
                             break
@@ -191,10 +176,11 @@ class Group(db.Model):
                 group = addGroupAndAll(newGroup, candidates)
                 db.session.add(group)
                 db.session.flush()
-                print("\nMade new group ({}) (not committed):".format(group.id))
+                print("\nMade new group ({}):".format(group.id), end="")
 
                 for member in group.members:
                     print(member.word + ", ", end='')
+                print("")
                 # Behøver jeg modifiedgroups?
                 modifiedGroups.append(group)
 
@@ -216,14 +202,22 @@ class Pair(db.Model):
     word_id = db.Column(db.Integer, db.ForeignKey('words.id'), nullable=False)
     partner_id = db.Column(
         db.Integer, db.ForeignKey('words.id'), nullable=False)
+    word_sound_id = db.Column(
+        db.Integer, db.ForeignKey('sounds.id'), nullable=False)
+    partner_sound_id = db.Column(
+        db.Integer, db.ForeignKey('sounds.id'), nullable=False)
 
     # These sounds should be replaced
-    word_sound = db.Column(db.String(), nullable=False)
-    partner_sound = db.Column(db.String(), nullable=False)
+    word_sound = db.Column(db.String())
+    partner_sound = db.Column(db.String())
 
     # TODO: add relationships to set word objects with specified foreignkeys
     w1 = db.relationship("Word", primaryjoin="Pair.word_id==Word.id")
     w2 = db.relationship("Word", primaryjoin="Pair.partner_id==Word.id")
+
+    s1 = db.relationship("Sound", primaryjoin="Pair.word_sound_id==Sound.id")
+    s2 = db.relationship(
+        "Sound", primaryjoin="Pair.partner_sound_id==Sound.id")
 
     # explicit/composite unique constraint.  'name' is optional.
     db.UniqueConstraint('word_id', 'partner_id', 'word_sound', 'sound1t')
@@ -252,10 +246,10 @@ class Pair(db.Model):
         contrasts = []
 
         # Make a query for populating the contrasts to be returned in the list
-        word1 = db.aliased(Word)
-        word2 = db.aliased(Word)
-        clauseA = and_(Pair.word_sound == sound1, Pair.partner_sound == sound2)
-        clauseB = and_(Pair.word_sound == sound2, Pair.partner_sound == sound1)
+        clauseA = and_(Pair.s1 == Sound.get(sound1),
+                       Pair.s2 == Sound.get(sound2))
+        clauseB = and_(Pair.s1 == Sound.get(sound2),
+                       Pair.s2 == Sound.get(sound1))
 
         contrastsQuery = db.session.query(Pair).filter(or_(
             clauseA, clauseB)).all()
@@ -264,12 +258,12 @@ class Pair(db.Model):
         if contrastsQuery:
             for pair in contrastsQuery:
 
-                if pair.word_sound == sound1:
+                if pair.s1.sound == sound1:
                     contrast = Contrast(
-                        word1=pair.w1, word2=pair.w2, sound1=pair.word_sound, sound2=pair.partner_sound)
+                        word1=pair.w1, word2=pair.w2, sound1=pair.s1.sound, sound2=pair.s2.sound)
                 else:
                     contrast = Contrast(
-                        word1=pair.w2, word2=pair.w1, sound1=pair.partner_sound, sound2=pair.word_sound)
+                        word1=pair.w2, word2=pair.w1, sound1=pair.s2.sound, sound2=pair.s1.sound)
 
                 contrasts.append(contrast)
         else:
@@ -279,19 +273,21 @@ class Pair(db.Model):
 
     @classmethod
     def allPairCombinations(cls, wordSet):
-        """ Takes a set of words and returns a LIST of all possible existing pairs """
+        """ Takes a set of words and returns a LIST of all possible existing pairs between them"""
+
         pairSet = set()
         for word in wordSet:
             for word2 in wordSet:
                 pairs = word.getPairs(word2)
                 if pairs:
                     pairSet.update(pairs)
+
         return list(pairSet)
 
     # Some id is displayed even if pair is not committed yet
     def textify(self):
         string = "{}: {} / {} - ({} vs. {})".format(self.id, self.w1.word,
-                                                    self.w2.word, self.word_sound, self.partner_sound)
+                                                    self.w2.word, self.s1.sound, self.s2.sound)
         return string
 
 
@@ -419,27 +415,22 @@ class Word(db.Model):
     def pair(self, word2, sound1, sound2):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound\n
         Always put the longest cluster combinations as possible, so they can be reduced """
-        print("running pair from models")
+
         db.session.flush()
+
         if((self.id == word2.id)):
-            print("Word is same")
+            print("Not pairing same word...")
             return
 
         # check if this particular pair exists
         if self.pairExists(word2, sound1):
             return
 
-        # TODO: Det virker at indsætte id'erne. Nu mangler vi bare at konvertere lyde til objekter og indsætte i par alle steder.
-        print("inserting pair here for testing database model.")
-
         newPair = Pair(w1=self, w2=word2,
-                       word_sound=sound1, partner_sound=sound2)
+                       s1=Sound.get(sound1), s2=Sound.get(sound2))
         db.session.add(newPair)
         db.session.commit()
-        print("printing pair.w1 '{}' and w2 '{}".format(
-            newPair.w1, newPair.w2))
-        print("w1.words: {}".format(newPair.w1.words))
-        print("w1.allPartners: {}".format(newPair.w1.allPartners()))
+
         pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[])
 
         pairs.append(newPair)
@@ -457,8 +448,8 @@ class Word(db.Model):
         # check if this particular pair exists
         if self.getPairs(word2):
             for pair in self.getPairs(word2):
-                if (sound1 == pair.word_sound) or (sound1 == pair.partner_sound):
-                    print("pair exists with these sounds")
+                if (sound1 == pair.s1.sound) or (sound1 == pair.s2.sound):
+                    print("Pair exists with these sounds already!")
                     return True
             return False
 
@@ -478,21 +469,29 @@ class Word(db.Model):
                     commonChars.append(char)
 
             # Helper function for reducing clusters
-            def charSharesPlaces(char, sound1, sound2):
-                """ Returns boolean\n
-                Checks if char occurs in start vs end, and thus must not be removed """
+            def removeChar(char, sound1, sound2):
+                """ Checks if char occurs in start or end in both clusters
+                \n Returns -1 if end, 0 if start """
 
                 if not (sound1.startswith(char) and sound2.startswith(char)):
                     if not (sound1.endswith(char) and sound2.endswith(char)):
                         print(
                             "{} {} - '{}' has a bad position".format(sound1, sound2, char))
-                        return False
-                return True
+                        return None
+                    else:
+                        # Ends with same char, meaning index -1
+                        return -1
+                else:
+                    # Starts with same char meaning index 0
+                    return 0
 
-            def reduceSounds(char, cluster):
+            def reduceSounds(cluster, index):
                 """ Returns new sound\n
                 Removes char from sound and replaces empty sounds with 'Ø' """
-                newSound = cluster.replace(char, "")
+
+                newSound = list(cluster)
+                newSound[index] = ""
+                newSound = ''.join(newSound)
                 if newSound == "":
                     newSound = "Ø"
                 return newSound
@@ -504,7 +503,7 @@ class Word(db.Model):
                 exists = False
                 # Check if pair exists in list
                 for pair in pairList:
-                    if (pair.word_sound == sound1) or (pair.word_sound == sound2):
+                    if (pair.s1.sound == sound1) or (pair.s1.sound == sound2):
                         exists = True
                 # And then check if it exists in database
                 if not exists:
@@ -514,17 +513,14 @@ class Word(db.Model):
 
             # Recursively remove removable chars until nothing left to remove
             for char in commonChars:
-                if charSharesPlaces(char, sound1, sound2):
-                    newSound1 = reduceSounds(char, sound1)
-                    newSound2 = reduceSounds(char, sound2)
-                    print("Reduction: {}, {} - {} = {} {}".format(sound1,
-                                                                  sound2, char, newSound1, newSound2))
-
+                index = removeChar(char, sound1, sound2)
+                if index is not None:
+                    newSound1 = reduceSounds(sound1, index)
+                    newSound2 = reduceSounds(sound2, index)
                     # Check if pair already exists in pairList:
                     if not pairExists(pairList, newSound1, newSound2, self, word2):
-                        print("Adding reduced pair with all parameters")
                         pair = Pair(w1=self, w2=word2,
-                                    word_sound=newSound1, partner_sound=newSound2)
+                                    s1=Sound.get(newSound1), s2=Sound.get(newSound2))
                         db.session.add(pair)
                         db.session.flush()
                         pairList.append(pair)
@@ -535,21 +531,25 @@ class Word(db.Model):
 
     def defineAsPartner(self, pair):
         """ Returns this partner with relative sounds"""
+        """
         if self == pair.w2:
-            self.wordSound = pair.word_sound
-            self.partnerSound = pair.partner_sound
+            self.wordSound = pair.s1.sound
+            self.partnerSound = pair.s2.sound
         elif self == pair.w1:
-            self.wordSound = pair.partner_sound
-            self.partnerSound = pair.word_sound
+            self.wordSound = pair.s2.sound
+            self.partnerSound = pair.s1.sound
+        """
         return self
 
     def allPartners(self):
         """ Returns all caller's partners with relative sounds """
+        # TODO: This should be done differently
         # Make list containing all partners
         partners = self.partners
         words = self.words
         allPartners = partners + words
         # Removes duplicates (to be added back after processing)
+        """
         allPartners = list(dict.fromkeys(allPartners))
 
         # Populate list of partner objects
@@ -557,13 +557,23 @@ class Word(db.Model):
         for i, partner in enumerate(allPartners):
 
             pairs = self.getPairs(partner)
+            print("")
+            for pair in pairs:
+                print("partner: {}, pair: {}".format(
+                    partner.word, pair.textify()))
             for pair in pairs:
                 # Create new partner object and add to list
                 partner = partner.defineAsPartner(pair)
                 # Duplicates are added back in with their unique sound combinations
+                print("partner generated by swap: {}, {}, ({}, {})".format(
+                    partner.word, self.word, partner.wordSound, partner.partnerSound))
+                print("\nInserting this partner with sound")
                 allPartners_with_sound.insert(i, partner)
-
+        for x in allPartners_with_sound:
+            print(str(x))
         return allPartners_with_sound
+        """
+        return allPartners
 
     def getPairs(self, word2):
         """ Returns a list with all possible pairings between two words\n
@@ -575,9 +585,12 @@ class Word(db.Model):
         pairs = Pair.query.filter(
             or_(clause1, clause2)).all()
 
+        # TODO: Can just return pairs
+
         if not pairs:
             return None
 
+        """
         for pair in pairs:
             if pair.w1 == word2:
                 # If sound 1 and 2 and swapped, swap them back
@@ -585,9 +598,10 @@ class Word(db.Model):
                 pair.w2 = pair.w1
                 pair.w1 = tempW
 
-                tempS = pair.partner_sound
-                pair.partner_sound = pair.word_sound
-                pair.word_sound = tempS
+                tempS = pair.s2
+                pair.s2 = pair.s1
+                pair.s1 = tempS
+                """
 
         return pairs
 
@@ -598,7 +612,7 @@ class Word(db.Model):
 
         print("word to remove: " + self.word)
         for pair in pairs:
-            print("deleting " + str(pair))
+            print("deleting " + pair.textify())
             db.session.delete(pair)
         print("deleting " + "'" + self.word + "'")
         db.session.delete(self)

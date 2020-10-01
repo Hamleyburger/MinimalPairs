@@ -119,8 +119,17 @@ def pairs(word_id):
     word = Word.query.filter_by(id=word_id).first()
 
     groups = word.groups
+    partners = word.allPartners()
 
-    return render_template("pairs.html", word=word, partners=word.allPartners(), groups=groups)
+    # 2D array of all pair combinations for all partners (a list of pair lists)
+    pairLists = []
+    for partner in partners:
+        pairLists.append(word.getPairs(partner))
+    print(str(pairLists))
+
+    print("hi: " + str(word.allPartners()))
+
+    return render_template("pairs.html", word=word, pairLists=pairLists, groups=groups)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])
