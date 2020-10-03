@@ -12,7 +12,7 @@
 <div class="container-fluid text-center titlebox">
     <p class="title-text">
         {% if pairs %}
-        [{{ pairs[0].sound1 }}] vs [{{ pairs[0].sound2 }}]
+        [{{ pairs[0].s1.sound }}] vs [{{ pairs[0].s2.sound }}]
         {% else %}
         Search for sounds
         {% endif %}
@@ -51,11 +51,11 @@
         <div class="col-sm-4">
             <div class="card text-center wordcard" style="width: 18rem;">
                 <div class="img-container">
-                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.word1.image.name }}"
-                        alt="image of '{{ pair.word1.word }}''">
+                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.w1.image.name }}"
+                        alt="image of '{{ pair.w1.word }}''">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ pair.word1.word }}</h5>
+                    <h5 class="card-title">{{ pair.w1.word }}</h5>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
@@ -63,11 +63,11 @@
         <div class="col-sm-4">
             <div class="card text-center wordcard" style="width: 18rem;">
                 <div class="img-container">
-                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.word2.image.name }}"
-                        alt="image of '{{ pair.word2.word }}''">
+                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.w2.image.name }}"
+                        alt="image of '{{ pair.w2.word }}''">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ pair.word2.word }}</h5>
+                    <h5 class="card-title">{{ pair.w2.word }}</h5>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>

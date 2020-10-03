@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import group_card %}
+{% from 'macros.html' import group_card, pair_card %}
 
 {% block title %}
 : Change word
@@ -7,37 +7,45 @@
 
 {% block main %}
 
-Ord: {{ word.word }}
-<br>
-<div class="row">
 
-    {% for pairList in pairLists %}
+<div class="row justify-content-center">
+    <div class="col-sm-4 imgcol paircol">
+        <div class="word1-text-wrapper">
 
-    <div class="card" style="width: 10rem; display: inline-block; height: 15rem;">
-        <div class="card-body">
-            <h5 class="card-title">{{ pairList[0].w1.word }} - {{ pairList[0].w2.word }}</h5>
-            <p class="card-text">
-                {% for pair in pairList %}
-                ({{ pair.s1.sound }} vs. {{ pair.s2.sound }})
-                <br>
-                {% endfor %}
-            </p>
-            <a href="#" class="card-link">Card link</a>
+            <h1>{{ word.word }}</h1>
+        </div>
+        <div class="word1-img-wrapper">
+
+            <img class="img-responsive word1-img"
+                src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
+                alt="image of '{{ word.word }}'">
         </div>
     </div>
+    <div class="col-sm-6 justify-content-center paircol">
+        <div class="container cardcontainer">
 
-    {% endfor %}
+
+
+            {% for pairList in pairLists %}
+            {{ pair_card(pairList) }}
+            {% endfor %}
+        </div>
+
+    </div>
 </div>
 
-<div class="row">
+<div class="row justify-content-center">
+    <div class="col-10 paircol">
 
 
 
-    {% for group in groups %}
 
-    {{group_card(group)}}
+        {% for group in groups %}
 
-    {% endfor %}
+        {{group_card(group)}}
+
+        {% endfor %}
+    </div>
 
 </div>
 

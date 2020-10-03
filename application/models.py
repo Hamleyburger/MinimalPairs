@@ -1,5 +1,6 @@
 from application import db
-import decimal
+# import decimal
+import copy
 from sqlalchemy.sql import func
 from sqlalchemy import or_, and_
 from .admin.helpers import store_image
@@ -41,14 +42,118 @@ class Sound(db.Model):
     db.UniqueConstraint('sound')
 
     @ classmethod
-    def get(cls, soundString):
-        thisSound = cls.query.filter_by(sound=soundString).first()
-        if not thisSound:
-            print("'{}' is a new sound.".format(soundString))
-            thisSound = Sound(sound=soundString)
-            db.session.add(thisSound)
-            db.session.flush()
-        return thisSound
+    def get(cls, soundString=None, soundStringList=None):
+        if soundString:
+            if isinstance(soundString, str):
+                thisSound = cls.query.filter_by(sound=soundString).first()
+                if not thisSound:
+                    print("'{}' is a new sound.".format(soundString))
+                    thisSound = Sound(sound=soundString)
+                    db.session.add(thisSound)
+                    db.session.flush()
+            else:
+                thisSound = soundString
+            return thisSound
+        if soundStringList:
+            soundList = []
+            for sound in soundStringList:
+                if isinstance(sound, str):
+                    sound = cls.query.filter_by(sound=sound).first()
+                    if not sound:
+                        print("'{}' is a new sound.".format(soundString))
+                        sound = Sound(sound=soundString)
+                        db.session.add(sound)
+                        db.session.flush()
+                soundList.append(sound)
+            return soundList
+
+    def getContrasts(self, sound2):
+        """ return a list of pairs\n
+        The list is sorted so all word1 have the same sound.\n
+        If no such pair exists list will be empty """
+
+        sound1 = self
+
+        # Make a query for populating the contrasts to be returned in the list
+        clauseA = and_(Pair.s1 == sound1,
+                       Pair.s2 == Sound.get(soundString=sound2))
+        clauseB = and_(Pair.s1 == Sound.get(soundString=sound2),
+                       Pair.s2 == sound1)
+        contrastsQuery = db.session.query(Pair).filter(or_(
+            clauseA, clauseB)).all()
+
+        # Order the items returned from query, add to instances of Contrast and append to contrasts list
+        contrasts = []
+        if contrastsQuery:
+            contrasts = sound1.orderedPairs(contrastsQuery)
+        else:
+            print("This pair didn't exist. Suggestions?")
+
+        return contrasts
+
+    def orderedPairs(self, pairs, sound2List=None):
+        """ (Sound) Sorts a given list of pairs so sound1 is self. Throws out pairs without sound1==self\n
+        If sound2List is given, only returns a list of pairs if all contrasts are present """
+
+        # Arranging words in pairs so given sound always comes first.
+        swappedPairs = []
+        for pair in pairs:
+            if pair.s1 is self:
+                pass
+            elif pair.s2 is self:
+                pair = Pair(id=pair.id, s1=pair.s2,
+                            s2=pair.s1, w1=pair.w2, w2=pair.w1)
+            else:
+                continue
+            swappedPairs.append(pair)
+
+        pairs = swappedPairs
+
+        # If sound2list is given, filter out pairs where s2 is not in list
+        if sound2List:
+            print("")
+            filteredPairs = []
+            # Convert strings to Sound objects in case they're strings
+            newSound2List = Sound.get(soundStringList=sound2List)
+
+            # Filter out pairs without wanted sound2
+            for pair in pairs:
+                if pair.s2 in newSound2List:
+                    filteredPairs.append(pair)
+                    print("appending pair: {}".format(pair.textify()))
+
+            if len(filteredPairs) == len(sound2List):
+                # This is where it checks if all sound2s are present. Can be modified with a minimum criterion.
+                pairs = filteredPairs
+            else:
+                pairs = []
+
+        return pairs
+
+    def getMOPairs(self, sound2List=[]):
+        """ (Sound) Returns 2D array.\n
+        Searches in relevant groups for Multiple Oppositions and returns\n
+        a list of lists containg MO-sets for each group. """
+
+        groups = db.session.query(Group).all()
+        relevantGroups = []
+
+        # Filter out groups that don't have all the sounds
+        sound2s = Sound.get(soundStringList=sound2List)
+        for group in groups:
+            if all(elem in group.sounds for elem in (sound2s + [self])):
+                relevantGroups.append(group)
+                print("Group {} has all the sounds!".format(group.id))
+
+        # Search relevant groups and add their MO-sets to pair list
+        pairLists = []
+        for group in relevantGroups:
+
+            groupMOs = self.orderedPairs(group.pairs, sound2List)
+            if groupMOs:
+                pairLists.append(groupMOs)
+
+        return pairLists
 
 
 class Group(db.Model):
@@ -228,50 +333,6 @@ class Pair(db.Model):
         back_populates="pairs")
 
     @classmethod
-    def getContrasts(cls, sound1, sound2):
-        """ return a list of pairs with new attributes:\n
-        word1, sound1, word2, sound2\n
-        The list is sorted so all word1 have the same sound.\n
-        If no such pair exists list will be empty """
-
-        # Make a contrast class
-        class Contrast(Pair):
-            def __init__(self, word1=None, word2=None, sound1=None, sound2=None):
-                self.word1 = word1
-                self.word2 = word2
-                self.sound1 = sound1
-                self.sound2 = sound2
-
-        # Make a list for containing ordered contrasts
-        contrasts = []
-
-        # Make a query for populating the contrasts to be returned in the list
-        clauseA = and_(Pair.s1 == Sound.get(sound1),
-                       Pair.s2 == Sound.get(sound2))
-        clauseB = and_(Pair.s1 == Sound.get(sound2),
-                       Pair.s2 == Sound.get(sound1))
-
-        contrastsQuery = db.session.query(Pair).filter(or_(
-            clauseA, clauseB)).all()
-
-        # Order the items returned from query, add to instances of Contrast and append to contrasts list
-        if contrastsQuery:
-            for pair in contrastsQuery:
-
-                if pair.s1.sound == sound1:
-                    contrast = Contrast(
-                        word1=pair.w1, word2=pair.w2, sound1=pair.s1.sound, sound2=pair.s2.sound)
-                else:
-                    contrast = Contrast(
-                        word1=pair.w2, word2=pair.w1, sound1=pair.s2.sound, sound2=pair.s1.sound)
-
-                contrasts.append(contrast)
-        else:
-            print("This pair didn't exist. Suggestions?")
-
-        return contrasts
-
-    @classmethod
     def allPairCombinations(cls, wordSet):
         """ Takes a set of words and returns a LIST of all possible existing pairs between them"""
 
@@ -427,7 +488,7 @@ class Word(db.Model):
             return
 
         newPair = Pair(w1=self, w2=word2,
-                       s1=Sound.get(sound1), s2=Sound.get(sound2))
+                       s1=Sound.get(soundString=sound1), s2=Sound.get(soundString=sound2))
         db.session.add(newPair)
         db.session.commit()
 
@@ -520,7 +581,7 @@ class Word(db.Model):
                     # Check if pair already exists in pairList:
                     if not pairExists(pairList, newSound1, newSound2, self, word2):
                         pair = Pair(w1=self, w2=word2,
-                                    s1=Sound.get(newSound1), s2=Sound.get(newSound2))
+                                    s1=Sound.get(soundString=newSound1), s2=Sound.get(soundString=newSound2))
                         db.session.add(pair)
                         db.session.flush()
                         pairList.append(pair)
@@ -529,81 +590,75 @@ class Word(db.Model):
                             word2, newSound1, newSound2, pairList)
         return pairList
 
-    def defineAsPartner(self, pair):
-        """ Returns this partner with relative sounds"""
-        """
-        if self == pair.w2:
-            self.wordSound = pair.s1.sound
-            self.partnerSound = pair.s2.sound
-        elif self == pair.w1:
-            self.wordSound = pair.s2.sound
-            self.partnerSound = pair.s1.sound
-        """
-        return self
-
     def allPartners(self):
-        """ Returns all caller's partners with relative sounds """
+        """ Returns words: all caller's partners with relative sounds """
         # TODO: This should be done differently
         # Make list containing all partners
         partners = self.partners
         words = self.words
         allPartners = partners + words
-        # Removes duplicates (to be added back after processing)
-        """
-        allPartners = list(dict.fromkeys(allPartners))
 
-        # Populate list of partner objects
-        allPartners_with_sound = []
-        for i, partner in enumerate(allPartners):
-
-            pairs = self.getPairs(partner)
-            print("")
-            for pair in pairs:
-                print("partner: {}, pair: {}".format(
-                    partner.word, pair.textify()))
-            for pair in pairs:
-                # Create new partner object and add to list
-                partner = partner.defineAsPartner(pair)
-                # Duplicates are added back in with their unique sound combinations
-                print("partner generated by swap: {}, {}, ({}, {})".format(
-                    partner.word, self.word, partner.wordSound, partner.partnerSound))
-                print("\nInserting this partner with sound")
-                allPartners_with_sound.insert(i, partner)
-        for x in allPartners_with_sound:
-            print(str(x))
-        return allPartners_with_sound
-        """
         return allPartners
 
-    def getPairs(self, word2):
-        """ Returns a list with all possible pairings between two words\n
-        Since two words can have more than one pairing (sk vs g / s vs Ø)\n
-        Returns None if no pairs exist """
+    def getPairs(self, word2=None):
+        """ Returns a list with all possible pairings\n
+        \n if word2 is given, only pairings between the two words are returned
+        \nReturns None if no pairs exist """
+        pairs = []
 
-        clause1 = and_(Pair.w1 == self, Pair.w2 == word2)
-        clause2 = and_(Pair.w1 == word2, Pair.w2 == self)
-        pairs = Pair.query.filter(
-            or_(clause1, clause2)).all()
+        if word2:
+            clause1 = and_(Pair.w1 == self, Pair.w2 == word2)
+            clause2 = and_(Pair.w1 == word2, Pair.w2 == self)
+            pairs = Pair.query.filter(
+                or_(clause1, clause2)).all()
 
-        # TODO: Can just return pairs
-
-        if not pairs:
-            return None
-
-        """
-        for pair in pairs:
-            if pair.w1 == word2:
-                # If sound 1 and 2 and swapped, swap them back
-                tempW = pair.w2
-                pair.w2 = pair.w1
-                pair.w1 = tempW
-
-                tempS = pair.s2
-                pair.s2 = pair.s1
-                pair.s1 = tempS
-                """
+        else:
+            pairs = Pair.query.filter(
+                or_(Pair.w1 == self, Pair.w2 == self)).all()
 
         return pairs
+
+    def orderedPairs(self):
+        """ (Word) Orders words in pairs so first word is caller. If sound1 is given,
+        \n only pairs where word 1 (caller) has sound 1 will be returned.\n
+        if sound2List is given, all pairings with any of those sounds are returned"""
+
+        # Gets all pairs for word and makes self be word1 (w1)
+        pairs = self.getPairs()
+        newPairs = []
+        for oldPair in pairs:
+            pair = Pair(id=oldPair.id, w1=oldPair.w1, w2=oldPair.w2,
+                        s1=oldPair.s1, s2=oldPair.s2)
+            if oldPair.w2 == self:
+                pair.w1 = oldPair.w2
+                pair.w2 = oldPair.w1
+                pair.s1 = oldPair.s2
+                pair.s2 = oldPair.s1
+            newPairs.append(pair)
+
+        # This part be replaced with function
+        return newPairs
+
+    def getMOSets(self):
+        """ (Word) Gets all Multiple Opposition sets where word is key. Returns 2D array """
+        pairs = self.orderedPairs()
+
+        # Find potential sound1s:
+        sound1s = set()
+        for pair in pairs:
+            sound1s.add(pair.s1)
+
+        # Based on sound1s find all MO-sets where word (self) is parent/key
+        MOsets = []
+        for sound1 in sound1s:
+            MOset = []
+            for pair in pairs:
+                if pair.s1 is sound1:
+                    MOset.append(pair)
+            if len(MOset) > 1:
+                MOsets.append(MOset)
+
+        return MOsets
 
     def remove(self):
         """ Deletes given word and its associated pairs form database"""
@@ -634,7 +689,7 @@ class Image(db.Model):
     def store(imageFile):
         """ Stores file in folder if it's new\n
         Changes name if necessary\n
-        Adds to database (no commit)\n 
+        Adds to database (no commit)\n
         Returns image object (not the actual file) """
 
         # appropriate imageName - can be old or new

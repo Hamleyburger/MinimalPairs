@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
 # from .helpers import clearSessionExcept
-from application.models import Word, Pair
+from application.models import Word, Pair, Sound
 from .forms import AddForm, AddPairForm
 from application import db
 from .helpers import store_image
@@ -115,19 +115,31 @@ def upload_image():
 
 @ admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])
 def pairs(word_id):
+
     # update to actually contain contrasts
-    word = Word.query.filter_by(id=word_id).first()
+    word = Word.query.get(word_id)
 
     groups = word.groups
     partners = word.allPartners()
 
     # 2D array of all pair combinations for all partners (a list of pair lists)
     pairLists = []
-    for partner in partners:
-        pairLists.append(word.getPairs(partner))
-    print(str(pairLists))
+    pairs = word.orderedPairs()
 
-    print("hi: " + str(word.allPartners()))
+    # Make separate lists for pairs that contain the same word
+    for partner in partners:
+        pairList = []
+        for pair in pairs:
+            if pair.w2 == partner:
+                pairList.append(pair)
+        if pairList:
+            pairLists.append(pairList)
+
+    MOSets = word.getMOSets()
+    for x in MOSets:
+        print("")
+        for y in x:
+            print(y.textify())
 
     return render_template("pairs.html", word=word, pairLists=pairLists, groups=groups)
 

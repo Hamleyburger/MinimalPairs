@@ -1,5 +1,5 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
-from application.models import Word, Pair, Group
+from application.models import Word, Group, Sound
 from application import db
 from .forms import SearchSounds
 # from .helpers import store_image
@@ -26,6 +26,7 @@ def contrasts():
 
     if request.method == "POST":
         if form.validate_on_submit():
-            pairs = Pair.getContrasts(form.sound1.data, form.sound2.data)
+            sound1 = Sound.get(form.sound1.data)
+            pairs = sound1.getContrasts(form.sound2.data)
 
     return render_template("contrasts.html", pairs=pairs, form=form)
