@@ -279,117 +279,114 @@ span.line {
 
 
 
-  // For pairs.html **************************
-    .paircol {
-        //border: 2px solid rgb(184, 217, 255);
-        border-radius: 30px;
-        background-color: rgb(184, 217, 255);
-        margin: 10px;
-        padding: 10px;
-    }
-    .imgcol {
-        @media screen and (max-width: 575px) {
-            padding-left: 20px;
-            padding-right: 33px;
-        }
-    }
 
-    .word1-text-wrapper {
-        height: 40%;
-        border: 1px solid black;
-        h1 {
-            font-size: 9vw;
+// Styling for pairs<id>
+
+.word-info-container {
+    $border-radius-word-info: 8px;
+      //border: 1px solid black;
+      //width: 70%;
+      @media screen and (max-width: 422px) {
+          //width: 100%;
+      }
+      .row {
+        //border: 1px solid black;
+        background-color: rgb(255, 187, 124);
+        justify-content: flex-start;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        padding-left: 15%;
+        padding-right: 15%;
+        @media screen and (max-width: 710px) {
+            padding-left: 8%;
+            padding-right: 8%;
         }
-        @media screen and (max-width: 575px) {
-            height: 100px;
-            h1 {
-                font-size: 14vw;
+        @media screen and (max-width: 422px) {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+
+        [class*='col-']{
+
+            //border: 1px solid black;
+            padding: 0px 5px;
+
+
+            // This part is responsible for word1 top row's items
+            .title {
+
+                font-size: 25px;
+                line-height: 1;
+                padding-left: 5%;
+                @media screen and (min-width: 575px) {
+                h1 {
+                        font-size: 9vw;
+                    }
+                }
             }
-        }
-    }
-    .word1-img-wrapper {
-        border: 1px solid black;
-        border-radius: 25px;
-        height: 60%;
-        text-align: center;
-        overflow: hidden;
-        @media screen and (max-width: 575px) {
-            height: 400px;
-            width: 100%;
-        }
-    }
-    .word1-img {
-        min-width: 100%;
-        min-height: 120%;
-        border-radius: 25px;
-        position: relative; /* allows repositioning */
-        left: 100%; /* move the whole width of the image to the right */
-        margin-left: -200%; /* magic! */
-        top: 10%;
-        margin-top: -30%;
-        @media screen and (max-width: 575px) {
-            height: 120%;
-            top: 18%;
-        }
-  }
-  .cardcontainer  {
-    @media screen and (min-width: 576px) and (max-width: 710px) {
-        width: 300px;
-    }
-    @media screen and (min-width: 711px) and (max-width: 900px){
-        width: 390px;
-    }
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0px;
-    //justify-content: space-around;
-    
-    .paircard {
-        @media screen and (min-width: 576px) and (max-width: 710px) {
-            margin: 0px;
-        }
-        @media screen and (max-width: 322px) {
-            margin: 0px;
-            width: 100%;
-            height: fit-content;
-            align-items: center;
-            img {
-                width: 30% !important;
-                float: left;
-            }
-            .cardbody {
-                width: 70%;
+
+
+            .word1-img-div {
+                //border: 1px solid rgb(255, 0, 43);
                 height: 100%;
-                padding-left: 30px;
-                float: right;
+                width: 100%;
+                img {
+                    border-radius: $border-radius-word-info;
+                    width: 100%;
+                    object-fit: cover;
+                }
             }
-        }
-        margin: 2px;
-        display: inline-block;
 
-        width: 100px;
-          height: 210px;
-          border-radius: 25px;;
-          overflow: hidden;
-          img {
-              width: 100%;
-              max-height: 50%;
+
+
+            // This part is responsible for pair card behaviours
+ 
+
           }
-          .cardbody {
-              border: 2px solid rgb(255, 193, 193);
-              padding-left: 10px;
-              padding-top: 1px;
-              padding-bottom: 1px;
-
-            font-size: 15px;
-              line-height: 1.1;
-              .card-title {
-                  margin-bottom: 0.1rem;
+          // Carousel in pairs
+          .slider {
+              background-color: rgb(255, 94, 0);
+              padding: 10px 0px;
+              border-radius: $border-radius-word-info;
+              max-width: 1150px;
+              overflow: hidden;
+              display: flex;
+              max-height: 694px;
+              overflow: hidden;
+              .card {
+                border-radius: $border-radius-word-info;
+                  flex: 1;
+                  margin: 0px 10px;
+                  height: 232px;
+                  overflow: hidden;
+                .img-wrap {
+                    height: 120px;
+                    width: auto;
+                    overflow: hidden;
+                    img {
+                        width: 120%;
+                        height: 120%;
+                        object-fit: cover;
+                        object-position: 0px 0px;
+                    }
+                }
+                .card-body {
+                    .card-title {
+                        margin-top: 0px;
+                        margin-bottom: 2px;
+                    }
+                    //border: 1px solid green;
+                    max-height: 50%;
+                    line-height: 16px;
+                    font-size: 15px;;
+                    padding: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 15px;
+                    overflow: scroll;
+                }
               }
           }
       }
   }
 
-  .groupcard {
-      border-radius: 25px;
-  }

@@ -141,7 +141,7 @@ def pairs(word_id):
         for y in x:
             print(y.textify())
 
-    return render_template("pairs.html", word=word, pairLists=pairLists, groups=groups)
+    return render_template("pairs copy 2.html", word=word, pairLists=pairLists, groups=groups)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])

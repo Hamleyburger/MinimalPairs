@@ -136,20 +136,20 @@
                 id: current_word_id
             },
             // ajax is the name of the view function that processes the incoming ajax call
-            url: "/ajax_word_changer",
-            type: "POST"
+            url: {{ url_for('admin_blueprint.ajax_change')| tojson | safe }},
+    type: "POST"
 
         }).done(function (data) {
-            /* Server check: with parents().length I check if element has any parent with this ID
-            because an existing username is good (green) in Login but bad (red) in register. */
+        /* Server check: with parents().length I check if element has any parent with this ID
+        because an existing username is good (green) in Login but bad (red) in register. */
 
-            console.log(data);
-            $("#word" + current_word_id).html(data.newword);
-            $("#cue" + current_word_id).html(data.newcue);
-            //$("#image" + current_word_id).html(data.newimg);
-        });
-        document.myform.reset();
-        closeForm();
+        console.log(data);
+        $("#word" + current_word_id).html(data.newword);
+        $("#cue" + current_word_id).html(data.newcue);
+        //$("#image" + current_word_id).html(data.newimg);
+    });
+    document.myform.reset();
+    closeForm();
     }
 
     function requestDelete() {
