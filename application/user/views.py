@@ -1,5 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
-from application.models import Word, Pair
+from application.models import Word, Group, Sound
+from application import db
 from .forms import SearchSounds
 # from .helpers import store_image
 # from .helpers import clearSessionExcept
@@ -11,12 +12,8 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 @user_blueprint.route("/", methods=["GET", "POST"])
 def index():
     """admin stuff"""
-<<<<<<< Updated upstream
-    return redirect(url_for("user_blueprint.contrasts"))
-=======
 
     return render_template("userindex.html")
->>>>>>> Stashed changes
 
 
 @ user_blueprint.route("/pairs", methods=["GET", "POST"])
@@ -29,6 +26,7 @@ def contrasts():
 
     if request.method == "POST":
         if form.validate_on_submit():
-            pairs = Pair.getContrasts(form.sound1.data, form.sound2.data)
+            sound1 = Sound.get(form.sound1.data)
+            pairs = sound1.getContrasts(form.sound2.data)
 
     return render_template("contrasts.html", pairs=pairs, form=form)

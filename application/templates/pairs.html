@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from 'macros.html' import group_card, pair_card %}
 
 {% block title %}
 : Change word
@@ -6,134 +7,48 @@
 
 {% block main %}
 
-<!-- Popup form-->
-<div class="form-popup" id="myForm">
-    <form name="myform" class="form-container">
-        <h1 id="formtitle"></h1>
 
-        <label for="newword"><b>Change spelling</b></label>
-        <input type="text" placeholder="jinjaoldword" name="newword">
+<div class="row justify-content-center">
+    <div class="col-sm-4 imgcol paircol">
+        <div class="word1-text-wrapper">
 
-        <label for="newcue"><b>Change cue</b></label>
-        <input type="text" placeholder="jinjaoldcue" name="newcue">
+            <h1>{{ word.word }}</h1>
+        </div>
+        <div class="word1-img-wrapper">
 
-        <label for="newimg"><b>Change image</b></label>
-        <input type="text" placeholder="jinjaoldimg" name="newimg">
+            <img class="img-responsive word1-img"
+                src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
+                alt="image of '{{ word.word }}'">
+        </div>
+    </div>
+    <div class="col-sm-6 justify-content-center paircol">
+        <div class="container cardcontainer">
 
-        <button type="button" class="btn save" onclick="sendChanges()">Save</button>
-        <button type="button" class="btn delete">Delete</button>
-        <button id="closeForm" type="submit" class="btn cancel" onclick="closeForm()">Close</button>
-    </form>
-</div>
 
-<!-- DataTable with words-->
-<div class="container mb-3 mt-3" style="text-align: left !important;">
-    <table id="changetable" class="table table-striped table-bordered" style="width:100%;">
-        <thead>
-            <tr>
-                <th>Spelling</th>
-                <th>Cue</th>
-                <th>Image</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for entry in words %}
 
-            <tr>
-                <!-- I'm using jinja to pass the id of td 0 to the function for onclick in td 3 -->
-                <td id="word{{ entry.id }}">{{ entry.word }}</td>
-                <td id="cue{{ entry.id }}">{{ entry.cue }}</td>
-                <td id="image{{ entry.id }}">{{ entry.image.name }}</td>
-                <td style="text-align: center;"><button class="open-button"
-                        onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">;(</button>
-                    <button class="open-button" onclick="window.location.href='/pairs/{{ entry.id }}';">
-                        PP
-                    </button>
-                </td>
-            </tr>
-
+            {% for pairList in pairLists %}
+            {{ pair_card(pairList) }}
             {% endfor %}
+        </div>
 
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>Spelling</th>
-                <th>Cue</th>
-                <th>Image</th>
-                <th>Change</th>
-            </tr>
-        </tfoot>
-    </table>
+    </div>
 </div>
 
-<!-- Initialize DataTable -->
-<script>
-    // Necessary imports: jquery, DataTables, DataTables plugin:
-    // "Responsive" - see Layout.hmtl
-    $(document).ready(function () {
-        $('#changetable').DataTable();
-    });
-    $('#changetable').dataTable({
-        "columns": [
-            null,
-            null,
-            null,
-            { "width": "17%" }
-        ],
-        responsive: true
-    });
+<div class="row justify-content-center">
+    <div class="col-10 paircol">
 
-    // Popup form onclick generation -->
 
-    var current_word_id;
 
-    function openForm(element, word_id, word, cue, image) {
-        document.getElementById("myForm").style.display = "block";
-        $('#formtitle').html($("#word" + word_id).html());
-        $('input[name ="newword"]').attr("placeholder", word);
-        $('input[name ="newcue"]').attr("placeholder", cue);
-        $('input[name ="newimg"]').attr("placeholder", image);
-        console.log(word + cue + image);
 
-        current_word_id = word_id;
+        {% for group in groups %}
 
-    }
+        {{group_card(group)}}
 
-    function sendChanges() {
-        console.log("ajax call from js");
-        $.ajax({
-            // Username is posted to server
-            data: {
-                newword: $('input[name ="newword"]').val(),
-                newcue: $('input[name ="newcue"]').val(),
-                newimg: $('input[name ="newimg"]').val(),
-                id: current_word_id
-            },
-            // ajax is the name of the view function that processes the incoming ajax call
-            url: "/ajax_word_changer",
-            type: "POST"
+        {% endfor %}
+    </div>
 
-        }).done(function (data) {
-            /* Server check: with parents().length I check if element has any parent with this ID
-            because an existing username is good (green) in Login but bad (red) in register. */
+</div>
 
-            console.log(data);
-            $("#word" + current_word_id).html(data.newword);
-            $("#cue" + current_word_id).html(data.newcue);
-            $("#image" + current_word_id).html(data.newimg);
-        });
-        document.myform.reset();
-        closeForm();
-    }
 
-    function closeForm() {
 
-        document.getElementById("myForm").style.display = "none";
-
-        // TODO: Make an ajax call that changes objects.
-        // Also stops if image not legal?
-
-    } 
-</script>
 {% endblock %}

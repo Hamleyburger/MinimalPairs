@@ -118,7 +118,9 @@ nav .navbar-brand {
 
   
   
-  // For displaying images in change.html
+
+
+  // For displaying images in change.html **************************
   .img-mpexample {
     //border: 4px solid blue;
     width: 50%;
@@ -171,7 +173,9 @@ span.line {
 }
 
 
-  // For contrasts.html
+
+
+  // For contrasts.html **************************
   .titlebox {
       .title-text {
           
@@ -271,3 +275,118 @@ span.line {
     }
 
   }
+
+
+
+
+
+// Styling for pairs<id>
+
+.word-info-container {
+    $border-radius-word-info: 8px;
+      //border: 1px solid black;
+      //width: 70%;
+      @media screen and (max-width: 422px) {
+          //width: 100%;
+      }
+      .row {
+        //border: 1px solid black;
+        background-color: rgb(255, 187, 124);
+        justify-content: flex-start;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        padding-left: 15%;
+        padding-right: 15%;
+        @media screen and (max-width: 710px) {
+            padding-left: 8%;
+            padding-right: 8%;
+        }
+        @media screen and (max-width: 422px) {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+
+        [class*='col-']{
+
+            //border: 1px solid black;
+            padding: 0px 5px;
+
+
+            // This part is responsible for word1 top row's items
+            .title {
+
+                font-size: 25px;
+                line-height: 1;
+                padding-left: 5%;
+                @media screen and (min-width: 575px) {
+                h1 {
+                        font-size: 9vw;
+                    }
+                }
+            }
+
+
+            .word1-img-div {
+                //border: 1px solid rgb(255, 0, 43);
+                height: 100%;
+                width: 100%;
+                img {
+                    border-radius: $border-radius-word-info;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+
+
+
+            // This part is responsible for pair card behaviours
+ 
+
+          }
+          // Carousel in pairs
+          .slider {
+              background-color: rgb(255, 94, 0);
+              padding: 10px 0px;
+              border-radius: $border-radius-word-info;
+              max-width: 1150px;
+              overflow: hidden;
+              display: flex;
+              max-height: 694px;
+              overflow: hidden;
+              .card {
+                border-radius: $border-radius-word-info;
+                  flex: 1;
+                  margin: 0px 10px;
+                  height: 232px;
+                  overflow: hidden;
+                .img-wrap {
+                    height: 120px;
+                    width: auto;
+                    overflow: hidden;
+                    img {
+                        width: 120%;
+                        height: 120%;
+                        object-fit: cover;
+                        object-position: 0px 0px;
+                    }
+                }
+                .card-body {
+                    .card-title {
+                        margin-top: 0px;
+                        margin-bottom: 2px;
+                    }
+                    //border: 1px solid green;
+                    max-height: 50%;
+                    line-height: 16px;
+                    font-size: 15px;;
+                    padding: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 15px;
+                    overflow: scroll;
+                }
+              }
+          }
+      }
+  }
+

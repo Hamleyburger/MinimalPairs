@@ -52,5 +52,40 @@
         <a onclick="insertAtCursor('ə');" href="javascript:;">ə</a>
     </span>
 </div>
+{% endmacro %}
 
+
+{% macro group_card(group) %}
+<div class="card groupcard" style="width: 10rem; display: inline-block; height: 20rem;">
+    <div class="card-body">
+        <h5 class="card-title">Group</h5>
+        <p class="card-text">
+            {% for member in group.members %}
+            {{ member.word }} <br>
+            {% endfor %}
+        </p>
+        <a href="#" class="card-link">Card link</a>
+    </div>
+</div>
+{% endmacro %}
+
+
+{% macro pair_card(pairList) %}
+<div class="card">
+    <div class="img-wrap">
+        <img class="card-img"
+            src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + pairList[0].w2.image.name)}}" class=""
+            alt="...">
+
+    </div>
+    <div class="card-body">
+        <h5 class="card-title"><span class="line">{{ pairList[0].w2.word }}</span></h5>
+        <p class="card-text">
+            {% for pair in pairList %}
+            [{{ pair.s1.sound }}]<span>&#x2192;</span>[{{ pair.s2.sound }}]
+            <br>
+            {% endfor %}
+        </p>
+    </div>
+</div>
 {% endmacro %}

@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
 # from .helpers import clearSessionExcept
-from application.models import Word, Pair
+from application.models import Word, Pair, Sound
 from .forms import AddForm, AddPairForm
 from application import db
 from .helpers import store_image
@@ -86,6 +86,8 @@ def add_pairs():
         print("pairform valid")
         db.session.commit()
         return redirect(url_for("admin_blueprint.add"))
+    else:
+        print(pairForm.errors)
 
     return render_template("add.html", form=form, pairForm=pairForm)
 
@@ -98,14 +100,6 @@ def change():
             id = int(request.form.get("newwordid"))
             Word.change(id, newword=request.form.get("newword"),
                         newcue=request.form.get("newcue"), newimg=request.files["newimg"])
-
-        # TODO: insert file input and store file name in database and store file
-        # with helpers store_image.
-        # Use change function in conjunction with store_image to input the
-        # right file name
-        # Remember to change script "sendChanges" to check for a file and not
-        # an empty string
-        # remember that file input label styling exists in change-upload
 
         return redirect(request.url)
 
@@ -121,8 +115,33 @@ def upload_image():
 
 @ admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])
 def pairs(word_id):
-    word = Word.query.filter_by(id=word_id).first()
-    return render_template("pairs.html", words=word.allPartners())
+
+    # update to actually contain contrasts
+    word = Word.query.get(word_id)
+
+    groups = word.groups
+    partners = word.allPartners()
+
+    # 2D array of all pair combinations for all partners (a list of pair lists)
+    pairLists = []
+    pairs = word.orderedPairs()
+
+    # Make separate lists for pairs that contain the same word
+    for partner in partners:
+        pairList = []
+        for pair in pairs:
+            if pair.w2 == partner:
+                pairList.append(pair)
+        if pairList:
+            pairLists.append(pairList)
+
+    MOSets = word.getMOSets()
+    for x in MOSets:
+        print("")
+        for y in x:
+            print(y.textify())
+
+    return render_template("pairs copy 2.html", word=word, pairLists=pairLists, groups=groups)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])

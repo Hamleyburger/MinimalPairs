@@ -11,7 +11,8 @@ from markupsafe import Markup
 
 def isIPA(form, field):
     if not is_valid_ipa(field.data):
-        raise ValidationError("Not valid IPA")
+        if field.data is not "Ø":
+            raise ValidationError("Not valid IPA")
 
 
 class SearchSounds(FlaskForm):

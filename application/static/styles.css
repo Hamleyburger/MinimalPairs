@@ -265,4 +265,110 @@ span.line {
     font-size: 2rem;
   }
 }
+
+.word-info-container .row {
+  background-color: #ffbb7c;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+@media screen and (max-width: 710px) {
+  .word-info-container .row {
+    padding-left: 8%;
+    padding-right: 8%;
+  }
+}
+
+@media screen and (max-width: 422px) {
+  .word-info-container .row {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}
+
+.word-info-container .row [class*='col-'] {
+  padding: 0px 5px;
+}
+
+.word-info-container .row [class*='col-'] .title {
+  font-size: 25px;
+  line-height: 1;
+  padding-left: 5%;
+}
+
+@media screen and (min-width: 575px) {
+  .word-info-container .row [class*='col-'] .title h1 {
+    font-size: 9vw;
+  }
+}
+
+.word-info-container .row [class*='col-'] .word1-img-div {
+  height: 100%;
+  width: 100%;
+}
+
+.word-info-container .row [class*='col-'] .word1-img-div img {
+  border-radius: 8px;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.word-info-container .row .slider {
+  background-color: #ff5e00;
+  padding: 10px 0px;
+  border-radius: 8px;
+  max-width: 1150px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 694px;
+  overflow: hidden;
+}
+
+.word-info-container .row .slider .card {
+  border-radius: 8px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 0px 10px;
+  height: 232px;
+  overflow: hidden;
+}
+
+.word-info-container .row .slider .card .img-wrap {
+  height: 120px;
+  width: auto;
+  overflow: hidden;
+}
+
+.word-info-container .row .slider .card .img-wrap img {
+  width: 120%;
+  height: 120%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 0px 0px;
+     object-position: 0px 0px;
+}
+
+.word-info-container .row .slider .card .card-body {
+  max-height: 50%;
+  line-height: 16px;
+  font-size: 15px;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 15px;
+  overflow: scroll;
+}
+
+.word-info-container .row .slider .card .card-body .card-title {
+  margin-top: 0px;
+  margin-bottom: 2px;
+}
 /*# sourceMappingURL=styles.css.map */
