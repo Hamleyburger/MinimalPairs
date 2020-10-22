@@ -1,0 +1,26 @@
+{% from 'catmacros.html' import illustration %}
+{% extends "layout.html" %}
+<!-- {% from 'macros.html' import group_card, pair_card %} -->
+
+{% block title %}
+: Home
+{% endblock %}
+
+
+{% block main %}
+<div class="frontpage-container">
+    <div class="container-fluid illustration-container">
+        {{ illustration() }}
+    </div>
+    <div class="container-fluid text-container">
+        <div class="row">
+            <div class="col">col here</div>
+        </div>
+        <div class="row">
+            <div class="col">more text</div>
+            <div class="col">more here</div>
+        </div>
+    </div>
+</div>s
+
+{% endblock %}

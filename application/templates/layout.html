@@ -1,3 +1,5 @@
+{% from 'catmacros.html' import catmacro %}
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -43,13 +45,23 @@
         crossorigin="anonymous" />
 
     <!-- my own custom styling -->
-    <link href="{{ url_for('static', filename='styles.css')}}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='stylesheets/styles.css')}}" rel="stylesheet" />
 
 
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light border">
+    <nav class="navbar navbar-expand-md py-3 shadow">
+
+        <div class="logo" style="
+                height: 40px;
+                margin: 10px;
+                margin-right: 20px;
+                ">
+            {{ catmacro() }}
+
+        </div>
+
         <a class="navbar-brand" href="/admin"><span class="blue">Minimal</span>
             <span class="red">Pairs</span></a>
         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"

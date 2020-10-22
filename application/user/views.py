@@ -11,7 +11,12 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 @user_blueprint.route("/", methods=["GET", "POST"])
 def index():
     """admin stuff"""
+<<<<<<< Updated upstream
     return redirect(url_for("user_blueprint.contrasts"))
+=======
+
+    return render_template("userindex.html")
+>>>>>>> Stashed changes
 
 
 @ user_blueprint.route("/pairs", methods=["GET", "POST"])

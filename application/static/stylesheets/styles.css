@@ -1,0 +1,423 @@
+nav {
+  background-color: #915491;
+}
+
+nav a {
+  color: #370e2f;
+}
+
+nav #catlogo {
+  fill: #370e2f;
+}
+
+nav .navbar-brand {
+  /* size for brand */
+  font-size: xx-large;
+}
+
+body {
+  background-color: #c99bb8;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.frontpage-container {
+  position: relative;
+  border: 3px solid blue;
+}
+
+.frontpage-container .illustration-container {
+  position: absolute;
+  border: 2px solid green;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.frontpage-container .illustration-container #illustration {
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  -webkit-transform: scale(3.5, 3.5) translate(0%, 20%);
+          transform: scale(3.5, 3.5) translate(0%, 20%);
+}
+
+@media (orientation: landscape) {
+  .frontpage-container .illustration-container #illustration {
+    -webkit-transform: scale(1.8, 1.8) translate(-10%, -3%);
+            transform: scale(1.8, 1.8) translate(-10%, -3%);
+  }
+}
+
+.frontpage-container .text-container {
+  position: absolute;
+  top: 200;
+}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 2px;
+  margin: 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  width: 30px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password], .change-file-label {
+  width: 100%;
+  max-height: 50px !important;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+.form-container input[type=file] {
+  display: none;
+}
+
+.change-file-label {
+  background-color: #a9e1ff;
+  border: 1px solid #a9e1ff;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.change-file-label:hover {
+  background-color: white;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+.chosen-select {
+  width: 100%;
+}
+
+.pairSoundTable .sound_input_field {
+  margin-right: 30px;
+}
+
+.pairSoundTable input, .pairSoundTable label {
+  display: block;
+}
+
+.pairSoundTable label {
+  height: 2.5em;
+}
+
+.pairSoundTable .row {
+  margin-bottom: 30px;
+}
+
+.pairSoundTable .vs {
+  font-weight: bolder;
+  padding-top: 30px;
+}
+
+.img-mpexample {
+  width: 50%;
+}
+
+.add-file-label::after {
+  color: #17a2b8;
+  background-color: transparent;
+  background-image: none;
+  border-color: #17a2b8;
+}
+
+.add-file-label:hover::after {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.ipa_picker a {
+  color: black;
+  font-size: 30px;
+  padding: 5px;
+  font-family: "Times New Roman";
+}
+
+.ipa-container {
+  padding: 10px;
+  border: 5px solid black;
+  border-radius: 20px;
+  background-color: rgba(194, 194, 194, 0.461);
+  margin: 0 auto;
+  width: 340px;
+}
+
+@media only screen and (min-width: 600px) {
+  .ipa-container {
+    width: 600px;
+  }
+}
+
+span.line {
+  display: inline-block;
+}
+
+.titlebox {
+  background-color: #c5ece6;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 40px;
+  margin-bottom: 50px;
+}
+
+.titlebox .title-text {
+  font-size: 4rem;
+  font-weight: 700;
+  padding-bottom: 30px;
+}
+
+.titlebox p {
+  padding-bottom: 20px;
+}
+
+.titlebox button {
+  border-radius: 15px;
+  font-size: larger;
+  margin-bottom: 50px;
+}
+
+.titlebox .search-sounds-field {
+  padding-bottom: 40px;
+}
+
+.titlebox .search-sounds-field input {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.titlebox .search-sounds-field button {
+  margin-left: 15px;
+  height: 38px;
+  width: 40px;
+  background: #343a40;
+  color: white;
+  font-size: 17px;
+  border-radius: 10px;
+  border: 2px solid grey;
+}
+
+.titlebox .search-sounds-field button:hover {
+  cursor: pointer;
+  background: black;
+}
+
+.contentbox [class*="col-"] {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.wordcard {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.wordcard .img-container {
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 576px) {
+  .wordcard .img-container {
+    height: 281.4px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .wordcard .img-container {
+    height: 148.9px;
+  }
+}
+
+@media (min-width: 768px) {
+  .wordcard .img-container {
+    height: 208.9px;
+  }
+}
+
+@media (min-width: 992px) {
+  .wordcard .img-container {
+    height: 281.4px;
+  }
+}
+
+.wordcard .img-container .card-img-top {
+  max-width: 100%;
+  /* width of container */
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 50% 50%;
+     object-position: 50% 50%;
+}
+
+.wordcard .card-title {
+  font-size: 4vw;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
+@media only screen and (max-width: 576px) {
+  .wordcard .card-title {
+    font-size: 2rem;
+  }
+}
+
+.word-info-container .row {
+  background-color: #ffbb7c;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+@media screen and (max-width: 710px) {
+  .word-info-container .row {
+    padding-left: 8%;
+    padding-right: 8%;
+  }
+}
+
+@media screen and (max-width: 422px) {
+  .word-info-container .row {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}
+
+.word-info-container .row [class*='col-'] {
+  padding: 0px 5px;
+}
+
+.word-info-container .row [class*='col-'] .title {
+  font-size: 25px;
+  line-height: 1;
+  padding-left: 5%;
+}
+
+@media screen and (min-width: 575px) {
+  .word-info-container .row [class*='col-'] .title h1 {
+    font-size: 9vw;
+  }
+}
+
+.word-info-container .row [class*='col-'] .word1-img-div {
+  height: 100%;
+  width: 100%;
+}
+
+.word-info-container .row [class*='col-'] .word1-img-div img {
+  border-radius: 8px;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.word-info-container .row .slider {
+  background-color: #ff5e00;
+  padding: 10px 0px;
+  border-radius: 8px;
+  max-width: 1150px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 694px;
+  overflow: hidden;
+}
+
+.word-info-container .row .slider .card {
+  border-radius: 8px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 0px 10px;
+  height: 232px;
+  overflow: hidden;
+}
+
+.word-info-container .row .slider .card .img-wrap {
+  height: 120px;
+  width: auto;
+  overflow: hidden;
+}
+
+.word-info-container .row .slider .card .img-wrap img {
+  width: 120%;
+  height: 120%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 0px 0px;
+     object-position: 0px 0px;
+}
+
+.word-info-container .row .slider .card .card-body {
+  max-height: 50%;
+  line-height: 16px;
+  font-size: 15px;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 15px;
+  overflow: scroll;
+}
+
+.word-info-container .row .slider .card .card-body .card-title {
+  margin-top: 0px;
+  margin-bottom: 2px;
+}
+/*# sourceMappingURL=styles.css.map */

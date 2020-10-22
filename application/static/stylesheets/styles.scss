@@ -1,0 +1,474 @@
+$color-purp1: #370e2f;
+$color-purp2: #915491;
+$color-purp3: #c99bb8;
+$color-red1: #fe5862;
+$color-red2: #FE766A;
+$color-yel1: #FE9055; 
+$color-yel2: #FFA965;
+
+
+nav {
+    background-color: $color-purp2;
+
+    a {
+        
+        color: $color-purp1;
+    }
+    #catlogo {
+        fill: $color-purp1;
+    }
+    .navbar-brand {
+        /* size for brand */
+        font-size: xx-large;
+    }
+}
+
+body {
+    background-color: $color-purp3;
+    box-sizing: border-box;
+}
+
+
+@import "frontpage";
+.frontpage-container {
+    position: relative;
+    border: 3px solid blue;
+    .illustration-container {
+        position: absolute;
+        border: 2px solid green;
+        padding: 0;
+        overflow-x: hidden;
+        
+        #illustration {
+            //width: 150%;
+            //height: auto;
+            //height: 250vh;
+            //margin-left: -20%; 
+
+            // On phone screen
+            transform-origin: center;
+            transform: scale(3.5, 3.5) translate(-0%, 20%);
+            
+            // Small devices (landscape phones, 576px and up)
+            @media (min-width: 576px) {
+
+            }
+            // Medium devices (tablets, 768px and up)
+            @media (min-width: 768px) {
+
+            }
+            // Large devices (desktops, 992px and up)
+            @media (min-width: 992px) {
+
+            }
+            // Extra large devices (large desktops, 1200px and up)
+            @media (min-width: 1200px) {
+
+            }
+            @media (orientation: landscape) {
+                transform: scale(1.8, 1.8) translate(-10%, -3%);
+            }
+        }
+        
+    }
+    .text-container {
+    position: absolute;
+    top: 200;
+    }
+
+}
+// to be imported from frontpage
+
+
+
+
+
+
+
+
+
+
+  /* Button used to open the contact form - fixed at the bottom of the page */
+  .open-button {
+    background-color: #555;
+    color: white;
+    padding: 2px;
+    margin: 2px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    //position: fixed;
+    //bottom: 23px;
+    //right: 28px;
+    width: 30px;
+  }
+  
+  /* The popup form - hidden by default */
+  .form-popup {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+  }
+  
+  /* Add styles to the form container */
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+  }
+  
+  /* Full-width input fields */
+  .form-container input[type=text], .form-container input[type=password], .change-file-label {
+    width: 100%;
+    max-height: 50px !important;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+  .form-container input[type=file] {
+      display: none;
+  }
+  .change-file-label {
+      background-color: #a9e1ff;
+      border: 1px solid #a9e1ff;
+      border-radius: 0.25rem;
+      overflow: hidden;
+      
+      &:hover {
+          background-color: white;
+      }
+  }
+  
+  /* When the inputs get focus, do something */
+  .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+  
+  /* Set a style for the submit/login button */
+  .form-container .btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+  }
+  
+  /* Add a red background color to the cancel button */
+  .form-container .cancel {
+    background-color: red;
+  }
+  
+  /* Add some hover effects to buttons */
+  .form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+  } 
+
+  // Chosen select is the add form multiple select field for pairs
+  .chosen-select {
+      width: 100%;
+  }
+
+  .pairSoundTable {
+    .sound_input_field {
+        margin-right: 30px;
+    }
+    input, label {
+        display: block;
+    }
+    label {
+        height: 2.5em;
+    }
+
+    .row {
+        margin-bottom: 30px;
+    }
+    .vs {
+        font-weight: bolder;
+        padding-top: 30px;
+    }
+
+  }
+
+
+  
+  
+
+
+  // For displaying images in change.html **************************
+  .img-mpexample {
+    //border: 4px solid blue;
+    width: 50%;
+  }
+
+  // The image upload input fields in add.html and change.html
+  .add-file-label {
+      // "Browse" button (pseudo element in WTForms FileField)
+      &::after {
+          color: #17a2b8;
+          background-color: transparent;
+          background-image: none;
+          border-color: #17a2b8;
+        }
+        &:hover {
+            &::after {
+                color: #fff;
+                background-color: #17a2b8;
+                border-color: #17a2b8;
+            }
+        }
+    }
+    
+    // ipa picker used in add.html
+    .ipa_picker {
+        a {
+            
+            color: black;
+            font-size: 30px;
+          padding: 5px;
+          font-family: "Times New Roman";
+      }
+  }
+
+// ipa container used in contrasts and add?
+.ipa-container {
+    padding: 10px;
+    border: 5px solid black;
+    border-radius: 20px;
+    background-color: rgba(194, 194, 194, 0.461);
+    //width: fit-content; 
+    margin: 0 auto;
+    @media only screen and (min-width: 600px) {
+        width: 600px;
+    }
+    width: 340px;    
+}
+span.line {
+    display: inline-block;
+}
+
+
+
+
+  // For contrasts.html **************************
+  .titlebox {
+      .title-text {
+          
+          font-size: 4rem;
+          font-weight: 700;
+          padding-bottom: 30px;
+          
+        }
+        p {
+        padding-bottom: 20px;
+        }
+        button {
+            border-radius: 15px;
+            font-size: larger;
+            margin-bottom: 50px;
+        }
+      .search-sounds-field {
+          padding-bottom: 40px;
+
+          input {
+              margin-bottom: 15px;;
+              font-size: 20px;
+          }
+          button {
+              margin-left: 15px;
+              height: 38px;
+              width: 40px;
+              background: #343a40;
+              color: white;
+              font-size: 17px;
+              border-radius: 10px;
+              border: 2px solid grey;
+              &:hover {
+                cursor:pointer;
+                background: black;
+            }
+          }
+      }
+
+      background-color: #c5ece6;
+      align-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      padding-top: 40px;
+      margin-bottom: 50px;
+  }
+
+  .contentbox {
+    [class*="col-"] {
+        display: flex;
+        justify-content: center;
+      }
+  }
+  .wordcard {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .img-container {
+
+        // Adjusting image height the tedious way to align with width
+        @media only screen and (max-width: 576px) {
+            //border: 3px solid red;
+            height: 281.4px;
+        }
+        @media only screen and (min-width: 576px) {
+            //border: 3px solid rgb(0, 60, 255);
+            height: 148.9px;
+        }
+        @media (min-width: 768px) {
+            //border: 3px solid rgb(0, 153, 0);
+            height: 208.9px;
+        }
+        @media (min-width: 992px) {
+            //border: 3px solid rgb(146, 0, 190);
+            height: 281.4px;
+        }
+
+    overflow: hidden;
+    .card-img-top {
+        // Finds the middle of the image and crops to fit container
+        max-width: 100%; /* width of container */
+            //height: 100%; /* height of container */
+        object-fit: cover;
+        object-position: 50% 50%;
+            
+        }
+    }
+
+
+
+    .card-title {
+        font-size: 4vw;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        @media only screen and (max-width: 576px) {
+            font-size: 2rem;
+        }
+    }
+
+  }
+
+
+
+
+
+// Styling for pairs<id>
+
+.word-info-container {
+    $border-radius-word-info: 8px;
+      //border: 1px solid black;
+      //width: 70%;
+      @media screen and (max-width: 422px) {
+          //width: 100%;
+      }
+      .row {
+        //border: 1px solid black;
+        background-color: rgb(255, 187, 124);
+        justify-content: flex-start;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        padding-left: 15%;
+        padding-right: 15%;
+        @media screen and (max-width: 710px) {
+            padding-left: 8%;
+            padding-right: 8%;
+        }
+        @media screen and (max-width: 422px) {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+
+        [class*='col-']{
+
+            //border: 1px solid black;
+            padding: 0px 5px;
+
+
+            // This part is responsible for word1 top row's items
+            .title {
+
+                font-size: 25px;
+                line-height: 1;
+                padding-left: 5%;
+                @media screen and (min-width: 575px) {
+                h1 {
+                        font-size: 9vw;
+                    }
+                }
+            }
+
+
+            .word1-img-div {
+                //border: 1px solid rgb(255, 0, 43);
+                height: 100%;
+                width: 100%;
+                img {
+                    border-radius: $border-radius-word-info;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+
+
+
+            // This part is responsible for pair card behaviours
+ 
+
+          }
+          // Carousel in pairs
+          .slider {
+              background-color: rgb(255, 94, 0);
+              padding: 10px 0px;
+              border-radius: $border-radius-word-info;
+              max-width: 1150px;
+              overflow: hidden;
+              display: flex;
+              max-height: 694px;
+              overflow: hidden;
+              .card {
+                border-radius: $border-radius-word-info;
+                  flex: 1;
+                  margin: 0px 10px;
+                  height: 232px;
+                  overflow: hidden;
+                .img-wrap {
+                    height: 120px;
+                    width: auto;
+                    overflow: hidden;
+                    img {
+                        width: 120%;
+                        height: 120%;
+                        object-fit: cover;
+                        object-position: 0px 0px;
+                    }
+                }
+                .card-body {
+                    .card-title {
+                        margin-top: 0px;
+                        margin-bottom: 2px;
+                    }
+                    //border: 1px solid green;
+                    max-height: 50%;
+                    line-height: 16px;
+                    font-size: 15px;;
+                    padding: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 15px;
+                    overflow: scroll;
+                }
+              }
+          }
+      }
+  }
+
