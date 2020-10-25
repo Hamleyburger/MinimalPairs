@@ -1,3 +1,7 @@
+html {
+  height: 100%;
+}
+
 nav {
   background-color: #915491;
 }
@@ -22,34 +26,86 @@ body {
 }
 
 .frontpage-container {
-  position: relative;
   border: 3px solid blue;
+  overflow: hidden;
+  height: 377vw;
 }
 
 .frontpage-container .illustration-container {
-  position: absolute;
   border: 2px solid green;
   padding: 0;
-  overflow-x: hidden;
+  overflow: visible;
+  height: 110vh;
+  position: relative;
 }
 
 .frontpage-container .illustration-container #illustration {
+  position: absolute;
+  z-index: -1;
   -webkit-transform-origin: center;
           transform-origin: center;
-  -webkit-transform: scale(3.5, 3.5) translate(0%, 20%);
-          transform: scale(3.5, 3.5) translate(0%, 20%);
+  -webkit-transform: scale(3.5, 3.5) translate(9%, 18%);
+          transform: scale(3.5, 3.5) translate(9%, 18%);
 }
 
-@media (orientation: landscape) {
+@media (min-width: 576px) {
   .frontpage-container .illustration-container #illustration {
-    -webkit-transform: scale(1.8, 1.8) translate(-10%, -3%);
-            transform: scale(1.8, 1.8) translate(-10%, -3%);
+    -webkit-transform: scale(2.5, 2.5) translate(3%, 18%);
+            transform: scale(2.5, 2.5) translate(3%, 18%);
+  }
+}
+
+@media (min-width: 768px) {
+  .frontpage-container .illustration-container #illustration {
+    -webkit-transform: scale(2, 2) translate(0%, 12%);
+            transform: scale(2, 2) translate(0%, 12%);
+  }
+}
+
+@media (min-width: 992px) {
+  .frontpage-container .illustration-container #illustration {
+    -webkit-transform: scale(1.8, 1.8) translate(-4%, 6%);
+            transform: scale(1.8, 1.8) translate(-4%, 6%);
+  }
+}
+
+@media (min-width: 1200px) {
+  .frontpage-container .illustration-container #illustration {
+    -webkit-transform: scale(1.3, 1.3) translate(-10%, -2%);
+            transform: scale(1.3, 1.3) translate(-10%, -2%);
   }
 }
 
 .frontpage-container .text-container {
-  position: absolute;
-  top: 200;
+  position: relative;
+  font-size: larger;
+  font-weight: bolder;
+}
+
+.frontpage-container .text-container [class*="col-"], .frontpage-container .text-container .col {
+  background-color: #fe5862;
+  color: #ffc851;
+  margin: 40px 10px;
+}
+
+#illustration #inner-c {
+  stop-color: #ffc851;
+}
+
+#illustration #outer-c {
+  stop-color: #FE766A;
+}
+
+#illustration #sky {
+  fill: url(#sun-gradient);
+}
+
+#illustration #sun {
+  fill: #fe5862;
+}
+
+#illustration #cat-chair-hill {
+  fill: #370e2f;
 }
 
 /* Button used to open the contact form - fixed at the bottom of the page */
