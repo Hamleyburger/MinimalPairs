@@ -1,17 +1,27 @@
+:root {
+  --color-purp1: #370e2f;
+  --color-purp2: #915491;
+  --color-purp3: #c99bb8;
+  --color-red1: #fe5862;
+  --color-red2: #FE766A;
+  --color-yel1: #FE9055;
+  --color-yel2: #ffc851;
+}
+
 html {
   height: 100%;
 }
 
 nav {
-  background-color: #915491;
+  background-color: var(--color-purp2);
 }
 
 nav a {
-  color: #370e2f;
+  color: var(--color-purp1);
 }
 
 nav #catlogo {
-  fill: #370e2f;
+  fill: var(--color-purp1);
 }
 
 nav .navbar-brand {
@@ -20,19 +30,17 @@ nav .navbar-brand {
 }
 
 body {
-  background-color: #c99bb8;
+  background-color: var(--color-purp3);
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
 .frontpage-container {
-  border: 3px solid blue;
   overflow: hidden;
   height: 377vw;
 }
 
 .frontpage-container .illustration-container {
-  border: 2px solid green;
   padding: 0;
   overflow: visible;
   height: 110vh;
@@ -83,29 +91,37 @@ body {
 }
 
 .frontpage-container .text-container [class*="col-"], .frontpage-container .text-container .col {
-  background-color: #fe5862;
-  color: #ffc851;
+  background-color: var(--color-red1);
+  color: var(--color-yel2);
   margin: 40px 10px;
 }
 
 #illustration #inner-c {
-  stop-color: #ffc851;
+  stop-color: var(--color-yel2);
 }
 
 #illustration #outer-c {
-  stop-color: #FE766A;
+  stop-color: var(--color-red2);
 }
 
 #illustration #sky {
   fill: url(#sun-gradient);
 }
 
+#illustration .rays-lin-stop1 {
+  stop-color: var(--color-red1);
+}
+
 #illustration #sun {
-  fill: #fe5862;
+  fill: var(--color-red1);
+}
+
+#illustration #sun #sunrays {
+  fill: url(#sunrays-gradient);
 }
 
 #illustration #cat-chair-hill {
-  fill: #370e2f;
+  fill: var(--color-purp1);
 }
 
 /* Button used to open the contact form - fixed at the bottom of the page */

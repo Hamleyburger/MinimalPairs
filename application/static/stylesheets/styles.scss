@@ -1,23 +1,25 @@
-$color-purp1: #370e2f;
-$color-purp2: #915491;
-$color-purp3: #c99bb8;
-$color-red1: #fe5862;
-$color-red2: #FE766A;
-$color-yel1: #FE9055; 
-$color-yel2: #ffc851;
+:root {
+    --color-purp1: #370e2f;
+    --color-purp2: #915491;
+    --color-purp3: #c99bb8;
+    --color-red1: #fe5862;
+    --color-red2: #FE766A;
+    --color-yel1: #FE9055; 
+    --color-yel2: #ffc851;
+}
 
 html {
     height: 100%;
 }
 nav {
-    background-color: $color-purp2;
+    background-color: var(--color-purp2);
 
     a {
         
-        color: $color-purp1;
+        color: var(--color-purp1);
     }
     #catlogo {
-        fill: $color-purp1;
+        fill: var(--color-purp1);
     }
     .navbar-brand {
         /* size for brand */
@@ -26,21 +28,20 @@ nav {
 }
 
 body {
-    background-color: $color-purp3;
+    background-color: var(--color-purp3);
     box-sizing: border-box;
 }
+
 
 
 // Move frontpage stuff here when done.
 @import "frontpage";
 
 .frontpage-container {
-    border: 3px solid blue;
     overflow: hidden;
     height: 377vw;
 
     .illustration-container {
-        border: 2px solid green;
         padding: 0;
         overflow: visible;
         height: 110vh;
@@ -79,8 +80,8 @@ body {
     font-weight: bolder;
     [class*="col-"], .col {
 
-        background-color: $color-red1;
-        color: $color-yel2;
+        background-color: var(--color-red1);
+        color: var(--color-yel2);
         margin: 40px 10px;
     }
     }
@@ -89,24 +90,34 @@ body {
 
 #illustration {
     #inner-c {
-        stop-color: $color-yel2;
+        stop-color: var(--color-yel2);
     }
     #outer-c {
-        stop-color: $color-red2;
+        stop-color: var(--color-red2);
     }
     #sky {
         fill: url(#sun-gradient);
     }
+    .rays-lin-stop1 {
+        stop-color: var(--color-red1);
+    }
+
     #sun {
-        fill: $color-red1;
+        fill: var(--color-red1);
+        #sunrays {
+            fill: url(#sunrays-gradient);
+        }
     }
     #cat-chair-hill {
-        fill: $color-purp1;
+        fill: var(--color-purp1);
     }
 }
 
 
+
 // to be imported from frontpage
+
+
 
 
 
