@@ -71,3 +71,31 @@ function insertAtCursor(sound) {
 };
 
 
+// Having to do with js controlled style and the (front page) animation
+var colorpurp1 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp1');
+var colorpurp2 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp2');
+var colorpurp3 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp3');
+var colorred1 = getComputedStyle(document.documentElement).getPropertyValue('--color-red1');
+var colorred2 = getComputedStyle(document.documentElement).getPropertyValue('--color-red2');
+var coloryel1 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel1');
+var coloryel2 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel2');
+
+var tl = gsap.timeline({
+    scrollTrigger: {
+        once: true,
+        end: "+=500", // end after scrolling 500px beyond the start
+        scrub: 2, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
+    }
+});
+tl.delay(1);
+tl.timeScale(0.5);
+// solen tager 5s om at gå ned
+tl.to("#sun", { duration: 5, y: 190 })
+    // lyset tager 8s om at gå ned
+    .to("#sun-gradient", { duration: 7, attr: { fy: 0.9 } }, '<')
+    // lyset tager 3s om at blive rødt
+    .to("#outer-c", { duration: 3, stopColor: colorred1 }, '<')
+    .to("#inner-c", { duration: 1, stopColor: colorred1 }, '>')
+    .to("#sun", { duration: 0, autoAlpha: 0 }, '>')
+    //.to("#inner-c", { duration: 2, stopColor: colorred1 }, '>')
+    .to("#outer-c", { duration: 1, stopColor: colorpurp2 }, '<')
