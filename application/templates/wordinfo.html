@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% from 'macros.html' import group_card, pair_card %}
+{% from 'MOmacro.html' import MOmacro %}
 
 {% block title %}
 : Change word
@@ -7,6 +8,18 @@
 
 {% block main %}
 
+<style>
+    .word-info-container .row {
+        border: 2px solid black;
+        border-radius: 16px;
+    }
+
+    .word-info-container h5 {
+        width: 100%;
+        font-weight: bold;
+        ;
+    }
+</style>
 
 <div class="container-fluid word-info-container">
     <div class="row">
@@ -29,11 +42,13 @@
 
 
     <div class="row">
-
+        <h5>Par</h5>
         <div class="slider owl-carousel">
+
             {% for pairList in pairLists %}
             {{ pair_card(pairList) }}
             {% endfor %}
+
         </div>
 
     </div>
@@ -64,8 +79,22 @@
         });
     </script>
 
+    <div class="row justify-content-between">
+        <style>
+            .col,
+            .col-sm-6 {
+                border: 2px solid blue;
+            }
+        </style>
+        <h5 style="width: 100%">Multiple oppositioner</h5>
+        {{ MOmacro(word.word, MOset) }}
+        {% for MOset in MOsets %}
+        <div class="col-12 col-sm-6">
+            {{ MOmacro(word.word, MOset) }}
+        </div>
+        {% endfor %}
 
-
+    </div>
 
 
 

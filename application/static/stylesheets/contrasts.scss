@@ -1,0 +1,119 @@
+// pretty ipa container used in contrasts
+.ipa-container {
+    padding: 10px;
+    border: 5px solid black;
+    border-radius: 20px;
+    background-color: rgba(194, 194, 194, 0.461);
+    margin: 0 auto;
+    width: 600px;
+    max-width: 100%;
+
+    @media only screen and (max-width: 620px) {
+        width: 340px;
+    }
+
+    @media only screen and (max-width: 350px) {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+
+
+
+// For contrasts.html **************************
+.titlebox {
+    .title-text {
+        
+        font-size: 4rem;
+        font-weight: 700;
+        padding-bottom: 30px;
+        
+    }
+    p {
+    padding-bottom: 20px;
+    }
+    button {
+        border-radius: 15px;
+        font-size: larger;
+        margin-bottom: 50px;
+    }
+    .search-sounds-field {
+        padding-bottom: 40px;
+
+        input {
+            margin-bottom: 15px;;
+            font-size: 20px;
+        }
+        button {
+            margin-left: 15px;
+            height: 38px;
+            width: 40px;
+            background: #343a40;
+            color: white;
+            font-size: 17px;
+            border-radius: 10px;
+            border: 2px solid grey;
+            &:hover {
+            cursor:pointer;
+            background: black;
+            }
+        }
+    }
+
+    background-color: #c5ece6;
+    align-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 40px;
+    margin-bottom: 50px;
+}
+
+.contentbox {
+[class*="col-"] {
+    display: flex;
+    justify-content: center;
+    }
+}
+.wordcard {
+margin-top: 20px;
+margin-bottom: 20px;
+
+    .img-container {
+
+        // Adjusting image height the tedious way to align with width
+        @media only screen and (max-width: 576px) {
+            //border: 3px solid red;
+            height: 281.4px;
+        }
+        @media only screen and (min-width: 576px) {
+            //border: 3px solid rgb(0, 60, 255);
+            height: 148.9px;
+        }
+        @media (min-width: 768px) {
+            //border: 3px solid rgb(0, 153, 0);
+            height: 208.9px;
+        }
+        @media (min-width: 992px) {
+            //border: 3px solid rgb(146, 0, 190);
+            height: 281.4px;
+        }
+
+        overflow: hidden;
+        .card-img-top {
+            // Finds the middle of the image and crops to fit container
+            max-width: 100%; /* width of container */
+                //height: 100%; /* height of container */
+            object-fit: cover;
+            object-position: 50% 50%;
+                
+        }
+    }
+
+    .card-title {
+        font-size: 4vw;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        @media only screen and (max-width: 576px) {
+            font-size: 2rem;
+        }
+    }
+}

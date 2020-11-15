@@ -67,16 +67,19 @@
 <body>
     <nav class="navbar navbar-expand-md py-3 shadow">
 
-        <div class="logo" style="
-                height: 40px;
-                margin: 10px;
-                margin-right: 20px;
-                ">
-            {{ catmacro() }}
+        <a href="/">
+            <div class="logo" style="
+            height: 40px;
+            margin: 10px;
+            margin-right: 20px;
+            ">
+                {{ catmacro() }}
 
-        </div>
+            </div>
+        </a>
 
-        <a class="navbar-brand" href="/admin"><span class="blue">Minimal</span>
+
+        <a class="navbar-brand" href="/"><span class="blue">Minimal</span>
             <span class="red">Pairs</span></a>
         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-target="#navbar" data-toggle="collapse" type="button">
@@ -94,7 +97,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/index">Button</a>
+                    <a class="nav-link" href="/">Button</a>
                 </li>
             </ul>
         </div>

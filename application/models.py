@@ -132,6 +132,7 @@ class Sound(db.Model):
 
     def getMOPairs(self, sound2List=[]):
         """ (Sound) Returns 2D array.\n
+        Takes a key sound and a list of opposition sounds.\n
         Searches in relevant groups for Multiple Oppositions and returns\n
         a list of lists containg MO-sets for each group. """
 
@@ -316,7 +317,7 @@ class Pair(db.Model):
     word_sound = db.Column(db.String())
     partner_sound = db.Column(db.String())
 
-    # TODO: add relationships to set word objects with specified foreignkeys
+    # Each pair has a word 1 (word) and a word 2 (partner)
     w1 = db.relationship("Word", primaryjoin="Pair.word_id==Word.id")
     w2 = db.relationship("Word", primaryjoin="Pair.partner_id==Word.id")
 

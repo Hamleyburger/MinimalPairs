@@ -3,13 +3,10 @@
   --color-purp2: #915491;
   --color-purp3: #c99bb8;
   --color-red1: #fe5862;
+  --color-red1-transparent: #fe586396;
   --color-red2: #FE766A;
   --color-yel1: #FE9055;
   --color-yel2: #ffc851;
-}
-
-html {
-  height: 100%;
 }
 
 nav {
@@ -29,10 +26,27 @@ nav .navbar-brand {
   font-size: xx-large;
 }
 
+html {
+  height: 100%;
+}
+
 body {
-  background-color: var(--color-purp3);
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 4rem;
+  background-color: var(--color-red2);
+  background: radial-gradient(circle at 0px 700px, var(--color-yel2) 0%, var(--color-red2) 1000px);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
 }
 
 .frontpage-container {
@@ -124,8 +138,8 @@ body {
   fill: var(--color-purp1);
 }
 
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
+/* Little grey button used in change.html for opening change form and word info */
+.lil-buttonon {
   background-color: #555;
   color: white;
   padding: 2px;
@@ -136,56 +150,55 @@ body {
   width: 30px;
 }
 
-/* The popup form - hidden by default */
-.form-popup {
+/* The popup form in change.html - hidden by until summoned */
+.popup-form-wrapper {
   display: none;
   position: fixed;
   bottom: 20px;
   right: 20px;
   border: 3px solid #f1f1f1;
-  z-index: 9;
+  z-index: 1;
+  /* the popup form itself */
 }
 
-/* Add styles to the form container */
-.form-container {
+.popup-form-wrapper .popup-form {
   max-width: 300px;
   padding: 10px;
   background-color: white;
+  /* Set a style for the save/delete buttons */
 }
 
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password], .change-file-label {
+.popup-form-wrapper .popup-form input[type=text], .popup-form-wrapper .popup-form .popup-form input[type=password], .popup-form-wrapper .popup-form .change-file-label {
   width: 100%;
   max-height: 50px !important;
   padding: 15px;
   margin: 5px 0 22px 0;
   border: none;
   background: #f1f1f1;
+  /* When the inputs get focus, do something */
 }
 
-.form-container input[type=file] {
+.popup-form-wrapper .popup-form input[type=text]:focus, .popup-form-wrapper .popup-form .popup-form input[type=password]:focus, .popup-form-wrapper .popup-form .change-file-label:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.popup-form-wrapper .popup-form input[type=file] {
   display: none;
 }
 
-.change-file-label {
+.popup-form-wrapper .popup-form .change-file-label {
   background-color: #a9e1ff;
   border: 1px solid #a9e1ff;
   border-radius: 0.25rem;
   overflow: hidden;
 }
 
-.change-file-label:hover {
-  background-color: white;
+.popup-form-wrapper .popup-form .change-file-label:hover {
+  background-color: #84d4ff;
 }
 
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
+.popup-form-wrapper .popup-form .btn {
   background-color: #4CAF50;
   color: white;
   padding: 16px 20px;
@@ -196,14 +209,17 @@ body {
   opacity: 0.8;
 }
 
-/* Add a red background color to the cancel button */
-.form-container .cancel {
+.popup-form-wrapper .popup-form .cancel {
   background-color: red;
 }
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
+.popup-form .btn:hover, .lil-buttonon:hover {
   opacity: 1;
+}
+
+.img-mpexample {
+  width: 50%;
 }
 
 .chosen-select {
@@ -231,10 +247,6 @@ body {
   padding-top: 30px;
 }
 
-.img-mpexample {
-  width: 50%;
-}
-
 .add-file-label::after {
   color: #17a2b8;
   background-color: transparent;
@@ -248,30 +260,27 @@ body {
   border-color: #17a2b8;
 }
 
-.ipa_picker a {
-  color: black;
-  font-size: 30px;
-  padding: 5px;
-  font-family: "Times New Roman";
-}
-
 .ipa-container {
   padding: 10px;
   border: 5px solid black;
   border-radius: 20px;
   background-color: rgba(194, 194, 194, 0.461);
   margin: 0 auto;
-  width: 340px;
+  width: 600px;
+  max-width: 100%;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (max-width: 620px) {
   .ipa-container {
-    width: 600px;
+    width: 340px;
   }
 }
 
-span.line {
-  display: inline-block;
+@media only screen and (max-width: 350px) {
+  .ipa-container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
 
 .titlebox {
@@ -388,27 +397,24 @@ span.line {
 }
 
 .word-info-container .row {
-  background-color: #ffbb7c;
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  padding-bottom: 15px;
-  padding-top: 15px;
-  padding-left: 15%;
-  padding-right: 15%;
+  margin: 10%;
+  padding: 15px;
 }
 
 @media screen and (max-width: 710px) {
   .word-info-container .row {
-    padding-left: 8%;
-    padding-right: 8%;
+    margin-left: 8%;
+    margin-right: 8%;
   }
 }
 
 @media screen and (max-width: 422px) {
   .word-info-container .row {
-    padding-left: 2px;
-    padding-right: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
   }
 }
 
@@ -441,7 +447,9 @@ span.line {
 }
 
 .word-info-container .row .slider {
-  background-color: #ff5e00;
+  -webkit-box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+          box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  background: radial-gradient(circle at bottom left, var(--color-red1-transparent) 0%, var(--color-purp2) 80%);
   padding: 10px 0px;
   border-radius: 8px;
   max-width: 1150px;
@@ -491,5 +499,23 @@ span.line {
 .word-info-container .row .slider .card .card-body .card-title {
   margin-top: 0px;
   margin-bottom: 2px;
+}
+
+.ipa_picker a {
+  color: black;
+  font-size: 30px;
+  padding: 5px;
+  font-family: "Times New Roman";
+}
+
+@media only screen and (max-width: 350px) {
+  .ipa_picker a {
+    padding-top: 7px;
+    font-size: 1.5rem;
+  }
+}
+
+.ipa_picker span.line {
+  display: inline-block;
 }
 /*# sourceMappingURL=styles.css.map */

@@ -7,8 +7,8 @@
 {% block main %}
 
 <!-- Popup form-->
-<div class="form-popup" id="myForm">
-    <form name="myform" class="form-container" method="POST" enctype="multipart/form-data"
+<div class="popup-form-wrapper" id="myForm">
+    <form name="myform" class="popup-form" method="POST" enctype="multipart/form-data"
         action="{{ url_for('admin_blueprint.change') }}">
         <h1 id="formtitle"></h1>
 
@@ -54,12 +54,12 @@
                             class="img-thumbnail img-mpexample" /></div>
                 </td>
                 <td style="text-align: center;">
-                    <button class="open-button"
+                    <button class="lil-buttonon"
                         onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">
                         ;(
                     </button>
-                    {% set url = url_for("admin_blueprint.pairs", word_id=entry.id) %}
-                    <button class="open-button" onclick="window.location.href='{{ url }}';">
+                    {% set url = url_for("admin_blueprint.wordinfo", word_id=entry.id) %}
+                    <button class="lil-buttonon" onclick="window.location.href='{{ url }}';">
                         PP
                     </button>
                 </td>

@@ -1,0 +1,46 @@
+// Styles for the admin page for adding and pairing words
+
+// Form in add.html for multiple selecting words to pair
+.chosen-select {
+    width: 100%;
+}
+
+// Pair sound table: Dynamically generated for defining pairs' sounds
+.pairSoundTable {
+    .sound_input_field {
+        margin-right: 30px;
+    }
+    input, label {
+        display: block;
+    }
+    label {
+        height: 2.5em;
+    }
+
+    .row {
+        margin-bottom: 30px;
+    }
+    .vs {
+        font-weight: bolder;
+        padding-top: 30px;
+    }
+
+}
+
+// The image upload input fields in add.html
+.add-file-label {
+    // "Browse" button (pseudo element in WTForms FileField)
+    &::after {
+        color: #17a2b8;
+        background-color: transparent;
+        background-image: none;
+        border-color: #17a2b8;
+    }
+    &:hover {
+        &::after {
+            color: #fff;
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+    }
+}

@@ -1,0 +1,136 @@
+.ipa-container {
+  padding: 10px;
+  border: 5px solid black;
+  border-radius: 20px;
+  background-color: rgba(194, 194, 194, 0.461);
+  margin: 0 auto;
+  width: 600px;
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 620px) {
+  .ipa-container {
+    width: 340px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .ipa-container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.titlebox {
+  background-color: #c5ece6;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 40px;
+  margin-bottom: 50px;
+}
+
+.titlebox .title-text {
+  font-size: 4rem;
+  font-weight: 700;
+  padding-bottom: 30px;
+}
+
+.titlebox p {
+  padding-bottom: 20px;
+}
+
+.titlebox button {
+  border-radius: 15px;
+  font-size: larger;
+  margin-bottom: 50px;
+}
+
+.titlebox .search-sounds-field {
+  padding-bottom: 40px;
+}
+
+.titlebox .search-sounds-field input {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.titlebox .search-sounds-field button {
+  margin-left: 15px;
+  height: 38px;
+  width: 40px;
+  background: #343a40;
+  color: white;
+  font-size: 17px;
+  border-radius: 10px;
+  border: 2px solid grey;
+}
+
+.titlebox .search-sounds-field button:hover {
+  cursor: pointer;
+  background: black;
+}
+
+.contentbox [class*="col-"] {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.wordcard {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.wordcard .img-container {
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 576px) {
+  .wordcard .img-container {
+    height: 281.4px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .wordcard .img-container {
+    height: 148.9px;
+  }
+}
+
+@media (min-width: 768px) {
+  .wordcard .img-container {
+    height: 208.9px;
+  }
+}
+
+@media (min-width: 992px) {
+  .wordcard .img-container {
+    height: 281.4px;
+  }
+}
+
+.wordcard .img-container .card-img-top {
+  max-width: 100%;
+  /* width of container */
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: 50% 50%;
+     object-position: 50% 50%;
+}
+
+.wordcard .card-title {
+  font-size: 4vw;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
+@media only screen and (max-width: 576px) {
+  .wordcard .card-title {
+    font-size: 2rem;
+  }
+}
+/*# sourceMappingURL=contrasts.css.map */

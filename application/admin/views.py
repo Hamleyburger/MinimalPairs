@@ -114,7 +114,7 @@ def upload_image():
 
 
 @ admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])
-def pairs(word_id):
+def wordinfo(word_id):
 
     # update to actually contain contrasts
     word = Word.query.get(word_id)
@@ -135,13 +135,13 @@ def pairs(word_id):
         if pairList:
             pairLists.append(pairList)
 
-    MOSets = word.getMOSets()
-    for x in MOSets:
+    MOsets = word.getMOSets()
+    for x in MOsets:
         print("")
         for y in x:
             print(y.textify())
 
-    return render_template("pairs copy 2.html", word=word, pairLists=pairLists, groups=groups)
+    return render_template("wordinfo.html", word=word, pairLists=pairLists, groups=groups, MOsets=MOsets)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])

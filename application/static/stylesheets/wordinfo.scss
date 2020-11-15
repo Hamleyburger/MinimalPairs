@@ -1,0 +1,113 @@
+// Styling for word info (pairs<id>)
+
+.word-info-container {
+    $border-radius-word-info: 8px;
+        //border: 1px solid black;
+        //width: 70%;
+        @media screen and (max-width: 422px) {
+            //width: 100%;
+        }
+        .row {
+        //border: 1px solid black;
+        justify-content: flex-start;
+        margin: 10%;
+        padding: 15px;
+        @media screen and (max-width: 710px) {
+            margin-left: 8%;
+            margin-right: 8%;
+        }
+        @media screen and (max-width: 422px) {
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+    
+    
+        [class*='col-']{
+    
+            //border: 1px solid black;
+            padding: 0px 5px;
+    
+    
+            // This part is responsible for word1 top row's items
+            .title {
+    
+                font-size: 25px;
+                line-height: 1;
+                padding-left: 5%;
+                @media screen and (min-width: 575px) {
+                h1 {
+                        font-size: 9vw;
+                    }
+                }
+            }
+    
+    
+            .word1-img-div {
+                //border: 1px solid rgb(255, 0, 43);
+                height: 100%;
+                width: 100%;
+                img {
+                    border-radius: $border-radius-word-info;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+    
+    
+    
+            // This part is responsible for pair card behaviours
+    
+    
+            }
+            // Carousel in pairs
+            .slider {
+                //background-color: var(--color-purp2);
+              
+                box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                background: radial-gradient(
+                    circle at bottom left,
+                    var(--color-red1-transparent) 0%,
+                    var(--color-purp2) 80%);
+                
+                padding: 10px 0px;
+                border-radius: $border-radius-word-info;
+                max-width: 1150px;
+                overflow: hidden;
+                display: flex;
+                max-height: 694px;
+                overflow: hidden;
+                .card {
+                border-radius: $border-radius-word-info;
+                    flex: 1;
+                    margin: 0px 10px;
+                    height: 232px;
+                    overflow: hidden;
+                .img-wrap {
+                    height: 120px;
+                    width: auto;
+                    overflow: hidden;
+                    img {
+                        width: 120%;
+                        height: 120%;
+                        object-fit: cover;
+                        object-position: 0px 0px;
+                    }
+                }
+                .card-body {
+                    .card-title {
+                        margin-top: 0px;
+                        margin-bottom: 2px;
+                    }
+                    //border: 1px solid green;
+                    max-height: 50%;
+                    line-height: 16px;
+                    font-size: 15px;;
+                    padding: 10px;
+                    padding-top: 5px;
+                    padding-bottom: 15px;
+                    overflow: scroll;
+                }
+                }
+            }
+        }
+    }
