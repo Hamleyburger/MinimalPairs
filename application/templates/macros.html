@@ -76,8 +76,31 @@
         <img class="card-img"
             src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + pairList[0].w2.image.name)}}" class=""
             alt="...">
-
     </div>
+
+    <div class="card-body">
+        <h5 class="card-title"><span class="line">{{ pairList[0].w2.word }}</span></h5>
+        <p class="card-text">
+            {% for pair in pairList %}
+            [{{ pair.s1.sound }}]<span>&#x2192;</span>[{{ pair.s2.sound }}]
+            <br>
+            {% endfor %}
+        </p>
+    </div>
+</div>
+{% endmacro %}
+
+
+
+
+{% macro pair_card_owl(pairList) %}
+<div class="item card">
+    <div class="img-wrap">
+        <img class="card-img"
+            src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + pairList[0].w2.image.name)}}" class=""
+            alt="...">
+    </div>
+
     <div class="card-body">
         <h5 class="card-title"><span class="line">{{ pairList[0].w2.word }}</span></h5>
         <p class="card-text">

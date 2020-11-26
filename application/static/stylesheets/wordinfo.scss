@@ -1,17 +1,15 @@
 // Styling for word info (pairs<id>)
 
 .word-info-container {
-    $border-radius-word-info: 8px;
-        //border: 1px solid black;
-        //width: 70%;
+    $border-radius-word-info: 3px;
         @media screen and (max-width: 422px) {
             //width: 100%;
         }
-        .row {
-        //border: 1px solid black;
+        .outer-row {
+        border-radius: 3px;
         justify-content: flex-start;
         margin: 10%;
-        padding: 15px;
+        padding: 0px;
         @media screen and (max-width: 710px) {
             margin-left: 8%;
             margin-right: 8%;
@@ -23,45 +21,45 @@
     
     
         [class*='col-']{
-    
-            //border: 1px solid black;
-            padding: 0px 5px;
+
+            padding: 0px 0px;
     
     
             // This part is responsible for word1 top row's items
-            .title {
+
     
+            .inner-row .cols-word .title {
                 font-size: 25px;
                 line-height: 1;
-                padding-left: 5%;
-                @media screen and (min-width: 575px) {
-                h1 {
-                        font-size: 9vw;
+                    h1 {
+                    overflow-wrap: break-word;
+                            font-size: 25px;
+                            font-weight: bold;
+                    }
+                    p {
+                        margin-bottom: 0;
+                        font-size: 20px;
                     }
                 }
-            }
-    
-    
+
+
             .word1-img-div {
-                //border: 1px solid rgb(255, 0, 43);
                 height: 100%;
                 width: 100%;
                 img {
-                    border-radius: $border-radius-word-info;
+                    border-radius: 50%;
                     width: 100%;
                     object-fit: cover;
                 }
             }
-    
-    
-    
+
             // This part is responsible for pair card behaviours
-    
-    
+
+
             }
             // Carousel in pairs
             .slider {
-                //background-color: var(--color-purp2);
+                //ground-color: var(--color-purp2);
               
                 box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
                 background: radial-gradient(
@@ -73,15 +71,16 @@
                 border-radius: $border-radius-word-info;
                 max-width: 1150px;
                 overflow: hidden;
-                display: flex;
+                //display: flex;
                 max-height: 694px;
                 overflow: hidden;
                 .card {
                 border-radius: $border-radius-word-info;
-                    flex: 1;
+                    //flex: 1;
                     margin: 0px 10px;
                     height: 232px;
                     overflow: hidden;
+                    max-width: 222px;
                 .img-wrap {
                     height: 120px;
                     width: auto;

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import group_card, pair_card %}
+{% from 'macros.html' import pair_card, pair_card_owl %}
 {% from 'MOmacro.html' import MOmacro %}
 
 {% block title %}
@@ -9,9 +9,10 @@
 {% block main %}
 
 <style>
-    .word-info-container .row {
-        border: 2px solid black;
-        border-radius: 16px;
+    .word-info-container .col-pairs {
+        background: #915491;
+        padding: 5px 8px !important;
+        border-radius: 3px;
     }
 
     .word-info-container h5 {
@@ -19,73 +20,139 @@
         font-weight: bold;
         ;
     }
+
+    .word-info-container .inner-row {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+
+    }
 </style>
 
 <div class="container-fluid word-info-container">
-    <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-8">
-            <div class="word1-img-div">
-                <img src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
-                    alt="image for the word '{{ word.word }}'">
-            </div>
-        </div>
-        <div class="col-lg-8 col-md-6 col-sm-4">
-            <div class="title">
+    <div class="row outer-row justify-content-sm-center justify-content-xl-between">
+        <div class="col-xl-5">
+            <div class="row inner-row justify-content-center">
 
-                <h1>{{ word.word }}</h1>
-                <p>
-                    "{{word.cue}}"
-                </p>
+
+                <div class="col-xl-6 order-xl-0 col-md-5 col-sm-5 col-8 cols-word text-center">
+                    <div class="word1-img-div">
+                        <img src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
+                            alt="image for the word '{{ word.word }}'">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-0"></div>
+                <div class="col-xl-6 order-xl-12 col-md-5 col-sm-8 cols-word align-self-xl-end text-center">
+                    <div class="title align-self-end">
+
+                        <h1>{{ word.word }}</h1>
+                        <p>
+                            "{{word.cue}}"
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xl-6 order-xl-12 col-0"></div>
             </div>
         </div>
+
+        <script> var pairCount = 0; </script>
+        {% for pairList in pairLists %}
+        <script> var pairCount = pairCount + 1; </script>
+        {% endfor %}
+
+
+
+
+        <div class="col-12 col-xl-7 col-pairs mt-5 mt-xl-0">
+            <h5>Par ({{pairLists|length}})</h5>
+
+            <div class="slider owl-carousel owl-theme">
+
+                {% for pairList in pairLists %}
+                {{ pair_card_owl(pairList) }}
+                {% endfor %}
+            </div>
+
+
+
+
+        </div>
+
     </div>
 
 
-    <div class="row">
-        <h5>Par</h5>
-        <div class="slider owl-carousel">
 
-            {% for pairList in pairLists %}
-            {{ pair_card(pairList) }}
-            {% endfor %}
 
-        </div>
 
-    </div>
+
+
+
+
 
     <script>
-        $(".slider").owlCarousel({
-            items: 4,
-            loop: true,
+        console.log(pairCount);
+        var loop = true;
+        var responsiveClass = true;
+
+        var owl = $(".slider");
+        owl.owlCarousel({
             autoplay: true,
+            loop: loop,
             autoplayTimeout: 6000,
             autoplayHoverpause: true,
-            responsiveClass: true,
+            responsiveClass: responsiveClass,
             smartSpeed: 2000,
+            dotsEach: true,
+
+
             responsive: {
                 0: {
-                    items: 2
+                    items: getItems(2),
+                    loop: getLoop(2)
                 },
 
                 460: {
-                    items: 3
+                    items: getItems(3),
+                    loop: getLoop(3)
+
+
+                },
+                1000: {
+                    items: getItems(4),
+                    loop: getLoop(4)
                 },
 
-                1000: {
-                    items: 4,
-                }
-            }
 
+            },
         });
+
+        function getItems(items) {
+            console.log("calculating items")
+            if (pairCount < items) {
+                return pairCount;
+            }
+            else {
+                return items;
+            }
+        }
+        function getLoop(items) {
+            console.log("calculating loop")
+            if (pairCount < items) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
     </script>
 
-    <div class="row justify-content-between">
-        <style>
-            .col,
-            .col-sm-6 {
-                border: 2px solid blue;
-            }
-        </style>
+
+
+
+
+
+    <div class="row outer-row justify-content-between">
         <h5 style="width: 100%">Multiple oppositioner</h5>
         {{ MOmacro(word.word, MOset) }}
         {% for MOset in MOsets %}
@@ -96,21 +163,10 @@
 
     </div>
 
-
-
-
-
-
 </div>
 
 
 
-
-{% for group in groups %}
-
-{{group_card(group)}}
-
-{% endfor %}
 
 
 

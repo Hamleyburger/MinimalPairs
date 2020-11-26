@@ -119,7 +119,6 @@ def wordinfo(word_id):
     # update to actually contain contrasts
     word = Word.query.get(word_id)
 
-    groups = word.groups
     partners = word.allPartners()
 
     # 2D array of all pair combinations for all partners (a list of pair lists)
@@ -141,7 +140,7 @@ def wordinfo(word_id):
         for y in x:
             print(y.textify())
 
-    return render_template("wordinfo.html", word=word, pairLists=pairLists, groups=groups, MOsets=MOsets)
+    return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])
