@@ -1,6 +1,6 @@
+@import "variables";
 
-
-nav {
+.navbar {
     background-color: var(--color-purp2);
 
     a {
@@ -13,6 +13,32 @@ nav {
     .navbar-brand {
         /* size for brand */
         font-size: xx-large;
+        margin: 0px 23px;
+        @media only screen and (max-width: 350px) {
+            margin: auto;
+        }
+    }
+
+    .navbar-toggler{
+        font-size: 2rem !important;
+        @media only screen and (max-width: 350px) {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+    }
+    .navbar-toggler-icon {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        height: 120%;
+
+        .fas {
+            color: $color-purp1;
+        }
+    }
+
+    @media only screen and (max-width: 350px) {
+        padding: 10px;
     }
 }
 html {
@@ -25,8 +51,8 @@ body {
     background-color: var(--color-red2);
     background: radial-gradient(
         circle at 0px 500px,
-        var(--color-yel2) 600px,
-        var(--color-red2) 110%);
+        $color-yel2 600px,
+        $color-red2 110%);
     background-repeat: no-repeat;
 
     background-attachment: fixed;

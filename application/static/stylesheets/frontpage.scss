@@ -1,5 +1,7 @@
 // This file contains all style for the front page (but not the layout base template)
 
+// I have to declare the sass variable here for now, because when I import it
+// the sass variables aren't imported as sass. I am using it here in a sass funciton.
 
 
 .frontpage-container {

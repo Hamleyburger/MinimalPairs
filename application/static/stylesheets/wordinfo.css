@@ -1,3 +1,14 @@
+:root {
+  --color-purp1: #370e2f;
+  --color-purp2: #915491;
+  --color-purp3: #c99bb8;
+  --color-red1: #fe5862;
+  --color-red1-transparent: #fe586396;
+  --color-red2: #FE766A;
+  --color-yel1: #FE9055;
+  --color-yel2: #ffc851;
+}
+
 .word-info-container .outer-row {
   border-radius: 3px;
   -webkit-box-pack: start;
@@ -56,8 +67,8 @@
 .word-info-container .outer-row .slider {
   -webkit-box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
           box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  background: radial-gradient(circle at bottom left, var(--color-red1-transparent) 0%, var(--color-purp2) 80%);
-  padding: 10px 0px;
+  background: #714171;
+  padding: 0px 0px;
   border-radius: 3px;
   max-width: 1150px;
   overflow: hidden;
@@ -65,7 +76,24 @@
   overflow: hidden;
 }
 
-.word-info-container .outer-row .slider .card {
+.word-info-container .outer-row .slider .owl-dots {
+  padding-top: 10px;
+  background-color: #915491;
+}
+
+.word-info-container .outer-row .slider .owl-dots .owl-dot span {
+  background: #c99bb8;
+}
+
+.word-info-container .outer-row .slider .owl-dots .active span {
+  background: #370e2f;
+}
+
+.word-info-container .outer-row .slider .owl-stage-outer {
+  padding: 20px;
+}
+
+.word-info-container .outer-row .slider .owl-stage-outer .card {
   border-radius: 3px;
   margin: 0px 10px;
   height: 232px;
@@ -73,13 +101,13 @@
   max-width: 222px;
 }
 
-.word-info-container .outer-row .slider .card .img-wrap {
+.word-info-container .outer-row .slider .owl-stage-outer .card .img-wrap {
   height: 120px;
   width: auto;
   overflow: hidden;
 }
 
-.word-info-container .outer-row .slider .card .img-wrap img {
+.word-info-container .outer-row .slider .owl-stage-outer .card .img-wrap img {
   width: 120%;
   height: 120%;
   -o-object-fit: cover;
@@ -88,7 +116,7 @@
      object-position: 0px 0px;
 }
 
-.word-info-container .outer-row .slider .card .card-body {
+.word-info-container .outer-row .slider .owl-stage-outer .card .card-body {
   max-height: 50%;
   line-height: 16px;
   font-size: 15px;
@@ -98,8 +126,15 @@
   overflow: scroll;
 }
 
-.word-info-container .outer-row .slider .card .card-body .card-title {
+.word-info-container .outer-row .slider .owl-stage-outer .card .card-body .card-title {
   margin-top: 0px;
   margin-bottom: 2px;
+}
+
+.word-info-container .outer-row .MO-col .MO-wrapper {
+  background: radial-gradient(#c99bb8 45%, #915491 80%);
+  margin: 5px;
+  border-radius: 150px;
+  padding: 11px;
 }
 /*# sourceMappingURL=wordinfo.css.map */

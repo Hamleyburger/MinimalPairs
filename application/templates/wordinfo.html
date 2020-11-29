@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import pair_card, pair_card_owl %}
+{% from 'macros.html' import pair_card %}
 {% from 'MOmacro.html' import MOmacro %}
 
 {% block title %}
@@ -17,7 +17,6 @@
 
     .word-info-container h5 {
         width: 100%;
-        font-weight: bold;
         ;
     }
 
@@ -38,7 +37,7 @@
                 <div class="col-xl-6 order-xl-0 col-md-5 col-sm-5 col-8 cols-word text-center">
                     <div class="word1-img-div">
                         <img src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
-                            alt="image for the word '{{ word.word }}'">
+                            alt="image for the word '{{ word.word }}'" class="shadow">
                     </div>
                 </div>
                 <div class="col-xl-6 col-0"></div>
@@ -63,13 +62,12 @@
 
 
 
-        <div class="col-12 col-xl-7 col-pairs mt-5 mt-xl-0">
-            <h5>Par ({{pairLists|length}})</h5>
+        <div class="col-12 col-xl-7 col-pairs mt-5 mt-xl-0 shadow">
 
             <div class="slider owl-carousel owl-theme">
 
                 {% for pairList in pairLists %}
-                {{ pair_card_owl(pairList) }}
+                {{ pair_card(pairList) }}
                 {% endfor %}
             </div>
 
@@ -152,12 +150,13 @@
 
 
 
-    <div class="row outer-row justify-content-between">
-        <h5 style="width: 100%">Multiple oppositioner</h5>
+    <div class="row outer-row justify-content-center justify-content-lg-around">
         {{ MOmacro(word.word, MOset) }}
         {% for MOset in MOsets %}
-        <div class="col-12 col-sm-6">
-            {{ MOmacro(word.word, MOset) }}
+        <div class="MO-col col-12 col-sm-6 col-lg-5">
+            <div class="MO-wrapper shadow">
+                {{ MOmacro(word.word, MOset) }}
+            </div>
         </div>
         {% endfor %}
 

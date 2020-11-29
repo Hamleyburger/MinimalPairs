@@ -1,4 +1,6 @@
 // Styling for word info (pairs<id>)
+//$color-purp2: #915491;
+@import "variables";
 
 .word-info-container {
     $border-radius-word-info: 3px;
@@ -62,51 +64,74 @@
                 //ground-color: var(--color-purp2);
               
                 box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-                background: radial-gradient(
-                    circle at bottom left,
-                    var(--color-red1-transparent) 0%,
-                    var(--color-purp2) 80%);
+                background: darken($color-purp2, 10%);
                 
-                padding: 10px 0px;
+                padding: 0px 0px;
                 border-radius: $border-radius-word-info;
                 max-width: 1150px;
                 overflow: hidden;
                 //display: flex;
                 max-height: 694px;
                 overflow: hidden;
-                .card {
-                border-radius: $border-radius-word-info;
-                    //flex: 1;
-                    margin: 0px 10px;
-                    height: 232px;
-                    overflow: hidden;
-                    max-width: 222px;
-                .img-wrap {
-                    height: 120px;
-                    width: auto;
-                    overflow: hidden;
-                    img {
-                        width: 120%;
-                        height: 120%;
-                        object-fit: cover;
-                        object-position: 0px 0px;
+                .owl-dots {
+                    padding-top: 10px;
+                    background-color: $color-purp2;
+                    .owl-dot {
+                        span {
+                            background: $color-purp3;
+                        }
+                    }
+                    .active span {
+                        background: $color-purp1;
                     }
                 }
-                .card-body {
-                    .card-title {
-                        margin-top: 0px;
-                        margin-bottom: 2px;
+                .owl-stage-outer {
+                    padding: 20px;
+                    
+                    .card {
+                        border-radius: $border-radius-word-info;
+                        //flex: 1;
+                        margin: 0px 10px;
+                        height: 232px;
+                        overflow: hidden;
+                        max-width: 222px;
+                        .img-wrap {
+                            height: 120px;
+                            width: auto;
+                            overflow: hidden;
+                            img {
+                                width: 120%;
+                                height: 120%;
+                                object-fit: cover;
+                                object-position: 0px 0px;
+                            }
+                        }
+                        .card-body {
+                            .card-title {
+                                margin-top: 0px;
+                                margin-bottom: 2px;
+                            }
+                            //border: 1px solid green;
+                            max-height: 50%;
+                            line-height: 16px;
+                            font-size: 15px;;
+                            padding: 10px;
+                            padding-top: 5px;
+                            padding-bottom: 15px;
+                            overflow: scroll;
+                        }
                     }
-                    //border: 1px solid green;
-                    max-height: 50%;
-                    line-height: 16px;
-                    font-size: 15px;;
-                    padding: 10px;
-                    padding-top: 5px;
-                    padding-bottom: 15px;
-                    overflow: scroll;
-                }
                 }
             }
+.MO-col {
+    //height: 300px;
+    .MO-wrapper {
+        background: radial-gradient($color-purp3 45%, $color-purp2 80%);
+        margin: 5px;
+        border-radius: 150px;
+        padding: 11px;
+    }
+}
         }
     }
+
