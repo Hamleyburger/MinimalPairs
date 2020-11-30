@@ -474,6 +474,9 @@ class Word(db.Model):
 
         return word
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def pair(self, word2, sound1, sound2):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound\n
         Always put the longest cluster combinations as possible, so they can be reduced """

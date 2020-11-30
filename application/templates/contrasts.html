@@ -17,7 +17,8 @@
         Search for sounds
         {% endif %}
     </p>
-    <button id="search-collapse-btn" type="button" class="btn btn-dark" data-toggle="collapse"
+
+    <button id="search-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
         data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne">Search for sounds <i
             id="rotate-icon" class="fas fa-angle-down"></i>
     </button>
@@ -34,7 +35,7 @@
                 vs.
                 {{ form.sound2(class="sound_input_field", size="1") }}
 
-                <button type="submit"><i class="fa fa-search"
+                <button type="submit" class="shadow"><i class="fa fa-search"
                         formaction="{{ url_for('user_blueprint.contrasts') }}"></i></button>
                 <div class="ipa-container">
                     {{ ipa_picker() }}
@@ -48,27 +49,68 @@
     <!-- For loop "pairs" for iterating over pairs -->
     {% for pair in pairs %}
     <div class="row justify-content-center">
-        <div class="col-sm-4">
+
+        <div class="col-6 col-sm-5">
+            <!-- WORD 1-->
+            {% set word = pair.w1 %}
+            {% set isCollected = false %}
+            {% if word.id in collection %}
+            {% set isCollected = true %}
+            {% endif %}
             <div class="card text-center wordcard" style="width: 18rem;">
                 <div class="img-container">
-                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.w1.image.name }}"
-                        alt="image of '{{ pair.w1.word }}''">
+                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
+                        alt="image of '{{ word.word }}''">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ pair.w1.word }}</h5>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <h5 class="card-title">{{ word.word }}</h5>
+                    <div class="buttons">
+                        {% if isCollected %}
+                        <a class="w{{word.id}}show" href="#" style="display: none;"
+                            onclick="add_to_collection({{ word.id }}, event)"><i class="fas fa-plus-circle"></i></a>
+                        <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)"><i
+                                class="fas fa-minus-circle"></i></a>
+                        {% else %}
+                        <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)"><i
+                                class="fas fa-plus-circle"></i></a>
+                        <a class="w{{word.id}}show" style="display: none;" href="#"
+                            onclick="remove_from_collection({{ word.id }}, event)"><i
+                                class="fas fa-minus-circle"></i></a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
+
+        <div class="col-6 col-sm-5">
+            <!-- WORD 2 -->
+            {% set word = pair.w2 %}
+            {% set isCollected = false %}
+            {% if word.id in collection %}
+            {% set isCollected = true %}
+            {% endif %}
             <div class="card text-center wordcard" style="width: 18rem;">
                 <div class="img-container">
-                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ pair.w2.image.name }}"
-                        alt="image of '{{ pair.w2.word }}''">
+                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
+                        alt="image of '{{ word.word }}''">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ pair.w2.word }}</h5>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <h5 class="card-title">{{ word.word }}</h5>
+                    <div class="buttons">
+                        {% if isCollected %}
+                        <a class="w{{word.id}}show" href="#" style="display: none;"
+                            onclick="add_to_collection({{ word.id }}, event)"><i class="fas fa-plus-circle"></i></a>
+                        <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)"><i
+                                class="fas fa-minus-circle"></i></a>
+                        {% else %}
+                        <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)"><i
+                                class="fas fa-plus-circle"></i></a>
+                        <a class="w{{word.id}}show" style="display: none;" href="#"
+                            onclick="remove_from_collection({{ word.id }}, event)"><i
+                                class="fas fa-minus-circle"></i></a>
+                        {% endif %}
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,10 +119,13 @@
     {% endfor %}
 </div>
 {% endif %}
+
 <script>
+
     $("#search-collapse-btn").click(function () {
         //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
         $("#rotate-icon").toggleClass("fa-rotate-180");
     });
+
 </script>
 {% endblock %}

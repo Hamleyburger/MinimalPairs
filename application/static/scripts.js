@@ -99,3 +99,47 @@ tl.to("#sun", { duration: 5, y: 190 })
     .to("#sun", { duration: 0, autoAlpha: 0 }, '>')
     //.to("#inner-c", { duration: 2, stopColor: colorred1 }, '>')
     .to("#outer-c", { duration: 1, stopColor: colorpurp2 }, '<')
+
+
+
+
+// Functions for adding to and removing words from session with AJAX
+// Used in "contrasts" and "collection"
+function add_to_collection(id, event) {
+    // preventDeafault prevents the <a href="#"> action which takes you to top of page
+    event.preventDefault();
+    console.log("ajax call to add word to collection");
+    $.ajax({
+        // sending word ID to "deletion" route
+        data: {
+            id: id
+        },
+        // url is the ajax route in views.py
+        url: "/ajax_add2collection",
+        type: "POST"
+
+    }).done(function (data) {
+        console.log("data is: " + data);
+        $(".w" + id + "show").toggle();
+    });
+}
+
+function remove_from_collection(id, event) {
+    event.preventDefault();
+    console.log("ajax call to add word to collection");
+    $.ajax({
+        // sending word ID to "deletion" route
+        data: {
+            id: id
+        },
+        // url is the ajax route in views.py
+        url: "/ajax_remove_from_collection",
+        type: "POST"
+
+    }).done(function (data) {
+        console.log("data is: " + data);
+        $("#wordcol" + id).remove();
+        console.log(event.target.parentNode);
+        $(".w" + id + "show").toggle();
+    });
+}

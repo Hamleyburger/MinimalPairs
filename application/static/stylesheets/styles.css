@@ -306,6 +306,17 @@ footer {
   border-color: #17a2b8;
 }
 
+:root {
+  --color-purp1: #370e2f;
+  --color-purp2: #915491;
+  --color-purp3: #c99bb8;
+  --color-red1: #fe5862;
+  --color-red1-transparent: #fe586396;
+  --color-red2: #FE766A;
+  --color-yel1: #FE9055;
+  --color-yel2: #ffc851;
+}
+
 .ipa-container {
   padding: 10px;
   border: 5px solid black;
@@ -330,7 +341,7 @@ footer {
 }
 
 .titlebox {
-  background-color: #c5ece6;
+  background-color: #c99bb8;
   -ms-flex-line-pack: center;
       align-content: center;
   font-family: Arial, Helvetica, sans-serif;
@@ -339,9 +350,15 @@ footer {
 }
 
 .titlebox .title-text {
-  font-size: 4rem;
+  font-size: 2.5rem;
   font-weight: 700;
   padding-bottom: 30px;
+}
+
+@media only screen and (max-width: 576px) {
+  .titlebox .title-text {
+    font-size: 1.5rem;
+  }
 }
 
 .titlebox p {
@@ -352,6 +369,7 @@ footer {
   border-radius: 15px;
   font-size: larger;
   margin-bottom: 50px;
+  background-color: #915491;
 }
 
 .titlebox .search-sounds-field {
@@ -367,16 +385,16 @@ footer {
   margin-left: 15px;
   height: 38px;
   width: 40px;
-  background: #343a40;
+  background: #915491;
   color: white;
   font-size: 17px;
   border-radius: 10px;
-  border: 2px solid grey;
+  border: none;
 }
 
 .titlebox .search-sounds-field button:hover {
   cursor: pointer;
-  background: black;
+  background: #370e2f;
 }
 
 .contentbox [class*="col-"] {
@@ -393,32 +411,32 @@ footer {
   margin-bottom: 20px;
 }
 
-.wordcard .img-container {
-  overflow: hidden;
-}
-
 @media only screen and (max-width: 576px) {
-  .wordcard .img-container {
-    height: 281.4px;
+  .wordcard {
+    height: 227px;
   }
 }
 
 @media only screen and (min-width: 576px) {
-  .wordcard .img-container {
-    height: 148.9px;
+  .wordcard {
+    height: 200px;
   }
 }
 
 @media (min-width: 768px) {
-  .wordcard .img-container {
-    height: 208.9px;
+  .wordcard {
+    height: 250px;
   }
 }
 
 @media (min-width: 992px) {
-  .wordcard .img-container {
+  .wordcard {
     height: 281.4px;
   }
+}
+
+.wordcard .img-container {
+  overflow: hidden;
 }
 
 .wordcard .img-container .card-img-top {
@@ -430,16 +448,50 @@ footer {
      object-position: 50% 50%;
 }
 
-.wordcard .card-title {
-  font-size: 4vw;
+.wordcard .card-body {
+  height: 50%;
+  padding: 0.35rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.wordcard .card-body .card-title {
+  font-size: 25px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
+  margin-bottom: 0.1rem;
 }
 
 @media only screen and (max-width: 576px) {
-  .wordcard .card-title {
-    font-size: 2rem;
+  .wordcard .card-body .card-title {
+    font-size: 25px;
   }
+}
+
+.wordcard .card-body .buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.wordcard .card-body .buttons a {
+  margin: 6px 3px;
+  color: #370e2f;
 }
 
 :root {
