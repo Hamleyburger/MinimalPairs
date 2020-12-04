@@ -1,9 +1,13 @@
-from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
+from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response
 from application.models import Word, Group, Sound
-from application import db
+from application import db, app
 from .forms import SearchSounds
+from flask_weasyprint import HTML, render_pdf
+import pdfkit
+
 # from .helpers import store_image
 # from .helpers import clearSessionExcept
+
 
 user_blueprint = Blueprint("user_blueprint", __name__,
                            static_folder="static", template_folder="templates")
@@ -14,6 +18,58 @@ def index():
     """admin stuff"""
 
     return render_template("userindex.html")
+
+
+@user_blueprint.route("/make-my-fucking-pdf-asshole", methods=["GET"])
+def topdf():
+    """Make a pdf"""
+    collection = []
+
+    if session.get("collection"):
+        print("there's a collection")
+        id_collection = session["collection"]
+        for id in id_collection:
+            collection.append(Word.query.get(int(id)))
+
+    """
+    for number in range(17):
+        collection.append(Word.query.get(number+1))
+        """
+
+    template = render_template("mypdf.html", collection=collection)
+    html = HTML(string=template)
+    return render_pdf(html)
+    """
+    rendered = render_template("testing.html", collection=collection)
+
+    config = pdfkit.configuration(
+        wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+    pdf = pdfkit.from_string(rendered, False, configuration=config)
+
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
+
+    return response
+    """
+    return
+
+
+@user_blueprint.route("/topdf2", methods=["GET"])
+def topdf2():
+    """Make a pdf"""
+    collection = []
+
+    if session.get("collection"):
+        print("there's a collection")
+        id_collection = session["collection"]
+        for id in id_collection:
+            collection.append(Word.query.get(int(id)))
+    collection.append(Word.query.get(33))
+    for number in range(13):
+        collection.append(Word.query.get(number+1))
+
+    return render_template("mypdf.html", collection=collection)
 
 
 @ user_blueprint.route("/pairs", methods=["GET", "POST"])

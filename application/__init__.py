@@ -1,5 +1,6 @@
 #!/bin/env python
 
+
 from flask import Flask
 # flask_session could only be imported when downgrading werkzeug:
 # pip uninstalled werkzeug and pip installed werkzeug==0.16.0
@@ -28,8 +29,8 @@ db = SQLAlchemy(app)
 
 #from application.main.views import main
 #from application.transactions.views import transactions
-from application.user.views import user_blueprint
 from application.admin.views import admin_blueprint
+from application.user.views import user_blueprint
 
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(user_blueprint)

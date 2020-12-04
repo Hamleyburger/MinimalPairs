@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>title</title>
+
+
+</head>
+
+<body>
+    hello world.
+    {% for word in collection %}
+    <div>
+        {{ word.word }}
+    </div>
+    <div>
+        <img src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
+            alt="image of '{{ word.word }}'">
+    </div>
+    <div style="page-break-after: always;"></div>
+    {% endfor %}
+</body>
+
+</html>

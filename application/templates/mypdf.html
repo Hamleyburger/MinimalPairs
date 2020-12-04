@@ -1,0 +1,134 @@
+{% from 'catmacros.html' import catmacro %}
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Minimal pairs{% block title %}{% endblock %}</title>
+
+    <!-- https://favicon.io/emoji-favicons/money-mouth-face/ -->
+    <link href="/static/leaf.ico" rel="icon" />
+
+</head>
+
+
+
+
+
+<style>
+    @media print {
+
+        body,
+        .page {
+            margin: 0cm;
+            box-shadow: 1;
+        }
+    }
+
+    .outerbox {
+        padding: 0;
+        margin: 0;
+        border: 1px solid green;
+        width: 21cm;
+        height: 29.7cm;
+    }
+
+    .innerbox {
+        /*
+        border: 1px solid red;*/
+        margin-bottom: 1cm;
+        padding: 0cm;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+    }
+
+    .imgcard {
+        height: 8cm;
+        min-height: 8cm;
+        width: 6cm;
+        margin: 0cm;
+        padding: 0cm;
+        border: 1px solid blue;
+        display: flex;
+        flex-flow: column wrap;
+    }
+
+    .imgcontainer {
+        height: 6cm;
+    }
+
+    .card-img-top {
+        width: 100%;
+    }
+
+    .card-body {
+        height: 2cm;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 1cm;
+    }
+</style>
+
+
+
+
+
+
+
+{% if collection|length %}
+<div class="innerbox">
+    {% for word in collection %}
+    <div class="imgcard">
+        <div class="imgcontainer">
+            <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
+                alt="image of '{{ word.word }}'" alt="image of '{{ word.word }}'">
+
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">{{ word.word }}</h3>
+
+        </div>
+    </div>
+
+    {% if loop.index %3 == 0 %}
+</div>
+
+{% if (loop.index == loop|length) or (loop.index %9 == 0) %}
+
+<div style="page-break-before: always;">
+    <img src="{{ url_for('static', filename='permaimages/catlogo.svg')}}" class="img-thumbnail img-mpexample" />
+</div>
+
+{% endif %}
+
+<!-- this innerbox either begins a new section in the loop or turns into an empty div after the loop closes-->
+<div class="innerbox">
+    {% endif %}
+    {% endfor %}
+    <!-- this closing div closes any open innerbox div-->
+</div>
+{% if (collection|length %9 != 0) %}
+<div style="page-break-before: always;">
+    <img src="{{ url_for('static', filename='permaimages/catlogo.svg')}}" class="img-thumbnail img-mpexample" />
+</div>
+{% endif %}
+{% else %}
+<div class="col-4">
+    <p>You don't have a collection yet!</p>
+</div>
+
+
+
+
+{% endif %}
+</div>
+
+</div>
