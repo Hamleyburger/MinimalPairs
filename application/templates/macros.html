@@ -73,6 +73,7 @@
             <br>
             {% endfor %}
         </p>
+        {{ word_card_buttons(pairList[0].w2) }}
     </div>
 </div>
 {% endmacro %}
@@ -90,5 +91,60 @@
         </p>
         <a href="#" class="card-link">Card link</a>
     </div>
+</div>
+{% endmacro %}
+
+
+
+
+
+
+<!-- Word cards with jinja for 'contrasts' card -->
+<!-- Requires a word and a collection (of ids) -->
+{% macro word_card_contrast(word) %}
+
+
+<div class="card text-center wordcard" style="width: 18rem;">
+    <div class="img-container">
+        <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
+            alt="image of '{{ word.word }}''">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ word.word }}</h5>
+        {{ word_card_buttons(word) }}
+    </div>
+</div>
+
+{% endmacro %}
+
+
+
+
+<!-- The buttons all word cards must have to add/remove from collection -->
+{% macro word_card_buttons(word) %}
+<!-- Set collection -->
+{% if session["collection"] is defined %}
+{% set collection = session["collection"] %}
+{% else %}
+{% set collection = [] %}
+{% endif %}
+<!-- Check if word is in collection (for contrasts) -->
+{% set isCollected = false %}
+{% if word.id in collection %}
+{% set isCollected = true %}
+{% endif %}
+<div class="buttons">
+    {% if isCollected %}
+    <a class="w{{word.id}}show" href="#" style="display: none;" onclick="add_to_collection({{ word.id }}, event)"><i
+            class="fas fa-plus-circle"></i></a>
+    <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)"><i
+            class="fas fa-minus-circle"></i></a>
+    {% else %}
+    <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)"><i
+            class="fas fa-plus-circle"></i></a>
+    <a class="w{{word.id}}show" style="display: none;" href="#"
+        onclick="remove_from_collection({{ word.id }}, event)"><i class="fas fa-minus-circle"></i></a>
+    {% endif %}
+    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id) }}"><i class="fas fa-info-circle"></i></a>
 </div>
 {% endmacro %}

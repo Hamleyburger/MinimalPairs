@@ -3,7 +3,7 @@ from application.models import Word, Group, Sound
 from application import db, app
 from .forms import SearchSounds
 from flask_weasyprint import HTML, render_pdf
-import pdfkit
+
 
 # from .helpers import store_image
 # from .helpers import clearSessionExcept
@@ -20,7 +20,7 @@ def index():
     return render_template("userindex.html")
 
 
-@user_blueprint.route("/make-my-fucking-pdf-asshole", methods=["GET"])
+@user_blueprint.route("/make-pdf-with-goddamn-background", methods=["GET"])
 def topdf():
     """Make a pdf"""
     collection = []
@@ -28,48 +28,71 @@ def topdf():
     if session.get("collection"):
         print("there's a collection")
         id_collection = session["collection"]
-        for id in id_collection:
-            collection.append(Word.query.get(int(id)))
 
-    """
-    for number in range(17):
+        # for id in id_collection:
+        #    collection.append(Word.query.get(int(id)))
+
+    for number in range(18):
         collection.append(Word.query.get(number+1))
-        """
 
     template = render_template("mypdf.html", collection=collection)
     html = HTML(string=template)
+
     return render_pdf(html)
-    """
-    rendered = render_template("testing.html", collection=collection)
-
-    config = pdfkit.configuration(
-        wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
-    pdf = pdfkit.from_string(rendered, False, configuration=config)
-
-    response = make_response(pdf)
-    response.headers["Content-Type"] = "application/pdf"
-    response.headers["Content-Disposition"] = "inline; filename=output.pdf"
-
-    return response
-    """
-    return
 
 
 @user_blueprint.route("/topdf2", methods=["GET"])
 def topdf2():
+    """make a pdf """
     """Make a pdf"""
     collection = []
 
     if session.get("collection"):
         print("there's a collection")
         id_collection = session["collection"]
-        for id in id_collection:
-            collection.append(Word.query.get(int(id)))
-    collection.append(Word.query.get(33))
-    for number in range(13):
+
+        # for id in id_collection:
+        #    collection.append(Word.query.get(int(id)))
+
+    for number in range(6):
         collection.append(Word.query.get(number+1))
 
-    return render_template("mypdf.html", collection=collection)
+    template = render_template("mypdf.html", collection=collection)
+    html = HTML(string=template)
+
+    return template
+
+
+@ user_blueprint.route("/wordinfo/<word_id>", methods=["GET"])
+def wordinfo(word_id):
+
+    # update to actually contain contrasts
+    word = Word.query.get(word_id)
+    if word:
+        partners = word.allPartners()
+
+        # 2D array of all pair combinations for all partners (a list of pair lists)
+        pairLists = []
+        pairs = word.orderedPairs()
+
+        # Make separate lists for pairs that contain the same word
+        for partner in partners:
+            pairList = []
+            for pair in pairs:
+                if pair.w2 == partner:
+                    pairList.append(pair)
+            if pairList:
+                pairLists.append(pairList)
+
+        MOsets = word.getMOSets()
+        for x in MOsets:
+            print("")
+            for y in x:
+                print(y.textify())
+
+        return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets)
+    else:
+        return redirect(url_for("user_blueprint.index"))
 
 
 @ user_blueprint.route("/pairs", methods=["GET", "POST"])
@@ -79,17 +102,13 @@ def contrasts():
 
     form = SearchSounds()
     pairs = []
-    collection = []
 
     if request.method == "POST":
         if form.validate_on_submit():
             sound1 = Sound.get(form.sound1.data)
             pairs = sound1.getContrasts(form.sound2.data)
 
-    if session.get("collection"):
-        collection = session["collection"]
-
-    return render_template("contrasts.html", pairs=pairs, form=form, collection=collection)
+    return render_template("contrasts.html", pairs=pairs, form=form)
 
 
 @ user_blueprint.route("/collection", methods=["GET", "POST"])

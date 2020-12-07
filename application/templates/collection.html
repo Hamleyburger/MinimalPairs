@@ -1,3 +1,4 @@
+{% from 'macros.html' import word_card_contrast %}
 {% extends "layout.html" %}
 
 {% block title %}
@@ -14,23 +15,9 @@
         {% if collection|length %}
         {% for word in collection %}
         <div class="col-12 col-md-4 col-sm-6" id="wordcol{{word.id}}">
-            <div class="card text-center wordcard" style="width: 18rem;">
-                <div class="img-container">
-                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
-                        alt="image of '{{ word.word }}''">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ word.word }}</h5>
-                    <div class="buttons">
 
-                        <a href="#" onclick="remove_from_collection({{ word.id }}, event)"><i
-                                class="fas fa-minus-circle"></i></a>
-                    </div>
+            {{ word_card_contrast(word) }}
 
-
-
-                </div>
-            </div>
         </div>
         {% endfor %}
         {% else %}

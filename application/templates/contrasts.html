@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import ipa_picker %}
+{% from 'macros.html' import ipa_picker, word_card_contrast %}
 
 {% block title %}
-: Change word
+: Search for sounds
 {% endblock %}
 
 {% block main %}
 
 <!-- image 1, image 2, name 1, name 2, sound1, sound2 -->
+
 
 <div class="container-fluid text-center titlebox">
     <p class="title-text">
@@ -49,71 +50,15 @@
     <!-- For loop "pairs" for iterating over pairs -->
     {% for pair in pairs %}
     <div class="row justify-content-center">
-
         <div class="col-6 col-sm-5">
-            <!-- WORD 1-->
-            {% set word = pair.w1 %}
-            {% set isCollected = false %}
-            {% if word.id in collection %}
-            {% set isCollected = true %}
-            {% endif %}
-            <div class="card text-center wordcard" style="width: 18rem;">
-                <div class="img-container">
-                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
-                        alt="image of '{{ word.word }}''">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ word.word }}</h5>
-                    <div class="buttons">
-                        {% if isCollected %}
-                        <a class="w{{word.id}}show" href="#" style="display: none;"
-                            onclick="add_to_collection({{ word.id }}, event)"><i class="fas fa-plus-circle"></i></a>
-                        <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)"><i
-                                class="fas fa-minus-circle"></i></a>
-                        {% else %}
-                        <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)"><i
-                                class="fas fa-plus-circle"></i></a>
-                        <a class="w{{word.id}}show" style="display: none;" href="#"
-                            onclick="remove_from_collection({{ word.id }}, event)"><i
-                                class="fas fa-minus-circle"></i></a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+
+            {{ word_card_contrast(pair.w1) }}
+        </div>
+        <div class="col-6 col-sm-5">
+
+            {{ word_card_contrast(pair.w2) }}
         </div>
 
-        <div class="col-6 col-sm-5">
-            <!-- WORD 2 -->
-            {% set word = pair.w2 %}
-            {% set isCollected = false %}
-            {% if word.id in collection %}
-            {% set isCollected = true %}
-            {% endif %}
-            <div class="card text-center wordcard" style="width: 18rem;">
-                <div class="img-container">
-                    <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
-                        alt="image of '{{ word.word }}''">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ word.word }}</h5>
-                    <div class="buttons">
-                        {% if isCollected %}
-                        <a class="w{{word.id}}show" href="#" style="display: none;"
-                            onclick="add_to_collection({{ word.id }}, event)"><i class="fas fa-plus-circle"></i></a>
-                        <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)"><i
-                                class="fas fa-minus-circle"></i></a>
-                        {% else %}
-                        <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)"><i
-                                class="fas fa-plus-circle"></i></a>
-                        <a class="w{{word.id}}show" style="display: none;" href="#"
-                            onclick="remove_from_collection({{ word.id }}, event)"><i
-                                class="fas fa-minus-circle"></i></a>
-                        {% endif %}
-
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- For loop "pairs" end -->
     {% endfor %}

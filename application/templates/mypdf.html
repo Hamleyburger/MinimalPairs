@@ -1,4 +1,4 @@
-{% from 'catmacros.html' import catmacro %}
+{% from 'macros.html' import pattern_page %}
 <!DOCTYPE html>
 
 <html lang="en">
@@ -67,13 +67,38 @@
 
     .card-body {
         height: 2cm;
+        text-align: center;
     }
 
+    .card-title {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pattern_page {
+        border: 1px solid purple;
+        /*height: 27.7cm;
+        width: 100%;
+        
+        background-size: 300px;
+        background-repeat: repeat;
+        background-image:
+            url(/static/permaimages/pattern.svg);
+            */
+    }
 
 
     @page {
         size: A4 portrait;
         margin: 1cm;
+    }
+
+    @page :left {
+        background-size: 300px;
+        background-repeat: repeat;
+        background-image:
+            url(/static/permaimages/catpattern.svg);
+        page-break-before: always;
+        page-break-after: always;
     }
 </style>
 
@@ -93,7 +118,7 @@
 
         </div>
         <div class="card-body">
-            <h3 class="card-title">{{ word.word }}</h3>
+            <h2 class="card-title">{{ word.word }}</h2>
 
         </div>
     </div>
@@ -101,11 +126,14 @@
     {% if loop.index %3 == 0 %}
 </div>
 
-{% if (loop.index == loop|length) or (loop.index %9 == 0) %}
+{% if (loop.index %9 == 0) %}
 
 <div style="page-break-before: always;">
-    <img src="{{ url_for('static', filename='permaimages/catlogo.svg')}}" class="img-thumbnail img-mpexample" />
 </div>
+{% if (loop.index != loop|length) %}
+<div style="page-break-before: always;">
+</div>
+{% endif %}
 
 {% endif %}
 
@@ -117,7 +145,6 @@
 </div>
 {% if (collection|length %9 != 0) %}
 <div style="page-break-before: always;">
-    <img src="{{ url_for('static', filename='permaimages/catlogo.svg')}}" class="img-thumbnail img-mpexample" />
 </div>
 {% endif %}
 {% else %}

@@ -1,3 +1,14 @@
+@charset "UTF-8";
+/*
+$color-purp1: #77ff00; //kat og tekst
+$color-purp2: #000000; // hat og navbar og nathimmel
+$color-purp3: #75ba86; //lysere navbar?
+$color-red1: #081700; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #223226; // mørk himmel blend
+$color-yel1: #FE9055; // ?
+$color-yel2: #000000; // Himmelen
+*/
 :root {
   --color-purp1: #370e2f;
   --color-purp2: #915491;
@@ -9,6 +20,54 @@
   --color-yel2: #ffc851;
 }
 
+.shadow {
+  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
+}
+
+.ipa_picker a {
+  color: black;
+  font-size: 30px;
+  padding: 5px;
+  font-family: "Times New Roman";
+}
+
+@media only screen and (max-width: 350px) {
+  .ipa_picker a {
+    padding-top: 7px;
+    font-size: 1.5rem;
+  }
+}
+
+.ipa_picker span.line {
+  display: inline-block;
+}
+
+.buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.buttons a {
+  margin: 6px 3px;
+  color: #370e2f;
+}
+
+/*
+$color-purp1: #77ff00; //kat og tekst
+$color-purp2: #000000; // hat og navbar og nathimmel
+$color-purp3: #75ba86; //lysere navbar?
+$color-red1: #081700; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #223226; // mørk himmel blend
+$color-yel1: #FE9055; // ?
+$color-yel2: #000000; // Himmelen
+*/
 :root {
   --color-purp1: #370e2f;
   --color-purp2: #915491;
@@ -306,6 +365,16 @@ footer {
   border-color: #17a2b8;
 }
 
+/*
+$color-purp1: #77ff00; //kat og tekst
+$color-purp2: #000000; // hat og navbar og nathimmel
+$color-purp3: #75ba86; //lysere navbar?
+$color-red1: #081700; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #223226; // mørk himmel blend
+$color-yel1: #FE9055; // ?
+$color-yel2: #000000; // Himmelen
+*/
 :root {
   --color-purp1: #370e2f;
   --color-purp2: #915491;
@@ -436,6 +505,7 @@ footer {
 }
 
 .wordcard .img-container {
+  height: 60%;
   overflow: hidden;
 }
 
@@ -449,7 +519,7 @@ footer {
 }
 
 .wordcard .card-body {
-  height: 50%;
+  height: 40%;
   padding: 0.35rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -479,21 +549,16 @@ footer {
   }
 }
 
-.wordcard .card-body .buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-
-.wordcard .card-body .buttons a {
-  margin: 6px 3px;
-  color: #370e2f;
-}
-
+/*
+$color-purp1: #77ff00; //kat og tekst
+$color-purp2: #000000; // hat og navbar og nathimmel
+$color-purp3: #75ba86; //lysere navbar?
+$color-red1: #081700; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #223226; // mørk himmel blend
+$color-yel1: #FE9055; // ?
+$color-yel2: #000000; // Himmelen
+*/
 :root {
   --color-purp1: #370e2f;
   --color-purp2: #915491;
@@ -634,26 +699,36 @@ footer {
   padding: 11px;
 }
 
-.shadow {
-  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
-          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
+/*
+$color-purp1: #77ff00; //kat og tekst
+$color-purp2: #000000; // hat og navbar og nathimmel
+$color-purp3: #75ba86; //lysere navbar?
+$color-red1: #081700; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #223226; // mørk himmel blend
+$color-yel1: #FE9055; // ?
+$color-yel2: #000000; // Himmelen
+*/
+:root {
+  --color-purp1: #370e2f;
+  --color-purp2: #915491;
+  --color-purp3: #c99bb8;
+  --color-red1: #fe5862;
+  --color-red1-transparent: #fe586396;
+  --color-red2: #FE766A;
+  --color-yel1: #FE9055;
+  --color-yel2: #ffc851;
 }
 
-.ipa_picker a {
-  color: black;
-  font-size: 30px;
-  padding: 5px;
-  font-family: "Times New Roman";
+.buttons .fas {
+  font-size: 20px;
 }
 
-@media only screen and (max-width: 350px) {
-  .ipa_picker a {
-    padding-top: 7px;
-    font-size: 1.5rem;
-  }
+.buttons .fa-minus-circle {
+  color: red;
 }
 
-.ipa_picker span.line {
-  display: inline-block;
+.buttons .fa-plus-circle {
+  color: green;
 }
 /*# sourceMappingURL=styles.css.map */

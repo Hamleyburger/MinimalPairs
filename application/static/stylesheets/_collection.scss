@@ -1,0 +1,17 @@
+// Styling for word info (pairs<id>)
+//$color-purp2: #915491;
+@import "variables";
+
+.buttons {
+
+    .fas {
+        font-size: 20px;
+    }
+    .fa-minus-circle {
+        color: red;
+    }
+    .fa-plus-circle {
+        color: green;
+    }
+}
+

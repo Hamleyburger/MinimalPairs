@@ -1,0 +1,37 @@
+.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
+}
+
+// ipa picker used in add.html and contrasts.html as macro
+.ipa_picker {
+    a {
+        
+        color: black;
+        font-size: 30px;
+        padding: 5px;
+        font-family: "Times New Roman";
+        @media only screen and (max-width: 350px) {
+
+        padding-top: 7px;
+        font-size: 1.5rem;
+
+        }
+    }
+    span.line {
+    display: inline-block;
+    }
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    @media only screen and (max-width: 350px) {
+        // Change flex direction if you want to display buttons differently
+        // flex-direction: column;
+    }
+    a {
+        margin: 6px 3px;
+        color: $color-purp1;
+    }
+
+}

@@ -1,6 +1,9 @@
 // Variables are defined here, mostly colours
 @import "variables";
 
+// Stuff that applies across multiple pages
+@import "crosspage";
+
 // layout contains nav bar and body styles
 @import "layout";
 
@@ -19,30 +22,8 @@
 // The user page that shows all associations with one word
 @import "wordinfo";
 
-
-.shadow {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
-}
-
-// ipa picker used in add.html and contrasts.html as macro
-.ipa_picker {
-    a {
-        
-        color: black;
-        font-size: 30px;
-        padding: 5px;
-        font-family: "Times New Roman";
-        @media only screen and (max-width: 350px) {
-
-        padding-top: 7px;
-        font-size: 1.5rem;
-
-        }
-    }
-    span.line {
-    display: inline-block;
-    }
-}
+// The user page that shows user's collection
+@import "collection";
 
 
 
