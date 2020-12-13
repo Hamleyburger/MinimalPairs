@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import ipa_picker, word_card_contrast %}
+{% from 'macros.html' import ipa_picker, word_card %}
 
 {% block title %}
 : Search for sounds
@@ -52,11 +52,11 @@
     <div class="row justify-content-center">
         <div class="col-6 col-sm-5">
 
-            {{ word_card_contrast(pair.w1) }}
+            {{ word_card(pair.w1) }}
         </div>
         <div class="col-6 col-sm-5">
 
-            {{ word_card_contrast(pair.w2) }}
+            {{ word_card(pair.w2) }}
         </div>
 
     </div>

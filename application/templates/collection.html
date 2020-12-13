@@ -1,4 +1,4 @@
-{% from 'macros.html' import word_card_contrast %}
+{% from 'macros.html' import word_card %}
 {% extends "layout.html" %}
 
 {% block title %}
@@ -7,7 +7,73 @@
 
 {% block main %}
 
+<div class="container-fluid text-center pdfgenerator">
 
+    <button id="search-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
+        data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">Make PDF <i
+            id="rotate-icon" class="fas fa-angle-down"></i>
+    </button>
+
+    <div class="collapse" id="pdf-form-collapsable">
+        <form action="{{ url_for('user_blueprint.topdf') }}"></form>
+        {{ form.hidden_tag() }}
+
+        <style>
+            .background-choices .row {
+                display: flex;
+                justify-content: center;
+            }
+
+            .bgexample {
+                height: 0;
+                /* top and bottom padding must add up to 100% because they determine the height and makes div be square */
+                padding-bottom: 75%;
+                padding-top: 25%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-size: 100px;
+                background-repeat: repeat;
+                border-radius: 50%;
+                font-size: 20px;
+            }
+        </style>
+
+        <div class="">
+            <div class="container-fluid background-choices">
+                <div class="row">
+                    {% for subfield in form.background %}
+                    <div class="col-6 col-sm-3 col-md-2 col-lg-2 col-xl-1">
+                        <div class="bgexample" style="background-image: url(/static/permaimages/{{ subfield.data }});">
+
+
+                        </div>
+                        {{ subfield }}
+                        {{ subfield.label(class="font-weight-bold") }}
+
+                    </div>
+
+
+                    {% endfor %}
+                </div>
+                <div class="row">
+
+                    {{ form.submit }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    $("#search-collapse-btn").click(function () {
+        //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
+        $("#rotate-icon").toggleClass("fa-rotate-180");
+    });
+
+</script>
 
 <div class="container contentbox">
     <!-- For loop "pairs" for iterating over pairs -->
@@ -16,7 +82,7 @@
         {% for word in collection %}
         <div class="col-12 col-md-4 col-sm-6" id="wordcol{{word.id}}">
 
-            {{ word_card_contrast(word) }}
+            {{ word_card(word) }}
 
         </div>
         {% endfor %}

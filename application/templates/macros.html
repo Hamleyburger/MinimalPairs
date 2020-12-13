@@ -73,8 +73,8 @@
             <br>
             {% endfor %}
         </p>
-        {{ word_card_buttons(pairList[0].w2) }}
     </div>
+    {{ word_card_buttons(pairList[0].w2) }}
 </div>
 {% endmacro %}
 
@@ -101,10 +101,10 @@
 
 <!-- Word cards with jinja for 'contrasts' card -->
 <!-- Requires a word and a collection (of ids) -->
-{% macro word_card_contrast(word) %}
+{% macro word_card(word) %}
 
 
-<div class="card text-center wordcard" style="width: 18rem;">
+<div class="card text-center wordcard shadow" style="width: 18rem;">
     <div class="img-container">
         <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
             alt="image of '{{ word.word }}''">
@@ -121,7 +121,7 @@
 
 
 <!-- The buttons all word cards must have to add/remove from collection -->
-{% macro word_card_buttons(word) %}
+{% macro word_card_buttons(word, infobutton=true) %}
 <!-- Set collection -->
 {% if session["collection"] is defined %}
 {% set collection = session["collection"] %}
@@ -145,6 +145,8 @@
     <a class="w{{word.id}}show" style="display: none;" href="#"
         onclick="remove_from_collection({{ word.id }}, event)"><i class="fas fa-minus-circle"></i></a>
     {% endif %}
+    {% if infobutton %}
     <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id) }}"><i class="fas fa-info-circle"></i></a>
+    {% endif %}
 </div>
 {% endmacro %}

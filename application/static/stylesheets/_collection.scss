@@ -2,16 +2,27 @@
 //$color-purp2: #915491;
 @import "variables";
 
-.buttons {
 
-    .fas {
-        font-size: 20px;
+// For collection.html **************************
+.pdfgenerator {
+
+
+    align-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 40px;
+    margin-bottom: 0;
+
+
+
+    button {
+        border-radius: 15px;
+        font-size: larger;
+        margin-bottom: 50px;
+        background-color: $color-red2;
+        &:hover {
+            cursor:pointer;
+            background: $color-red1;
+            }
     }
-    .fa-minus-circle {
-        color: red;
-    }
-    .fa-plus-circle {
-        color: green;
-    }
+
 }
-

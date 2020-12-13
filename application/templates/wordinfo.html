@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import pair_card %}
+{% from 'macros.html' import pair_card, word_card_buttons %}
 {% from 'MOmacro.html' import MOmacro %}
 
 {% block title %}
@@ -35,10 +35,12 @@
 
 
                 <div class="col-xl-6 order-xl-0 col-md-5 col-sm-5 col-8 cols-word text-center">
-                    <div class="word1-img-div">
+                    <div class="word1-img-div shadow">
                         <img src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
-                            alt="image for the word '{{ word.word }}'" class="shadow">
+                            alt="image for the word '{{ word.word }}'">
                     </div>
+                    {{ word_card_buttons(word, infobutton=false) }}
+
                 </div>
                 <div class="col-xl-6 col-0"></div>
                 <div class="col-xl-6 order-xl-12 col-md-5 col-sm-8 cols-word align-self-xl-end text-center">

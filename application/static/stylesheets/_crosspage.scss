@@ -25,13 +25,25 @@
 .buttons {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     @media only screen and (max-width: 350px) {
         // Change flex direction if you want to display buttons differently
         // flex-direction: column;
     }
+    .fas {
+        font-size: 20px;
+    }
+    .fa-minus-circle {
+        color: red;
+    }
+    .fa-plus-circle {
+        color: green;
+    }
     a {
         margin: 6px 3px;
-        color: $color-purp1;
+        margin-bottom: 2px;
+        color: $color-purp2;
+
     }
 
 }

@@ -1,7 +1,7 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response
 from application.models import Word, Group, Sound
 from application import db, app
-from .forms import SearchSounds
+from .forms import SearchSounds, toPDF
 from flask_weasyprint import HTML, render_pdf
 
 
@@ -20,7 +20,7 @@ def index():
     return render_template("userindex.html")
 
 
-@user_blueprint.route("/make-pdf-with-goddamn-background", methods=["GET"])
+@user_blueprint.route("/topdf", methods=["GET", "POST"])
 def topdf():
     """Make a pdf"""
     collection = []
@@ -114,6 +114,11 @@ def contrasts():
 @ user_blueprint.route("/collection", methods=["GET", "POST"])
 def collection():
 
+    form = toPDF()
+
+    for subfield in form.background:
+        print(subfield.data)
+
     collection = []
     # Get pairs from session object
     if session.get("collection"):
@@ -123,7 +128,7 @@ def collection():
         for id in id_collection:
             collection.append(Word.query.get(int(id)))
 
-    return render_template("collection.html", collection=collection)
+    return render_template("collection.html", collection=collection, form=form)
 
 
 @ user_blueprint.route("/ajax_add2collection", methods=["POST"])

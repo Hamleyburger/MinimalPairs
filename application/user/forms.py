@@ -1,6 +1,6 @@
 from flask import session
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, Form, FormField
+from wtforms import StringField, SubmitField, RadioField, Form, FormField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from application.models import Word, Pair
 #from flask_wtf.file import FileField, FileRequired
@@ -20,3 +20,10 @@ class SearchSounds(FlaskForm):
     sound2 = StringField(validators=[DataRequired(), isIPA])
     search_icon = Markup("<i class='fa fa-search'></i>")
     search = SubmitField(search_icon)
+
+
+class toPDF(FlaskForm):
+    # First argument of each choice needs to be file name of the background image file
+    background = RadioField(
+        'Label', choices=[('fiskpattern.svg', 'Fish cookies'), ('catpattern.svg', 'Logo cats')])
+    submit = SubmitField()

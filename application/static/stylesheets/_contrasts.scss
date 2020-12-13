@@ -87,36 +87,38 @@ margin-bottom: 20px;
         // Adjusting image height the tedious way to align with width
         @media only screen and (max-width: 576px) {
             //border: 3px solid red;
-            height: 227px;
+            height: auto;
+            max-height: 300px;
         }
         @media only screen and (min-width: 576px) {
             //border: 3px solid rgb(0, 60, 255);
-            height: 200px;
+            height: 270px;
         }
         @media (min-width: 768px) {
             //border: 3px solid rgb(0, 153, 0);
-            height: 250px;
+            height: 270px;
         }
         @media (min-width: 992px) {
             //border: 3px solid rgb(146, 0, 190);
-            height: 281.4px;
+            height: 290px;
         }
 
     .img-container {
 
-height: 60%;
+height: 70%;
         overflow: hidden;
         .card-img-top {
             // Finds the middle of the image and crops to fit container
-            max-width: 100%; /* width of container */
-                //height: 100%; /* height of container */
+            /* max-width: 100%;  width of container */
+            height: 100%; /* height of container */
             object-fit: cover;
             object-position: 50% 50%;
                 
         }
     }
     .card-body {
-        height: 40%;
+        
+        height: auto; //adjusts to the height of .img-container
         padding: 0.35rem;
         display: flex;
         align-items: center;

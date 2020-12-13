@@ -51,11 +51,27 @@ $color-yel2: #000000; // Himmelen
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.buttons .fas {
+  font-size: 20px;
+}
+
+.buttons .fa-minus-circle {
+  color: red;
+}
+
+.buttons .fa-plus-circle {
+  color: green;
 }
 
 .buttons a {
   margin: 6px 3px;
-  color: #370e2f;
+  margin-bottom: 2px;
+  color: #915491;
 }
 
 /*
@@ -482,36 +498,38 @@ $color-yel2: #000000; // Himmelen
 
 @media only screen and (max-width: 576px) {
   .wordcard {
-    height: 227px;
+    height: auto;
+    max-height: 300px;
   }
 }
 
 @media only screen and (min-width: 576px) {
   .wordcard {
-    height: 200px;
+    height: 270px;
   }
 }
 
 @media (min-width: 768px) {
   .wordcard {
-    height: 250px;
+    height: 270px;
   }
 }
 
 @media (min-width: 992px) {
   .wordcard {
-    height: 281.4px;
+    height: 290px;
   }
 }
 
 .wordcard .img-container {
-  height: 60%;
+  height: 70%;
   overflow: hidden;
 }
 
 .wordcard .img-container .card-img-top {
-  max-width: 100%;
-  /* width of container */
+  /* max-width: 100%;  width of container */
+  height: 100%;
+  /* height of container */
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: 50% 50%;
@@ -519,7 +537,7 @@ $color-yel2: #000000; // Himmelen
 }
 
 .wordcard .card-body {
-  height: 40%;
+  height: auto;
   padding: 0.35rem;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -614,15 +632,17 @@ $color-yel2: #000000; // Himmelen
 }
 
 .word-info-container .outer-row [class*='col-'] .word1-img-div {
-  height: 100%;
   width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  border-radius: 50%;
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
+  overflow: hidden;
 }
 
 .word-info-container .outer-row [class*='col-'] .word1-img-div img {
-  border-radius: 50%;
   width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .word-info-container .outer-row .slider {
@@ -678,13 +698,14 @@ $color-yel2: #000000; // Himmelen
 }
 
 .word-info-container .outer-row .slider .owl-stage-outer .card .card-body {
-  max-height: 50%;
+  min-height: 40%;
+  max-height: 40%;
   line-height: 16px;
   font-size: 15px;
   padding: 10px;
   padding-top: 5px;
-  padding-bottom: 15px;
-  overflow: scroll;
+  padding-bottom: 5px;
+  overflow-y: scroll;
 }
 
 .word-info-container .outer-row .slider .owl-stage-outer .card .card-body .card-title {
@@ -720,15 +741,23 @@ $color-yel2: #000000; // Himmelen
   --color-yel2: #ffc851;
 }
 
-.buttons .fas {
-  font-size: 20px;
+.pdfgenerator {
+  -ms-flex-line-pack: center;
+      align-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 40px;
+  margin-bottom: 0;
 }
 
-.buttons .fa-minus-circle {
-  color: red;
+.pdfgenerator button {
+  border-radius: 15px;
+  font-size: larger;
+  margin-bottom: 50px;
+  background-color: #FE766A;
 }
 
-.buttons .fa-plus-circle {
-  color: green;
+.pdfgenerator button:hover {
+  cursor: pointer;
+  background: #fe5862;
 }
 /*# sourceMappingURL=styles.css.map */
