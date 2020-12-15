@@ -2,7 +2,7 @@ from flask import Blueprint, session, request, redirect, render_template, flash,
 from application.models import Word, Group, Sound
 from application import db, app
 from .forms import SearchSounds, toPDF
-from flask_weasyprint import HTML, render_pdf
+from flask_weasyprint import HTML, CSS, render_pdf
 
 
 # from .helpers import store_image
@@ -18,49 +18,6 @@ def index():
     """admin stuff"""
 
     return render_template("userindex.html")
-
-
-@user_blueprint.route("/topdf", methods=["GET", "POST"])
-def topdf():
-    """Make a pdf"""
-    collection = []
-
-    if session.get("collection"):
-        print("there's a collection")
-        id_collection = session["collection"]
-
-        # for id in id_collection:
-        #    collection.append(Word.query.get(int(id)))
-
-    for number in range(18):
-        collection.append(Word.query.get(number+1))
-
-    template = render_template("mypdf.html", collection=collection)
-    html = HTML(string=template)
-
-    return render_pdf(html)
-
-
-@user_blueprint.route("/topdf2", methods=["GET"])
-def topdf2():
-    """make a pdf """
-    """Make a pdf"""
-    collection = []
-
-    if session.get("collection"):
-        print("there's a collection")
-        id_collection = session["collection"]
-
-        # for id in id_collection:
-        #    collection.append(Word.query.get(int(id)))
-
-    for number in range(6):
-        collection.append(Word.query.get(number+1))
-
-    template = render_template("mypdf.html", collection=collection)
-    html = HTML(string=template)
-
-    return template
 
 
 @ user_blueprint.route("/wordinfo/<word_id>", methods=["GET"])
@@ -114,10 +71,9 @@ def contrasts():
 @ user_blueprint.route("/collection", methods=["GET", "POST"])
 def collection():
 
-    form = toPDF()
+    # TODO: apply form     if request.method == "POST":
 
-    for subfield in form.background:
-        print(subfield.data)
+    form = toPDF()
 
     collection = []
     # Get pairs from session object
@@ -128,7 +84,41 @@ def collection():
         for id in id_collection:
             collection.append(Word.query.get(int(id)))
 
+    if request.method == "POST":
+        if form.validate_on_submit():
+
+            # Background file name is defined in the declaration of wtf choices in forms.py
+            bgfilename = form.background.data
+            print(bgfilename)
+            template = render_template("mypdf.html", collection=collection)
+            html = HTML(string=template)
+            # This bit of CSS is dynamically generated, the rest is hard coded in the template
+            css = CSS(
+                string='@page :left { background-image: url(/static/permaimages/' + bgfilename + ');}')
+
+            return render_pdf(html, stylesheets=[css])
+
     return render_template("collection.html", collection=collection, form=form)
+
+
+@user_blueprint.route("/topdf", methods=["GET"])
+def topdf():
+    """Make a pdf"""
+    collection = []
+
+    if session.get("collection"):
+        id_collection = session["collection"]
+
+        # for id in id_collection:
+        #    collection.append(Word.query.get(int(id)))
+
+    for number in range(18):
+        collection.append(Word.query.get(number+1))
+
+    template = render_template("mypdf.html", collection=collection)
+    html = HTML(string=template)
+
+    return render_pdf(html)
 
 
 @ user_blueprint.route("/ajax_add2collection", methods=["POST"])

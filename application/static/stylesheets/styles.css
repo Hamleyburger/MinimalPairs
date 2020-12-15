@@ -749,15 +749,104 @@ $color-yel2: #000000; // Himmelen
   margin-bottom: 0;
 }
 
+.pdfgenerator .row {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 30px -15px;
+}
+
+.pdfgenerator legend {
+  width: auto;
+}
+
+.pdfgenerator fieldset {
+  border-radius: 15px;
+  background-color: #fe586396;
+  margin: 0% -15px;
+  padding: 0% 5%;
+}
+
+@media (min-width: 450px) {
+  .pdfgenerator fieldset {
+    margin: 0% 10%;
+  }
+}
+
+@media (min-width: 600px) {
+  .pdfgenerator fieldset {
+    margin: 0% 15%;
+  }
+}
+
+@media (min-width: 750px) {
+  .pdfgenerator fieldset {
+    margin: 0% 20%;
+  }
+}
+
+@media (min-width: 900px) {
+  .pdfgenerator fieldset {
+    margin: 0% 30%;
+  }
+}
+
+.pdfgenerator .bgexample {
+  height: 0;
+  /* top and bottom padding must add up to 100% because they determine the height and makes div be square */
+  padding-bottom: 75%;
+  padding-top: 25%;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-size: 100px;
+  background-repeat: repeat;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
 .pdfgenerator button {
   border-radius: 15px;
+  border: none;
   font-size: larger;
-  margin-bottom: 50px;
-  background-color: #FE766A;
+  background-color: #915491;
+  color: #370e2f;
+  padding: 8px 15px;
 }
 
 .pdfgenerator button:hover {
   cursor: pointer;
   background: #fe5862;
+}
+
+.pdfgenerator .pdfbtn {
+  font-size: x-large;
+}
+
+.sorry {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 50vh;
+}
+
+.sorry p {
+  color: #370e2f;
+  font-size: larger;
 }
 /*# sourceMappingURL=styles.css.map */

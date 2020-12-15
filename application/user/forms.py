@@ -18,12 +18,9 @@ def isIPA(form, field):
 class SearchSounds(FlaskForm):
     sound1 = StringField(validators=[DataRequired(), isIPA])
     sound2 = StringField(validators=[DataRequired(), isIPA])
-    search_icon = Markup("<i class='fa fa-search'></i>")
-    search = SubmitField(search_icon)
 
 
 class toPDF(FlaskForm):
     # First argument of each choice needs to be file name of the background image file
     background = RadioField(
-        'Label', choices=[('fiskpattern.svg', 'Fish cookies'), ('catpattern.svg', 'Logo cats')])
-    submit = SubmitField()
+        'Label', choices=[('fiskpattern.svg', 'Fish cookies'), ('catpattern.svg', 'Logo cats')], validators=[DataRequired()])

@@ -3,26 +3,89 @@
 @import "variables";
 
 
-// For collection.html **************************
 .pdfgenerator {
-
-
+    
+    
     align-content: center;
     font-family: Arial, Helvetica, sans-serif;
     padding-top: 40px;
     margin-bottom: 0;
+    
+    .row {
+        justify-content: center;
+        margin: 30px -15px;
+    }
+
+    legend {
+        width: auto;
+    }
+    fieldset {
+        border-radius: 15px;
+        background-color: $color-red1-transparent;
+        margin: 0% -15px;
+        padding: 0% 5%;
+        @media (min-width: 450px) {
+            margin: 0% 10%;
+
+        }
+        @media (min-width: 600px) {
+            margin: 0% 15%;
+
+        }
+        @media (min-width: 750px) {
+            margin: 0% 20%;
+
+        }
+
+        @media (min-width: 900px) {
+            margin: 0% 30%;
+
+        }
+    }
+
+    .bgexample {
+        height: 0;
+        /* top and bottom padding must add up to 100% because they determine the height and makes div be square */
+        padding-bottom: 75%;
+        padding-top: 25%;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-size: 100px;
+        background-repeat: repeat;
+        border-radius: 50%;
+        font-size: 20px;
+    }
 
 
 
     button {
         border-radius: 15px;
-        font-size: larger;
-        margin-bottom: 50px;
-        background-color: $color-red2;
-        &:hover {
-            cursor:pointer;
-            background: $color-red1;
-            }
+        border: none;
+            font-size: larger;
+            background-color: $color-purp2;
+            color: $color-purp1;
+            padding: 8px 15px;
+            &:hover {
+                cursor:pointer;
+                background: $color-red1;
+                }
+        }
+    .pdfbtn {
+        font-size: x-large;
     }
 
+}
+
+.sorry {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    p {
+        color: $color-purp1;
+        font-size: larger;
+    }
 }
