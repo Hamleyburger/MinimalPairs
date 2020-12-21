@@ -11,7 +11,7 @@
 
 <div class="content-section">
     <!-- insert novalidate as attribute if you only want to user server side validation-->
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
             <div class="col-6">
                 <form id="addForm" method="POST" action="{{ url_for('admin_blueprint.add_word') }}"
@@ -20,14 +20,16 @@
                     <fieldset class="form-group">
                         <legend>Add a word</legend>
                         <div class="form-group">
-                            {{ form.word(class="form-control", autocomplete="off", autofocus=true, placeholder="Word") }}
+                            {{ form.word(class="form-control", autocomplete="off", autofocus=true, placeholder="Word")
+                            }}
                         </div>
                         <div class="form-group">
                             {{ form.cue(class="form-control", autocomplete="off", placeholder="Cue") }}
                         </div>
                         <div class="form-group">
                             <div class="custom-file">
-                                {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name") }}
+                                {{ form.image(class="form-control", autocomplete="off", placeholder="Image file name")
+                                }}
                                 <label class="custom-file-label file-label-name add-file-label"
                                     for="image">Image</label>
                             </div>
@@ -73,8 +75,7 @@
                         <div class="row">
 
                             {% for subfield in field %}
-                            {% if (loop.index < 3) %}
-                            <div class="col-5">
+                            {% if (loop.index < 3) %} <div class="col-5">
 
                                 {% if pairForm.addSounds.data %}
                                 {% if subfield.errors %}
@@ -88,40 +89,40 @@
                                 {{ subfield.label }}
                                 {{ subfield(class="sound_input_field", size="4") }}
                                 {% endif %}
-                            </div>
-                            {% if (loop.index == 1) %}
-                            <div class="col-2 vs">
-                                VS
-                            </div>
-                            {% endif %}
-
-                            {% else %}
-                            {{ subfield }}
-                            {% endif %}
-                            {% endfor %}
                         </div>
+                        {% if (loop.index == 1) %}
+                        <div class="col-2 vs">
+                            VS
+                        </div>
+                        {% endif %}
+
+                        {% else %}
+                        {{ subfield }}
+                        {% endif %}
+                        {% endfor %}
                     </div>
-
-                    {% endfor %}
-
-
-
-
-
-
-                    {{ pairForm.addSounds(class="btn btn-primary btn-outline-info") }}
-                    {% endif %}
-                    {% if session.existingPairs %}
-                    <br>Words already paired with {{pairForm.pairSounds[0].sound1.label.text }}
-                    {% for word in session.existingPairs %}{% if loop.index != 1 %},
-                    {% endif %}{{ word.word }}{% endfor %}{% endif %}
-
-                </form>
             </div>
+
+            {% endfor %}
+
+
+
+
+
+
+            {{ pairForm.addSounds(class="btn btn-primary btn-outline-info") }}
+            {% endif %}
+            {% if session.existingPairs %}
+            <br>Words already paired with {{pairForm.pairSounds[0].sound1.label.text }}
+            {% for word in session.existingPairs %}{% if loop.index != 1 %},
+            {% endif %}{{ word.word }}{% endfor %}{% endif %}
+
+            </form>
         </div>
-        <!-- end of container-->
-        {{ ipa_picker() }}
     </div>
+    <!-- end of container-->
+    {{ ipa_picker() }}
+</div>
 </div>
 <!--end of row-->
 

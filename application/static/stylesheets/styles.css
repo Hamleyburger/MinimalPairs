@@ -21,8 +21,14 @@ $color-yel2: #000000; // Himmelen
 }
 
 .shadow {
-  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
-          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
+  -webkit-box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
+          box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
+}
+
+.alert {
+  position: absolute !important;
+  left: 0;
+  right: 0;
 }
 
 .ipa_picker a {
@@ -72,6 +78,10 @@ $color-yel2: #000000; // Himmelen
   margin: 6px 3px;
   margin-bottom: 2px;
   color: #915491;
+}
+
+.FU-container {
+  margin-top: 50px;
 }
 
 /*

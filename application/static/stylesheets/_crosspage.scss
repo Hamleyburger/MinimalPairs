@@ -1,7 +1,13 @@
 
 
 .shadow {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
+}
+
+.alert {
+    position: absolute !important;
+    left: 0;
+    right: 0;
 }
 
 // ipa picker used in add.html and contrasts.html as macro

@@ -5,7 +5,7 @@ class Config(object):
     DEBUG = 1
     # intercepting redirects can be set to true for debugging in browser at runtime
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    SECRET_KEY = "imnotgonnausethisinproduction"
+    SECRET_KEY = "imnotgonnausethisinproductionbutitsstill32byteslong"
     # API_KEY = ""
 
     # Ensure templates are auto-reloaded
@@ -18,6 +18,20 @@ class Config(object):
 
     # Specify path for uploading
     IMAGE_UPLOADS = "application/static/images"
+
+    # FLASK_USER configs
+    # Enable CSRF and disable email (as recommended by PrettyPrinted.com for flask-user)
+    CSRF_ENABLED = True
+    # flask-user will try to send email by default in not set to false. Will only work if email is configured.
+    USER_ENABLE_EMAIL = False
+    USER_REGISTER_TEMPLATE = 'flask_user/login_or_register.html'
+    USER_ENABLE_REGISTER = False
+    # Unauthenticated is if user is not logged in.
+    # string must refer to the desired view function
+    USER_UNAUTHENTICATED_ENDPOINT = 'user_blueprint.index'
+    # Unauthorized is if user does not have the right role.
+    USER_UNAUTHORZED_ENDPOINT = 'user_blueprint.index'
+    # End of FLASK_USER configs
 
 
 class ProductionConfig(Config):

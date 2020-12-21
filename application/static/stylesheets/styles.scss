@@ -4,6 +4,9 @@
 // Stuff that applies across multiple pages
 @import "crosspage";
 
+// For flask_user templates
+@import "flask_user";
+
 // layout contains nav bar and body styles
 @import "layout";
 

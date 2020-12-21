@@ -2,20 +2,16 @@ from flask import Blueprint, session, request, redirect, render_template, flash,
 # from .helpers import clearSessionExcept
 from application.models import Word, Pair, Sound
 from .forms import AddForm, AddPairForm
-from application import db
+from application import db, app
 from .helpers import store_image
+from flask_user import login_required
 
 admin_blueprint = Blueprint(
     "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
 
 
-@admin_blueprint.route("/admin", methods=["GET", "POST"])
-def admin():
-    """admin stuff"""
-    return redirect(url_for("admin_blueprint.add"))
-
-
 @admin_blueprint.route("/add", methods=["GET"])
+@login_required
 def add():
     """admin stuff"""
 

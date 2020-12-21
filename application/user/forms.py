@@ -1,8 +1,10 @@
 from flask import session
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, RadioField, Form, FormField
+from wtforms import StringField, SubmitField, RadioField, Form, FormField, PasswordField
+from wtforms.fields.simple import HiddenField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
-from application.models import Word, Pair
+from .models import User
+from application import db
 #from flask_wtf.file import FileField, FileRequired
 #from werkzeug.utils import secure_filename
 from ipapy import is_valid_ipa
@@ -13,6 +15,36 @@ def isIPA(form, field):
     if not is_valid_ipa(field.data):
         if field.data is not "Ø":
             raise ValidationError("Not valid IPA")
+
+
+# Commented out this admin login form since I'm experimenting with Flask-User
+
+# def adminExists(form, field):
+#    admin = db.session.query(User).filter_by(
+#        username=field.data).filter_by(role=2).first()
+#    if not admin:
+#        raise ValidationError("Invalid username")
+
+
+# def pwCorrect(form, field):
+#    admin = db.session.query(User).filter_by(
+#        username=form.username.data).filter_by(role=2).first()
+#    print(str(admin) + " attempted to login")
+#    if not admin:
+#        print("not admin")
+#        return
+#    elif admin.password != field.data:
+#        print("pw not the same")
+#        print(field.data)
+#        raise ValidationError("Incorrect password")
+#    else:
+#        form.id = admin.id
+
+
+# class AdminLogin(FlaskForm):
+#    username = StringField("label", validators=[DataRequired(), adminExists])
+#    password = PasswordField("label", validators=[DataRequired(), pwCorrect])
+#    id = None
 
 
 class SearchSounds(FlaskForm):

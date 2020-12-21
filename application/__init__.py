@@ -1,12 +1,14 @@
 #!/bin/env python
 
-
 from flask import Flask
 # flask_session could only be imported when downgrading werkzeug:
 # pip uninstalled werkzeug and pip installed werkzeug==0.16.0
 from flask_session import Session
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
+from flask_user import UserManager
+
+
 
 
 # Configure application
@@ -19,11 +21,16 @@ app.config.from_object("configu.DevelopmentConfig")
 
 # Instantiate Session
 Session(app)
+
 # Instantiate debug toolbar
 debugToolbar = DebugToolbarExtension(app)
 
 # Instantiate SQLAlchemy
 db = SQLAlchemy(app)
+
+# Initialize flask-user
+from .user.models import User
+user_manager = UserManager(app, db, User)
 
 # Views.py must be imported AFTER instantiating the app. Otherwise circular import problems
 
