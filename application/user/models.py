@@ -3,6 +3,14 @@ from application import db, app
 from flask_user import UserMixin
 
 
+user_roles = db.Table('user_roles',
+                      db.Column('user_id', db.Integer(), db.ForeignKey(
+                          'users.id', ondelete='CASCADE')),
+                      db.Column('roles_id', db.Integer(), db.ForeignKey(
+                          'roles.id', ondelete='CASCADE'))
+                      )
+
+
 class User(db.Model, UserMixin):
     """ Users can have different roles """
     __tablename__ = "users"
@@ -15,4 +23,15 @@ class User(db.Model, UserMixin):
 
     # Active and role will have to do with Flask-User
     active = db.Column(db.Boolean(), nullable=False, server_default='0')
-    role = db.Column(db.Integer, nullable=False, server_default=db.text('1'))
+    roles = db.relationship('Role', secondary='user_roles')
+
+# Define the Role data-model
+
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    description = db.Column(db.String(300))
+
+# Define the UserRoles association table
