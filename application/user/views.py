@@ -1,7 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response
 from application.models import Word, Group, Sound
 from .models import User
-from flask_login import login_user
 from application import db, app
 from .forms import SearchSounds, toPDF
 from flask_weasyprint import HTML, CSS, render_pdf
@@ -17,14 +16,14 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 
 @user_blueprint.route("/", methods=["GET"])
 def index():
-    """admin stuff"""
+    """ cute front page """
 
     return render_template("userindex.html")
 
 
 @user_blueprint.route("/lukmigind", methods=["GET", "POST"])
 def adminLogin():
-    """admin login page"""
+    """login for admin (user must know URL and no option of registering or feedback)"""
 
     return redirect(url_for('user.login'))
 

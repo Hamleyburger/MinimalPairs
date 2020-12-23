@@ -90,7 +90,12 @@
                 }
                 .owl-stage-outer {
                     padding: 20px;
-                    
+                    .owl-stage {
+                        .owl-item {
+                            //border: 2px solid pink;
+                            max-width: 200px;
+                        }
+                    }
                     .card {
                         border-radius: $border-radius-word-info;
                         //flex: 1;
@@ -99,12 +104,12 @@
                         overflow: hidden;
                         max-width: 222px;
                         .img-wrap {
-                            height: 120px;
+                            //height: 120px;
                             width: auto;
                             overflow: hidden;
                             img {
-                                width: 120%;
-                                height: 120%;
+                                //width: 120%;
+                                //height: 120%;
                                 object-fit: cover;
                                 object-position: 0px 0px;
                             }
@@ -115,7 +120,7 @@
                                 margin-bottom: 2px;
                             }
                             //border: 1px solid green;
-                            min-height: 40%;
+                            min-height: 20%;
                             max-height: 40%;
                             line-height: 16px;
                             font-size: 15px;;

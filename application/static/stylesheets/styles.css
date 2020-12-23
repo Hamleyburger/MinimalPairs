@@ -17,7 +17,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #FE766A;
   --color-yel1: #FE9055;
-  --color-yel2: #ffc851;
+  --color-yel2: #ffe389;
 }
 
 .shadow {
@@ -66,18 +66,18 @@ $color-yel2: #000000; // Himmelen
   font-size: 20px;
 }
 
-.buttons .fa-minus-circle {
-  color: red;
-}
-
-.buttons .fa-plus-circle {
-  color: green;
-}
-
 .buttons a {
   margin: 6px 3px;
   margin-bottom: 2px;
   color: #915491;
+}
+
+.fa-minus-circle {
+  color: red;
+}
+
+.fa-plus-circle {
+  color: green;
 }
 
 .FU-container {
@@ -102,7 +102,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #FE766A;
   --color-yel1: #FE9055;
-  --color-yel2: #ffc851;
+  --color-yel2: #ffe389;
 }
 
 .navbar {
@@ -166,7 +166,7 @@ body {
   min-height: 100%;
   padding-bottom: 4rem;
   background-color: var(--color-red2);
-  background: radial-gradient(circle at 0px 500px, #ffc851 600px, #FE766A 110%);
+  background: radial-gradient(circle at 0px 500px, #ffe389 600px, #FE766A 110%);
   background-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-box-sizing: border-box;
@@ -232,11 +232,10 @@ footer {
 .frontpage-container .text-container {
   position: relative;
   font-size: larger;
-  font-weight: bolder;
+  font-weight: normal;
 }
 
 .frontpage-container .text-container [class*="col-"], .frontpage-container .text-container .col {
-  background-color: var(--color-red1);
   color: var(--color-yel2);
   margin: 40px 10px;
 }
@@ -409,7 +408,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #FE766A;
   --color-yel1: #FE9055;
-  --color-yel2: #ffc851;
+  --color-yel2: #ffe389;
 }
 
 .ipa-container {
@@ -595,7 +594,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #FE766A;
   --color-yel1: #FE9055;
-  --color-yel2: #ffc851;
+  --color-yel2: #ffe389;
 }
 
 .word-info-container .outer-row {
@@ -684,6 +683,10 @@ $color-yel2: #000000; // Himmelen
   padding: 20px;
 }
 
+.word-info-container .outer-row .slider .owl-stage-outer .owl-stage .owl-item {
+  max-width: 200px;
+}
+
 .word-info-container .outer-row .slider .owl-stage-outer .card {
   border-radius: 3px;
   margin: 0px 10px;
@@ -693,14 +696,11 @@ $color-yel2: #000000; // Himmelen
 }
 
 .word-info-container .outer-row .slider .owl-stage-outer .card .img-wrap {
-  height: 120px;
   width: auto;
   overflow: hidden;
 }
 
 .word-info-container .outer-row .slider .owl-stage-outer .card .img-wrap img {
-  width: 120%;
-  height: 120%;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: 0px 0px;
@@ -708,7 +708,7 @@ $color-yel2: #000000; // Himmelen
 }
 
 .word-info-container .outer-row .slider .owl-stage-outer .card .card-body {
-  min-height: 40%;
+  min-height: 20%;
   max-height: 40%;
   line-height: 16px;
   font-size: 15px;
@@ -748,7 +748,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #FE766A;
   --color-yel1: #FE9055;
-  --color-yel2: #ffc851;
+  --color-yel2: #ffe389;
 }
 
 .pdfgenerator {

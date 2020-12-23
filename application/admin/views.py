@@ -1,20 +1,20 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
 # from .helpers import clearSessionExcept
-from application.models import Word, Pair, Sound
+from application.models import Word, Pair, Sound, Group
 from .forms import AddForm, AddPairForm
 from application import db, app
 from .helpers import store_image
-from flask_user import login_required
+from flask_user import roles_required
 
 admin_blueprint = Blueprint(
     "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
 
 
 @admin_blueprint.route("/add", methods=["GET"])
-@login_required
+@roles_required('Admin')
 def add():
     """admin stuff"""
-
+    Group.updateMeta()
     session.pop("homonyms", None)
     session.pop("existingPairs", None)
     form = AddForm()
@@ -31,6 +31,7 @@ def add():
 
 
 @admin_blueprint.route("/add_word", methods=["POST"])
+@roles_required('Admin')
 def add_word():
     session.pop("homonyms", None)
     session.pop("existingPairs", None)
@@ -68,6 +69,7 @@ def add_word():
 
 
 @ admin_blueprint.route("/add_pairs", methods=["POST"])
+@roles_required('Admin')
 def add_pairs():
     session.pop("homonyms", None)
     session.pop("existingPairs", None)
@@ -89,6 +91,7 @@ def add_pairs():
 
 
 @ admin_blueprint.route("/change", methods=["GET", "POST"])
+@roles_required('Admin')
 def change():
     if request.method == "POST":
 
@@ -105,41 +108,13 @@ def change():
 
 
 @ admin_blueprint.route("/upload_image", methods=["POST"])
+@roles_required('Admin')
 def upload_image():
     return "Image uploaded"
 
 
-@ admin_blueprint.route("/pairs/<word_id>", methods=["GET", "POST"])
-def wordinfo(word_id):
-
-    # update to actually contain contrasts
-    word = Word.query.get(word_id)
-
-    partners = word.allPartners()
-
-    # 2D array of all pair combinations for all partners (a list of pair lists)
-    pairLists = []
-    pairs = word.orderedPairs()
-
-    # Make separate lists for pairs that contain the same word
-    for partner in partners:
-        pairList = []
-        for pair in pairs:
-            if pair.w2 == partner:
-                pairList.append(pair)
-        if pairList:
-            pairLists.append(pairList)
-
-    MOsets = word.getMOSets()
-    for x in MOsets:
-        print("")
-        for y in x:
-            print(y.textify())
-
-    return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets)
-
-
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])
+@roles_required('Admin')
 # Receives changes from user and makes changes in database
 def ajax_change():
     print("running ajax")
@@ -163,6 +138,7 @@ def ajax_change():
 
 
 @ admin_blueprint.route("/ajax_word_delete", methods=["POST"])
+@roles_required('Admin')
 # Receives changes from user and makes changes in database
 def ajax_delete():
 
@@ -178,6 +154,7 @@ def ajax_delete():
 
 
 @ admin_blueprint.route("/ajax_possible_pairs", methods=["POST"])
+@roles_required('Admin')
 # Receives a word id and returns words in a way so client can see which pairs already exist
 def ajax_possible_pairs():
     word_id = request.form["id"]

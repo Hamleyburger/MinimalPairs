@@ -41,12 +41,7 @@
     .fas {
         font-size: 20px;
     }
-    .fa-minus-circle {
-        color: red;
-    }
-    .fa-plus-circle {
-        color: green;
-    }
+
     a {
         margin: 6px 3px;
         margin-bottom: 2px;
@@ -54,4 +49,11 @@
 
     }
 
+}
+// All these icons must alawys be green and red
+.fa-minus-circle {
+    color: red;
+}
+.fa-plus-circle {
+    color: green;
 }

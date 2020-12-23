@@ -32,11 +32,13 @@ class Config(object):
     # Unauthorized is if user does not have the right role.
     USER_UNAUTHORZED_ENDPOINT = 'user_blueprint.index'
     # End of FLASK_USER configs
+    SECRET_ADMIN_NAME = 'franciscotarrega'
+    SECRET_ADMIN_PASSWORD = 'Adelita123'
 
 
 class ProductionConfig(Config):
     DEBUG = 0
-    SECRET_KEY = "g%6åhjewhg3d%yb4v4ø%43tEugfdg<ggGDFyjf6i7åS%€yøm"
+    SECRET_KEY = "imalsonotgonnausethisinproductionbutitsstill32byteslong"
     #API_KEY = ""
     SQLALCHEMY_DATABASE_URI = "sqlite:////home/hamleyburger/???"
     SQLALCHEMY_TRACK_MODIFICATIONS = False

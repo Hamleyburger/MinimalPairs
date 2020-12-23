@@ -21,12 +21,14 @@ import filecmp
 
 def store_image(image):
     """ Stores image and thumbnail on server if not already there.\n Returns appropriate file name """
-
+    print("store image running")
     directory = current_app.config["IMAGE_UPLOADS"]
     filename = generateFilename(image.filename, directory)
+    print("file name will be {}".format(filename))
 
     # Store original (is removed if it turns out to be duplicate)
     image.save(os.path.join(directory, filename))
+    print("hi")
 
     # Make thumbnail if file is  actually new
     oldFilename = uniqueFile(directory, filename)

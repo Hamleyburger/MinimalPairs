@@ -28,9 +28,12 @@ debugToolbar = DebugToolbarExtension(app)
 # Instantiate SQLAlchemy
 db = SQLAlchemy(app)
 
-# Initialize flask-user
+# Initialize flask-user and make an admin user if not exists
 from .user.models import User
 user_manager = UserManager(app, db, User)
+
+
+
 
 # Views.py must be imported AFTER instantiating the app. Otherwise circular import problems
 
@@ -43,3 +46,8 @@ app.register_blueprint(admin_blueprint)
 app.register_blueprint(user_blueprint)
 # app.register_blueprint(transactions)
 # app.register_blueprint(main)
+
+
+from . import setdefaults
+print("Checking defaults...")
+setdefaults.go()

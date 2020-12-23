@@ -16,8 +16,10 @@ group_sounds = db.Table('groupsounds',
                         db.Column('group_id', db.Integer,
                                   db.ForeignKey('groups.id')),
                         db.Column('sound_id', db.Integer,
-                                  db.ForeignKey('sounds.id'))
+                                  db.ForeignKey('sounds.id')),
+                        db.UniqueConstraint('group_id', 'sound_id')
                         )
+
 
 group_pairs = db.Table('grouppairs',
                        db.Column('group_id', db.Integer,
@@ -179,7 +181,7 @@ class Group(db.Model):
         back_populates="groups", lazy="dynamic")
 
     def add(self, word=None, words=[]):
-        """ Adds word or word list to caller group. No commit. """
+        """ Adds word or word list to caller group. Avoids duplicates. No commit. """
         if word:
             words.append(word)
 
@@ -211,11 +213,11 @@ class Group(db.Model):
             soundSet.add(pair.s2)
 
         # Append these sounds to group
-        bob = self.sounds
+        groupsounds = self.sounds
         for sound in soundSet:
-            if sound not in bob:
-                print("added '{}' to group {}".format(sound.sound, self.id))
+            if sound not in groupsounds:
                 self.sounds.append(sound)
+                print("added '{}' to group {}".format(sound.sound, self.id))
 
     @classmethod
     def check(cls, ko):
@@ -224,7 +226,7 @@ class Group(db.Model):
 
         db.session.flush()
         koCandidateSets = []
-
+        print("checking word '{}' to see if it can be grouped anywhere.".format(ko.word))
         # Check if new word has mutual friends with its partners
         for to in ko.allPartners():
             for tøbo in to.allPartners():
@@ -232,22 +234,28 @@ class Group(db.Model):
                     # If they do have mutual friends, add them to set or make new
                     added = False
                     if koCandidateSets:
-                        for toSet in koCandidateSets:
-                            if set([ko, to]).issubset(toSet):
-                                toSet.update([ko, to, tøbo])
+                        for toList in koCandidateSets:
+                            if all(words in toList for words in [ko, to]):
+                                if tøbo not in toList:
+                                    toList.append(tøbo)
+
                                 added = True
 
                     if not added:
-                        newSet = set([ko, to, tøbo])
-                        koCandidateSets.append(newSet)
+                        print("Looks like '{}' and '{}' both know '{}'. Are they already grouped? ".format(
+                            ko.word, to.word, tøbo.word))
+                        print(
+                            "None of them were grouped. Making new candidate group for actual group. Next up: group()")
+                        newList = [ko, to, tøbo]
+                        koCandidateSets.append(newList)
 
         if koCandidateSets:
             # Add to appropriate group or make new
             Group.group(koCandidateSets)
 
     @classmethod
-    def group(cls, candidateSets: list):
-        """ Checks a list of SETS(!!) to see if a group already exists for this set\n
+    def group(cls, candidateLists: list):
+        """ Checks a list of word lists to see if a group already exists for this set\n
         Returns group """
 
         groups = cls.query.all()
@@ -255,23 +263,22 @@ class Group(db.Model):
 
         def addGroupAndAll(group, candidates):
 
-            group.add(words=list(candidates))
+            group.add(words=candidates)
             # Candidates should already be added to group
-            pairs = Pair.allPairCombinations(
-                set(group.members))
+            pairs = Pair.allPairCombinations(group.members)
             group.addPairs(pairs=pairs)
             group.updateSounds(pairs)
 
             return group
 
-        for candidates in candidateSets:
+        for candidates in candidateLists:
             added = False
             for group in groups:
                 counter = 0
                 for member in group.members:
                     if member in candidates:
                         counter += 1
-                        if counter == 2:
+                        if counter == 2:  # it means there are two members from candidates existing in a group, meaning the rest of the candidates belong in this group too
 
                             group = addGroupAndAll(group, candidates)
                             modifiedGroups.append(group)
@@ -279,8 +286,8 @@ class Group(db.Model):
                             break
             if not added:
                 newGroup = Group()
+                db.session.add(newGroup)
                 group = addGroupAndAll(newGroup, candidates)
-                db.session.add(group)
                 db.session.flush()
                 print("\nMade new group ({}):".format(group.id), end="")
 
@@ -292,10 +299,25 @@ class Group(db.Model):
 
         return modifiedGroups
 
-    def updateMeta():
+    @classmethod
+    def updateMeta(cls):
         """ Finds all pairs in a group and updates its collection of pairs and sounds """
         # TODO make it also find a list of orphans and overwrite to a file.
-        pass
+        groups = db.session.query(cls).all()
+        for group in groups:
+            soundList = []
+            pairs = group.pairs
+            for pair in pairs:
+                if pair.s1 not in soundList:
+                    soundList.append(pair.s1)
+                if pair.s2 not in soundList:
+                    soundList.append(pair.s2)
+            groupsounds = group.sounds
+            for sound in soundList:
+                if sound not in groupsounds:
+                    group.sounds.append(sound)
+
+            # Figure out a way to identify duplicates and remove them
 
 
 class Pair(db.Model):
@@ -335,16 +357,16 @@ class Pair(db.Model):
 
     @classmethod
     def allPairCombinations(cls, wordSet):
-        """ Takes a set of words and returns a LIST of all possible existing pairs between them"""
+        """ Takes a list of words and returns a list of all possible existing pairs between them"""
 
-        pairSet = set()
+        pairList = []
         for word in wordSet:
             for word2 in wordSet:
                 pairs = word.getPairs(word2)
                 if pairs:
-                    pairSet.update(pairs)
+                    pairList.extend(pairs)
 
-        return list(pairSet)
+        return pairList
 
     # Some id is displayed even if pair is not committed yet
     def textify(self):
@@ -381,6 +403,13 @@ class Word(db.Model):
         secondary=word_grouping,
         back_populates="members")
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        else:
+            print("{} and {} are not the same type".format(str(self), str(other)))
+            return False
+
     @classmethod
     def homonyms(cls, word):
         """ Returns a list of homonyms or None if no homonyms """
@@ -406,7 +435,7 @@ class Word(db.Model):
             print("Adding new word, id: '{}', '{}'".format(entry.id, entry.word))
             db.session.add(entry)
         else:
-            if cue is "":
+            if cue == "":
                 cue = None
 
             entry = Word(word=word, cue=cue)
@@ -417,7 +446,7 @@ class Word(db.Model):
         db.session.flush()
 
         # If added img is in db already connect old img
-        if image is not None and image is not "":
+        if image != None and image != "":
 
             print("Image is not none or ''.")
             img = db.session.query(Image).filter_by(name=image).first()
@@ -454,11 +483,11 @@ class Word(db.Model):
         word = Word.query.filter_by(id=id).first()
 
         # Changes what must be changed
-        if newword is not "":
+        if newword != "":
             word.word = newword
-        if newcue is not "":
+        if newcue != "":
             word.cue = newcue
-        if newimg is not "":
+        if newimg != "":
             image = Image.store(newimg)  # return appropriate image object
             word.image = image
 
@@ -468,14 +497,11 @@ class Word(db.Model):
         # Check if there are idle images lying around
         images = db.session.query(Image).all()
         for image in images:
-            if len(image.words) is 0:
+            if len(image.words) == 0:
                 print(
                     "Warning: this image has no connected words: {}".format(image.name))
 
         return word
-
-    def __eq__(self, other):
-        return self.id == other.id
 
     def pair(self, word2, sound1, sound2):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound\n
@@ -648,9 +674,10 @@ class Word(db.Model):
         pairs = self.orderedPairs()
 
         # Find potential sound1s:
-        sound1s = set()
+        sound1s = []
         for pair in pairs:
-            sound1s.add(pair.s1)
+            if pair.s1 not in sound1s:
+                sound1s.append(pair.s1)
 
         # Based on sound1s find all MO-sets where word (self) is parent/key
         MOsets = []
@@ -685,7 +712,7 @@ class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     name = db.Column(db.String(), nullable=False,
-                     server_default='default.jpg', unique=True)
+                     server_default='default.svg', unique=True)
 
     # is pointed to by at least one word. One-to-many with word.
     words = db.relationship("Word", back_populates="image")
@@ -705,3 +732,14 @@ class Image(db.Model):
             db.session.add(image)
 
         return image
+
+    @classmethod
+    def setDefault(cls):
+        default = cls.query.get(1)
+        if not default:
+            print("Setting default image")
+            default = cls(name="default.svg")
+            db.session.add(default)
+            db.session.commit()
+        else:
+            print("default image ok")

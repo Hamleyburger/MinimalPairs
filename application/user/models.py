@@ -1,6 +1,6 @@
 from flask_user.user_manager import UserManager
 from application import db, app
-from flask_user import UserMixin
+from flask_user import UserMixin, UserManager
 
 
 user_roles = db.Table('user_roles',
@@ -25,9 +25,25 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean(), nullable=False, server_default='0')
     roles = db.relationship('Role', secondary='user_roles')
 
+    # Create admin user with 'Admin' role
+    @classmethod
+    def setAdmin(cls, username, password, user_manager):
+
+        if not cls.query.filter(cls.username == username).first():
+            print("setting admin")
+            user = cls(
+                username=username,
+                password=user_manager.hash_password(password),
+                active=True
+            )
+            user.roles.append(Role(name='Admin'))
+            db.session.add(user)
+            db.session.commit()
+        else:
+            print("admin ok")
+
+
 # Define the Role data-model
-
-
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer(), primary_key=True)

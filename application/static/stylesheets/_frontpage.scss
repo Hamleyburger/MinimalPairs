@@ -44,10 +44,10 @@
     .text-container {
     position: relative;
     font-size: larger;
-    font-weight: bolder;
+    font-weight: normal;
     [class*="col-"], .col {
 
-        background-color: var(--color-red1);
+        //background-color: var(--color-red1);
         color: var(--color-yel2);
         margin: 40px 10px;
     }
