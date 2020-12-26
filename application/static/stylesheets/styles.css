@@ -15,9 +15,9 @@ $color-yel2: #000000; // Himmelen
   --color-purp3: #c99bb8;
   --color-red1: #fe5862;
   --color-red1-transparent: #fe586396;
-  --color-red2: #FE766A;
+  --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe389;
+  --color-yel2: #ffe17d;
 }
 
 .shadow {
@@ -100,9 +100,9 @@ $color-yel2: #000000; // Himmelen
   --color-purp3: #c99bb8;
   --color-red1: #fe5862;
   --color-red1-transparent: #fe586396;
-  --color-red2: #FE766A;
+  --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe389;
+  --color-yel2: #ffe17d;
 }
 
 .navbar {
@@ -164,9 +164,9 @@ html {
 body {
   position: relative;
   min-height: 100%;
-  padding-bottom: 4rem;
+  padding-bottom: 100px;
   background-color: var(--color-red2);
-  background: radial-gradient(circle at 0px 500px, #ffe389 600px, #FE766A 110%);
+  background: radial-gradient(circle at 0px 500px, #ffe17d 600px, #fe916a 110%);
   background-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-box-sizing: border-box;
@@ -175,21 +175,53 @@ body {
 
 footer {
   position: absolute;
+  background: #915491;
+  color: #370e2f;
+  padding: 20px;
+  padding-bottom: 40px;
   bottom: 0;
+  left: 0;
   width: 100%;
-  height: 2.5rem;
+  height: 100px;
+}
+
+footer a {
+  color: black;
 }
 
 .frontpage-container {
   overflow: hidden;
-  height: 377vw;
 }
 
 .frontpage-container .illustration-container {
   padding: 0;
   overflow: visible;
-  height: 110vh;
   position: relative;
+  height: 81vh;
+}
+
+@media (min-width: 576px) {
+  .frontpage-container .illustration-container {
+    height: 89vh;
+  }
+}
+
+@media (min-width: 768px) {
+  .frontpage-container .illustration-container {
+    height: 95vh;
+  }
+}
+
+@media (min-width: 992px) {
+  .frontpage-container .illustration-container {
+    height: 100vh;
+  }
+}
+
+@media (min-width: 1200px) {
+  .frontpage-container .illustration-container {
+    height: 105vh;
+  }
 }
 
 .frontpage-container .illustration-container #illustration {
@@ -230,14 +262,31 @@ footer {
 }
 
 .frontpage-container .text-container {
-  position: relative;
-  font-size: larger;
+  font-size: normal;
   font-weight: normal;
+  position: relative;
+  margin-bottom: 50%;
 }
 
 .frontpage-container .text-container [class*="col-"], .frontpage-container .text-container .col {
   color: var(--color-yel2);
-  margin: 40px 10px;
+  margin: 40px 0px;
+}
+
+.frontpage-container .text-container #planet {
+  fill: #370e2f;
+  display: none;
+}
+
+@media (max-width: 390px) {
+  .frontpage-container .text-container #planet {
+    position: absolute;
+    display: inline;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
 }
 
 #illustration #inner-c {
@@ -406,9 +455,9 @@ $color-yel2: #000000; // Himmelen
   --color-purp3: #c99bb8;
   --color-red1: #fe5862;
   --color-red1-transparent: #fe586396;
-  --color-red2: #FE766A;
+  --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe389;
+  --color-yel2: #ffe17d;
 }
 
 .ipa-container {
@@ -489,6 +538,10 @@ $color-yel2: #000000; // Himmelen
 .titlebox .search-sounds-field button:hover {
   cursor: pointer;
   background: #370e2f;
+}
+
+.contentbox {
+  padding: 10%;
 }
 
 .contentbox [class*="col-"] {
@@ -592,9 +645,9 @@ $color-yel2: #000000; // Himmelen
   --color-purp3: #c99bb8;
   --color-red1: #fe5862;
   --color-red1-transparent: #fe586396;
-  --color-red2: #FE766A;
+  --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe389;
+  --color-yel2: #ffe17d;
 }
 
 .word-info-container .outer-row {
@@ -746,9 +799,9 @@ $color-yel2: #000000; // Himmelen
   --color-purp3: #c99bb8;
   --color-red1: #fe5862;
   --color-red1-transparent: #fe586396;
-  --color-red2: #FE766A;
+  --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe389;
+  --color-yel2: #ffe17d;
 }
 
 .pdfgenerator {

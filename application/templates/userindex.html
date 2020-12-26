@@ -1,4 +1,4 @@
-{% from 'catmacros.html' import illustration %}
+{% from 'catmacros.html' import illustration, planet %}
 {% extends "layout.html" %}
 <!-- {% from 'macros.html' import group_card, pair_card %} -->
 
@@ -37,10 +37,11 @@
                 </p>
                 <p>When you like a word use <i class="fas fa-plus-circle"></i> to add it to your collection. Use <i
                         class="fas fa-minus-circle"></i> to remove it again.</p>
+                {{ planet() }}
             </div>
             <div class="col"></div>
         </div>
     </div>
-</div>s
+</div>
 
 {% endblock %}

@@ -6,13 +6,29 @@
 
 .frontpage-container {
     overflow: hidden;
-    height: 377vw;
+
 
     .illustration-container {
         padding: 0;
         overflow: visible;
-        height: 110vh;
         position: relative;
+        height: 81vh;
+                    // Small devices (landscape phones, 576px and up)
+                    @media (min-width: 576px) {
+                        height: 89vh;
+                    }
+                    // Medium devices (tablets, 768px and up)
+                    @media (min-width: 768px) {
+                        height: 95vh;
+                    }
+                    // Large devices (desktops, 992px and up)
+                    @media (min-width: 992px) {
+                        height: 100vh;
+                    }
+                    // Extra large devices (large desktops, 1200px and up)
+                    @media (min-width: 1200px) {
+                        height: 105vh;
+                    }
         
         #illustration {
             position: absolute;
@@ -42,14 +58,44 @@
         
     }
     .text-container {
-    position: relative;
-    font-size: larger;
+    font-size: normal;
     font-weight: normal;
-    [class*="col-"], .col {
+    position: relative;
+    margin-bottom: 50%;
+    // Small devices (landscape phones, 576px and up)
+    @media (min-width: 576px) {
+        //top: 30%;
+    }
+    // Medium devices (tablets, 768px and up)
+    @media (min-width: 768px) {
+        //top: 25%;
+    }
+    // Large devices (desktops, 992px and up)
+    @media (min-width: 992px) {
+        //top: 20%;
+    }
+    // Extra large devices (large desktops, 1200px and up)
+    @media (min-width: 1200px) {
+        //top: 15%;
+    }
 
+    [class*="col-"], .col {
         //background-color: var(--color-red1);
         color: var(--color-yel2);
-        margin: 40px 10px;
+        margin: 40px 0px;
+    }
+
+    #planet {
+        fill: $color-purp1;
+        display: none;
+        @media (max-width: 390px) {
+            position: absolute;
+            display:inline;
+            top: 20%;
+            left: 0;
+            width: 100%;
+            z-index: -1;
+        }
     }
     }
 
