@@ -73,11 +73,15 @@ $color-yel2: #000000; // Himmelen
 }
 
 .fa-minus-circle {
-  color: red;
+  color: #fe5862;
 }
 
 .fa-plus-circle {
-  color: green;
+  color: #370e2f;
+}
+
+.fa-search {
+  color: #370e2f;
 }
 
 .FU-container {
@@ -484,34 +488,16 @@ $color-yel2: #000000; // Himmelen
 }
 
 .titlebox {
-  background-color: #c99bb8;
+  color: #370e2f;
   -ms-flex-line-pack: center;
       align-content: center;
   font-family: Arial, Helvetica, sans-serif;
-  padding-top: 40px;
-  margin-bottom: 50px;
-}
-
-.titlebox .title-text {
-  font-size: 2.5rem;
-  font-weight: 700;
-  padding-bottom: 30px;
-}
-
-@media only screen and (max-width: 576px) {
-  .titlebox .title-text {
-    font-size: 1.5rem;
-  }
-}
-
-.titlebox p {
-  padding-bottom: 20px;
 }
 
 .titlebox button {
   border-radius: 15px;
-  font-size: larger;
-  margin-bottom: 50px;
+  font-size: 20px;
+  margin: 20px;
   background-color: #915491;
 }
 
@@ -529,7 +515,6 @@ $color-yel2: #000000; // Himmelen
   height: 38px;
   width: 40px;
   background: #915491;
-  color: white;
   font-size: 17px;
   border-radius: 10px;
   border: none;
@@ -540,8 +525,22 @@ $color-yel2: #000000; // Himmelen
   background: #370e2f;
 }
 
+.titlebox .title-text {
+  margin-top: 15px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media only screen and (max-width: 576px) {
+  .titlebox .title-text {
+    font-size: 1.5rem;
+  }
+}
+
 .contentbox {
   padding: 10%;
+  padding-top: 0;
 }
 
 .contentbox [class*="col-"] {
@@ -551,6 +550,28 @@ $color-yel2: #000000; // Himmelen
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.contentbox .row {
+  position: relative;
+}
+
+.contentbox .row .addpairbtn {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  margin-bottom: -20px;
+  padding: 0;
+}
+
+.contentbox .row .addpairbtn i {
+  background: #ffe17d;
+  border-radius: 50%;
+  font-size: 35px;
 }
 
 .wordcard {

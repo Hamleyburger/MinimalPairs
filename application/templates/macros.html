@@ -85,6 +85,7 @@
     <div class="card-body">
         <h5 class="card-title">Group</h5>
         <p class="card-text">
+
             {% for member in group.members %}
             {{ member.word }} <br>
             {% endfor %}
@@ -135,18 +136,21 @@
 {% endif %}
 <div class="buttons">
     {% if isCollected %}
-    <a class="w{{word.id}}show" href="#" style="display: none;" onclick="add_to_collection({{ word.id }}, event)"><i
-            class="fas fa-plus-circle"></i></a>
-    <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)"><i
-            class="fas fa-minus-circle"></i></a>
+    <a class="w{{word.id}}show" href="#" style="display: none;" onclick="add_to_collection({{ word.id }}, event)"
+        data-toggle="tooltip" data-placement="top" title="Add word to collection"><i class="fas fa-plus-circle"></i></a>
+    <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)" data-toggle="tooltip"
+        data-placement="top" title="Remove word from collection"><i class="fas fa-minus-circle"></i></a>
     {% else %}
-    <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)"><i
-            class="fas fa-plus-circle"></i></a>
-    <a class="w{{word.id}}show" style="display: none;" href="#"
-        onclick="remove_from_collection({{ word.id }}, event)"><i class="fas fa-minus-circle"></i></a>
+    <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)" data-toggle="tooltip"
+        data-placement="top" title="Add word to collection"><i class="fas fa-plus-circle"></i>
+    </a>
+    <a class="w{{word.id}}show" style="display: none;" href="#" onclick="remove_from_collection({{ word.id }}, event)"
+        data-toggle="tooltip" data-placement="top" title="Remove word from collection"><i
+            class="fas fa-minus-circle"></i></a>
     {% endif %}
     {% if infobutton %}
-    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id) }}"><i class="fas fa-info-circle"></i></a>
+    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id) }}" data-toggle="tooltip" data-placement="top"
+        title="See word info"><i class="fas fa-info-circle"></i></a>
     {% endif %}
 </div>
 {% endmacro %}

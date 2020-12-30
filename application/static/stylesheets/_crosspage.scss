@@ -52,8 +52,12 @@
 }
 // All these icons must alawys be green and red
 .fa-minus-circle {
-    color: red;
+    color: $color-red1;
 }
 .fa-plus-circle {
-    color: green;
+    color: $color-purp1;
 }
+.fa-search {
+    color: $color-purp1;
+}
+

@@ -1,3 +1,12 @@
+// Enable tooltips
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip({
+        'delay': { show: 1000, hide: 500 }
+   });
+
+  })
+
+
 // HAVING TO DO WITH FILE INPUT FIELDS
 // Makes file names of chosen files show in file input fields given the right label
 $(document).ready(function () {
@@ -80,6 +89,7 @@ var colorred2 = getComputedStyle(document.documentElement).getPropertyValue('--c
 var coloryel1 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel1');
 var coloryel2 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel2');
 
+
 var tl = gsap.timeline({
     scrollTrigger: {
         once: true,
@@ -87,10 +97,13 @@ var tl = gsap.timeline({
         scrub: 2, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
     }
 });
-tl.delay(1);
-tl.timeScale(0.5);
-// solen tager 5s om at gå ned
-tl.to("#sun", { duration: 5, y: 190 })
+
+if(document.querySelector(".frontpage-container")) {
+
+    tl.delay(1);
+    tl.timeScale(0.5);
+    // solen tager 5s om at gå ned
+    tl.to("#sun", { duration: 5, y: 190 })
     // lyset tager 8s om at gå ned
     .to("#sun-gradient", { duration: 7, attr: { fy: 0.9 } }, '<')
     // lyset tager 3s om at blive rødt
@@ -99,16 +112,18 @@ tl.to("#sun", { duration: 5, y: 190 })
     .to("#sun", { duration: 0, autoAlpha: 0 }, '>')
     //.to("#inner-c", { duration: 2, stopColor: colorred1 }, '>')
     .to("#outer-c", { duration: 1, stopColor: colorpurp2 }, '<')
-
-
-
-
-// Functions for adding to and removing words from session with AJAX
-// Used in "contrasts" and "collection"
-function add_to_collection(id, event) {
-    // preventDeafault prevents the <a href="#"> action which takes you to top of page
-    event.preventDefault();
+    
+}
+    
+    
+    
+    // Functions for adding to and removing words from session with AJAX
+    // Used in "contrasts" and "collection"
+    function add_to_collection(id, event) {
+        // preventDeafault prevents the <a href="#"> action which takes you to top of page
+        event.preventDefault();
     console.log("ajax call to add word to collection");
+    
     $.ajax({
         // sending word ID to "deletion" route
         data: {

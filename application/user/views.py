@@ -134,6 +134,7 @@ def topdf():
 def ajax_add2collection():
 
     print("u wanna add to collection with ajax")
+    print(type(request.form["id"]))
     word_id = int(request.form["id"])
     word = Word.query.get(word_id)
     print("Adding word: " + str(word.word))
