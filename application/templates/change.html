@@ -160,21 +160,21 @@
                 id: current_word_id
             },
             // url is the ajax route in views.py
-            url: "/ajax_word_delete",
-            type: "POST"
+            url: {{ url_for('admin_blueprint.ajax_delete')| tojson | safe }},
+    type: "POST"
 
         }).done(function (data) {
-            /* Server check: with parents().length I check if element has any parent with this ID
-            because an existing username is good (green) in Login but bad (red) in register. */
+        /* Server check: with parents().length I check if element has any parent with this ID
+        because an existing username is good (green) in Login but bad (red) in register. */
 
-            console.log(data);
-            console.log(
-                $("#word" + current_word_id).parent()
-            )
-            $("#word" + current_word_id).parent().remove();
-        });
-        document.myform.reset();
-        closeForm();
+        console.log(data);
+        console.log(
+            $("#word" + current_word_id).parent()
+        )
+        $("#word" + current_word_id).parent().remove();
+    });
+    document.myform.reset();
+    closeForm();
     }
 
 

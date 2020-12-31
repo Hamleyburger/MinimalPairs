@@ -1,0 +1,66 @@
+{% macro show_input_file_name() %}
+<script>
+    // For admin add and change when uploading file
+    // Makes file name show in input field after having been chosen
+    $(document).ready(function () {
+        $('input[type="file"]').change(function (e) {
+            var fileName = e.target.files[0].name;
+            $('.file-label-name').html(fileName);
+            //alert('The file "' + fileName + '" has been selected.');
+        });
+    });
+
+</script>
+{% endmacro %}
+
+
+
+
+{% macro enable_chosenjs() %}
+<script>
+    // For admin add for selecting words to pair
+    // Gives jQuery chosen.js functionality to select fields with class chosen-select
+    $(document).ready(function () {
+        $(".chosen-select").chosen({ search_contains: true });
+        $("#word1").change()
+    });
+</script>
+{% endmacro %}
+
+
+
+
+{% macro chosenjs_filtering() %}
+<script>
+    // For "add" when selecting words to pair
+    // If js is enabled use AJAX to filter out irrelevant choices of words that are already paired with word 1
+    $("#word1").change(function () {
+        console.log("Changed");
+
+        console.log("ajax call from js");
+        $.ajax({
+            data: {
+                id: $("#word1").val(),
+            },
+            // ajax is the name of the view function that processes the incoming ajax call
+            url: {{ url_for('admin_blueprint.ajax_possible_pairs')| tojson | safe }},
+        type: "POST"
+
+        }).done(function (data) {
+            /* Server check: with parents().length I check if element has any parent with this ID
+            because an existing username is good (green) in Login but bad (red) in register. */
+
+            $("#pairs > option").each(function () {
+                if (data.id.includes(parseInt(this.value))) {
+                    this.disabled = true;
+                }
+                else {
+                    this.disabled = false;
+                }
+            });
+            $("#pairs").trigger("chosen:updated");
+        });
+    });
+
+</script>
+{% endmacro %}

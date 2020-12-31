@@ -61,10 +61,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js"></script>
 
 
-
     <!-- my own custom styling -->
     <link href="{{ url_for('static',filename='stylesheets/styles.css') }}" rel="stylesheet" />
-
 
 </head>
 
@@ -126,6 +124,7 @@
 
     {% block main %}{% endblock %}
 
+
     <footer class="small text-center">
         All content provided by
         <a href="https://github.com/Hamleyburger">Alma Manley</a>.
@@ -141,6 +140,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
         integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g=="
         crossorigin="anonymous"></script>
+
+
+    {% block script %}{% endblock script %}
+
+
 </body>
 
 </html>

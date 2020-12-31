@@ -45,3 +45,36 @@
 </div>
 
 {% endblock %}
+
+
+{% block script %}
+
+<script>
+    // GSAP for animation on the front page
+    var tl = gsap.timeline({
+        scrollTrigger: {
+            once: true,
+            end: "+=500", // end after scrolling 500px beyond the start
+            scrub: 2, // smooth scrubbing, takes 1 second to "catch up" to the scrollbar
+        }
+    });
+
+    if (document.querySelector(".frontpage-container")) {
+
+        tl.delay(1);
+        tl.timeScale(0.5);
+        // solen tager 5s om at gå ned
+        tl.to("#sun", { duration: 5, y: 190 })
+            // lyset tager 8s om at gå ned
+            .to("#sun-gradient", { duration: 7, attr: { fy: 0.9 } }, '<')
+            // lyset tager 3s om at blive rødt
+            .to("#outer-c", { duration: 3, stopColor: colorred1 }, '<')
+            .to("#inner-c", { duration: 1, stopColor: colorred1 }, '>')
+            .to("#sun", { duration: 0, autoAlpha: 0 }, '>')
+            //.to("#inner-c", { duration: 2, stopColor: colorred1 }, '>')
+            .to("#outer-c", { duration: 1, stopColor: colorpurp2 }, '<')
+
+    }
+</script>
+
+{% endblock script %}

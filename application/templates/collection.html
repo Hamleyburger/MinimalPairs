@@ -66,14 +66,15 @@
             {{ word_card(word) }}
         </div>
         {% endfor %}
-        {% else %}
-
-        <div class="sorry">
-            <p>Add words to your collection with
-                <i class="fas fa-plus-circle"></i> and remove them with <i class="fas fa-minus-circle"></i>
-            </p>
-        </div>
     </div>
+    {% else %}
+
+    <div class="sorry">
+        <p>Add words to your collection with
+            <i class="fas fa-plus-circle"></i> and remove them with <i class="fas fa-minus-circle"></i>
+        </p>
+    </div>
+</div>
 </div>
 
 {% endif %}

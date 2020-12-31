@@ -124,6 +124,11 @@
 <!-- The buttons all word cards must have to add/remove from collection -->
 {% macro word_card_buttons(word, infobutton=true) %}
 <!-- Set collection -->
+<script>
+    // This url is defined for passing into add_to_collection which is defined in scripts.js
+    var url_for_add = "{{ url_for('user_blueprint.ajax_add2collection') }}";
+    var url_for_remove = "{{ url_for('user_blueprint.ajax_remove_from_collection') }}";
+</script>
 {% if session["collection"] is defined %}
 {% set collection = session["collection"] %}
 {% else %}
@@ -136,17 +141,19 @@
 {% endif %}
 <div class="buttons">
     {% if isCollected %}
-    <a class="w{{word.id}}show" href="#" style="display: none;" onclick="add_to_collection({{ word.id }}, event)"
-        data-toggle="tooltip" data-placement="top" title="Add word to collection"><i class="fas fa-plus-circle"></i></a>
-    <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, event)" data-toggle="tooltip"
-        data-placement="top" title="Remove word from collection"><i class="fas fa-minus-circle"></i></a>
-    {% else %}
-    <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, event)" data-toggle="tooltip"
-        data-placement="top" title="Add word to collection"><i class="fas fa-plus-circle"></i>
-    </a>
-    <a class="w{{word.id}}show" style="display: none;" href="#" onclick="remove_from_collection({{ word.id }}, event)"
+    <a class="w{{word.id}}show" href="#" style="display: none;"
+        onclick="add_to_collection({{ word.id }}, url_for_add, event)" data-toggle="tooltip" data-placement="top"
+        title="Add word to collection"><i class="fas fa-plus-circle"></i></a>
+    <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, url_for_remove, event)"
         data-toggle="tooltip" data-placement="top" title="Remove word from collection"><i
             class="fas fa-minus-circle"></i></a>
+    {% else %}
+    <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, url_for_add, event)"
+        data-toggle="tooltip" data-placement="top" title="Add word to collection"><i class="fas fa-plus-circle"></i>
+    </a>
+    <a class="w{{word.id}}show" style="display: none;" href="#"
+        onclick="remove_from_collection({{ word.id }}, url_for_remove, event)" data-toggle="tooltip"
+        data-placement="top" title="Remove word from collection"><i class="fas fa-minus-circle"></i></a>
     {% endif %}
     {% if infobutton %}
     <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id) }}" data-toggle="tooltip" data-placement="top"
