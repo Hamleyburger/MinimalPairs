@@ -141,17 +141,17 @@
 {% endif %}
 <div class="buttons">
     {% if isCollected %}
-    <a class="w{{word.id}}show" href="#" style="display: none;"
+    <a class="w{{word.id}}show addwordbtn" href="#" style="display: none;"
         onclick="add_to_collection({{ word.id }}, url_for_add, event)" data-toggle="tooltip" data-placement="top"
         title="Add word to collection"><i class="fas fa-plus-circle"></i></a>
-    <a class="w{{word.id}}show" href="#" onclick="remove_from_collection({{ word.id }}, url_for_remove, event)"
-        data-toggle="tooltip" data-placement="top" title="Remove word from collection"><i
-            class="fas fa-minus-circle"></i></a>
+    <a class="w{{word.id}}show removewordbtn" href="#"
+        onclick="remove_from_collection({{ word.id }}, url_for_remove, event)" data-toggle="tooltip"
+        data-placement="top" title="Remove word from collection"><i class="fas fa-minus-circle"></i></a>
     {% else %}
-    <a class="w{{word.id}}show" href="#" onclick="add_to_collection({{ word.id }}, url_for_add, event)"
+    <a class="w{{word.id}}show addwordbtn" href="#" onclick="add_to_collection({{ word.id }}, url_for_add, event)"
         data-toggle="tooltip" data-placement="top" title="Add word to collection"><i class="fas fa-plus-circle"></i>
     </a>
-    <a class="w{{word.id}}show" style="display: none;" href="#"
+    <a class="w{{word.id}}show removewordbtn" style="display: none;" href="#"
         onclick="remove_from_collection({{ word.id }}, url_for_remove, event)" data-toggle="tooltip"
         data-placement="top" title="Remove word from collection"><i class="fas fa-minus-circle"></i></a>
     {% endif %}

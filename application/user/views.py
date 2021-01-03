@@ -1,4 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response
+import json
+from .helpers import getCollection, json_to_ints, manageCollection, pairCollected
 from application.models import Word, Group, Sound
 from .models import User
 from application import db, app
@@ -67,13 +69,26 @@ def contrasts():
 
     form = SearchSounds()
     pairs = []
+    wordids = []
+    collectedAll = False
+    collectedPairs = []
 
     if request.method == "POST":
         if form.validate_on_submit():
             sound1 = Sound.get(form.sound1.data)
             pairs = sound1.getContrasts(form.sound2.data)
 
-    return render_template("contrasts.html", pairs=pairs, form=form)
+            # Make a list of ids of all words rendered
+            for pair in pairs:
+                wordids.extend([pair.w1.id, pair.w2.id])
+                if pairCollected(pair):
+                    collectedPairs.extend([pair.id])
+            wordids = json.dumps(wordids)
+
+    print("collection: " + str(getCollection()) +
+          "of type " + str(getCollection()))
+
+    return render_template("contrasts.html", pairs=pairs, form=form, wordids=wordids, collectedAll=collectedAll, collectedPairs=collectedPairs)
 
 
 @ user_blueprint.route("/collection", methods=["GET", "POST"])
@@ -93,18 +108,19 @@ def collection():
             collection.append(Word.query.get(int(id)))
 
     if request.method == "POST":
-        if form.validate_on_submit():
+        if getCollection():
+            if form.validate_on_submit():
+                print(str(form.data))
+                # Background file name is defined in the declaration of wtf choices in forms.py
+                bgfilename = form.background.data
+                print(bgfilename)
+                template = render_template("mypdf.html", collection=collection)
+                html = HTML(string=template)
+                # This bit of CSS is dynamically generated, the rest is hard coded in the template
+                css = CSS(
+                    string='@page :left { background-image: url(/static/permaimages/' + bgfilename + ');}')
 
-            # Background file name is defined in the declaration of wtf choices in forms.py
-            bgfilename = form.background.data
-            print(bgfilename)
-            template = render_template("mypdf.html", collection=collection)
-            html = HTML(string=template)
-            # This bit of CSS is dynamically generated, the rest is hard coded in the template
-            css = CSS(
-                string='@page :left { background-image: url(/static/permaimages/' + bgfilename + ');}')
-
-            return render_pdf(html, stylesheets=[css])
+                return render_pdf(html, stylesheets=[css])
 
     return render_template("collection.html", collection=collection, form=form)
 
@@ -150,7 +166,7 @@ def ajax_add2collection():
     print(session["collection"])
 
     return jsonify(
-        id=word.id
+        session=getCollection()
     )
 
 
@@ -174,5 +190,36 @@ def ajax_remove_from_collection():
     print(type(session["collection"]))
 
     return jsonify(
-        id=word.id
+        session=getCollection()
+    )
+
+
+@ user_blueprint.route("/ajax_collect_all", methods=["POST"])
+# Receives changes from user and makes changes in session
+def ajax_collect_all():
+
+    wordids = json_to_ints(request.form["ids"])
+    remove = json.loads(request.form["remove"])
+
+    print("getCol = {}".format(getCollection()))
+
+    manageCollection(wordids, remove)
+
+    # add any words that are not in collection
+
+    print(getCollection())
+
+    return jsonify(
+        session=getCollection()
+    )
+
+
+@ user_blueprint.route("/ajax_clear", methods=["POST"])
+# Receives changes from user and makes changes in session
+def ajax_clear():
+
+    session["collection"] = []
+    print("User cleared collection")
+    return jsonify(
+        session=getCollection()
     )

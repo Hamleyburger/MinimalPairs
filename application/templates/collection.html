@@ -12,9 +12,14 @@
     <div class="row">
 
         <button id="search-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
-            data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">Make PDF <i
+            data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">make PDF <i
                 id="rotate-icon" class="fas fa-angle-down"></i>
         </button>
+        <script>
+            var url_for_clear = "{{ url_for('user_blueprint.ajax_clear') }}";
+        </script>
+        <button type="button" class="btn shadow" onclick="clear_collection(url_for_clear, event)" data-toggle="tooltip"
+            data-placement="top" title="Remove all words from collection"><i class="fas fa-trash-alt"></i></button>
     </div>
 
     <div class="collapse" id="pdf-form-collapsable">
@@ -62,7 +67,7 @@
     <!-- For loop "pairs" for iterating over pairs -->
     <div class="row">
         {% for word in collection %}
-        <div class="col-12 col-md-4 col-sm-6" id="wordcol{{word.id}}">
+        <div class="col-12 col-md-4 col-sm-6 wordcols" id="wordcol{{word.id}}">
             {{ word_card(word) }}
         </div>
         {% endfor %}

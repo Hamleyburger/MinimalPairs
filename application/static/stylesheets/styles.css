@@ -501,6 +501,14 @@ $color-yel2: #000000; // Himmelen
   background-color: #915491;
 }
 
+.titlebox .removeallbtn {
+  background-color: #fe5862;
+}
+
+.titlebox .removeallbtn i {
+  color: #370e2f;
+}
+
 .titlebox .search-sounds-field {
   padding-bottom: 40px;
 }
@@ -556,7 +564,7 @@ $color-yel2: #000000; // Himmelen
   position: relative;
 }
 
-.contentbox .row .addpairbtn {
+.contentbox .row .addpairbtn, .contentbox .row .removepairbtn {
   position: absolute;
   left: 50%;
   bottom: 50%;
@@ -568,8 +576,8 @@ $color-yel2: #000000; // Himmelen
   padding: 0;
 }
 
-.contentbox .row .addpairbtn i {
-  background: #ffe17d;
+.contentbox .row .addpairbtn i, .contentbox .row .removepairbtn i {
+  background: none;
   border-radius: 50%;
   font-size: 35px;
 }
@@ -900,6 +908,7 @@ $color-yel2: #000000; // Himmelen
 .pdfgenerator button {
   border-radius: 15px;
   border: none;
+  margin: 15px;
   font-size: larger;
   background-color: #915491;
   color: #370e2f;

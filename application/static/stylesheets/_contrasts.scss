@@ -35,6 +35,12 @@
         margin: 20px;
         background-color: $color-purp2;
     }
+    .removeallbtn {
+        background-color: $color-red1;
+        i {
+            color: $color-purp1;
+        }
+    }
     .search-sounds-field {
         padding-bottom: 40px;
 
@@ -80,7 +86,7 @@
     }
     .row {
         position: relative;
-        .addpairbtn {
+        .addpairbtn, .removepairbtn {
 
             position: absolute;
             left: 50%;
@@ -92,7 +98,7 @@
             margin-bottom: -20px;
             padding: 0;
             i{
-                background: $color-yel2;
+                background: none;
                 border-radius: 50%;
                 font-size: 35px;
             }
@@ -154,3 +160,4 @@ height: 70%;
         }
     }
 }
+

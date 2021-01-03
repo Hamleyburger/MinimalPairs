@@ -17,10 +17,23 @@
         sounds <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
     </button>
     {% if pairs %}
-    <button type="button" class="btn shadow m-auto" data-toggle="tooltip" data-placement="top"
-        title="Add all results to collection"><i class="fas fa-plus-circle"></i> add all
-    </button>
-    {% endif %}
+
+    <script>
+        wordids = {{ wordids | safe }}
+    </script>
+
+    <button type="button" class="removeallbtn btn shadow m-auto"
+        style="display: {{ 'inline-block' if collectedAll else 'none' }};"
+        onclick="collect_all(wordids, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
+        data-placement="top" title="Remove all results from collection"><i class="fas fa-minus-circle"></i> clear
+        all</button>
+
+    <button type="button" class="addallbtn btn shadow m-auto"
+        style="display: {{ 'none' if collectedAll else 'inline-block' }};"
+        onclick="collect_all(wordids, url_for_bulkmanage, event)" data-toggle="tooltip" data-placement="top"
+        title="Add all results to collection"><i class="fas fa-plus-circle"></i> add all</button>
+
+    {% endif %} {# if pairs #}
 
     <form id="searchSounds" method="POST" action="{{ url_for('user_blueprint.contrasts') }}" novalidate>
         {{ form.hidden_tag() }}
@@ -53,17 +66,25 @@
         </div>
     </div>
     <!-- For loop "pairs" for iterating over pairs -->
-    <script>
-        var idList = []
-    </script>
+
+
     {% for pair in pairs %}
+
     <div class="row justify-content-center">
-        <script>
-            idList.push('{{ pair.id }}');
-        </script>
-        <a href="#" type="button" class="addpairbtn btn" data-toggle="tooltip" data-placement="top"
-            title="Add pair to collection"><i class="fas fa-plus-circle shadow"></i>
+
+        <a href="#" type="button" id="pair-{{ pair.w1.id }}vs{{ pair.w2.id }}-addbtn" class="addpairbtn btn"
+            style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
+            onclick="collect_all([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false, pair=true)"
+            data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="Add pair to collection"><i
+                class="fas fa-plus-circle shadow"></i>
         </a>
+        <a href="#" type="button" id="pair-{{ pair.w1.id }}vs{{ pair.w2.id }}-removebtn" class="removepairbtn btn"
+            style="display: {{ 'inline-block' if pair.id in collectedPairs else 'none' }};"
+            onclick="collect_all([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true, pair=true)"
+            data-toggle="tooltip" data-placement="top" title="Remove pair from collection"><i
+                class="fas fa-minus-circle shadow"></i>
+        </a>
+
         <div class="col-6 col-sm-5">
             {{ word_card(pair.w1) }}
         </div>
@@ -79,6 +100,9 @@
 </div>
 {% endif %}
 
+{% endblock %}
+
+{% block script %}
 <script>
 
     $("#search-collapse-btn").click(function () {
@@ -86,9 +110,10 @@
         $("#rotate-icon").toggleClass("fa-rotate-180");
     });
 
-</script>
+    // This url is defined for passing into add_to_collection which is defined in scripts.js
+    var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_all') }}";
 
-<script>
-    console.log(idList);
+
+
 </script>
 {% endblock %}
