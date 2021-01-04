@@ -69,7 +69,7 @@ def contrasts():
 
     form = SearchSounds()
     pairs = []
-    wordids = []
+    renderedids = []
     collectedAll = False
     collectedPairs = []
 
@@ -80,15 +80,16 @@ def contrasts():
 
             # Make a list of ids of all words rendered
             for pair in pairs:
-                wordids.extend([pair.w1.id, pair.w2.id])
+                idlist = [pair.w1.id, pair.w2.id]
+                renderedids.extend(idlist)
                 if pairCollected(pair):
                     collectedPairs.extend([pair.id])
-            wordids = json.dumps(wordids)
+            renderedids = json.dumps(renderedids)
 
     print("collection: " + str(getCollection()) +
           "of type " + str(getCollection()))
 
-    return render_template("contrasts.html", pairs=pairs, form=form, wordids=wordids, collectedAll=collectedAll, collectedPairs=collectedPairs)
+    return render_template("contrasts.html", pairs=pairs, form=form, renderedids=renderedids, collectedAll=collectedAll, collectedPairs=collectedPairs)
 
 
 @ user_blueprint.route("/collection", methods=["GET", "POST"])
@@ -110,10 +111,8 @@ def collection():
     if request.method == "POST":
         if getCollection():
             if form.validate_on_submit():
-                print(str(form.data))
                 # Background file name is defined in the declaration of wtf choices in forms.py
                 bgfilename = form.background.data
-                print(bgfilename)
                 template = render_template("mypdf.html", collection=collection)
                 html = HTML(string=template)
                 # This bit of CSS is dynamically generated, the rest is hard coded in the template
@@ -150,7 +149,6 @@ def topdf():
 def ajax_add2collection():
 
     print("u wanna add to collection with ajax")
-    print(type(request.form["id"]))
     word_id = int(request.form["id"])
     word = Word.query.get(word_id)
     print("Adding word: " + str(word.word))
@@ -159,11 +157,9 @@ def ajax_add2collection():
         collection = session["collection"]
         if word_id not in collection:
             collection.append(word_id)
-        else:
-            print("word id in collecton")
+
     else:
         session["collection"] = [word_id]
-    print(session["collection"])
 
     return jsonify(
         session=getCollection()
@@ -186,28 +182,21 @@ def ajax_remove_from_collection():
         else:
             print("word id was not in collecton")
 
-    print(session["collection"])
-    print(type(session["collection"]))
-
     return jsonify(
         session=getCollection()
     )
 
 
-@ user_blueprint.route("/ajax_collect_all", methods=["POST"])
+@ user_blueprint.route("/ajax_collect_many", methods=["POST"])
 # Receives changes from user and makes changes in session
-def ajax_collect_all():
+def ajax_collect_many():
 
     wordids = json_to_ints(request.form["ids"])
     remove = json.loads(request.form["remove"])
 
-    print("getCol = {}".format(getCollection()))
-
     manageCollection(wordids, remove)
 
     # add any words that are not in collection
-
-    print(getCollection())
 
     return jsonify(
         session=getCollection()

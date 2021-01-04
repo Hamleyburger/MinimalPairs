@@ -19,19 +19,20 @@
     {% if pairs %}
 
     <script>
-        wordids = {{ wordids | safe }}
+        var renderedids = {{ renderedids | safe }};
+        var pairwordids = [];
     </script>
 
     <button type="button" class="removeallbtn btn shadow m-auto"
         style="display: {{ 'inline-block' if collectedAll else 'none' }};"
-        onclick="collect_all(wordids, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
+        onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
         data-placement="top" title="Remove all results from collection"><i class="fas fa-minus-circle"></i> clear
         all</button>
 
     <button type="button" class="addallbtn btn shadow m-auto"
         style="display: {{ 'none' if collectedAll else 'inline-block' }};"
-        onclick="collect_all(wordids, url_for_bulkmanage, event)" data-toggle="tooltip" data-placement="top"
-        title="Add all results to collection"><i class="fas fa-plus-circle"></i> add all</button>
+        onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
+        data-placement="top" title="Add all results to collection"><i class="fas fa-plus-circle"></i> add all</button>
 
     {% endif %} {# if pairs #}
 
@@ -69,18 +70,21 @@
 
 
     {% for pair in pairs %}
+    <script>
+        pairwordids.push([{{ pair.w1.id }}, {{ pair.w2.id }}]);
+    </script>
 
     <div class="row justify-content-center">
 
         <a href="#" type="button" id="pair-{{ pair.w1.id }}vs{{ pair.w2.id }}-addbtn" class="addpairbtn btn"
             style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
-            onclick="collect_all([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false, pair=true)"
+            onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false)"
             data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="Add pair to collection"><i
                 class="fas fa-plus-circle shadow"></i>
         </a>
         <a href="#" type="button" id="pair-{{ pair.w1.id }}vs{{ pair.w2.id }}-removebtn" class="removepairbtn btn"
             style="display: {{ 'inline-block' if pair.id in collectedPairs else 'none' }};"
-            onclick="collect_all([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true, pair=true)"
+            onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true)"
             data-toggle="tooltip" data-placement="top" title="Remove pair from collection"><i
                 class="fas fa-minus-circle shadow"></i>
         </a>
@@ -111,7 +115,7 @@
     });
 
     // This url is defined for passing into add_to_collection which is defined in scripts.js
-    var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_all') }}";
+    var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_many') }}";
 
 
 
