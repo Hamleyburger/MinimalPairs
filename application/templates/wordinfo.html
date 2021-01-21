@@ -8,25 +8,6 @@
 
 {% block main %}
 
-<style>
-    .word-info-container .col-pairs {
-        background: #915491;
-        padding: 5px 8px !important;
-        border-radius: 3px;
-    }
-
-    .word-info-container h5 {
-        width: 100%;
-        ;
-    }
-
-    .word-info-container .inner-row {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-
-    }
-</style>
 
 <div class="container-fluid word-info-container">
     <div class="row outer-row justify-content-sm-center justify-content-xl-between">
@@ -152,8 +133,9 @@
 
 
 
-    <div class="row outer-row justify-content-center justify-content-lg-around">
-        {{ MOmacro(word.word, MOset) }}
+    <div class="row MO-row outer-row justify-content-center justify-content-lg-around">
+
+
         {% for MOset in MOsets %}
         <div class="MO-col col-12 col-sm-6 col-lg-5">
             <div class="MO-wrapper shadow">
@@ -161,6 +143,7 @@
             </div>
         </div>
         {% endfor %}
+
 
     </div>
 

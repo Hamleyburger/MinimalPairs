@@ -1,3 +1,5 @@
+{% from 'macros.html' import word_card_buttons %}
+
 {% macro MOmacro(word1, MOset) %}
 
 <!-- It shouldn't be possible for an MOset to be less than 3, but we check anyway -->
@@ -91,4 +93,27 @@
 
 {% endif %}
 {# End loop for checking length to see if svg should be rendered at all #}
+{% endmacro %}
+
+
+
+
+
+
+{% macro MOmacro2(word1, MOset) %}
+<div class="item card" style="box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.55)">
+    <div class="img-wrap">
+    </div>
+
+    <div class="card-body">
+        <h5 class="card-title"><span class="line">{{ word1 }}</span></h5>
+        <p class="card-text">
+            {% for MO in MOset %}
+            [{{ MO }}]<span>&#x2192;</span>[{{ "sound" }}]
+            <br>
+            {% endfor %}
+        </p>
+    </div>
+    {{ word_card_buttons(word1) }}
+</div>
 {% endmacro %}

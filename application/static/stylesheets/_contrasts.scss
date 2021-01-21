@@ -1,11 +1,12 @@
 @import "variables";
 // pretty ipa container used in contrasts
 .ipa-container {
+    margin: 0 auto;
+    margin-top: 40px;
     padding: 10px;
     border: 5px solid black;
     border-radius: 20px;
     background-color: rgba(194, 194, 194, 0.461);
-    margin: 0 auto;
     width: 600px;
     max-width: 100%;
 
@@ -41,6 +42,20 @@
             color: $color-purp1;
         }
     }
+
+    .search-tabs-flex-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .search-tabs {
+            width: 600px;
+            max-width: 100%;
+            @media only screen and (max-width: 620px) {
+            width: 340px;
+            }
+        }
+    }
+
     .search-sounds-field {
         padding-bottom: 40px;
 
@@ -72,7 +87,6 @@
         }
         font-weight: 700;
         text-align: center;
-        
     }
 }
 
@@ -161,3 +175,45 @@ height: 70%;
     }
 }
 
+
+
+// For the tabs: Uses bootstrap nav tabs and could be used for tabs in other pages
+.redbg {
+    background-color: $color-red2;
+}
+
+.purplebg {
+    background-color: $color-red1;
+}
+
+.nav-tabs {
+    border: 0;
+
+    .nav-item {
+        //margin: 0px 5px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        .nav-link {
+            background-color: inherit;
+            border: none;
+            color: $color-purp1;
+            &.active {
+                border: none;
+                box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35)
+                
+            }
+        }
+    }
+}
+
+  .tab-content {
+      //padding: 15px;
+      .tab-pane {
+          //background-color: inherit;
+        border: none;
+        border-radius: 15px;
+        color: $color-purp1;
+        min-height: 200px;
+        height: auto;
+    }
+  }

@@ -2,145 +2,161 @@
 //$color-purp2: #915491;
 @import "variables";
 
+
+
 .word-info-container {
     $border-radius-word-info: 3px;
-        @media screen and (max-width: 422px) {
-            //width: 100%;
-        }
-        .outer-row {
+    @media screen and (max-width: 422px) {
+        //width: 100%;
+    }
+    .outer-row {
+    border-radius: 3px;
+    justify-content: flex-start;
+    margin: 10%;
+    padding: 0px;
+    @media screen and (max-width: 710px) {
+        margin-left: 8%;
+        margin-right: 8%;
+    }
+    @media screen and (max-width: 422px) {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .col-pairs {
+        background: #915491;
+        padding: 5px 8px !important;
         border-radius: 3px;
-        justify-content: flex-start;
-        margin: 10%;
-        padding: 0px;
-        @media screen and (max-width: 710px) {
-            margin-left: 8%;
-            margin-right: 8%;
+    }
+
+    h5 {
+        width: 100%;
+    }
+    .inner-row {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        // This part is responsible for word1 top row's items
+        .cols-word .title {
+            font-size: 25px;
+            line-height: 1;
+            h1 {
+            overflow-wrap: break-word;
+                    font-size: 25px;
+                    font-weight: bold;
+            }
+            p {
+                margin-bottom: 0;
+                font-size: 20px;
+            }
         }
-        @media screen and (max-width: 422px) {
-            margin-left: 2px;
-            margin-right: 2px;
-        }
-    
-    
-        [class*='col-']{
+    }
 
-            padding: 0px 0px;
-    
-    
-            // This part is responsible for word1 top row's items
+    [class*='col-']{
+        padding: 0px 0px;
 
-    
-            .inner-row .cols-word .title {
-                font-size: 25px;
-                line-height: 1;
-                    h1 {
-                    overflow-wrap: break-word;
-                            font-size: 25px;
-                            font-weight: bold;
-                    }
-                    p {
-                        margin-bottom: 0;
-                        font-size: 20px;
-                    }
-                }
-
-
-            .word1-img-div {
+        .word1-img-div {
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            border-radius: 50%;
+            object-fit: scale-down;
+            overflow: hidden;
+            img {
                 width: 100%;
-                height: 0;
-                padding-bottom: 100%;
-                border-radius: 50%;
-                object-fit: scale-down;
-                overflow: hidden;
-                img {
-                    width: 100%;
-                }
-
             }
+        }
 
-            // This part is responsible for pair card behaviours
+        // This part is responsible for pair card behaviours
 
-
-            }
-            // Carousel in pairs
-            .slider {
-                //ground-color: var(--color-purp2);
-              
-                box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-                background: darken($color-purp2, 10%);
-                
-                padding: 0px 0px;
-                border-radius: $border-radius-word-info;
-                max-width: 1150px;
-                overflow: hidden;
-                //display: flex;
-                max-height: 694px;
-                overflow: hidden;
-                .owl-dots {
-                    padding-top: 10px;
-                    background-color: $color-purp2;
-                    .owl-dot {
-                        span {
-                            background: $color-purp3;
-                        }
-                    }
-                    .active span {
-                        background: $color-purp1;
+        }
+        // Carousel in pairs
+        .slider {
+            //ground-color: var(--color-purp2);
+            
+            box-shadow: inset 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            background: darken($color-purp2, 10%);
+            
+            padding: 0px 0px;
+            border-radius: $border-radius-word-info;
+            max-width: 1150px;
+            overflow: hidden;
+            //display: flex;
+            max-height: 694px;
+            overflow: hidden;
+            .owl-dots {
+                padding-top: 10px;
+                background-color: $color-purp2;
+                .owl-dot {
+                    span {
+                        background: $color-purp3;
                     }
                 }
-                .owl-stage-outer {
-                    padding: 20px;
-                    .owl-stage {
-                        .owl-item {
-                            //border: 2px solid pink;
-                            max-width: 200px;
-                        }
+                .active span {
+                    background: $color-purp1;
+                }
+            }
+            .owl-stage-outer {
+                padding: 20px;
+                .owl-stage {
+                    .owl-item {
+                        //border: 2px solid pink;
+                        max-width: 200px;
                     }
-                    .card {
-                        border-radius: $border-radius-word-info;
-                        //flex: 1;
-                        margin: 0px 10px;
-                        height: 232px;
+                }
+                .card {
+                    border-radius: $border-radius-word-info;
+                    //background-color: $color-yel3;
+                    //flex: 1;
+                    margin: 0px 10px;
+                    height: 232px;
+                    overflow: hidden;
+                    max-width: 222px;
+                    .img-wrap {
+                        //height: 120px;
+                        width: auto;
                         overflow: hidden;
-                        max-width: 222px;
-                        .img-wrap {
-                            //height: 120px;
-                            width: auto;
-                            overflow: hidden;
-                            img {
-                                //width: 120%;
-                                //height: 120%;
-                                object-fit: cover;
-                                object-position: 0px 0px;
-                            }
+                        img {
+                            //width: 120%;
+                            //height: 120%;
+                            object-fit: cover;
+                            object-position: 0px 0px;
                         }
-                        .card-body {
-                            .card-title {
-                                margin-top: 0px;
-                                margin-bottom: 2px;
-                            }
-                            //border: 1px solid green;
-                            min-height: 20%;
-                            max-height: 40%;
-                            line-height: 16px;
-                            font-size: 15px;;
-                            padding: 10px;
-                            padding-top: 5px;
-                            padding-bottom: 5px;
-                            overflow-y: scroll;
+                    }
+                    .card-body {
+                        .card-title {
+                            margin-top: 0px;
+                            margin-bottom: 2px;
                         }
+                        //border: 1px solid green;
+                        min-height: 20%;
+                        max-height: 40%;
+                        line-height: 16px;
+                        font-size: 15px;;
+                        padding: 10px;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        overflow-y: scroll;
                     }
                 }
             }
-.MO-col {
-    //height: 300px;
-    .MO-wrapper {
-        background: radial-gradient($color-purp3 45%, $color-purp2 80%);
-        margin: 5px;
-        border-radius: 150px;
-        padding: 11px;
+        }
+        .MO-col {
+            //height: 300px;
+            
+            .MO-wrapper {
+                background: $color-yel3;
+                margin: 8px;
+                border-radius: 3px;
+                //padding: 11px;
+            }
+        }
     }
 }
-        }
-    }
-
+    
+    .MO-row {
+    border-radius: 3px;
+    background: $color-purp2;
+    margin: 0;
+    //padding: 5px;
+}

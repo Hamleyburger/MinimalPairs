@@ -12,12 +12,14 @@
 
 
 <div class="container-fluid text-center titlebox">
-    <button id="search-collapse-stn" type="button" class="btn shadow" data-toggle="collapse"
+    <!-- Buttons for collapsing forms -->
+    <button id="search-pair-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
         data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
         sounds <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
     </button>
-    {% if pairs %}
 
+    <!-- Buttons to handle search results -->
+    {% if pairs %}
     <script>
         var renderedids = {{ renderedids | safe }};
         var pairwordids = [];
@@ -33,30 +35,84 @@
         style="display: {{ 'none' if collectedAll else 'inline-block' }};"
         onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
         data-placement="top" title="Add all results to collection"><i class="fas fa-plus-circle"></i> add all</button>
-
     {% endif %} {# if pairs #}
 
-    <form id="searchSounds" method="POST" action="{{ url_for('user_blueprint.contrasts') }}" novalidate>
-        {{ form.hidden_tag() }}
-        <div id="search-collapsable" class='collapse {{"show" if not pairs}}' aria-labelledby="headingOne">
-            <div class="search-sounds-field">
 
-                {{ form.sound1(class="sound_input_field", size="1") }}
-                vs.
-                {{ form.sound2(class="sound_input_field", size="1") }}
+    <!-- collapsing tab section with tabs: search for pairs or multiple oppositions -->
+    <div id="search-collapsable" class='collapse {{"show" if not pairs}}' aria-labelledby="headingOne">
+        <div class="search-tabs-flex-wrapper">
 
-                <button type="submit" class="shadow" data-toggle="tooltip" data-placement="top"
-                    title="Search for sounds"><i class="fa fa-search"
-                        formaction="{{ url_for('user_blueprint.contrasts') }}"></i></button>
-                <div class="ipa-container">
-                    {{ ipa_picker() }}
+            <div class="search-tabs">
+
+                <!-- tabs (the ones you click) -->
+                <div style="padding: 15px 15px 0px 15px; overflow: hidden;">
+
+                    <ul class="nav nav-tabs justify-content-center">
+                        <li class="nav-item redbg">
+                            <a class="nav-link active" id="searchPairs-tab" data-toggle="tab" href="#searchPairs"
+                                role="tab" aria-controls="search-pairs" aria-selected="true">Pairs</a>
+                        </li>
+                        <li class="nav-item purplebg">
+                            <a class="nav-link" id="searchMOs-tab" data-toggle="tab" href="#searchMOs" role="tab"
+                                aria-controls="search-multiple-oppositions" aria-selected="false">Multiple
+                                oppositions</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- tab content -->
+                <div class="tab-content" id="search-tabs-content">
+                    <!-- form pane: search for pairs -->
+                    <div class="tab-pane shadow show active redbg" id="searchPairs" role="tabpanel"
+                        aria-labelledby="home-tab">
+                        <form id="searchPairs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
+                            novalidate>
+                            {{ form.hidden_tag() }}
+                            <div class="search-sounds-field">
+                                {{ form.sound1(class="sound_input_field", size="1") }}
+                                vs.
+                                {{ form.sound2(class="sound_input_field", size="1") }}
+                                <button type="submit" class="shadow" data-toggle="tooltip" data-placement="top"
+                                    title="Search for sounds"><i class="fa fa-search"
+                                        formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- form pane: search for MOs -->
+                    <div class="tab-pane shadow purplebg" id="searchMOs" role="tabpanel" aria-labelledby="profile-tab">
+                        <!-- collapsing form: search for multiple opposition sets -->
+                        <form id="searchMOs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
+                            novalidate>
+                            {{ form.hidden_tag() }}
+                            <div class="search-sounds-field">
+
+                                {{ form.sound1(class="sound_input_field", size="1") }}
+                                vs.
+                                {{ form.sound2(class="sound_input_field", size="1") }}
+
+                                <button type="submit" class="shadow" data-toggle="tooltip" data-placement="top"
+                                    title="Search for sounds"><i class="fa fa-search"
+                                        formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </form>
+
+        <div class="ipa-container">
+            {{ ipa_picker() }}
+        </div>
+    </div>
 </div>
 
 
+
+
+
+<!-- Actual search results -->
 {% if pairs %}
 <div class="container contentbox">
     <div class="titlebox">
@@ -106,10 +162,12 @@
 
 {% endblock %}
 
+
+
 {% block script %}
 <script>
 
-    $("#search-collapse-btn").click(function () {
+    $("#search-pair-collapse-btn").click(function () {
         //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
         $("#rotate-icon").toggleClass("fa-rotate-180");
     });

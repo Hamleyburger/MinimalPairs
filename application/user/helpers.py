@@ -48,3 +48,18 @@ def pairCollected(pair: Pair):
         return True
     else:
         return False
+
+
+def easyIPAtyping(typedSound):
+
+    easyTypableSounds = {
+        'r': 'ʁ',
+        'sj': 'ɕ',
+        'ng': 'ŋ',
+        'ɡ': 'g'
+    }
+
+    if typedSound in easyTypableSounds:
+        typedSound = easyTypableSounds[typedSound]
+
+    return typedSound

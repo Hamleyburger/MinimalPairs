@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response
 import json
-from .helpers import getCollection, json_to_ints, manageCollection, pairCollected
+from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping
 from application.models import Word, Group, Sound
 from .models import User
 from application import db, app
@@ -75,8 +75,13 @@ def contrasts():
 
     if request.method == "POST":
         if form.validate_on_submit():
-            sound1 = Sound.get(form.sound1.data)
-            pairs = sound1.getContrasts(form.sound2.data)
+
+            # Easy keyboard typing enabled:
+            inputSound1 = easyIPAtyping(form.sound1.data)
+            inputSound2 = easyIPAtyping(form.sound2.data)
+
+            sound1 = Sound.get(inputSound1)
+            pairs = sound1.getContrasts(inputSound2)
 
             # Make a list of ids of all words rendered
             for pair in pairs:

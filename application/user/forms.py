@@ -52,6 +52,11 @@ class SearchSounds(FlaskForm):
     sound2 = StringField(validators=[DataRequired(), isIPA])
 
 
+class SearchMOs(FlaskForm):
+    sound1 = StringField(validators=[DataRequired(), isIPA])
+    sound2 = StringField(validators=[DataRequired(), isIPA])
+
+
 class toPDF(FlaskForm):
     # First argument of each choice needs to be file name of the background image file
     background = RadioField(

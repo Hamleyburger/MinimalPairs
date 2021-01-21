@@ -84,6 +84,10 @@ $color-yel2: #000000; // Himmelen
   color: #370e2f;
 }
 
+.card {
+  background-color: #fff6da;
+}
+
 .FU-container {
   margin-top: 50px;
 }
@@ -465,11 +469,12 @@ $color-yel2: #000000; // Himmelen
 }
 
 .ipa-container {
+  margin: 0 auto;
+  margin-top: 40px;
   padding: 10px;
   border: 5px solid black;
   border-radius: 20px;
   background-color: rgba(194, 194, 194, 0.461);
-  margin: 0 auto;
   width: 600px;
   max-width: 100%;
 }
@@ -507,6 +512,30 @@ $color-yel2: #000000; // Himmelen
 
 .titlebox .removeallbtn i {
   color: #370e2f;
+}
+
+.titlebox .search-tabs-flex-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.titlebox .search-tabs-flex-wrapper .search-tabs {
+  width: 600px;
+  max-width: 100%;
+}
+
+@media only screen and (max-width: 620px) {
+  .titlebox .search-tabs-flex-wrapper .search-tabs {
+    width: 340px;
+  }
 }
 
 .titlebox .search-sounds-field {
@@ -658,6 +687,43 @@ $color-yel2: #000000; // Himmelen
   }
 }
 
+.redbg {
+  background-color: #fe916a;
+}
+
+.purplebg {
+  background-color: #fe5862;
+}
+
+.nav-tabs {
+  border: 0;
+}
+
+.nav-tabs .nav-item {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.nav-tabs .nav-item .nav-link {
+  background-color: inherit;
+  border: none;
+  color: #370e2f;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  border: none;
+  -webkit-box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35);
+          box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35);
+}
+
+.tab-content .tab-pane {
+  border: none;
+  border-radius: 15px;
+  color: #370e2f;
+  min-height: 200px;
+  height: auto;
+}
+
 /*
 $color-purp1: #77ff00; //kat og tekst
 $color-purp2: #000000; // hat og navbar og nathimmel
@@ -702,24 +768,40 @@ $color-yel2: #000000; // Himmelen
   }
 }
 
-.word-info-container .outer-row [class*='col-'] {
-  padding: 0px 0px;
+.word-info-container .outer-row .col-pairs {
+  background: #915491;
+  padding: 5px 8px !important;
+  border-radius: 3px;
 }
 
-.word-info-container .outer-row [class*='col-'] .inner-row .cols-word .title {
+.word-info-container .outer-row h5 {
+  width: 100%;
+}
+
+.word-info-container .outer-row .inner-row {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.word-info-container .outer-row .inner-row .cols-word .title {
   font-size: 25px;
   line-height: 1;
 }
 
-.word-info-container .outer-row [class*='col-'] .inner-row .cols-word .title h1 {
+.word-info-container .outer-row .inner-row .cols-word .title h1 {
   overflow-wrap: break-word;
   font-size: 25px;
   font-weight: bold;
 }
 
-.word-info-container .outer-row [class*='col-'] .inner-row .cols-word .title p {
+.word-info-container .outer-row .inner-row .cols-word .title p {
   margin-bottom: 0;
   font-size: 20px;
+}
+
+.word-info-container .outer-row [class*='col-'] {
+  padding: 0px 0px;
 }
 
 .word-info-container .outer-row [class*='col-'] .word1-img-div {
@@ -806,10 +888,15 @@ $color-yel2: #000000; // Himmelen
 }
 
 .word-info-container .outer-row .MO-col .MO-wrapper {
-  background: radial-gradient(#c99bb8 45%, #915491 80%);
-  margin: 5px;
-  border-radius: 150px;
-  padding: 11px;
+  background: #fff6da;
+  margin: 8px;
+  border-radius: 3px;
+}
+
+.MO-row {
+  border-radius: 3px;
+  background: #915491;
+  margin: 0;
 }
 
 /*
