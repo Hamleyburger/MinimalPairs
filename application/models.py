@@ -4,6 +4,7 @@ import copy
 from sqlalchemy.sql import func
 from sqlalchemy import or_, and_
 from .admin.helpers import store_image
+from ipapy import is_valid_ipa
 
 word_grouping = db.Table('groupwords',
                          db.Column('group_id', db.Integer,
@@ -45,27 +46,53 @@ class Sound(db.Model):
 
     @ classmethod
     def get(cls, soundString=None, soundStringList=None):
+        """ Converts both sounds and lists of sounds to Sound objects, stores them if new and returns either list or single entity """
+
+        def fixSoundTyping(soundString):
+            # Fix g and r IPA typos that are definitely typos
+            newSound = ""
+            for char in soundString:
+                if char == 'ɡ':
+                    char = 'g'
+                elif char == 'r':
+                    char = 'ʁ'
+                newSound += char
+
+            return newSound
+
+        def objectifyAndAddSound(fixedSound):
+            thisSound = cls.query.filter_by(sound=fixedSound).first()
+
+            if not thisSound:
+                print("'{}' is a new sound.".format(fixedSound))
+                thisSound = Sound(sound=fixedSound)
+                db.session.add(thisSound)
+                db.session.flush()
+
+            return thisSound
+
         if soundString:
+            # If sound is a string given by user as opposed to Sound object
+
             if isinstance(soundString, str):
-                thisSound = cls.query.filter_by(sound=soundString).first()
-                if not thisSound:
-                    print("'{}' is a new sound.".format(soundString))
-                    thisSound = Sound(sound=soundString)
-                    db.session.add(thisSound)
-                    db.session.flush()
+
+                fixedSound = fixSoundTyping(soundString)
+                thisSound = objectifyAndAddSound(fixedSound)
+
             else:
                 thisSound = soundString
+
+            # Assumes that thisSound is a Sound object?
             return thisSound
+
         if soundStringList:
             soundList = []
             for sound in soundStringList:
+
                 if isinstance(sound, str):
-                    sound = cls.query.filter_by(sound=sound).first()
-                    if not sound:
-                        print("'{}' is a new sound.".format(soundString))
-                        sound = Sound(sound=soundString)
-                        db.session.add(sound)
-                        db.session.flush()
+                    fixedSound = fixSoundTyping(sound)
+                    sound = objectifyAndAddSound(fixedSound)
+
                 soundList.append(sound)
             return soundList
 
@@ -122,7 +149,7 @@ class Sound(db.Model):
             for pair in pairs:
                 if pair.s2 in newSound2List:
                     filteredPairs.append(pair)
-                    print("appending pair: {}".format(pair.textify()))
+                    #print("appending pair: {}".format(pair.textify()))
 
             if len(filteredPairs) == len(sound2List):
                 # This is where it checks if all sound2s are present. Can be modified with a minimum criterion.
@@ -146,7 +173,7 @@ class Sound(db.Model):
         for group in groups:
             if all(elem in group.sounds for elem in (sound2s + [self])):
                 relevantGroups.append(group)
-                print("Group {} has all the sounds!".format(group.id))
+                #print("Group {} has all the sounds!".format(group.id))
 
         # Search relevant groups and add their MO-sets to pair list
         pairLists = []

@@ -1,10 +1,10 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response
 import json
-from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping
+from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest
 from application.models import Word, Group, Sound
 from .models import User
 from application import db, app
-from .forms import SearchSounds, toPDF
+from .forms import SearchSounds, toPDF, SearchMOs
 from flask_weasyprint import HTML, CSS, render_pdf
 
 
@@ -67,34 +67,74 @@ def contrasts():
     # remove Pair from imports?
     # Get sounds with POST
 
-    form = SearchSounds()
+    pairSearchForm = SearchSounds()
+    MOSearchForm = SearchMOs()
+
     pairs = []
+    MOsets = []
+    MOsets2 = []
     renderedids = []
-    collectedAll = False
+    collectedAll = True
     collectedPairs = []
+    MOmode = False
 
     if request.method == "POST":
-        if form.validate_on_submit():
+        if (request.form["searchBtn"] == "pair") and pairSearchForm.validate_on_submit():
+            print("pairsearchform validated")
 
             # Easy keyboard typing enabled:
-            inputSound1 = easyIPAtyping(form.sound1.data)
-            inputSound2 = easyIPAtyping(form.sound2.data)
+            inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
+            inputSound2 = easyIPAtyping(pairSearchForm.sound2.data)
 
             sound1 = Sound.get(inputSound1)
             pairs = sound1.getContrasts(inputSound2)
 
-            # Make a list of ids of all words rendered
+            # Make a list of ids of all words rendered and a list of ids in collection
             for pair in pairs:
                 idlist = [pair.w1.id, pair.w2.id]
                 renderedids.extend(idlist)
                 if pairCollected(pair):
                     collectedPairs.extend([pair.id])
+                else:
+                    collectedAll = False
             renderedids = json.dumps(renderedids)
+
+        if request.form["searchBtn"] == "MO":
+            MOmode = True
+            if MOSearchForm.validate_on_submit():
+                print("MOsearchform validated")
+                inputSound1 = easyIPAtyping(MOSearchForm.sound1.data)
+
+                inputList = [
+                    easyIPAtyping(MOSearchForm.sound2.data),
+                    easyIPAtyping(MOSearchForm.sound3.data),
+                    easyIPAtyping(MOSearchForm.sound4.data),
+                    easyIPAtyping(MOSearchForm.sound5.data)]
+
+                MOsounds = stripEmpty(inputList)
+
+                sound1 = Sound.get(inputSound1)
+                MOsets = sound1.getMOPairs(MOsounds)
+                MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
+
+                for MO in MOsets:
+                    print(MO)
+            else:
+                print(MOSearchForm.errors)
 
     print("collection: " + str(getCollection()) +
           "of type " + str(getCollection()))
 
-    return render_template("contrasts.html", pairs=pairs, form=form, renderedids=renderedids, collectedAll=collectedAll, collectedPairs=collectedPairs)
+    return render_template("contrasts.html",
+                           pairs=pairs,
+                           form=pairSearchForm,
+                           form2=MOSearchForm,
+                           renderedids=renderedids,
+                           collectedAll=collectedAll,
+                           collectedPairs=collectedPairs,
+                           MOsets=MOsets,
+                           MOsets2=MOsets2,
+                           MOmode=MOmode)
 
 
 @ user_blueprint.route("/collection", methods=["GET", "POST"])

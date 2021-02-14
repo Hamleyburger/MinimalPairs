@@ -33,9 +33,13 @@
     button {
         border-radius: 15px;
         font-size: 20px;
-        margin: 20px;
         background-color: $color-purp2;
     }
+    .top-button {
+        margin: 20px;
+        margin-left: 15px;
+    }
+
     .removeallbtn {
         background-color: $color-red1;
         i {
@@ -57,14 +61,26 @@
     }
 
     .search-sounds-field {
-        padding-bottom: 40px;
 
-        input {
-            margin-bottom: 15px;;
-            font-size: 20px;
+         input, select, .chosen-container .chosen-choices {
+            //margin-bottom: 15px;;
+            min-width: 40px;
+            height: 40px;
+            border: 1px solid $color-purp2;
+            border-radius: 3px;
+            vertical-align: bottom;
+            font-size: 15px;
+            background: $color-yel3;
+            //padding-left: 7px;
+            padding-top: 5px;
+            text-align: center;
+
         }
+        .MO-search-button {
+            margin-top: 20px;
+        }
+
         button {
-            margin-left: 15px;
             height: 38px;
             width: 40px;
             background: $color-purp2;
@@ -73,9 +89,16 @@
             border: none;
             &:hover {
             cursor:pointer;
-            background: $color-purp1;
             }
         }
+    }
+
+    .MO-search-sounds-field {
+        padding-bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .title-text {
@@ -92,14 +115,18 @@
 
 
 .contentbox {
-    padding: 10%;
-    padding-top: 0;
+    width: 100% !important;
+    padding: 15px;
     [class*="col-"] {
         display: flex;
         justify-content: center;
     }
     .row {
         position: relative;
+        width: 600px;
+        max-width: 100%;
+        margin: auto;
+        border-radius: 15px;
         .addpairbtn, .removepairbtn {
 
             position: absolute;
@@ -111,7 +138,7 @@
             margin-left: -20px;
             margin-bottom: -20px;
             padding: 0;
-            i{
+            i {
                 background: none;
                 border-radius: 50%;
                 font-size: 35px;
@@ -215,5 +242,6 @@ height: 70%;
         color: $color-purp1;
         min-height: 200px;
         height: auto;
+        padding-top: 20px;
     }
   }

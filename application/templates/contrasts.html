@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% from 'macros.html' import ipa_picker, word_card %}
+{% from 'admin_macros.html' import enable_chosenjs, chosenjs_filtering %}
+{% from 'MOmacro.html' import MOmacro %}
 
 {% block title %}
 : Search for sounds
@@ -13,7 +15,7 @@
 
 <div class="container-fluid text-center titlebox">
     <!-- Buttons for collapsing forms -->
-    <button id="search-pair-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
+    <button id="search-pair-collapse-btn" type="button" class="btn shadow top-button" data-toggle="collapse"
         data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
         sounds <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
     </button>
@@ -25,13 +27,13 @@
         var pairwordids = [];
     </script>
 
-    <button type="button" class="removeallbtn btn shadow m-auto"
+    <button type="button" class="top-button removeallbtn btn shadow m-auto"
         style="display: {{ 'inline-block' if collectedAll else 'none' }};"
         onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
         data-placement="top" title="Remove all results from collection"><i class="fas fa-minus-circle"></i> clear
         all</button>
 
-    <button type="button" class="addallbtn btn shadow m-auto"
+    <button type="button" class="top-button addallbtn btn shadow m-auto"
         style="display: {{ 'none' if collectedAll else 'inline-block' }};"
         onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
         data-placement="top" title="Add all results to collection"><i class="fas fa-plus-circle"></i> add all</button>
@@ -49,12 +51,14 @@
 
                     <ul class="nav nav-tabs justify-content-center">
                         <li class="nav-item redbg">
-                            <a class="nav-link active" id="searchPairs-tab" data-toggle="tab" href="#searchPairs"
-                                role="tab" aria-controls="search-pairs" aria-selected="true">Pairs</a>
+                            <a class="nav-link {{'active show' if not MOmode else ''}}" id="searchPairs-tab"
+                                data-toggle="tab" href="#searchPairs" role="tab" aria-controls="search-pairs"
+                                aria-selected="true">Pairs</a>
                         </li>
                         <li class="nav-item purplebg">
-                            <a class="nav-link" id="searchMOs-tab" data-toggle="tab" href="#searchMOs" role="tab"
-                                aria-controls="search-multiple-oppositions" aria-selected="false">Multiple
+                            <a class="nav-link {{'active show' if MOmode else ''}}" id="searchMOs-tab" data-toggle="tab"
+                                href="#searchMOs" role="tab" aria-controls="search-multiple-oppositions"
+                                aria-selected="false">Multiple
                                 oppositions</a>
                         </li>
                     </ul>
@@ -63,8 +67,8 @@
                 <!-- tab content -->
                 <div class="tab-content" id="search-tabs-content">
                     <!-- form pane: search for pairs -->
-                    <div class="tab-pane shadow show active redbg" id="searchPairs" role="tabpanel"
-                        aria-labelledby="home-tab">
+                    <div class="tab-pane shadow redbg {{'show active' if not MOmode else ''}}" id="searchPairs"
+                        role="tabpanel" aria-labelledby="home-tab">
                         <form id="searchPairs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
                             novalidate>
                             {{ form.hidden_tag() }}
@@ -72,27 +76,35 @@
                                 {{ form.sound1(class="sound_input_field", size="1") }}
                                 vs.
                                 {{ form.sound2(class="sound_input_field", size="1") }}
-                                <button type="submit" class="shadow" data-toggle="tooltip" data-placement="top"
-                                    title="Search for sounds"><i class="fa fa-search"
+                                <button name="searchBtn" value="pair" type="submit" class="shadow" data-toggle="tooltip"
+                                    data-placement="top" title="Search for sounds"><i class="fa fa-search"
                                         formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
                                 </button>
                             </div>
                         </form>
                     </div>
                     <!-- form pane: search for MOs -->
-                    <div class="tab-pane shadow purplebg" id="searchMOs" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="tab-pane shadow purplebg {{'show active' if MOmode else ''}}" id="searchMOs"
+                        role="tabpanel" aria-labelledby="profile-tab">
                         <!-- collapsing form: search for multiple opposition sets -->
                         <form id="searchMOs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
                             novalidate>
-                            {{ form.hidden_tag() }}
-                            <div class="search-sounds-field">
+                            {{ form2.hidden_tag() }}
+                            <div class="search-sounds-field MO-search-sounds-field">
 
-                                {{ form.sound1(class="sound_input_field", size="1") }}
+                                {{ form2.sound1(class="sound_input_field", size="1") }}
                                 vs.
-                                {{ form.sound2(class="sound_input_field", size="1") }}
+                                <div class="opposing-sound-inputs">
 
-                                <button type="submit" class="shadow" data-toggle="tooltip" data-placement="top"
-                                    title="Search for sounds"><i class="fa fa-search"
+                                    {{ form2.sound2(class="sound_input_field", size="1") }}
+                                    {{ form2.sound3(class="sound_input_field", size="1") }}
+                                    {{ form2.sound4(class="sound_input_field", size="1") }}
+                                    {{ form2.sound5(class="sound_input_field", size="1") }}
+                                </div>
+
+                                <button type="submit" name="searchBtn" value="MO" class="shadow MO-search-button"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="Search for multiple oppositions"><i class="fa fa-search"
                                         formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
                                 </button>
                             </div>
@@ -113,8 +125,43 @@
 
 
 <!-- Actual search results -->
-{% if pairs %}
-<div class="container contentbox">
+
+
+<div class="contentbox">
+    {% if MOsets %}
+    <p>Complete matches</p>
+
+    <div class="row MO-row shadow justify-content-center justify-content-lg-around">
+
+
+        {% for MOset in MOsets %}
+        <div class="MO-col col-12 col-sm-6 col-lg-5">
+            <div class="MO-wrapper shadow">
+                {{ MOmacro("ord", MOset) }}
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+    {% endif %}
+
+    {% if MOsets2 %}
+    <p>Partial matches</p>
+    {% for MOset in MOsets2 %}
+    <div class="MO-col col-12 col-sm-6 col-lg-5">
+        <div class="MO-wrapper shadow">
+            {{ MOmacro("ord", MOset) }}
+        </div>
+    </div>
+    {% endfor %}
+
+
+    {% endif %}
+
+
+    {% if pairs %}
     <div class="titlebox">
         <div class="title-text">
             <p>
@@ -157,8 +204,8 @@
     </div>
     <!-- For loop "pairs" end -->
     {% endfor %}
+    {% endif %}
 </div>
-{% endif %}
 
 {% endblock %}
 
@@ -171,11 +218,10 @@
         //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
         $("#rotate-icon").toggleClass("fa-rotate-180");
     });
-
     // This url is defined for passing into add_to_collection which is defined in scripts.js
     var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_many') }}";
 
-
-
 </script>
-{% endblock %}
+
+
+{% endblock script %}

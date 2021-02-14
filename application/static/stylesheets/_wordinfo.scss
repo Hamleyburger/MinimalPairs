@@ -141,6 +141,10 @@
                 }
             }
         }
+    }
+}
+
+.MO-row {
         .MO-col {
             //height: 300px;
             
@@ -151,12 +155,8 @@
                 //padding: 11px;
             }
         }
-    }
-}
-    
-    .MO-row {
     border-radius: 3px;
-    background: $color-purp2;
+    background: $color-red1;
     margin: 0;
     //padding: 5px;
 }

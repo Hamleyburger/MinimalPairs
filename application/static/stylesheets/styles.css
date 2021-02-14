@@ -502,8 +502,12 @@ $color-yel2: #000000; // Himmelen
 .titlebox button {
   border-radius: 15px;
   font-size: 20px;
-  margin: 20px;
   background-color: #915491;
+}
+
+.titlebox .top-button {
+  margin: 20px;
+  margin-left: 15px;
 }
 
 .titlebox .removeallbtn {
@@ -538,17 +542,23 @@ $color-yel2: #000000; // Himmelen
   }
 }
 
-.titlebox .search-sounds-field {
-  padding-bottom: 40px;
+.titlebox .search-sounds-field input, .titlebox .search-sounds-field select, .titlebox .search-sounds-field .chosen-container .chosen-choices {
+  min-width: 40px;
+  height: 40px;
+  border: 1px solid #915491;
+  border-radius: 3px;
+  vertical-align: bottom;
+  font-size: 15px;
+  background: #fff6da;
+  padding-top: 5px;
+  text-align: center;
 }
 
-.titlebox .search-sounds-field input {
-  margin-bottom: 15px;
-  font-size: 20px;
+.titlebox .search-sounds-field .MO-search-button {
+  margin-top: 20px;
 }
 
 .titlebox .search-sounds-field button {
-  margin-left: 15px;
   height: 38px;
   width: 40px;
   background: #915491;
@@ -559,7 +569,23 @@ $color-yel2: #000000; // Himmelen
 
 .titlebox .search-sounds-field button:hover {
   cursor: pointer;
-  background: #370e2f;
+}
+
+.titlebox .MO-search-sounds-field {
+  padding-bottom: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .titlebox .title-text {
@@ -576,8 +602,8 @@ $color-yel2: #000000; // Himmelen
 }
 
 .contentbox {
-  padding: 10%;
-  padding-top: 0;
+  width: 100% !important;
+  padding: 15px;
 }
 
 .contentbox [class*="col-"] {
@@ -591,6 +617,10 @@ $color-yel2: #000000; // Himmelen
 
 .contentbox .row {
   position: relative;
+  width: 600px;
+  max-width: 100%;
+  margin: auto;
+  border-radius: 15px;
 }
 
 .contentbox .row .addpairbtn, .contentbox .row .removepairbtn {
@@ -722,6 +752,7 @@ $color-yel2: #000000; // Himmelen
   color: #370e2f;
   min-height: 200px;
   height: auto;
+  padding-top: 20px;
 }
 
 /*
@@ -887,16 +918,16 @@ $color-yel2: #000000; // Himmelen
   margin-bottom: 2px;
 }
 
-.word-info-container .outer-row .MO-col .MO-wrapper {
+.MO-row {
+  border-radius: 3px;
+  background: #fe5862;
+  margin: 0;
+}
+
+.MO-row .MO-col .MO-wrapper {
   background: #fff6da;
   margin: 8px;
   border-radius: 3px;
-}
-
-.MO-row {
-  border-radius: 3px;
-  background: #915491;
-  margin: 0;
 }
 
 /*
