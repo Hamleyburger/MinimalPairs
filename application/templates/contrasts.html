@@ -131,11 +131,10 @@
     {% if MOsets %}
     <p>Complete matches</p>
 
-    <div class="row MO-row shadow justify-content-center justify-content-lg-around">
-
+    <div class="row MO-row shadow justify-content-left">
 
         {% for MOset in MOsets %}
-        <div class="MO-col col-12 col-sm-6 col-lg-5">
+        <div class="MO-col">
             <div class="MO-wrapper shadow">
                 {{ MOmacro("ord", MOset) }}
             </div>
@@ -149,15 +148,16 @@
 
     {% if MOsets2 %}
     <p>Partial matches</p>
-    {% for MOset in MOsets2 %}
-    <div class="MO-col col-12 col-sm-6 col-lg-5">
-        <div class="MO-wrapper shadow">
-            {{ MOmacro("ord", MOset) }}
+    <div class="row MO-row shadow">
+        {% for MOset in MOsets2 %}
+        <div class="MO-col">
+            <div class="MO-wrapper shadow">
+                {{ MOmacro("ord", MOset) }}
+            </div>
         </div>
+        {% endfor %}
+
     </div>
-    {% endfor %}
-
-
     {% endif %}
 
 

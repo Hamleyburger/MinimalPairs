@@ -623,6 +623,12 @@ $color-yel2: #000000; // Himmelen
   border-radius: 15px;
 }
 
+@media only screen and (max-width: 620px) {
+  .contentbox .row {
+    width: 340px;
+  }
+}
+
 .contentbox .row .addpairbtn, .contentbox .row .removepairbtn {
   position: absolute;
   left: 50%;
@@ -785,17 +791,11 @@ $color-yel2: #000000; // Himmelen
   padding: 0px;
 }
 
-@media screen and (max-width: 710px) {
+@media screen and (max-width: 1199px) {
   .word-info-container .outer-row {
-    margin-left: 8%;
-    margin-right: 8%;
-  }
-}
-
-@media screen and (max-width: 422px) {
-  .word-info-container .outer-row {
-    margin-left: 2px;
-    margin-right: 2px;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 40px;
   }
 }
 
@@ -924,10 +924,27 @@ $color-yel2: #000000; // Himmelen
   margin: 0;
 }
 
+.MO-row .MO-col {
+  padding: 0;
+  width: 50%;
+}
+
 .MO-row .MO-col .MO-wrapper {
   background: #fff6da;
   margin: 8px;
   border-radius: 3px;
+}
+
+@media only screen and (max-width: 620px) {
+  .MO-row .MO-col {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 620px) {
+  .MO-row {
+    width: 340px;
+  }
 }
 
 /*

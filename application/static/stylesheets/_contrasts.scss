@@ -127,6 +127,10 @@
         max-width: 100%;
         margin: auto;
         border-radius: 15px;
+        @media only screen and (max-width: 620px)
+        {
+            width: 340px;
+        }
         .addpairbtn, .removepairbtn {
 
             position: absolute;

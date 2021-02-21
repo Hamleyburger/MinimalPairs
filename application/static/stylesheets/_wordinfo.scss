@@ -10,17 +10,16 @@
         //width: 100%;
     }
     .outer-row {
+
     border-radius: 3px;
     justify-content: flex-start;
     margin: 10%;
     padding: 0px;
-    @media screen and (max-width: 710px) {
-        margin-left: 8%;
-        margin-right: 8%;
-    }
-    @media screen and (max-width: 422px) {
-        margin-left: 2px;
-        margin-right: 2px;
+
+    @media screen and (max-width: 1199px) {
+        max-width: 600px;
+        margin: auto;
+        margin-top: 40px;
     }
 
     .col-pairs {
@@ -147,16 +146,26 @@
 .MO-row {
         .MO-col {
             //height: 300px;
+            padding: 0;
+            width: 50%;
             
             .MO-wrapper {
                 background: $color-yel3;
                 margin: 8px;
                 border-radius: 3px;
-                //padding: 11px;
+            }
+                //padding: 5px;
+            @media only screen and (max-width: 620px)
+            {
+                width: 100%;
             }
         }
     border-radius: 3px;
     background: $color-red1;
     margin: 0;
     //padding: 5px;
+    @media only screen and (max-width: 620px)
+    {
+        width: 340px;
+    }
 }
