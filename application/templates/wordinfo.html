@@ -43,107 +43,30 @@
         {% endfor %}
 
 
-
-
         <div class="col-12 col-xl-7 col-pairs mt-5 mt-xl-0 shadow">
 
             <div class="slider owl-carousel owl-theme">
-
                 {% for pairList in pairLists %}
                 {{ pair_card(pairList) }}
                 {% endfor %}
             </div>
-
-
-
-
         </div>
 
     </div>
 
 
 
-
-
-
-
-
-
-
-    <script>
-        console.log(pairCount);
-        var loop = true;
-        var responsiveClass = true;
-
-        var owl = $(".slider");
-        owl.owlCarousel({
-            autoplay: true,
-            loop: loop,
-            autoplayTimeout: 6000,
-            autoplayHoverpause: true,
-            responsiveClass: responsiveClass,
-            smartSpeed: 2000,
-            dotsEach: true,
-
-
-            responsive: {
-                0: {
-                    items: getItems(2),
-                    loop: getLoop(2)
-                },
-
-                460: {
-                    items: getItems(3),
-                    loop: getLoop(3)
-
-
-                },
-                1000: {
-                    items: getItems(4),
-                    loop: getLoop(4)
-                },
-
-
-            },
-        });
-
-        function getItems(items) {
-            console.log("calculating items")
-            if (pairCount < items) {
-                return pairCount;
-            }
-            else {
-                return items;
-            }
-        }
-        function getLoop(items) {
-            console.log("calculating loop")
-            if (pairCount < items) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-
-    </script>
-
-
-
-
-
-
-    <div class="row MO-row shadow outer-row justify-content-center justify-content-lg-around">
-
+    <div class="row MO-row shadow outer-row justify-content-center mb-5">
 
         {% for MOset in MOsets %}
-        <div class="MO-col col-12 col-sm-6 col-lg-5">
-            <div class="MO-wrapper shadow">
+        <div class="MO-col col">
+            <div class="MO-wrapper shadow" style="overflow: scroll; ">
                 {{ MOmacro(word.word, MOset) }}
+                <!-- TEZT GROUP CARD-->
             </div>
+            <!-- TEZT GROUP CARD END -->
         </div>
         {% endfor %}
-
 
     </div>
 
@@ -153,5 +76,84 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block script %}
+
+<script>
+    console.log(pairCount);
+    var loop = true;
+    var responsiveClass = true;
+
+    var owl = $(".slider");
+    owl.owlCarousel({
+        autoplay: true,
+        loop: loop,
+        autoplayTimeout: 6000,
+        autoplayHoverpause: true,
+        responsiveClass: responsiveClass,
+        smartSpeed: 2000,
+        dotsEach: true,
+        //dots: true,
+
+
+        responsive: {
+            0: {
+                items: getItems(2),
+                loop: getLoop(2)
+            },
+
+            460: {
+                items: getItems(3),
+                loop: getLoop(3)
+
+
+            },
+            1000: {
+                items: getItems(4),
+                loop: getLoop(4)
+            },
+
+
+        },
+    });
+
+    function getItems(items) {
+        console.log("calculating items")
+        if (pairCount < items) {
+            return pairCount;
+        }
+        else {
+            return items;
+        }
+    }
+    function getLoop(items) {
+        console.log("calculating loop")
+        if (pairCount < items) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+</script>
 
 {% endblock %}

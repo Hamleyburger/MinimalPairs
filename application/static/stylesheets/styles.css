@@ -17,7 +17,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe17d;
+  --color-yel2: #ffd06c;
 }
 
 .shadow {
@@ -110,7 +110,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe17d;
+  --color-yel2: #ffd06c;
 }
 
 .navbar {
@@ -174,7 +174,7 @@ body {
   min-height: 100%;
   padding-bottom: 100px;
   background-color: var(--color-red2);
-  background: radial-gradient(circle at 0px 500px, #ffe17d 600px, #fe916a 110%);
+  background: radial-gradient(circle at 0px 500px, #ffd06c 600px, #fe916a 110%);
   background-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-box-sizing: border-box;
@@ -465,7 +465,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe17d;
+  --color-yel2: #ffd06c;
 }
 
 .ipa-container {
@@ -590,7 +590,7 @@ $color-yel2: #000000; // Himmelen
 
 .titlebox .title-text {
   margin-top: 15px;
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
 }
@@ -779,7 +779,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe17d;
+  --color-yel2: #ffd06c;
 }
 
 .word-info-container .outer-row {
@@ -787,8 +787,10 @@ $color-yel2: #000000; // Himmelen
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  margin: 10%;
+  margin: 60px auto;
   padding: 0px;
+  width: 100%;
+  max-width: 800px;
 }
 
 @media screen and (max-width: 1199px) {
@@ -926,18 +928,36 @@ $color-yel2: #000000; // Himmelen
 
 .MO-row .MO-col {
   padding: 0;
-  width: 50%;
+  max-width: 267px;
+  min-width: 267px;
 }
 
 .MO-row .MO-col .MO-wrapper {
   background: #fff6da;
   margin: 8px;
   border-radius: 3px;
+  height: 250px;
 }
 
-@media only screen and (max-width: 620px) {
+.MO-row .MO-col .MO-wrapper .MO-list-wrapper {
+  padding: 30px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: inherit;
+  background-blend-mode: overlay;
+}
+
+@media only screen and (max-width: 1199px) {
   .MO-row .MO-col {
-    width: 100%;
+    min-width: 300px;
+    max-width: 300px;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  .MO-row .MO-col {
+    min-width: 100%;
   }
 }
 
@@ -965,7 +985,7 @@ $color-yel2: #000000; // Himmelen
   --color-red1-transparent: #fe586396;
   --color-red2: #fe916a;
   --color-yel1: #FE9055;
-  --color-yel2: #ffe17d;
+  --color-yel2: #ffd06c;
 }
 
 .pdfgenerator {

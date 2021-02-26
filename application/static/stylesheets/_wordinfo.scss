@@ -13,8 +13,11 @@
 
     border-radius: 3px;
     justify-content: flex-start;
-    margin: 10%;
+    margin: 60px auto;
+
     padding: 0px;
+    width: 100%;
+    max-width: 800px;
 
     @media screen and (max-width: 1199px) {
         max-width: 600px;
@@ -53,6 +56,7 @@
 
     [class*='col-']{
         padding: 0px 0px;
+
 
         .word1-img-div {
             width: 100%;
@@ -147,17 +151,34 @@
         .MO-col {
             //height: 300px;
             padding: 0;
-            width: 50%;
+            max-width: 267px;
+            min-width: 267px;
             
             .MO-wrapper {
                 background: $color-yel3;
                 margin: 8px;
                 border-radius: 3px;
+                height: 250px;
+
+                .MO-list-wrapper {
+                    padding: 30px; 
+                    height: 100%; 
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-color: inherit;
+                    background-blend-mode: overlay;
+                }
+
             }
                 //padding: 5px;
-            @media only screen and (max-width: 620px)
+            @media only screen and (max-width: 1199px)
             {
-                width: 100%;
+                min-width: 300px;
+                max-width: 300px;
+            }
+            @media only screen and (max-width: 370px)
+            {
+                min-width: 100%;
             }
         }
     border-radius: 3px;
@@ -168,4 +189,5 @@
     {
         width: 340px;
     }
+
 }

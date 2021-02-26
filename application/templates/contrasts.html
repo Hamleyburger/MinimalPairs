@@ -129,7 +129,13 @@
 
 <div class="contentbox">
     {% if MOsets %}
-    <p>Complete matches</p>
+    <div class="titlebox">
+        <div class="title-text">
+            <p>
+                Exact matches
+            </p>
+        </div>
+    </div>
 
     <div class="row MO-row shadow justify-content-left">
 
@@ -147,7 +153,13 @@
     {% endif %}
 
     {% if MOsets2 %}
-    <p>Partial matches</p>
+    <div class="titlebox">
+        <div class="title-text">
+            <p>
+                Partial matches
+            </p>
+        </div>
+    </div>
     <div class="row MO-row shadow">
         {% for MOset in MOsets2 %}
         <div class="MO-col">

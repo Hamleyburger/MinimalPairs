@@ -56,6 +56,8 @@ def wordinfo(word_id):
             print("")
             for y in x:
                 print(y.textify())
+        print(str(url_for(
+            'static', filename='images / thumbnails / thumbnail_' + word.image.name)))
 
         return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets)
     else:

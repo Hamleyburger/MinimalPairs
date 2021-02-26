@@ -1,14 +1,52 @@
-{% from 'macros.html' import word_card_buttons %}
+{% from 'macros.html' import word_card_buttons, group_card %}
 
 {% macro MOmacro(word1, MOset) %}
 
 <!-- It shouldn't be possible for an MOset to be less than 3, but we check anyway -->
 {% if MOset|length >= 2 %}
+{% if MOset|length > 4 %}
+<!-- Just show scrollable list of MO partners if list is too long for fancy svg view -->
+<div class="MO-list-wrapper">
+    <h5 class="card-title">
+
+        {{ MOset[0].w1.word }} [{{ MOset[0].s1.sound }}] - {{MOset|length}} MOs:
+
+    </h5>
+    <p class="card-text">
+        {% for pair in MOset %}
+        {% set word2 = pair.w2 %}
+        {% if pair.w2.image.name == "default.svg" or pair.w2.image.name == "default.jpg" %}
+        <span style="display: inline-block; width: 16px;"> </span>
+        {% else %}
+        <script>
+            var img{{ word2.id }}url = "{{ url_for('static', filename='images/thumbnails/thumbnail_' + word2.image.name)}}";
+        </script>
+        <i class="fas fa-image" onmouseover="show_thumbnail(this, img{{ word2.id }}url)"
+            onmouseout="hide_thumbnail(this)"> </i>
+        {% endif %}
+        {{ pair.w2.word }} [{{pair.s2.sound }}]<br>
+        {% endfor %}
+    </p>
+
+    <script>
+        function show_thumbnail(elem, imgurl) {
+            grandma = elem.parentNode.parentNode;
+            console.log(imgurl);
+            $(grandma).css('background-image', 'url(' + imgurl + ')');
+        }
+        function hide_thumbnail(elem) {
+            grandma = elem.parentNode.parentNode;
+            $(grandma).css('background-image', 'none');
+        }
+    </script>
+</div>
+
+{% else %}
 {# Loop for checking length to see if svg should be rendered at all #}
 
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 645 460" version="1.1" xmlns="http://www.w3.org/2000/svg"
+<svg width="100%" height="100%" viewBox="0 20 645 460" version="1.1" xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
     style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g id="mocontent">
@@ -32,7 +70,7 @@
             </foreignObject>
         </g>
 
-        {% if MOset|length >= 6 %}
+        {% if MOset|length == 6 %}
         <g id="li6">
             <text id="w2list6" x="238.096px" y="53.679px"
                 style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:40.733px;fill:rgb(70,26,62);">{{ MOset[5].w2.word }} [{{ MOset[5].s2.sound }}]</text>
@@ -92,9 +130,15 @@
 </svg>
 
 {% endif %}
-{# End loop for checking length to see if svg should be rendered at all #}
-{% endmacro %}
+{% endif %}
 
+
+
+
+
+{# End loop for checking length to see if svg should be rendered at all #}
+
+{% endmacro %}
 
 
 
