@@ -123,62 +123,41 @@ function refreshBtns(wordids, session) {
         }
     }
 
-    // pairwordids and renderedids are only defined in the template for search sounds
-    if (typeof pairwordids !== typeof undefined && typeof renderedids !== typeof undefined) {
-        refreshAddAllBtns(session);
-        refreshPairBtns(session);
+    // refreshes add/remove buttons for all grouped words (all/pairs/MOs)
+    if (typeof renderedids !== typeof undefined) {
+        refreshWordGroupBtns(session);
     }
 }
 
-// used in refreshBtns if required variable exists
-function refreshAddAllBtns(session) {
-    /** Changes the add/remove "all" buttons (in sound search page) if all words are/are not in collection\n
-     * Requires the global variable: renderedids to have been declared.
-      */
-    var i;
-    allAdded = true;
-    allRemoved = true;
 
-    for (i = 0; i < renderedids.length; i++) {
-        id = renderedids[i];
-        if (!session.includes(id)) {
-            allAdded = false;
+function refreshWordGroupBtns(session) {
+
+    /* 
+    Checks session for all .wordgroup data-ids (contained words)
+    and updates add/remove buttons in these elements.
+    */
+
+    $('.wordgroup').each(function(){
+
+        var groupids = $(this).data("ids");
+        var allCollected = true;
+
+        for (i = 0; i < groupids.length; i++) {
+            if (!session.includes(groupids[i])) {
+                allCollected = false;
+            }
+        }
+        if (allCollected) {
+            console.log("pair collected: " + groupids);
+            $(this).find( ".removegroupbtn" ).show();
+            $(this).find( ".addgroupbtn" ).hide();
         }
         else {
-            allRemoved = false;
+            console.log("pair not collected: " + groupids);
+            $(this).find( ".removegroupbtn" ).hide();
+            $(this).find( ".addgroupbtn" ).show();
         }
-    }
-    if (allAdded) {
-        $(".removeallbtn").show();
-        $(".addallbtn").hide();
-    }
-    else if (allRemoved) {
-        $(".removeallbtn").hide();
-        $(".addallbtn").show();
-    }
-}
-
-// used in refreshBtns if required variable exists
-function refreshPairBtns(session) {
-    /** Checks a list of two pair ids and refreshes its add/remove button  */
-
-    var i;
-    for (i = 0; i < pairwordids.length; i++) {
-      pair = pairwordids[i];
-      if (session.includes(pair[0]) && session.includes(pair[1])) {
-          id_string_add="#pair-" + pair[0] + "vs" + pair[1] + "-addbtn";
-          id_string_remove="#pair-" + pair[0] + "vs" + pair[1] + "-removebtn";
-          $(id_string_add).hide();
-          $(id_string_remove).show();
-      }
-      else if (!session.includes(pair[0]) && !session.includes(pair[1])) {
-          id_string_add="#pair-" + pair[0] + "vs" + pair[1] + "-addbtn";
-          id_string_remove="#pair-" + pair[0] + "vs" + pair[1] + "-removebtn";
-          $(id_string_add).show();
-          $(id_string_remove).hide();
-      }
-
-    }
+    
+     });
 
 }
-

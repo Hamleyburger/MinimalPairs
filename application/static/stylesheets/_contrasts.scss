@@ -40,7 +40,7 @@
         margin-left: 15px;
     }
 
-    .removeallbtn {
+    .removegroupbtn {
         background-color: $color-red1;
         i {
             color: $color-purp1;
@@ -131,7 +131,7 @@
         {
             width: 340px;
         }
-        .addpairbtn, .removepairbtn {
+        .addgroupbtn, .removegroupbtn {
 
             position: absolute;
             left: 50%;

@@ -510,11 +510,11 @@ $color-yel2: #000000; // Himmelen
   margin-left: 15px;
 }
 
-.titlebox .removeallbtn {
+.titlebox .removegroupbtn {
   background-color: #fe5862;
 }
 
-.titlebox .removeallbtn i {
+.titlebox .removegroupbtn i {
   color: #370e2f;
 }
 
@@ -629,7 +629,7 @@ $color-yel2: #000000; // Himmelen
   }
 }
 
-.contentbox .row .addpairbtn, .contentbox .row .removepairbtn {
+.contentbox .row .addgroupbtn, .contentbox .row .removegroupbtn {
   position: absolute;
   left: 50%;
   bottom: 50%;
@@ -641,7 +641,7 @@ $color-yel2: #000000; // Himmelen
   padding: 0;
 }
 
-.contentbox .row .addpairbtn i, .contentbox .row .removepairbtn i {
+.contentbox .row .addgroupbtn i, .contentbox .row .removegroupbtn i {
   background: none;
   border-radius: 50%;
   font-size: 35px;

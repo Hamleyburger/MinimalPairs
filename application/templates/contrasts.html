@@ -9,8 +9,13 @@
 
 {% block main %}
 
-<!-- image 1, image 2, name 1, name 2, sound1, sound2 -->
-
+<!-- rendered ids need to be tracked together groupwise including pairs and MOs or any other groupings -->
+<script>
+    var renderedids = [];
+    var pairwordids = [];
+    // trying out word groups instead of pair word ids to be able to use same refresh button function across multiple kinds of groupings
+    var renderedWordGroups = [];
+</script>
 
 
 <div class="container-fluid text-center titlebox">
@@ -24,20 +29,23 @@
     {% if pairs %}
     <script>
         var renderedids = {{ renderedids | safe }};
-        var pairwordids = [];
     </script>
 
-    <button type="button" class="top-button removeallbtn btn shadow m-auto"
-        style="display: {{ 'inline-block' if collectedAll else 'none' }};"
-        onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
-        data-placement="top" title="Remove all results from collection"><i class="fas fa-minus-circle"></i> clear
-        all</button>
+    <div class="wordgroup" data-ids="{{ renderedids | safe }}">
 
-    <button type="button" class="top-button addallbtn btn shadow m-auto"
-        style="display: {{ 'none' if collectedAll else 'inline-block' }};"
-        onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
-        data-placement="top" title="Add all results to collection"><i class="fas fa-plus-circle"></i> add all</button>
-    {% endif %} {# if pairs #}
+        <button type="button" class="top-button removegroupbtn btn shadow m-auto"
+            style="display: {{ 'inline-block' if collectedAll else 'none' }};"
+            onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
+            data-placement="top" title="Remove all results from collection"><i class="fas fa-minus-circle"></i> clear
+            all</button>
+
+        <button type="button" class="top-button addgroupbtn btn shadow m-auto"
+            style="display: {{ 'none' if collectedAll else 'inline-block' }};"
+            onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
+            data-placement="top" title="Add all results to collection"><i class="fas fa-plus-circle"></i> add
+            all</button>
+    </div>
+    {% endif %} {# endif pairs #}
 
 
     <!-- collapsing tab section with tabs: search for pairs or multiple oppositions -->
@@ -189,15 +197,15 @@
         pairwordids.push([{{ pair.w1.id }}, {{ pair.w2.id }}]);
     </script>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center wordgroup" data-ids='[{{ pair.w1.id }}, {{ pair.w2.id }}]'>
 
-        <a href="#" type="button" id="pair-{{ pair.w1.id }}vs{{ pair.w2.id }}-addbtn" class="addpairbtn btn"
+        <a href="#" type="button" class="addgroupbtn btn"
             style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false)"
             data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="Add pair to collection"><i
                 class="fas fa-plus-circle shadow"></i>
         </a>
-        <a href="#" type="button" id="pair-{{ pair.w1.id }}vs{{ pair.w2.id }}-removebtn" class="removepairbtn btn"
+        <a href="#" type="button" class="removegroupbtn btn"
             style="display: {{ 'inline-block' if pair.id in collectedPairs else 'none' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true)"
             data-toggle="tooltip" data-placement="top" title="Remove pair from collection"><i
