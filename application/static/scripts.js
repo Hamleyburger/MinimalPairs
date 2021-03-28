@@ -32,7 +32,15 @@ var coloryel1 = getComputedStyle(document.documentElement).getPropertyValue('--c
 var coloryel2 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel2');
 
 
+
+
 // AJAX functions for adding and removing from collection
+
+
+// keep track of what words and word groups are in the window
+var renderedids = [];
+var renderedWordGroups = [];
+
 function add_to_collection(id, url_for, event) {
     /** Adds a word of a given id to collection from anywhere  */
     // preventDeafault prevents the <a href="#"> action which takes you to top of page
@@ -106,7 +114,6 @@ function clear_collection(url_for, event) {
     $(".wordcols").remove();
 }
 
-
 // "internal" functions that are only called from scripts.js :
 function refreshBtns(wordids, session) {
     /** Refreshes add/remove buttons on single words in both collection and search sounds pages  */
@@ -128,7 +135,6 @@ function refreshBtns(wordids, session) {
         refreshWordGroupBtns(session);
     }
 }
-
 
 function refreshWordGroupBtns(session) {
 

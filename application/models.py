@@ -1,3 +1,5 @@
+from application.exceptions import invalidImageError
+from flask import flash
 from application import db
 # import decimal
 import copy
@@ -515,8 +517,12 @@ class Word(db.Model):
         if newcue != "":
             word.cue = newcue
         if newimg != "":
-            image = Image.store(newimg)  # return appropriate image object
-            word.image = image
+            try:
+                image = Image.store(newimg)  # return appropriate image object
+                word.image = image
+            except Exception as e:
+                print(e)
+                flash(e, "danger")
 
         print("Commit from 'change'")
         db.session.commit()

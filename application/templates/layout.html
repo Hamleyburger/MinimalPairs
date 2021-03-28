@@ -116,8 +116,10 @@
     messages %}
     <header>
         {% for category, message in messages %}
-        <div class="alert alert-{{ category }} border text-center" role="alert">
-            <span>{{ message }}</span>
+        <div class="alert-wrapper">
+            <div class="alert alert-{{ category }} shadow text-center" role="alert">
+                <span>{{ message }}</span>
+            </div>
         </div>
         {% endfor %}
     </header>

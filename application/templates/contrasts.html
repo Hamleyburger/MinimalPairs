@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import ipa_picker, word_card %}
+{% from 'macros.html' import ipa_picker, word_card, word_card_buttons %}
 {% from 'admin_macros.html' import enable_chosenjs, chosenjs_filtering %}
 {% from 'MOmacro.html' import MOmacro %}
 
@@ -12,7 +12,6 @@
 <!-- rendered ids need to be tracked together groupwise including pairs and MOs or any other groupings -->
 <script>
     var renderedids = [];
-    var pairwordids = [];
     // trying out word groups instead of pair word ids to be able to use same refresh button function across multiple kinds of groupings
     var renderedWordGroups = [];
 </script>
@@ -193,19 +192,17 @@
 
 
     {% for pair in pairs %}
-    <script>
-        pairwordids.push([{{ pair.w1.id }}, {{ pair.w2.id }}]);
-    </script>
+
 
     <div class="row justify-content-center wordgroup" data-ids='[{{ pair.w1.id }}, {{ pair.w2.id }}]'>
 
-        <a href="#" type="button" class="addgroupbtn btn"
+        <a href="#" type="button" class="addgroupbtn addgroupbtn-pair btn"
             style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false)"
             data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="Add pair to collection"><i
                 class="fas fa-plus-circle shadow"></i>
         </a>
-        <a href="#" type="button" class="removegroupbtn btn"
+        <a href="#" type="button" class="removegroupbtn removegroupbtn-pair btn"
             style="display: {{ 'inline-block' if pair.id in collectedPairs else 'none' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true)"
             data-toggle="tooltip" data-placement="top" title="Remove pair from collection"><i

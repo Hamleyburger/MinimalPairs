@@ -40,7 +40,7 @@
         margin-left: 15px;
     }
 
-    .removegroupbtn {
+    .removeallbtn {
         background-color: $color-red1;
         i {
             color: $color-purp1;
@@ -131,25 +131,11 @@
         {
             width: 340px;
         }
-        .addgroupbtn, .removegroupbtn {
-
-            position: absolute;
-            left: 50%;
-            bottom: 50%;
-            z-index: 1;
-            width: 40px;
-            height: 40px;
-            margin-left: -20px;
-            margin-bottom: -20px;
-            padding: 0;
-            i {
-                background: none;
-                border-radius: 50%;
-                font-size: 35px;
-            }
-        }
+        
+        
     }
 }
+
 .wordcard {
 margin-top: 20px;
 margin-bottom: 20px;

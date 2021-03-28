@@ -4,17 +4,45 @@
 
 <!-- It shouldn't be possible for an MOset to be less than 3, but we check anyway -->
 {% if MOset|length >= 2 %}
-<!-- Just show scrollable list of MO partners if list is too long for fancy svg view -->
+
+
+<!-- make a list of ids in this MO set -->
+{% set wordids = [] %}
+{% do wordids.append(MOset[0].w1.id) %}
+{% for pair in MOset %}
+{% do wordids.append(pair.w2.id) %}
+{% endfor %}
+
+{% set ns = namespace(collected = true) %}
+
+{% for id in wordids %}
+{% if not id in session["collection"] %}
+{% set ns.collected = false %}
+{% endif %}
+{% endfor %}
+
+
+
+<!-- show scrollable list of MO words -->
 <div class="MO-list-wrapper" style="position: relative">
 
-
-
-
-
-
-
-
     <div class="absolute-colour-overlay"></div>
+
+    <div class="wordgroup" data-ids='{{ wordids | safe }}'>
+
+        <a href="#" type="button" class="addgroupbtn addgroupbtn-MO btn"
+            style="display: {{ 'none' if ns.collected else 'inline-block' }};"
+            onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
+            data-toggle="tooltip" data-placement="top" title="Add pair to collection"><i
+                class="fas fa-plus-circle shadow"></i>
+        </a>
+        <a href="#" type="button" class="removegroupbtn removegroupbtn-MO btn"
+            style="display: {{ 'inline-block' if ns.collected else 'none' }};"
+            onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
+            data-placement="top" title="Remove pair from collection"><i class="fas fa-minus-circle shadow"></i>
+        </a>
+
+    </div>
 
     <h5 class="card-title" style="position: relative; z-index: 2;">
         {% set word1 = MOset[0].w1 %}
@@ -27,16 +55,18 @@
         <i class="fas fa-image" onmouseover="show_thumbnail(this, img{{ word1.id }}url)"
             onmouseout="hide_thumbnail(this)"> </i>
         {% endif %}
-        {{ MOset[0].w1.word }} [{{ MOset[0].s1.sound }}] - {{MOset|length}} MOs:
+        {{ MOset[0].w1.word }} [{{ MOset[0].s1.sound }}]
+        {{ word_card_buttons(MOset[0].w1) }}
+
 
     </h5>
-    <p class="card-text" style="position: relative; z-index: 2;">
+    <div class="card-text" style="position: relative; z-index: 2;">
         {% for pair in MOset %}
         {% set word2 = pair.w2 %}
         {{ possible_img_icon(word2, "this") }}
-        {{ pair.w2.word }} [{{pair.s2.sound }}]<br>
+        {{ word2.word }} [{{pair.s2.sound }}] {{ word_card_buttons(word2) }} <br>
         {% endfor %}
-    </p>
+    </div>
 
 </div>
 
@@ -154,6 +184,7 @@ style="fill:rgb(70,26,62);" />
         grandma = elem.parentNode.parentNode;
         $(grandma).css('background-image', 'none');
     }
+    var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_many') }}";
 </script>
 {% endblock %}
 
@@ -163,7 +194,7 @@ style="fill:rgb(70,26,62);" />
 <!-- makes an icon if word has an image and sets background image on display element on hover -->
 <!-- the display element can be entered as a string. Fx "this.parentNode.parentNode" -->
 {% if word.image.name == "default.svg" or word.image.name == "default.jpg" %}
-<span style="display: inline-block; width: 16px;"> </span>
+<i class="fas fa-image text-muted"> </i>
 {% else %}
 <script>
     var img{{ word.id }}url = "{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}";

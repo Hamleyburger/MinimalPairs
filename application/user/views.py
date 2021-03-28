@@ -8,10 +8,6 @@ from .forms import SearchSounds, toPDF, SearchMOs
 from flask_weasyprint import HTML, CSS, render_pdf
 
 
-# from .helpers import store_image
-# from .helpers import clearSessionExcept
-
-
 user_blueprint = Blueprint("user_blueprint", __name__,
                            static_folder="static", template_folder="templates")
 

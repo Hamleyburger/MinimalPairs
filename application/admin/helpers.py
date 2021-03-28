@@ -2,8 +2,10 @@ from flask import request
 import os
 from flask import current_app
 from PIL import Image
+import imghdr
 import os
 import filecmp
+from ..exceptions import invalidImageError
 # Helpers is being used by models
 # Helpers so far handles session, decorators for views and stock API
 
@@ -22,9 +24,23 @@ import filecmp
 def store_image(image):
     """ Stores image and thumbnail on server if not already there.\n Returns appropriate file name """
     print("store image running")
+
+    valid_formats = ["jpg", "jpeg", "png"]
     directory = current_app.config["IMAGE_UPLOADS"]
     filename = generateFilename(image.filename, directory)
+
     print("file name will be {}".format(filename))
+
+    image.seek(0, os.SEEK_END)
+    size = image.tell()
+    # seek to its beginning, so you might save it entirely
+    image.seek(0)
+    if size > 3000000:
+        print("File is > 2.9 mb")
+        raise invalidImageError("Image not uploaded: Must be less than 3 MB")
+
+    if imghdr.what(image) not in valid_formats:
+        raise invalidImageError("Image not uploaded: Must be .jpg or .png")
 
     # Store original (is removed if it turns out to be duplicate)
     image.save(os.path.join(directory, filename))

@@ -13,6 +13,7 @@ from flask_user import UserManager
 
 # Configure application
 app = Flask(__name__)
+app.jinja_options['extensions'].append('jinja2.ext.do')
 
 
 # All configs are taken from object in config.py

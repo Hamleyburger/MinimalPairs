@@ -44,13 +44,18 @@ def add_word():
 
     if form.cancel.data:
         return redirect(url_for("admin_blueprint.add"))
+
     if form.validate_on_submit():
         print("was valid")
 
         image_name = None
 
         if request.files["image"]:
-            image_name = store_image(request.files["image"])
+            try:
+                image_name = store_image(request.files["image"])
+            except Exception as e:
+                print(e)
+                flash(e, "danger")
 
         if form.add.data or form.addAnyway.data:
             print("adding from view")
