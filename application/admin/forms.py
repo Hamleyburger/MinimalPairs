@@ -6,6 +6,7 @@ from application.models import Word
 from flask_wtf.file import FileField, FileRequired
 from werkzeug.utils import secure_filename
 from ipapy import is_valid_ipa
+from .helpers import validate_image
 
 
 def emptyFiedList(fieldList):
@@ -87,6 +88,14 @@ def makePairList(form, field):
     # emptyFiedList(form.pairSounds)
 
 
+def imageOK(form, field):
+    if field.data:
+        try:
+            validate_image(field.data)
+        except Exception as e:
+            raise ValidationError(str(e))
+
+
 class PairSoundForm(Form):
     sound1 = StringField("Sound 1", validators=[DataRequired()])
     sound2 = StringField("Sound 2", validators=[DataRequired()])
@@ -99,7 +108,7 @@ class AddForm(FlaskForm):
         DataRequired(), Length(min=1, max=30), isHomonym])
     cue = StringField("Cue", validators=[
         DataRequired(), Length(min=0, max=30)])
-    image = FileField()
+    image = FileField("Image", validators=[imageOK])
     add = SubmitField("Add")
     addAnyway = SubmitField("Add homonym")
     cancel = SubmitField("Cancel")
@@ -117,3 +126,30 @@ class AddPairForm(FlaskForm):
     )
     addSounds = SubmitField("Submit pairs", validators=[])
     definePairs = SubmitField("Define sounds")
+
+
+class ChangeForm(FlaskForm):
+
+    """
+    <form name="myform" class="popup-form" method="POST" enctype="multipart/form-data"
+        action="{{ url_for('admin_blueprint.change') }}">
+        <h1 id="formtitle"></h1>
+
+        <input type="hidden" id="custId" name="newwordid" value="">
+
+        <label for="newword"><b>Change spelling</b></label>
+        <input type="text" placeholder="jinjaoldword" name="newword">
+
+        <label for="newcue"><b>Change cue</b></label>
+        <input type="text" placeholder="jinjaoldcue" name="newcue">
+
+        <label for="image"><b>Change image</b></label>
+        <input autocomplete="off" id="image" name="newimg" required="" type="file">
+        <label class="change-file-label file-label-name" for="image"></label>
+
+        <button type="button" class="btn save" onclick="sendChanges()">Save</button>
+        <button type="button" class="btn delete" onclick="requestDelete()">Delete</button>
+        <button id="closeButton" type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+    """
+    pass

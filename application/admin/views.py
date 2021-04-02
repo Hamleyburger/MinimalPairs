@@ -50,18 +50,14 @@ def add_word():
 
         image_name = None
 
-        if request.files["image"]:
-            try:
-                image_name = store_image(request.files["image"])
-            except Exception as e:
-                print(e)
-                flash(e, "danger")
-
-        if form.add.data or form.addAnyway.data:
-            print("adding from view")
-            wordToRemember = Word.add(word=form.word.data,
-                                      cue=form.cue.data, image=image_name)
+        # Add word to db and also store in session
+        wordToRemember = Word.add(word=form.word.data,
+                                  cue=form.cue.data, image=image_name)
         session["word1"] = str(wordToRemember.id)
+
+        # Store image if there was one
+        if request.files["image"]:
+            store_image(request.files["image"])
 
         db.session.commit()
 

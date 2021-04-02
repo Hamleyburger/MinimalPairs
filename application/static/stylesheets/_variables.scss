@@ -1,7 +1,7 @@
 // This is the place where all the actual colours are defined
 
 $color-purp1: #370e2f; //kat og tekst
-$color-purp2: #915491; // hat og navbar og nathimmel
+$color-purp2: #915491; // hat og navbar. Meta tag theme-color must be same as this in layout.html
 $color-purp3: #c99bb8; //lysere navbar?
 $color-red1: #fe5862; //solen
 $color-red1-transparent: #fe586396; //??
@@ -10,16 +10,6 @@ $color-yel1: #FE9055; // ?
 $color-yel2: #ffd06c; // Himmelen
 $color-yel3: #fff6da; // Næsten hvid
 
-/*
-$color-purp1: #77ff00; //kat og tekst
-$color-purp2: #000000; // hat og navbar og nathimmel
-$color-purp3: #75ba86; //lysere navbar?
-$color-red1: #081700; //solen
-$color-red1-transparent: #fe586396; //??
-$color-red2: #223226; // mørk himmel blend
-$color-yel1: #FE9055; // ?
-$color-yel2: #000000; // Himmelen
-*/
 
 :root {
 --color-purp1: #{$color-purp1};

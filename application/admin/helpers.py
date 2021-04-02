@@ -21,30 +21,46 @@ from ..exceptions import invalidImageError
 #        if key not in argv:
 #            session.pop(key)
 
-def store_image(image):
-    """ Stores image and thumbnail on server if not already there.\n Returns appropriate file name """
-    print("store image running")
-
+# validate_image is in helpers.py because it's used from different forms (add and change)
+def validate_image(image):
     valid_formats = ["jpg", "jpeg", "png"]
-    directory = current_app.config["IMAGE_UPLOADS"]
-    filename = generateFilename(image.filename, directory)
-
-    print("file name will be {}".format(filename))
+    valid_extension = [".jpg", ".jpeg", ".png"]
+    max_image_size = 3000000
 
     image.seek(0, os.SEEK_END)
     size = image.tell()
     # seek to its beginning, so you might save it entirely
     image.seek(0)
-    if size > 3000000:
+    if size > max_image_size:
         print("File is > 2.9 mb")
-        raise invalidImageError("Image not uploaded: Must be less than 3 MB")
+        raise invalidImageError("Image must be less than 3 MB")
 
+    print("checking for format")
+    print(str(imghdr.what(image)))
     if imghdr.what(image) not in valid_formats:
-        raise invalidImageError("Image not uploaded: Must be .jpg or .png")
+        print("invalid image format")
+        raise invalidImageError("Image must be .jpg or .png")
+
+    if not image.filename.lower().endswith(tuple(valid_extension)):
+        print("wrong extension!")
+        raise invalidImageError("Image file extension must be .jpg or .png")
+
+
+def store_image(image):
+    """ Stores image and thumbnail on server if not already there.\n Returns appropriate file name """
+    print("store image running")
+
+    directory = current_app.config["IMAGE_UPLOADS"]
+    filename = generateFilename(image.filename, directory)
+
+    print("validating image")
+    validate_image(image)
+
+    print("Finished validating. File name will be {}".format(filename))
 
     # Store original (is removed if it turns out to be duplicate)
     image.save(os.path.join(directory, filename))
-    print("hi")
+    print("saved image")
 
     # Make thumbnail if file is  actually new
     oldFilename = uniqueFile(directory, filename)
