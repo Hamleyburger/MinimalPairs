@@ -3,7 +3,7 @@
 {% from 'MOmacro.html' import MOmacro %}
 
 {% block title %}
-: Change word
+: {{ title_wordinfo }}
 {% endblock %}
 
 {% block main %}
@@ -37,9 +37,9 @@
             </div>
         </div>
 
-        <script> var pairCount = 0; </script>
+        <script> var pairCount = 0;</script>
         {% for pairList in pairLists %}
-        <script> var pairCount = pairCount + 1; </script>
+        <script> var pairCount = pairCount + 1;</script>
         {% endfor %}
 
 

@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     __tablename__ = "users"
     __table_args__ = {'extend_existing': True}
 
-    # id, username and password properties neessary for Flask-User
+    # id, username and password properties necessary for Flask-User
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, server_default='')

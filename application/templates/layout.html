@@ -9,7 +9,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#915491">
-    <title>Minimal pairs{% block title %}{% endblock %}</title>
+    <title> {{ title_all | safe }} {% block title %}{% endblock %}</title>
 
     <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
@@ -83,8 +83,7 @@
         </a>
 
 
-        <a class="navbar-brand" href="/"><span class="blue">Minimal</span>
-            <span class="red">Pairs</span></a>
+        <a class="navbar-brand" href="/"><span class="blue">{{ title_all |safe }}</span></a>
         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-target="#navbar" data-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"><i class="fas fa-ellipsis-v"></i></span>
@@ -96,11 +95,11 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
                 {% endif %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('user_blueprint.contrasts') }}">Find
-                        contrasts</a>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('user_blueprint.contrasts') }}">{{ nav_find
+                        |safe }}</a>
                 </li>
-                <li class="nav-item"><a class="nav-link"
-                        href="{{ url_for('user_blueprint.collection') }}">Collection</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('user_blueprint.collection') }}">{{
+                        nav_collection |safe }}</a></li>
             </ul>
             <ul class="navbar-nav ml-auto mt-2">
 
@@ -130,8 +129,7 @@
 
 
     <footer class="small text-center">
-        All content provided by
-        <a href="https://github.com/Hamleyburger">Alma Manley</a>.
+        {{ footer_copyright | safe }}
     </footer>
 
 

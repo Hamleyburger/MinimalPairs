@@ -33,13 +33,13 @@
         <a href="#" type="button" class="addgroupbtn addgroupbtn-MO btn"
             style="display: {{ 'none' if ns.collected else 'inline-block' }};"
             onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
-            data-toggle="tooltip" data-placement="top" title="Add pair to collection"><i
+            data-toggle="tooltip" data-placement="top" title="{{ tooltip_addMO }}"><i
                 class="fas fa-plus-circle shadow"></i>
         </a>
         <a href="#" type="button" class="removegroupbtn removegroupbtn-MO btn"
             style="display: {{ 'inline-block' if ns.collected else 'none' }};"
             onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
-            data-placement="top" title="Remove pair from collection"><i class="fas fa-minus-circle shadow"></i>
+            data-placement="top" title="{{ tooltip_rmMO }}"><i class="fas fa-minus-circle shadow"></i>
         </a>
 
     </div>
@@ -70,108 +70,7 @@
 
 </div>
 
-
-<!--
-
-    {# Loop for checking length to see if svg should be rendered at all #}
-    
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-    <svg width="100%" height="100%" viewBox="0 20 645 460" version="1.1" xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
-    style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g id="mocontent">
-        
-        <g id="word1" transform="matrix(0.89984,0,0,0.89984,-1848.74,144.065)">
-            
-            <foreignObject y="25.296px" width="263px" x="2057.19px" height="212px">
-                <div style="  height: 100%; display: flex;
-                justify-content: center;
-                align-items: center;">
-                <p
-                style="overflow: visible;line-height: 90%;text-align:center; font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:50.733px;color:rgb(70,26,62);">
-                {{ MOset[0].w1.word }}
-                <br>
-                [{{ MOset[0].s1.sound }}]
-            </p>
-        </div>
-    </foreignObject>
-</g>
-
-{% if MOset|length == 6 %}
-<g id="li6">
-    <text id="w2list6" x="238.096px" y="53.679px"
-    style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:40.733px;fill:rgb(70,26,62);">
-    {{ MOset[5].w2.word }}
-    {{ possible_img_icon(MOset[5].w2, "this.parentNode") }}
-    [{{ MOset[5].s2.sound }}]
-</text>
-<path id="pil6"
-d="M207.671,120.772c0,-0 -2.372,5.907 -5.839,13.844c-1.837,4.206 -3.961,8.937 -6.176,13.663c-1.739,3.71 -3.539,7.382 -5.23,10.775c-4.488,9.003 -8.178,15.985 -8.178,15.985c-0.239,0.446 -0.071,1.002 0.375,1.241c0.446,0.239 1.002,0.071 1.241,-0.375c0,0 3.772,-6.938 8.785,-15.659c1.89,-3.287 3.951,-6.818 6.079,-10.321c2.709,-4.461 5.473,-8.849 7.959,-12.707c4.69,-7.281 8.296,-12.527 8.296,-12.527c1.082,-2.017 0.322,-4.534 -1.696,-5.615c-2.018,-1.082 -4.534,-0.322 -5.616,1.696Z"
-style="fill:rgb(70,26,62);" />
-</g>
 {% endif %}
-
-{% if MOset|length >= 4 %}
-<g id="li4">
-    <text id="w2list4" x="318.48px" y="116.547px"
-    style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:45.652px;fill:rgb(70,26,62);">{{ MOset[3].w2.word }} [{{ MOset[3].s2.sound }}]</text>
-    <path id="pil4"
-    d="M257.157,172.474c0,-0 -3.238,4.061 -7.867,9.448c-2.448,2.849 -5.245,6.023 -8.131,9.171c-2.264,2.469 -4.572,4.88 -6.732,7.1c-5.729,5.889 -10.359,10.378 -10.359,10.378c-0.366,0.35 -0.379,0.93 -0.029,1.296c0.349,0.366 0.93,0.379 1.296,0.029c-0,0 4.693,-4.422 10.835,-9.879c2.316,-2.058 4.829,-4.255 7.397,-6.404c3.275,-2.742 6.572,-5.393 9.529,-7.709c5.591,-4.381 9.794,-7.433 9.794,-7.433c1.655,-1.582 1.714,-4.21 0.132,-5.865c-1.582,-1.655 -4.21,-1.714 -5.865,-0.132Z"
-    style="fill:rgb(70,26,62);" />
-</g>
-{% endif %}
-
-<g id="li1">
-    <text id="w2list1" x="349.226px" y="200.415px"
-    style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:45.652px;fill:rgb(70,26,62);">
-    {{ MOset[0].w2.word }} [{{ MOset[0].s2.sound }}]
-</text>
-<path id="pil1"
-d="M278.555,221.401c0,0 -3.686,2.507 -8.896,5.734c-2.749,1.703 -5.862,3.57 -9.059,5.388c-2.502,1.424 -5.028,2.777 -7.387,4.014c-6.251,3.276 -11.241,5.679 -11.241,5.679c-0.458,0.216 -0.654,0.763 -0.439,1.22c0.216,0.458 0.763,0.655 1.22,0.439c0,-0 5.03,-2.32 11.536,-5.056c2.455,-1.033 5.107,-2.119 7.797,-3.143c3.437,-1.309 6.858,-2.521 9.922,-3.558c5.805,-1.965 10.084,-3.212 10.084,-3.212c2.071,-0.976 2.96,-3.45 1.984,-5.521c-0.976,-2.071 -3.45,-2.96 -5.521,-1.984Z"
-style="fill:rgb(70,26,62);" />
-</g>
-
-{% if MOset|length >= 3 %}
-<g id="li3">
-    <text id="w2list3" x="349.226px" y="284.284px"
-    style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:45.652px;fill:rgb(70,26,62);">{{ MOset[2].w2.word }} [{{ MOset[2].s2.sound }}]</text>
-    <path id="pil3"
-    d="M281.176,269.201c-0,-0 -3.5,0.862 -8.419,1.801c-2.585,0.494 -5.475,0.993 -8.437,1.419c-2.311,0.332 -4.616,0.591 -6.766,0.807c-5.688,0.573 -10.166,0.835 -10.166,0.835c-0.505,0.024 -0.896,0.454 -0.871,0.96c0.024,0.505 0.454,0.896 0.959,0.871c0,0 4.483,-0.169 10.2,-0.146c2.16,0.009 4.479,0.045 6.811,0.154c2.99,0.139 5.915,0.359 8.535,0.602c4.986,0.462 8.553,0.984 8.553,0.984c2.287,-0.111 4.054,-2.057 3.944,-4.343c-0.111,-2.287 -2.057,-4.054 -4.343,-3.944Z"
-    style="fill:rgb(70,26,62);" />
-</g>
-{% endif %}
-
-<g id="li2">
-    <text id="w2list2" x="313.274px" y="368.152px"
-    style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:45.652px;fill:rgb(70,26,62);">{{ MOset[1].w2.word }} [{{ MOset[1].s2.sound }}]</text>
-    <path id="pil2"
-    d="M264.954,319.337c-0,-0 -2.558,-0.49 -6.15,-1.453c-1.867,-0.5 -3.898,-1.096 -5.981,-1.796c-1.613,-0.543 -3.18,-1.145 -4.641,-1.732c-3.851,-1.55 -6.796,-2.937 -6.796,-2.937c-0.455,-0.222 -1.004,-0.033 -1.226,0.421c-0.222,0.455 -0.034,1.004 0.421,1.226c0,0 2.904,1.471 6.494,3.556c1.361,0.791 2.799,1.658 4.218,2.597c1.833,1.213 3.551,2.449 5.094,3.614c2.966,2.242 4.925,3.958 4.925,3.958c2.057,1.005 4.543,0.151 5.548,-1.906c1.005,-2.057 0.151,-4.543 -1.906,-5.548Z"
-    style="fill:rgb(70,26,62);" />
-</g>
-
-{% if MOset|length >= 5 %}
-<g id="li5">
-    <text id="w2list5" x="255.274px" y="450.152px"
-    style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:500;font-size:45.652px;fill:rgb(70,26,62);">{{ MOset[4].w2.word }} [{{ MOset[4].s2.sound }}]</text>
-    <path id="pil5"
-    d="M232.895,361.081c-0,-0 -1.293,-1.169 -3.065,-3.155c-0.898,-1.007 -1.804,-2.089 -2.719,-3.321c-0.694,-0.934 -1.313,-1.882 -1.88,-2.798c-1.482,-2.395 -2.479,-4.361 -2.479,-4.361c-0.22,-0.456 -0.768,-0.648 -1.224,-0.429c-0.456,0.219 -0.648,0.767 -0.429,1.223c0,0 0.913,2.007 1.859,4.66c0.361,1.015 0.716,2.09 1.012,3.216c0.391,1.483 0.671,2.867 0.897,4.197c0.445,2.624 0.551,4.363 0.551,4.363c0.992,2.063 3.473,2.933 5.536,1.941c2.063,-0.993 2.933,-3.473 1.941,-5.536Z"
-    style="fill:rgb(70,26,62);" />
-</g>
-{% endif %}
-
-</g>
-</svg>
--->
-
-
-{% endif %}
-
-
-
-
-
-{# End loop for checking length to see if svg should be rendered at all #}
 
 {% block script %}
 <script>

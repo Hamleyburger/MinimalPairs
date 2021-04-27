@@ -83,8 +83,16 @@ function remove_from_collection(id, url_for, event) {
 function collect_many(ids, url_for, event, remove=false) {
     /** Adds all rendered words to collection from sound search page  */
     // preventDeafault prevents the <a href="#"> action which takes you to top of page
+
+    console.log("clicked collect/remove many");
+    console.log("incoming ids " + ids);
+    console.log(url_for);
+    console.log(remove);
+
     event.preventDefault();
     jsonids = JSON.stringify(ids)
+
+    console.log(jsonids);
     
     $.ajax({
         data: {

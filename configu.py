@@ -22,7 +22,7 @@ class Config(object):
     # FLASK_USER configs
     # Enable CSRF and disable email (as recommended by PrettyPrinted.com for flask-user)
     CSRF_ENABLED = True
-    # flask-user will try to send email by default in not set to false. Will only work if email is configured.
+    # flask-user will try to send email by default if not set to false. Will only work if email is configured.
     USER_ENABLE_EMAIL = False
     USER_REGISTER_TEMPLATE = 'flask_user/login_or_register.html'
     USER_ENABLE_REGISTER = False
@@ -32,6 +32,7 @@ class Config(object):
     # Unauthorized is if user does not have the right role.
     USER_UNAUTHORZED_ENDPOINT = 'user_blueprint.index'
     # End of FLASK_USER configs
+
     SECRET_ADMIN_NAME = 'franciscotarrega'
     SECRET_ADMIN_PASSWORD = 'Adelita123'
 
@@ -40,7 +41,7 @@ class ProductionConfig(Config):
     DEBUG = 0
     SECRET_KEY = "imalsonotgonnausethisinproductionbutitsstill32byteslong"
     #API_KEY = ""
-    SQLALCHEMY_DATABASE_URI = "sqlite:////home/hamleyburger/???"
+    SQLALCHEMY_DATABASE_URI = "sqlite:////Users/MacDuck/Documents/Projects/GitHub/MinimalPairs/minimalpairs.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

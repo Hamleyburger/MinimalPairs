@@ -3,7 +3,7 @@
 <!-- {% from 'macros.html' import group_card, pair_card %} -->
 
 {% block title %}
-: Home
+: {{ title_index }}
 {% endblock %}
 
 
@@ -17,26 +17,9 @@
             <div class="col"></div>
         </div>
         <div class="row justify-content-around">
-            <div class="col-sm-9 col-md-7 col-lg-6">
-                <h3>Out of words?</h3>
-                <p>"Minimale Par" is a growing database of minimal pairs. Here you can search and collect word pairs
-                    with images and generate convenient two-sided PDF files for printing and using in speech language
-                    therapy sessions or simply for practicing phonological contrasts in the Danish language.</p>
-                <p>
-                    <i>"If you mean 'code' but say this word: 'toad' - I think of a toad (shows a picture of a toad)</i>
-                </p>
-                <p>Minimal pairs are technically word pairs differing only by one sound in the same position in each
-                    word. However in speech sound disorders it is common to have mislearned phonological representations
-                    of clusters of
-                    sounds as well as isolated sounds. Therefore "Minimale Par" also uses contrasts on a phonotactical
-                    level - word pairs
-                    differing by clusters of sounds in the same positions.</p>
-                <p>Additionally to word pairs it is possible to search for "multiple opposition sets" - sets of words
-                    that are all distinguished from each other by one sound (or cluster). Multiple opposition sets can
-                    be used when a number of differend sounds are all replaced by the same sounds.
-                </p>
-                <p>When you like a word use <i class="fas fa-plus-circle"></i> to add it to your collection. Use <i
-                        class="fas fa-minus-circle"></i> to remove it again.</p>
+            <div class="about-text col-sm-9 col-md-7 col-lg-6">
+                <h3>{{ about[0] |safe }}</h3>
+                {{ about[1] |safe }}
                 {{ planet() }}
             </div>
             <div class="col"></div>

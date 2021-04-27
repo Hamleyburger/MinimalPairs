@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import ipa_picker, word_card, word_card_buttons %}
+{% from 'macros.html' import ipa_picker, word_card, word_card_buttons with context %}
 {% from 'admin_macros.html' import enable_chosenjs, chosenjs_filtering %}
 {% from 'MOmacro.html' import MOmacro %}
 
 {% block title %}
-: Search for sounds
+: {{ title_soundsearch }}
 {% endblock %}
 
 {% block main %}
@@ -21,28 +21,26 @@
     <!-- Buttons for collapsing forms -->
     <button id="search-pair-collapse-btn" type="button" class="btn shadow top-button" data-toggle="collapse"
         data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
-        sounds <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
+        {{ btn_sound }} <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
     </button>
 
-    <!-- Buttons to handle search results -->
-    {% if pairs %}
-    <script>
-        var renderedids = {{ renderedids | safe }};
-    </script>
+    <!-- Buttons to add/remove all search results -->
+    {% if pairs or MOsets %}
 
     <div class="wordgroup" data-ids="{{ renderedids | safe }}">
-
         <button type="button" class="top-button removegroupbtn btn shadow m-auto"
             style="display: {{ 'inline-block' if collectedAll else 'none' }};"
-            onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=true)" data-toggle="tooltip"
-            data-placement="top" title="Remove all results from collection"><i class="fas fa-minus-circle"></i> clear
-            all</button>
+            onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=true)"
+            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i
+                class="fas fa-minus-circle"></i> {{
+            btn_clearall }} </button>
 
         <button type="button" class="top-button addgroupbtn btn shadow m-auto"
             style="display: {{ 'none' if collectedAll else 'inline-block' }};"
-            onclick="collect_many(renderedids, url_for_bulkmanage, event, remove=false)" data-toggle="tooltip"
-            data-placement="top" title="Add all results to collection"><i class="fas fa-plus-circle"></i> add
-            all</button>
+            onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=false)"
+            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i
+                class="fas fa-plus-circle"></i> {{ btn_addall
+            }}</button>
     </div>
     {% endif %} {# endif pairs #}
 
@@ -60,13 +58,12 @@
                         <li class="nav-item redbg">
                             <a class="nav-link {{'active show' if not MOmode else ''}}" id="searchPairs-tab"
                                 data-toggle="tab" href="#searchPairs" role="tab" aria-controls="search-pairs"
-                                aria-selected="true">Pairs</a>
+                                aria-selected="true">{{ tab_pairs }}</a>
                         </li>
                         <li class="nav-item purplebg">
                             <a class="nav-link {{'active show' if MOmode else ''}}" id="searchMOs-tab" data-toggle="tab"
                                 href="#searchMOs" role="tab" aria-controls="search-multiple-oppositions"
-                                aria-selected="false">Multiple
-                                oppositions</a>
+                                aria-selected="false">{{ tab_MOs }}</a>
                         </li>
                     </ul>
                 </div>
@@ -84,7 +81,7 @@
                                 vs.
                                 {{ form.sound2(class="sound_input_field", size="1") }}
                                 <button name="searchBtn" value="pair" type="submit" class="shadow" data-toggle="tooltip"
-                                    data-placement="top" title="Search for sounds"><i class="fa fa-search"
+                                    data-placement="top" title="{{ tooltip_searchpairs }}"><i class="fa fa-search"
                                         formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
                                 </button>
                             </div>
@@ -110,9 +107,8 @@
                                 </div>
 
                                 <button type="submit" name="searchBtn" value="MO" class="shadow MO-search-button"
-                                    data-toggle="tooltip" data-placement="top"
-                                    title="Search for multiple oppositions"><i class="fa fa-search"
-                                        formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
+                                    data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchMOs }}"><i
+                                        class="fa fa-search" formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
                                 </button>
                             </div>
                         </form>
@@ -199,13 +195,13 @@
         <a href="#" type="button" class="addgroupbtn addgroupbtn-pair btn"
             style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false)"
-            data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="Add pair to collection"><i
+            data-toggle="tooltip" data-placement="top" title="{{ tooltip_addpair }}"><i
                 class="fas fa-plus-circle shadow"></i>
         </a>
         <a href="#" type="button" class="removegroupbtn removegroupbtn-pair btn"
             style="display: {{ 'inline-block' if pair.id in collectedPairs else 'none' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true)"
-            data-toggle="tooltip" data-placement="top" title="Remove pair from collection"><i
+            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmpair }}"><i
                 class="fas fa-minus-circle shadow"></i>
         </a>
 

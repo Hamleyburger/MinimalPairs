@@ -6,6 +6,7 @@ import imghdr
 import os
 import filecmp
 from ..exceptions import invalidImageError
+
 # Helpers is being used by models
 # Helpers so far handles session, decorators for views and stock API
 

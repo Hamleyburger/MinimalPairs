@@ -6,6 +6,7 @@ from .models import User
 from application import db, app
 from .forms import SearchSounds, toPDF, SearchMOs
 from flask_weasyprint import HTML, CSS, render_pdf
+from application.content_management import Content
 
 
 user_blueprint = Blueprint("user_blueprint", __name__,
@@ -115,19 +116,32 @@ def contrasts():
                 MOsets = sound1.getMOPairs(MOsounds)
                 MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
 
+                # add unique word ids to list of rendered ids
+                idSet = set()
                 for MO in MOsets:
                     print(MO)
+                    for pair in MO:
+                        idSet.update([pair.w1.id, pair.w2.id])
+                for MO in MOsets2:
+                    print(MO)
+                    for pair in MO:
+                        idSet.update([pair.w1.id, pair.w2.id])
+                renderedids = list(idSet)
+
             else:
                 print(MOSearchForm.errors)
 
     print("collection: " + str(getCollection()) +
           "of type " + str(getCollection()))
 
+    print("rendered ids: " + str(renderedids))
+
     return render_template("contrasts.html",
                            pairs=pairs,
                            form=pairSearchForm,
                            form2=MOSearchForm,
                            renderedids=renderedids,
+                           # collectedAll and collectedPairs are used when first rendering, but session is used in ajax funcs
                            collectedAll=collectedAll,
                            collectedPairs=collectedPairs,
                            MOsets=MOsets,
@@ -236,6 +250,9 @@ def ajax_collect_many():
 
     wordids = json_to_ints(request.form["ids"])
     remove = json.loads(request.form["remove"])
+
+    print("word ids: " + str(wordids))
+    print("remove is " + str(remove))
 
     manageCollection(wordids, remove)
 

@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-: Collection
+: {{ title_collection }}
 {% endblock %}
 
 {% block main %}
@@ -12,14 +12,14 @@
     <div class="row">
 
         <button id="search-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
-            data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">make PDF <i
+            data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">{{ btn_makePDF }}<i
                 id="rotate-icon" class="fas fa-angle-down"></i>
         </button>
         <script>
             var url_for_clear = "{{ url_for('user_blueprint.ajax_clear') }}";
         </script>
         <button type="button" class="btn shadow" onclick="clear_collection(url_for_clear, event)" data-toggle="tooltip"
-            data-placement="top" title="Remove all words from collection"><i class="fas fa-trash-alt"></i></button>
+            data-placement="top" title="{{ tooltip_clearall }}"><i class="fas fa-trash-alt"></i></button>
     </div>
 
     <div class="collapse" id="pdf-form-collapsable">
@@ -75,8 +75,8 @@
     {% else %}
 
     <div class="sorry">
-        <p>Add words to your collection with
-            <i class="fas fa-plus-circle"></i> and remove them with <i class="fas fa-minus-circle"></i>
+        <p>
+            {{ collection_tip | safe }}
         </p>
     </div>
 </div>
