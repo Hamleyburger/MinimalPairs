@@ -27,7 +27,7 @@ def Content():
                     <dd>"ko" og "løbe" er bedre kandiater end ord som "bruge" og "hensigt" </dd>\
                 <dt>Der kan tilføjes par, som ikke er ægte minimale par</dt>\
                     <dd>"skyr" vs. "dyr" til brug med elever, der erstatter [sg] med [d]</dd>\
-                <dt>Der kan tilføjes par, som <i>kan<i/> være minimale alt afhængigt af elevens udtale.</dt>\
+                <dt>Der kan tilføjes par, som <i>kan</i> være minimale alt afhængigt af elevens udtale.</dt>\
                     <dd>"ruder" vs. "guder", hvor [ʁ] og [g] er de betydningsadskillende lyde, med mindre [u] udsættes for tilstrækkelig r-påvirkning, og bliver til [o]</dd>\
                 </dl>\
                 </p>\

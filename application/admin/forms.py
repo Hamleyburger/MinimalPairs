@@ -62,10 +62,10 @@ def makePairList(form, field):
 
             if form.pairSounds.data:
                 for word in form.pairSounds:
-                    if word.sound1.data is "" or word.sound2.data is "":
+                    if word.sound1.data == "" or word.sound2.data == "":
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
                         raise ValidationError("No empty sound fields allowed")
-                    if (not is_valid_ipa(word.sound1.data) and (word.sound1.data is not "Ø")) or (not is_valid_ipa(word.sound2.data) and (word.sound2.data is not "Ø")):
+                    if (not is_valid_ipa(word.sound1.data) and (word.sound1.data != "Ø")) or (not is_valid_ipa(word.sound2.data) and (word.sound2.data != "Ø")):
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
                         raise ValidationError("Not valid IPA")
 

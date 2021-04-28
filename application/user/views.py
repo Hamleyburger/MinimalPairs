@@ -17,7 +17,7 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 def index():
     """ cute front page """
 
-    return render_template("userindex.html")
+    return render_template("index.html")
 
 
 @user_blueprint.route("/lukmigind", methods=["GET", "POST"])
@@ -151,8 +151,6 @@ def contrasts():
 
 @ user_blueprint.route("/collection", methods=["GET", "POST"])
 def collection():
-
-    # TODO: apply form     if request.method == "POST":
 
     form = toPDF()
 

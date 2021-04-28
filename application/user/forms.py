@@ -78,8 +78,6 @@ class SearchSounds(FlaskForm):
     sound2 = StringField(validators=[DataRequired(), isIPA])
 
 
-# TODO: Validator tillader et tomt felt. Sørg for at det tomme felt ikke forsøges tilføjet til database, med getMOPairs
-
 class SearchMOs(FlaskForm):
     sound1 = StringField(validators=[DataRequired(), isIPA, minimumFields])
     sound2 = StringField(validators=[IPAOrNothing])

@@ -28,7 +28,7 @@
     {% if pairs or MOsets %}
 
     <div class="wordgroup" data-ids="{{ renderedids | safe }}">
-        <button type="button" class="top-button removegroupbtn btn shadow m-auto"
+        <button type="button" class="top-button removegroupbtn removeallbtn btn shadow m-auto"
             style="display: {{ 'inline-block' if collectedAll else 'none' }};"
             onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=true)"
             data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i

@@ -329,9 +329,8 @@ class Group(db.Model):
         return modifiedGroups
 
     @classmethod
-    def updateMeta(cls):
+    def updateMeta(cls):  # Group
         """ Finds all pairs in a group and updates its collection of pairs and sounds """
-        # TODO make it also find a list of orphans and overwrite to a file.
         groups = db.session.query(cls).all()
         for group in groups:
             soundList = []
@@ -345,8 +344,6 @@ class Group(db.Model):
             for sound in soundList:
                 if sound not in groupsounds:
                     group.sounds.append(sound)
-
-            # Figure out a way to identify duplicates and remove them
 
 
 class Pair(db.Model):
@@ -653,9 +650,9 @@ class Word(db.Model):
                             word2, newSound1, newSound2, pairList)
         return pairList
 
-    def allPartners(self):
+    def allPartners(self):  # Word
         """ Returns words: all caller's partners with relative sounds """
-        # TODO: This should be done differently
+
         # Make list containing all partners
         partners = self.partners
         words = self.words
