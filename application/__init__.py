@@ -18,7 +18,7 @@ app.jinja_options['extensions'].append('jinja2.ext.do')
 
 
 # All configs are taken from object in config.py
-app.config.from_object("configu.DevelopmentConfig")
+app.config.from_object("configu.ProductionConfig")
 
 
 # Instantiate Session
