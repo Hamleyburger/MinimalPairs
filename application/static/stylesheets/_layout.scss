@@ -1,45 +1,61 @@
 @import "variables";
 
 .navbar {
+
     background-color: var(--color-purp2);
+    padding: 1.3%;
+
+    .nav-link {
+        font-size: 20px;
+        text-align: center;
+    }
 
     a {
-        
+
+        margin: 0;
+
+        @media only screen and (min-width: 575px) {
+            // Corresponds to Bootstrap's sm breakpoint used by class on navbar-toggler
+            margin: 6px;
+            &.navbar-brand {
+                /* size for brand */
+                margin-right: 20px;
+                margin-left: 30px;
+            }
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            padding-left: 8px;
+            
+        }
+        border: 0px dotted purple;
         color: var(--color-purp1);
     }
     #catlogo {
         fill: var(--color-purp1);
     }
     .navbar-brand {
-        /* size for brand */
         font-size: xx-large;
-        margin: 0px 23px;
-        @media only screen and (max-width: 350px) {
-            margin: auto;
-        }
     }
 
     .navbar-toggler{
         font-size: 2rem !important;
-        @media only screen and (max-width: 350px) {
-            padding-left: 3px;
-            padding-right: 3px;
-        }
+        padding: 0;
     }
     .navbar-toggler-icon {
         display: table-cell;
         vertical-align: middle;
         text-align: center;
         height: 120%;
+        margin: 0;
+        width: 30px;
 
         .fas {
             color: $color-purp1;
         }
     }
 
-    @media only screen and (max-width: 350px) {
-        padding: 10px;
-    }
 }
 html {
     height: 100%;

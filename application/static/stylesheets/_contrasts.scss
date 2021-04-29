@@ -94,7 +94,6 @@
     }
 
     .MO-search-sounds-field {
-        padding-bottom: 40px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -158,7 +157,7 @@ margin-bottom: 20px;
 
     .img-container {
 
-height: 70%;
+        height: 70%;
         overflow: hidden;
         .card-img-top {
             // Finds the middle of the image and crops to fit container
@@ -201,35 +200,56 @@ height: 70%;
     background-color: $color-red1;
 }
 
-.nav-tabs {
-    border: 0;
+.nav-tab-wrapper {
+    overflow: hidden;
 
-    .nav-item {
-        //margin: 0px 5px;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        .nav-link {
-            background-color: inherit;
-            border: none;
-            color: $color-purp1;
-            &.active {
+    .nav-tabs {
+        border: 0;
+
+        .nav-item {
+            
+            border-top-left-radius: 15px; // must be applied to both nav-link and nav-item
+            border-top-right-radius: 15px; // must be applied to both nav-link and nav-item
+            @media only screen and (max-width: 370px) { 
+                // This max width is where the tabs wrap on top of each other given the current size of content and width
+                width: 50%;
+            }
+            .nav-link {
+                border-top-left-radius: 15px; // must be applied to both nav-link and nav-item
+                border-top-right-radius: 15px; // must be applied to both nav-link and nav-item
+                background-color: inherit;
                 border: none;
-                box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35)
-                
+                color: $color-purp1;
+                height: 100%;
+                &.active {
+                    border: none;
+                    //box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35)
+                    
+                }
             }
         }
+
     }
 }
 
   .tab-content {
       //padding: 15px;
       .tab-pane {
-          //background-color: inherit;
-        border: none;
-        border-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15%;
+        @media only screen and (min-width: 371px) { 
+            border-radius: 15px;
+        }
         color: $color-purp1;
         min-height: 200px;
-        height: auto;
-        padding-top: 20px;
+
+        .form-wrapper {
+            display: flex;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            height: 200px;
+        }
+
     }
   }

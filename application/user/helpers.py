@@ -54,6 +54,9 @@ def pairCollected(pair: Pair):
 def easyIPAtyping(typedSound):
     """ Translates some keyboard inputs to the characters in the Sound table """
 
+    if typedSound.isascii():
+        print("typed sound is ascii")
+
     easyTypableSounds = {
         'r': 'ʁ',
         'sj': 'ɕ',

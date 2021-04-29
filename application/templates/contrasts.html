@@ -52,7 +52,7 @@
             <div class="search-tabs">
 
                 <!-- tabs (the ones you click) -->
-                <div style="padding: 15px 15px 0px 15px; overflow: hidden;">
+                <div class="nav-tab-wrapper">
 
                     <ul class="nav nav-tabs justify-content-center">
                         <li class="nav-item redbg">
@@ -73,45 +73,54 @@
                     <!-- form pane: search for pairs -->
                     <div class="tab-pane shadow redbg {{'show active' if not MOmode else ''}}" id="searchPairs"
                         role="tabpanel" aria-labelledby="home-tab">
-                        <form id="searchPairs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
-                            novalidate>
-                            {{ form.hidden_tag() }}
-                            <div class="search-sounds-field">
-                                {{ form.sound1(class="sound_input_field", size="1") }}
-                                vs.
-                                {{ form.sound2(class="sound_input_field", size="1") }}
-                                <button name="searchBtn" value="pair" type="submit" class="shadow" data-toggle="tooltip"
-                                    data-placement="top" title="{{ tooltip_searchpairs }}"><i class="fa fa-search"
-                                        formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
-                                </button>
-                            </div>
-                        </form>
+                        <div class="form-wrapper">
+
+                            <form id="searchPairs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
+                                novalidate>
+                                {{ form.hidden_tag() }}
+                                <div class="search-sounds-field">
+                                    {{ form.sound1(class="sound_input_field", size="1") }}
+                                    vs.
+                                    {{ form.sound2(class="sound_input_field", size="1") }}
+                                    <button name="searchBtn" value="pair" type="submit" class="shadow"
+                                        data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchpairs }}"><i
+                                            class="fa fa-search"
+                                            formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
                     <!-- form pane: search for MOs -->
                     <div class="tab-pane shadow purplebg {{'show active' if MOmode else ''}}" id="searchMOs"
                         role="tabpanel" aria-labelledby="profile-tab">
                         <!-- collapsing form: search for multiple opposition sets -->
-                        <form id="searchMOs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
-                            novalidate>
-                            {{ form2.hidden_tag() }}
-                            <div class="search-sounds-field MO-search-sounds-field">
+                        <div class="form-wrapper">
 
-                                {{ form2.sound1(class="sound_input_field", size="1") }}
-                                vs.
-                                <div class="opposing-sound-inputs">
+                            <form id="searchMOs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
+                                novalidate>
+                                {{ form2.hidden_tag() }}
+                                <div class="search-sounds-field MO-search-sounds-field">
 
-                                    {{ form2.sound2(class="sound_input_field", size="1") }}
-                                    {{ form2.sound3(class="sound_input_field", size="1") }}
-                                    {{ form2.sound4(class="sound_input_field", size="1") }}
-                                    {{ form2.sound5(class="sound_input_field", size="1") }}
+                                    {{ form2.sound1(class="sound_input_field", size="1") }}
+                                    vs.
+                                    <div class="opposing-sound-inputs">
+
+                                        {{ form2.sound2(class="sound_input_field", size="1") }}
+                                        {{ form2.sound3(class="sound_input_field", size="1") }}
+                                        {{ form2.sound4(class="sound_input_field", size="1") }}
+                                        {{ form2.sound5(class="sound_input_field", size="1") }}
+                                    </div>
+
+                                    <button type="submit" name="searchBtn" value="MO" class="shadow MO-search-button"
+                                        data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchMOs }}"><i
+                                            class="fa fa-search"
+                                            formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
+                                    </button>
                                 </div>
-
-                                <button type="submit" name="searchBtn" value="MO" class="shadow MO-search-button"
-                                    data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchMOs }}"><i
-                                        class="fa fa-search" formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
-                                </button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

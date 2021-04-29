@@ -97,6 +97,9 @@ def contrasts():
                 else:
                     collectedAll = False
             renderedids = json.dumps(renderedids)
+        else:
+            print("pair form error")
+            print(pairSearchForm.errors)
 
         if request.form["searchBtn"] == "MO":
             MOmode = True
@@ -129,6 +132,7 @@ def contrasts():
                 renderedids = list(idSet)
 
             else:
+                print("MO search form error")
                 print(MOSearchForm.errors)
 
     print("collection: " + str(getCollection()) +
