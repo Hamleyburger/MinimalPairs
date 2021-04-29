@@ -36,8 +36,8 @@ class User(db.Model, UserMixin):
                 password=user_manager.hash_password(password),
                 active=True
             )
-            user.roles.append(Role(name='Admin'))
             db.session.add(user)
+            user.roles.append(Role.query.get(1))
             db.session.commit()
         else:
             print("admin ok")
