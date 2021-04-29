@@ -12,22 +12,26 @@
         padding: 0;
         overflow: visible;
         position: relative;
-        height: 81vh;
+        height: 65vw;
+
+                    @media (min-width: 400px) {
+                        height: 81vw;
+                    }
                     // Small devices (landscape phones, 576px and up)
                     @media (min-width: 576px) {
-                        height: 89vh;
+                        height: 89vw;
                     }
                     // Medium devices (tablets, 768px and up)
-                    @media (min-width: 768px) {
-                        height: 95vh;
+                    @media (min-width: 830px) {
+                        height: 95vw;
                     }
                     // Large devices (desktops, 992px and up)
                     @media (min-width: 992px) {
-                        height: 100vh;
+                        height: 100vw;
                     }
                     // Extra large devices (large desktops, 1200px and up)
                     @media (min-width: 1200px) {
-                        height: 105vh;
+                        height: 105vw;
                     }
         
         #illustration {
@@ -58,7 +62,7 @@
         
     }
     .text-container {
-    font-size: normal;
+    font-size: 14px;
     font-weight: normal;
     position: relative;
     margin-bottom: 50%;

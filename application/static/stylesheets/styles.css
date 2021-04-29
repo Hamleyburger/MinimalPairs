@@ -299,30 +299,36 @@ footer a {
   padding: 0;
   overflow: visible;
   position: relative;
-  height: 81vh;
+  height: 65vw;
+}
+
+@media (min-width: 400px) {
+  .frontpage-container .illustration-container {
+    height: 81vw;
+  }
 }
 
 @media (min-width: 576px) {
   .frontpage-container .illustration-container {
-    height: 89vh;
+    height: 89vw;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 830px) {
   .frontpage-container .illustration-container {
-    height: 95vh;
+    height: 95vw;
   }
 }
 
 @media (min-width: 992px) {
   .frontpage-container .illustration-container {
-    height: 100vh;
+    height: 100vw;
   }
 }
 
 @media (min-width: 1200px) {
   .frontpage-container .illustration-container {
-    height: 105vh;
+    height: 105vw;
   }
 }
 
@@ -364,7 +370,7 @@ footer a {
 }
 
 .frontpage-container .text-container {
-  font-size: normal;
+  font-size: 14px;
   font-weight: normal;
   position: relative;
   margin-bottom: 50%;
