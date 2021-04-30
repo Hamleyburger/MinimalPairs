@@ -30,6 +30,7 @@ var colorred1 = getComputedStyle(document.documentElement).getPropertyValue('--c
 var colorred2 = getComputedStyle(document.documentElement).getPropertyValue('--color-red2');
 var coloryel1 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel1');
 var coloryel2 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel2');
+var coloryel3 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel3');
 
 
 

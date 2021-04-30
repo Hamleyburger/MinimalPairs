@@ -14,14 +14,12 @@ def Content():
         "title_index": "Velkommen",
         "about": [
             "Minimale Par",
-            ' <p> <i>Minimale par</i> er lidt kort og groft beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd. </p>\
-                Det betyder, hvis man vender det på hovedet, at minimale par er en fremragende måde at tydeliggøre hvordan en lyd\
-                kan være afgørende for, hvad vi hører. For eksempel hvis man siger [d] når man mener [g], bliver "grave" til "drage", og\
-                så har vi pludselig en dragemaskine i stedet for en gravemaskine, eller måske har vi ondt i dummerne.\
+            ' <p> <i>Minimale par</i> er kort beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd. </p>\
+                Derfor er minimale par en fremragende måde at tydeliggøre hvordan en lyd\
+                kan være afgørende for, hvilket indhold, vi kommunikerer. Hvis jeg siger [d] når jeg mener [k], bliver "krage" til "drage", og\
+                så har jeg pludselig en flok drager siddende på taget.\
                 <p> "Minimale Par" er en voksende database med minimale par. \
-                Indholdet er tilpasset brug i logopædisk undervisning, men kan også \
-                benyttes for eksempel af forældre til børn med fonologiske vanskeligheder \
-                eller af lærere i dansk som andetsprog. Helt praktisk betyder det:\
+                Indholdet er tilpasset brug i logopædisk praksis - med fokus på anvendelse i arbejdet med udtale og skelnen af danske sproglyde:\
                 <dl>\
                 <dt>Der sigtes efter ord, som er nemme at billedliggøre</dt>\
                     <dd>"ko" og "løbe" er bedre kandiater end ord som "bruge" og "hensigt" </dd>\
@@ -32,12 +30,11 @@ def Content():
                 </dl>\
                 </p>\
                 \
-                <p> På siden her kan du søge på lyde og finde både ordpar og ordsæt med multiple kontraster. \
-                Finder du et ord, du kan bruge, kan du tilføjde dem midlertidigt til en samling med <i class = "fas fa-plus-circle" > \
-                </i> og fjerne dem med <i class ="fas fa-minus-circle"></i> \
-                Flere af ordene har billeder, og målet med projektet er, at \
-                alle ord skal have tilhørende billeder. Fra siden samling, kan du producere en PDF-fil, \
-                som kan downloades og printes tosidet, så materialet får en bagside. </p>'
+                <p> I siden <i>find kontraster</i> kan du søge på lyde med IPA og finde både minimale par og serier (miltiple oppositioner). \
+                Ordene kan tilgøjes til en samling med <i class = "fas fa-plus-circle" > \
+                </i> og fjernes med <i class ="fas fa-minus-circle"></i> \
+                Fra siden <i>samling</i> kan du generere en PDF-fil, \
+                som kan downloades og printes tosidet, så du får et billedmateriale med en bagside. </p>'
         ],
 
         # Find contrasts

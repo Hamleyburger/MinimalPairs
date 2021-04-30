@@ -55,12 +55,12 @@
                 <div class="nav-tab-wrapper">
 
                     <ul class="nav nav-tabs justify-content-center">
-                        <li class="nav-item redbg">
+                        <li class="nav-item orangebg">
                             <a class="nav-link {{'active show' if not MOmode else ''}}" id="searchPairs-tab"
                                 data-toggle="tab" href="#searchPairs" role="tab" aria-controls="search-pairs"
                                 aria-selected="true">{{ tab_pairs }}</a>
                         </li>
-                        <li class="nav-item purplebg">
+                        <li class="nav-item redbg">
                             <a class="nav-link {{'active show' if MOmode else ''}}" id="searchMOs-tab" data-toggle="tab"
                                 href="#searchMOs" role="tab" aria-controls="search-multiple-oppositions"
                                 aria-selected="false">{{ tab_MOs }}</a>
@@ -71,7 +71,7 @@
                 <!-- tab content -->
                 <div class="tab-content" id="search-tabs-content">
                     <!-- form pane: search for pairs -->
-                    <div class="tab-pane shadow redbg {{'show active' if not MOmode else ''}}" id="searchPairs"
+                    <div class="tab-pane shadow orangebg {{'show active' if not MOmode else ''}}" id="searchPairs"
                         role="tabpanel" aria-labelledby="home-tab">
                         <div class="form-wrapper">
 
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <!-- form pane: search for MOs -->
-                    <div class="tab-pane shadow purplebg {{'show active' if MOmode else ''}}" id="searchMOs"
+                    <div class="tab-pane shadow redbg {{'show active' if MOmode else ''}}" id="searchMOs"
                         role="tabpanel" aria-labelledby="profile-tab">
                         <!-- collapsing form: search for multiple opposition sets -->
                         <div class="form-wrapper">

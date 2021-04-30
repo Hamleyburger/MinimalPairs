@@ -1,5 +1,18 @@
 
 
+
+.orangebg {
+    background-color: $color-red2;
+}
+
+.redbg {
+    background-color: $color-red1;
+}
+
+.purpletransbg {
+    background-color: rgba($color-purp1, .9);
+
+}
 .shadow {
     box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
 }
