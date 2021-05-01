@@ -51,6 +51,14 @@ def pairCollected(pair: Pair):
         return False
 
 
+def MOcollected(MO: list):
+    """ Only returns True if ALL pairs in MO are collected """
+    for pair in MO:
+        if not pairCollected(pair):
+            return False
+    return False
+
+
 def easyIPAtyping(typedSound):
     """ Translates some keyboard inputs to the characters in the Sound table """
 

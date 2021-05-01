@@ -45,6 +45,8 @@ def Content():
         "IPA_description": "Marker tekstfeltet og tryk på et tegn for at indsætte",
         "btn_addall": "Tilføj alle",
         "btn_clearall": "Fjern alle",
+        "exactmatch": "Resultater med alle lyde",
+        "partialmatch": "Alternative forslag",
 
         "tooltip_searchpairs": "søg efter minimale par",
         "tooltip_searchMOs": "søg efter multiple oppositioner",
@@ -121,6 +123,8 @@ def Content():
         "tooltip_rmpair": "remove pair from collection",
         "tooltip_addMO": "add MO to collection",
         "tooltip_rmMO": "remove MO from collection",
+        "exactmatch": "Exact matches",
+        "partialmatch": "Partial matches",
 
         # Collection
         "title_collection": "Collection",

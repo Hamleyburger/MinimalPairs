@@ -69,17 +69,16 @@ def contrasts():
     pairSearchForm = SearchSounds()
     MOSearchForm = SearchMOs()
 
-    pairs = []
-    MOsets = []
-    MOsets2 = []
-    renderedids = []
-    collectedAll = True
-    collectedPairs = []
-    MOmode = False
+    pairs = []  # Pairs resulting from search
+    MOsets = []  # MOs exact matches
+    MOsets2 = []  # MOs partial matches
+    renderedids = []  # ids on user's screen
+    collectedAll = True  # For accurate button condition on reload
+    collectedPairs = []  # For accurate button condition on reload
+    MOmode = False  # Show MO form when user last searched for MOs
 
     if request.method == "POST":
         if (request.form["searchBtn"] == "pair") and pairSearchForm.validate_on_submit():
-            print("pairsearchform validated")
 
             # Easy keyboard typing enabled:
             inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
@@ -88,64 +87,59 @@ def contrasts():
             sound1 = Sound.get(inputSound1)
             pairs = sound1.getContrasts(inputSound2)
 
-            # Make a list of ids of all words rendered and a list of ids in collection
+            # Make a lists of ids rendered and in collection for comparison
             for pair in pairs:
                 idlist = [pair.w1.id, pair.w2.id]
                 renderedids.extend(idlist)
                 if pairCollected(pair):
                     collectedPairs.extend([pair.id])
-                else:
-                    collectedAll = False
-            renderedids = json.dumps(renderedids)
+
         else:
-            print("pair form error")
+            print("error in pair form: ")
             print(pairSearchForm.errors)
 
         if request.form["searchBtn"] == "MO":
             MOmode = True
             if MOSearchForm.validate_on_submit():
                 print("MOsearchform validated")
-                inputSound1 = easyIPAtyping(MOSearchForm.sound1.data)
 
+                # Convert common typos to what user actually meant
+                inputSound1 = easyIPAtyping(MOSearchForm.sound1.data)
                 inputList = [
                     easyIPAtyping(MOSearchForm.sound2.data),
                     easyIPAtyping(MOSearchForm.sound3.data),
                     easyIPAtyping(MOSearchForm.sound4.data),
                     easyIPAtyping(MOSearchForm.sound5.data)]
 
+                # Ignore spaces that user left blank
                 MOsounds = stripEmpty(inputList)
 
+                # Search database for exact and partial matches
                 sound1 = Sound.get(inputSound1)
                 MOsets = sound1.getMOPairs(MOsounds)
                 MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
 
-                # add unique word ids to list of rendered ids
-                idSet = set()
-                for MO in MOsets:
-                    print(MO)
-                    for pair in MO:
-                        idSet.update([pair.w1.id, pair.w2.id])
-                for MO in MOsets2:
-                    print(MO)
-                    for pair in MO:
-                        idSet.update([pair.w1.id, pair.w2.id])
-                renderedids = list(idSet)
+                # add each word id to list from every MO and strip duplicates using set
+                idList = [id for MO in MOsets +
+                          MOsets2 for pair in MO for id in [pair.w1.id, pair.w2.id]]
+                renderedids = list(set(idList))
 
             else:
                 print("MO search form error")
                 print(MOSearchForm.errors)
 
-    print("collection: " + str(getCollection()) +
-          "of type " + str(getCollection()))
+        # Check if user has collected all rendered words (for toggling "remove all button")
+        for id in list(renderedids):
+            if id not in getCollection():
+                collectedAll = False
 
-    print("rendered ids: " + str(renderedids))
+    renderedids = json.dumps(renderedids)
 
     return render_template("contrasts.html",
                            pairs=pairs,
                            form=pairSearchForm,
                            form2=MOSearchForm,
                            renderedids=renderedids,
-                           # collectedAll and collectedPairs are used when first rendering, but session is used in ajax funcs
                            collectedAll=collectedAll,
                            collectedPairs=collectedPairs,
                            MOsets=MOsets,
