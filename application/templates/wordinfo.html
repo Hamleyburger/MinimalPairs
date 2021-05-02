@@ -60,11 +60,8 @@
 
         {% for MOset in MOsets %}
         <div class="MO-col col">
-            <div class="MO-wrapper shadow" style="overflow: scroll; ">
-                {{ MOmacro(MOset) }}
-                <!-- TEZT GROUP CARD-->
-            </div>
-            <!-- TEZT GROUP CARD END -->
+            {{ MOmacro(MOset, loop.index) }}
+
         </div>
         {% endfor %}
 

@@ -153,9 +153,7 @@
 
         {% for MOset in MOsets %}
         <div class="MO-col">
-            <div class="MO-wrapper shadow">
-                {{ MOmacro(MOset) }}
-            </div>
+            {{ MOmacro(MOset, loop.index) }}
         </div>
         {% endfor %}
 
@@ -175,9 +173,7 @@
     <div class="row MO-row shadow">
         {% for MOset in MOsets2 %}
         <div class="MO-col">
-            <div class="MO-wrapper shadow">
-                {{ MOmacro(MOset) }}
-            </div>
+            {{ MOmacro(MOset, loop.index) }}
         </div>
         {% endfor %}
 

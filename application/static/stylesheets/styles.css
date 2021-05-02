@@ -116,8 +116,10 @@
 }
 
 .MO-row .MO-col {
+  margin: auto;
   padding: 0;
-  max-width: 267px;
+  width: 100%;
+  max-width: 300px;
   min-width: 267px;
 }
 
@@ -151,13 +153,6 @@
   z-index: 1;
   left: 0;
   top: 0;
-}
-
-@media only screen and (max-width: 1199px) {
-  .MO-row .MO-col {
-    min-width: 300px;
-    max-width: 300px;
-  }
 }
 
 @media only screen and (max-width: 370px) {
@@ -1163,6 +1158,7 @@ footer a {
 }
 
 .sorry {
+  padding: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1173,6 +1169,7 @@ footer a {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  text-align: center;
   height: 50vh;
 }
 
