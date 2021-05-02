@@ -15,7 +15,7 @@ def isIPA(form, field):
     """ Checks if input is valid IPA. Accepts if lower case version is valid """
 
     if not is_valid_ipa(field.data):
-        if field.data is not "Ø":
+        if field.data is not "-":
             if not is_valid_ipa(field.data.lower()):
                 raise ValidationError("Not valid IPA")
             else:

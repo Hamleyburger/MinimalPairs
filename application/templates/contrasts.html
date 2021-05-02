@@ -144,7 +144,7 @@
     <div class="titlebox">
         <div class="title-text">
             <p>
-                Exact matches
+                {{ exactmatch }}
             </p>
         </div>
     </div>
@@ -153,9 +153,7 @@
 
         {% for MOset in MOsets %}
         <div class="MO-col">
-            <div class="MO-wrapper shadow">
-                {{ MOmacro(MOset) }}
-            </div>
+            {{ MOmacro(MOset, loop.index) }}
         </div>
         {% endfor %}
 
@@ -168,16 +166,14 @@
     <div class="titlebox">
         <div class="title-text">
             <p>
-                Partial matches
+                {{ partialmatch }}
             </p>
         </div>
     </div>
     <div class="row MO-row shadow">
         {% for MOset in MOsets2 %}
         <div class="MO-col">
-            <div class="MO-wrapper shadow">
-                {{ MOmacro(MOset) }}
-            </div>
+            {{ MOmacro(MOset, loop.index) }}
         </div>
         {% endfor %}
 

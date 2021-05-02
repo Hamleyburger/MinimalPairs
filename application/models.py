@@ -607,14 +607,14 @@ class Word(db.Model):
                     return 0
 
             def reduceSounds(cluster, index):
-                """ Returns new sound\n
+                """ Returns new sound (/reduced cluster)\n
                 Removes char from sound and replaces empty sounds with 'Ø' """
 
                 newSound = list(cluster)
                 newSound[index] = ""
                 newSound = ''.join(newSound)
                 if newSound == "":
-                    newSound = "Ø"
+                    newSound = "-"
                 return newSound
 
             # Helper function to check if we already have a pair in list or database
