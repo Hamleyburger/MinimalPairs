@@ -17,23 +17,23 @@ def Content(locale=None):
         "about": [
             "Minimale Par",
             ' <p> <i>Minimale par</i> er kort beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd. </p>\
-                Derfor er minimale par en fremragende måde at tydeliggøre hvordan en lyd\
-                kan være afgørende for, hvilket indhold, vi kommunikerer. Hvis jeg siger [d] når jeg mener [k], bliver "krage" til "drage", og\
-                så har jeg pludselig en flok drager siddende på taget.\
-                <p> "Minimale Par" er en voksende database med minimale par. \
-                Indholdet er tilpasset brug i logopædisk praksis - med fokus på anvendelse i arbejdet med udtale og skelnen af danske sproglyde:\
+                Derfor er minimale par gode til at vise hvordan en lyd\
+                kan være afgørende for den opfattede betydning af ordet. Hvis jeg for eksempel siger [d] når jeg mener [k], bliver "krage" til "drage", og\
+                så har jeg pludselig en flok drager på taget.\
+                <p> "Minimale Par" er en voksende database med ord, der danner par på kryds og tværs. \
+                Indholdet er tilpasset brug i logopædisk praksis, hvor det kan anvendes i arbejdet med udtale og skelnen af danske sproglyde:\
                 <dl>\
                 <dt>Der sigtes efter ord, som er nemme at billedliggøre</dt>\
-                    <dd>"ko" og "løbe" er bedre kandiater end ord som "bruge" og "hensigt" </dd>\
+                    <dd>- "ko" og "løbe" er nemme at se for sig. Men hvordan viser man for eksempel "bruge" og "hensigt"?</dd>\
                 <dt>Der kan tilføjes par, som ikke er ægte minimale par</dt>\
-                    <dd>"skyr" vs. "dyr" til brug med elever, der erstatter [sg] med [d]</dd>\
+                    <dd>- "skyr" vs. "dyr" har mere end en enkelt lyd til forskel. Men parret er relevant til brug med elever, der erstatter [sg] med [d]</dd>\
                 <dt>Der kan tilføjes par, som <i>kan</i> være minimale alt afhængigt af elevens udtale.</dt>\
-                    <dd>"ruder" vs. "guder", hvor [ʁ] og [g] er de betydningsadskillende lyde, med mindre [u] udsættes for tilstrækkelig r-påvirkning, og bliver til [o]</dd>\
+                    <dd>- "ruder" vs. "guder", kan have [ʁ] og [g] til forskel, med mindre [u] udsættes for nok r-påvirkning til at lyde mere som [o].</dd>\
                 </dl>\
                 </p>\
                 \
-                <p> I siden <i>find kontraster</i> kan du søge på lyde med IPA og finde både minimale par og serier (miltiple oppositioner). \
-                Ordene kan tilgøjes til en samling med <i class = "fas fa-plus-circle" > \
+                <p>I siden <i>find kontraster</i> kan du søge på lyde med IPA-symboler og finde både minimale par og serier (multiple oppositioner). \
+                Ordene kan tilføjes til en samling med <i class = "fas fa-plus-circle" > \
                 </i> og fjernes med <i class ="fas fa-minus-circle"></i> \
                 Fra siden <i>samling</i> kan du generere en PDF-fil, \
                 som kan downloades og printes tosidet, så du får et billedmateriale med en bagside. </p>'
