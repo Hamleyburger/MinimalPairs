@@ -27,36 +27,24 @@ def ensure_locale(func):
             notallowed = True
         else:
             print("- URL contains valid locale: {}".format(firstarg))
-            print("- Setting locales in g ({}) and session ({}) to URL's locale {}".format(
-                g.locale, session["locale"], firstarg))
-            g.locale = firstarg
-            session["locale"] = firstarg
-            notallowed = False  # is this necessary?
+
+            if session["locale"] != firstarg:
+                print("url does not match session")
+                session["locale"] = firstarg
+                g.locale = firstarg
+                kwargs["locale"] = firstarg
+                notallowed = True
+            else:
+                print("url matches session. You may pass")
 
             # Check that path language matches requested locale, if not redirect
             print("**********************************")
-            print("Ensure that URL-arg and path match")
-            localized_content = Content()
-            correcturl = None
-            attemptedurl = None
-            for arg in kwargs:
-                if arg in localized_content:
-                    print("arg ({}) in localized content.".format(arg))
-                    attemptedurl = kwargs[arg]
-                    correcturl = localized_content[arg]
-
-                    if attemptedurl != correcturl:
-                        print(
-                            "- no match. Changing kwarg ({}) to localized ({})".format(kwargs[arg], correcturl))
-                        kwargs[arg] = correcturl
-                        notallowed = True
-                    else:
-                        print(
-                            "- url path and url locale match: ({}) va ({})".format(attemptedurl, correcturl))
 
         if notallowed:
             print("- Redirect with:")
             print("Redirect kwargs: {}".format(kwargs))
+            print("Redirect request endpoint: {}".format(request.endpoint))
+            print(url_for(request.endpoint, *args, **kwargs))
             return redirect(url_for(request.endpoint, *args, **kwargs), 302)
         else:
             return func(*args, **kwargs)

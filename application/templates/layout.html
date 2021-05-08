@@ -15,7 +15,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- https://favicon.io/emoji-favicons/money-mouth-face/ -->
-    <link href="/static/favicon.ico" rel="icon" />
+    <link href="{{ url_for('static',filename='favicon.ico') }}" rel="icon" />
 
     <!-- base imports-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -69,7 +69,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm py-3 shadow">
+    <nav class="navbar navbar-expand-md py-3 shadow">
 
         <a href="{{ url_for('user_blueprint.index', locale=g.locale) }}">
             <div class="logo">
@@ -88,6 +88,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbar">
 
+            <!-- nav links that sit on the right when expanded -->
             <ul class="navbar-nav mr-auto mt-2">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
@@ -100,9 +101,23 @@
                 </li>
                 <li class="nav-item"><a class="nav-link"
                         href="{{ url_for('user_blueprint.collection', locale=g.locale) }}">{{
-                        nav_collection |safe }}</a></li>
+                        nav_collection |safe }}</a>
+                </li>
             </ul>
+
+            <!-- nav links that sit on the right when expanded -->
             <ul class="navbar-nav ml-auto mt-2">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ nav_language }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for lang in config["LANGUAGES"] %}
+                        <a class="dropdown-item" href="#">{{ lang }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
 
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">

@@ -72,10 +72,10 @@ def adminLogin():
     return redirect(url_for('user.login'))
 
 
-@user_blueprint.route("/<url_wordinfo>/<word_id>", methods=["GET"], defaults={"locale": ""})
-@user_blueprint.route("/<locale>/<url_wordinfo>/<word_id>", methods=["GET"])
+@user_blueprint.route("/<locale>/word-info/<word_id>", methods=["GET"], defaults={"locale": "en"})
+@user_blueprint.route("/<locale>/info-om-ord/<word_id>", methods=["GET"], defaults={"locale": "da"})
 @ensure_locale
-def wordinfo(word_id, locale, url_wordinfo):
+def wordinfo(word_id, locale):
 
     # update to actually contain contrasts
     word = Word.query.get(word_id)
@@ -108,8 +108,8 @@ def wordinfo(word_id, locale, url_wordinfo):
         return redirect(url_for("user_blueprint.index", locale=g.locale))
 
 
-@ user_blueprint.route("/pairs", methods=["GET", "POST"], defaults={"locale": ""})
-@ user_blueprint.route("/<locale>/pairs", methods=["GET", "POST"])
+@user_blueprint.route("/en/sound-search", methods=["GET", "POST"], defaults={"locale": "en"})
+@user_blueprint.route("/da/find-kontraster", methods=["GET", "POST"], defaults={"locale": "da"})
 @ensure_locale
 def contrasts(locale):
 
@@ -197,13 +197,12 @@ def contrasts(locale):
                            MOmode=MOmode)
 
 
-@ user_blueprint.route("/collection", methods=["GET", "POST"], defaults={"locale": ""})
-@ user_blueprint.route("/<locale>/collection", methods=["GET", "POST"])
+@user_blueprint.route("/<locale>/collection", methods=["GET", "POST"], defaults={"locale": "en"})
+@user_blueprint.route("/<locale>/samling", methods=["GET", "POST"], defaults={"locale": "da"})
 @ensure_locale
 def collection(locale):
 
     form = toPDF()
-    print("**************************************collex whatevs")
     print(request.method)
     collection = []
     # Get pairs from session object

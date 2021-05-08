@@ -2,12 +2,14 @@ from flask import session
 from markupsafe import Markup
 
 
-def Content():
+def Content(locale=None):
+    """ If you pass a locale in here session will be ignored """
     text_da = {
         # Layout.html
         "title_all": "Minimale Par",
         "nav_find": "Find kontraster",
         "nav_collection": "Samling",
+        "nav_language": "Sprog",
         "footer_copyright": "Copyright 2021 | <a href='https://github.com/Hamleyburger'>Alma Manley</a> | All Rights Reserved",
 
         # Front page
@@ -78,6 +80,7 @@ def Content():
         "title_all": "Minimal Pairs",
         "nav_find": "Find Contrasts",
         "nav_collection": "Collection",
+        "nav_language": "Language",
         "footer_copyright": "Copyright 2021 | <a href='https://github.com/Hamleyburger'>Alma Manley</a> | All Rights Reserved",
 
         # Front page
@@ -143,7 +146,10 @@ def Content():
 
     }
 
-    if session.get("locale") == "en":
+    if locale == None:
+        locale = session["locale"]
+
+    if locale == "en":
         return text_en
     else:
         return text_da
