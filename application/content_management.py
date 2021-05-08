@@ -38,7 +38,8 @@ def Content():
         ],
 
         # Find contrasts
-        "title_soundsearch": "Lydsøgning",
+        "title_soundsearch": "Find kontraster",
+        "url_soundsearch": "find-kontraster",
         "btn_sound": "Lyde",
         "tab_pairs": "Minimale par",
         "tab_MOs": "Multiple oppositioner",
@@ -62,12 +63,14 @@ def Content():
 
         # Collection
         "title_collection": "Samling",
+        "url_collection": "samling",
         "tooltip_cleareall": "Ryd samling",
         "btn_makePDF": "Generer PDF",
         "collection_tip": 'Føj ord til samlingen med <i class="fas fa-plus-circle"></i> og fjern dem med <i class="fas fa-minus-circle"></i>',
 
         # Word info
-        "title_wordinfo": "Info om ord"
+        "title_wordinfo": "Info-om-ord",
+        "url_wordinfo": "info-om-ord"
     }
 
     text_en = {
@@ -105,6 +108,7 @@ def Content():
 
         # Find contrasts
         "title_soundsearch": "Sound search",
+        "url_soundsearch": "sound-search",
         "btn_sound": "Sounds",
         "tab_pairs": "Pairs",
         "tab_MOs": "Multiple oppositions",
@@ -128,16 +132,18 @@ def Content():
 
         # Collection
         "title_collection": "Collection",
+        "url_collection": "collection",
         "tooltip_cleareall": "clear collection",
         "btn_makePDF": "Make PDF",
         "collection_tip": 'Add words to your collection with <i class="fas fa-plus-circle"></i> and remove them with <i class="fas fa-minus-circle"></i>',
 
         # Word info
-        "title_wordinfo": "Word info"
+        "title_wordinfo": "Word-info",
+        "url_wordinfo": "word-info"
 
     }
 
-    if session.get("lan") == "en":
+    if session.get("locale") == "en":
         return text_en
     else:
         return text_da

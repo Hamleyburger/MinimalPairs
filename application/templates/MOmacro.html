@@ -1,4 +1,4 @@
-{% from 'macros.html' import word_card_buttons, group_card %}
+{% from 'macros.html' import group_card, word_card_buttons with context %}
 
 {% macro MOmacro(MOset, index) %}
 <div class="MO-wrapper shadow" style="overflow: scroll;">
@@ -59,8 +59,10 @@
             {% else %}
             <i class="fas fa-image"> </i>
             {% endif %}
-            {{ MOset[0].w1.word }} [{{ MOset[0].s1.sound }}]
-            {{ word_card_buttons(MOset[0].w1) }}
+            <b>
+                {{ MOset[0].w1.word }} [{{ MOset[0].s1.sound }}]
+                {{ word_card_buttons(MOset[0].w1) }}
+            </b>
 
 
         </div>

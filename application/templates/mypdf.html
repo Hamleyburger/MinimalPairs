@@ -113,7 +113,7 @@
     {% for word in collection %}
     <div class="imgcard">
         <div class="imgcontainer">
-            <img class="card-img-top" src="static/images/{{ word.image.name }}" alt="image of '{{ word.word }}'"
+            <img class="card-img-top" src="{{ url_for('static', filename='images/' + word.image.name)}}"
                 alt="image of '{{ word.word }}'">
 
         </div>

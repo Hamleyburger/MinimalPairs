@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% from 'macros.html' import ipa_picker, word_card, word_card_buttons with context %}
 {% from 'admin_macros.html' import enable_chosenjs, chosenjs_filtering %}
-{% from 'MOmacro.html' import MOmacro %}
+{% from 'MOmacro.html' import MOmacro with context%}
 
 {% block title %}
 : {{ title_soundsearch }}
@@ -75,8 +75,8 @@
                         role="tabpanel" aria-labelledby="home-tab">
                         <div class="form-wrapper">
 
-                            <form id="searchPairs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
-                                novalidate>
+                            <form id="searchPairs" method="POST"
+                                action="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}" novalidate>
                                 {{ form.hidden_tag() }}
                                 <div class="search-sounds-field">
                                     {{ form.sound1(class="sound_input_field", size="1") }}
@@ -85,7 +85,7 @@
                                     <button name="searchBtn" value="pair" type="submit" class="shadow"
                                         data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchpairs }}"><i
                                             class="fa fa-search"
-                                            formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
+                                            formaction="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}"></i>
                                     </button>
                                 </div>
                             </form>
@@ -98,8 +98,8 @@
                         <!-- collapsing form: search for multiple opposition sets -->
                         <div class="form-wrapper">
 
-                            <form id="searchMOs" method="POST" action="{{ url_for('user_blueprint.contrasts') }}"
-                                novalidate>
+                            <form id="searchMOs" method="POST"
+                                action="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}" novalidate>
                                 {{ form2.hidden_tag() }}
                                 <div class="search-sounds-field MO-search-sounds-field">
 
@@ -116,7 +116,7 @@
                                     <button type="submit" name="searchBtn" value="MO" class="shadow MO-search-button"
                                         data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchMOs }}"><i
                                             class="fa fa-search"
-                                            formaction="{{ url_for('user_blueprint.contrasts') }}"></i>
+                                            formaction="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}"></i>
                                     </button>
                                 </div>
                             </form>

@@ -1,6 +1,6 @@
 #!/bin/env python
 
-from flask import Flask
+from flask import Flask, g
 # flask_session could only be imported when downgrading werkzeug:
 # pip uninstalled werkzeug and pip installed werkzeug==0.16.0
 from flask_session import Session

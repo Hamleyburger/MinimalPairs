@@ -1,11 +1,70 @@
+from werkzeug.utils import redirect
 from application.models import Pair
 import json
-from flask import session
+from flask import session, g, request, redirect, url_for
 from application.models import Sound
+import functools
+from application import app
+from ..content_management import Content
+
+
+# Decorator: redirect with localized url if no locale
+def ensure_locale(func):
+    @functools.wraps(func)
+    def decorated(*args, **kwargs):
+        print("\n@ensure_locale:")
+        print("- incoming args to function: {}".format(args))
+        print("- incoming kwargs to function: {}".format(kwargs))
+        notallowed = False
+        # Check request path's locale and redirect if not allowed
+        firstarg = request.path.split('/', 2)[1]
+        print("- URL's arg: {}".format(firstarg))
+
+        if firstarg not in app.config['LANGUAGES']:
+            print("- WARNING: first arg not accepted. Setting to session locale: {}.".format(
+                session["locale"]))
+            kwargs["locale"] = session["locale"]
+            notallowed = True
+        else:
+            print("- URL contains valid locale: {}".format(firstarg))
+            print("- Setting locales in g ({}) and session ({}) to URL's locale {}".format(
+                g.locale, session["locale"], firstarg))
+            g.locale = firstarg
+            session["locale"] = firstarg
+            notallowed = False  # is this necessary?
+
+            # Check that path language matches requested locale, if not redirect
+            print("**********************************")
+            print("Ensure that URL-arg and path match")
+            localized_content = Content()
+            correcturl = None
+            attemptedurl = None
+            for arg in kwargs:
+                if arg in localized_content:
+                    print("arg ({}) in localized content.".format(arg))
+                    attemptedurl = kwargs[arg]
+                    correcturl = localized_content[arg]
+
+                    if attemptedurl != correcturl:
+                        print(
+                            "- no match. Changing kwarg ({}) to localized ({})".format(kwargs[arg], correcturl))
+                        kwargs[arg] = correcturl
+                        notallowed = True
+                    else:
+                        print(
+                            "- url path and url locale match: ({}) va ({})".format(attemptedurl, correcturl))
+
+        if notallowed:
+            print("- Redirect with:")
+            print("Redirect kwargs: {}".format(kwargs))
+            return redirect(url_for(request.endpoint, *args, **kwargs), 302)
+        else:
+            return func(*args, **kwargs)
+
+    return decorated
+
 
 # turn json string into int or list of ints
-
-
 def json_to_ints(json_str):
     """ Takes string input and spits out a list of ints which might contain a single item """
     wordids = json.loads(json_str)

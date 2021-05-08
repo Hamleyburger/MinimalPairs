@@ -72,7 +72,7 @@
             {% endfor %}
         </p>
     </div>
-    {{ word_card_buttons(pairList[0].w2) }}
+    {{ word_card_buttons(pairList[0].w2, ) }}
 </div>
 {% endmacro %}
 
@@ -105,7 +105,8 @@
 
 <div class="card text-center wordcard shadow" style="width: 18rem;">
     <div class="img-container">
-        <img class="card-img-top" src="static/images/thumbnails/thumbnail_{{ word.image.name }}"
+        <img class="card-img-top"
+            src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
             alt="image of '{{ word.word }}''">
     </div>
     <div class="card-body">
@@ -154,8 +155,8 @@
         data-placement="top" title="{{ tooltip_rmword }}"><i class="fas fa-minus-circle"></i></a>
     {% endif %}
     {% if infobutton %}
-    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id) }}" data-toggle="tooltip" data-placement="top"
-        title="{{ tooltip_wordinfo }}"><i class="fas fa-info-circle"></i></a>
+    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id, locale=g.locale, url_wordinfo=url_wordinfo) }}"
+        data-toggle="tooltip" data-placement="top" title="{{ tooltip_wordinfo }}"><i class="fas fa-info-circle"></i></a>
     {% endif %}
 </div>
 {% endmacro %}

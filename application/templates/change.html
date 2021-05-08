@@ -58,7 +58,8 @@
                         onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">
                         ;(
                     </button>
-                    {% set url = url_for("user_blueprint.wordinfo", word_id=entry.id) %}
+                    {% set url = url_for("user_blueprint.wordinfo", word_id=entry.id, locale=g.locale,
+                    url_wordinfo=url_wordinfo) %}
                     <button class="lil-buttonon" onclick="window.location.href='{{ url }}';">
                         PP
                     </button>

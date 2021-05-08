@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import pair_card, word_card_buttons %}
-{% from 'MOmacro.html' import MOmacro %}
+{% from 'macros.html' import pair_card, word_card_buttons with context %}
+{% from 'MOmacro.html' import MOmacro with context %}
 
 {% block title %}
 : {{ title_wordinfo }}

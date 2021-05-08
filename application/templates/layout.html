@@ -71,7 +71,7 @@
 <body>
     <nav class="navbar navbar-expand-sm py-3 shadow">
 
-        <a href="/">
+        <a href="{{ url_for('user_blueprint.index', locale=g.locale) }}">
             <div class="logo">
                 {{ catmacro() }}
 
@@ -79,7 +79,9 @@
         </a>
 
 
-        <a class="navbar-brand" href="/"><span class="blue">{{ title_all |safe }}</span></a>
+        <a class="navbar-brand" href="{{ url_for('user_blueprint.index', locale=g.locale) }}"><span class="blue">{{
+                title_all |safe
+                }}</span></a>
         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-target="#navbar" data-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"><i class="fas fa-ellipsis-v"></i></span>
@@ -91,10 +93,13 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
                 {% endif %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('user_blueprint.contrasts') }}">{{ nav_find
+                <li class="nav-item"><a class="nav-link"
+                        href="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}">{{
+                        nav_find
                         |safe }}</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('user_blueprint.collection') }}">{{
+                <li class="nav-item"><a class="nav-link"
+                        href="{{ url_for('user_blueprint.collection', locale=g.locale) }}">{{
                         nav_collection |safe }}</a></li>
             </ul>
             <ul class="navbar-nav ml-auto mt-2">
