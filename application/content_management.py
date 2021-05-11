@@ -5,6 +5,8 @@ from markupsafe import Markup
 def Content(locale=None):
     """ If you pass a locale in here session will be ignored """
     text_da = {
+        "locale_code": "da",
+
         # Layout.html
         "title_all": "Minimale Par",
         "nav_find": "Find kontraster",
@@ -36,7 +38,7 @@ def Content(locale=None):
                 Ordene kan tilføjes til en samling med <i class = "fas fa-plus-circle" > \
                 </i> og fjernes med <i class ="fas fa-minus-circle"></i> \
                 Fra siden <i>samling</i> kan du generere en PDF-fil, \
-                som kan downloades og printes tosidet, så du får et billedmateriale med en bagside. </p>'
+                som kan downloades og printes tosidet, så du får et billedmateriale med en bagside.w </p>'
         ],
 
         # Find contrasts
@@ -76,6 +78,8 @@ def Content(locale=None):
     }
 
     text_en = {
+        "locale_code": "en",
+
         # Layout.html
         "title_all": "Minimal Pairs",
         "nav_find": "Find Contrasts",
@@ -153,3 +157,9 @@ def Content(locale=None):
         return text_en
     else:
         return text_da
+
+
+da_content = Content("da")
+en_content = Content("en")
+
+print(da_content["url_wordinfo"])

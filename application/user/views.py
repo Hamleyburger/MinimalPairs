@@ -8,7 +8,7 @@ from .models import User
 from application import db, app
 from .forms import SearchSounds, toPDF, SearchMOs
 from flask_weasyprint import HTML, CSS, render_pdf
-from application.content_management import Content
+from application.content_management import da_content, en_content
 
 
 user_blueprint = Blueprint("user_blueprint", __name__,
@@ -72,8 +72,8 @@ def adminLogin():
     return redirect(url_for('user.login'))
 
 
-@user_blueprint.route("/<locale>/word-info/<word_id>", methods=["GET"], defaults={"locale": "en"})
-@user_blueprint.route("/<locale>/info-om-ord/<word_id>", methods=["GET"], defaults={"locale": "da"})
+@user_blueprint.route(f"/<locale>/{en_content['url_wordinfo']}/<word_id>", methods=["GET"], defaults={"locale": f"{en_content['locale_code']}"})
+@user_blueprint.route(f"/<locale>/{da_content['url_wordinfo']}/<word_id>", methods=["GET"], defaults={"locale": f"{da_content['locale_code']}"})
 @ensure_locale
 def wordinfo(word_id, locale):
 

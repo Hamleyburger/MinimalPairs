@@ -8,6 +8,7 @@
     .nav-link {
         font-size: 18px;
         text-align: center;
+
     }
 
     a {
@@ -53,6 +54,33 @@
 
         .fas {
             color: $color-purp1;
+        }
+    }
+
+    .dropdown {
+        //width: 78px;
+        .earthicon {
+            fill: $color-purp1;
+            width: 30px;
+        }
+
+        .dropdown-menu {
+            //width: 78px;
+            min-width: 100%;
+            background-color: rgba($color-purp3, 0.7);
+            border: 0;
+            color: $color-purp1;
+            .dropdown-item {
+                padding: 0;
+                margin: 0;
+                text-align: center;
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.2);
+                }
+                .flag-icon {
+                    border-radius: 50%;
+                }
+            }
         }
     }
 

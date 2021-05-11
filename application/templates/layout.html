@@ -1,4 +1,6 @@
 {% from 'catmacros.html' import catmacro %}
+{% from 'icon_earth_detailed.html' import globeicon_detail, globeicon_stylized %}
+
 
 <!DOCTYPE html>
 
@@ -62,6 +64,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js"></script>
 
+    <!-- flag icons css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+        integrity="sha512-Cv93isQdFwaKBV+Z4X8kaVBYWHST58Xb/jVOcV9aRsGSArZsgAnFIhMpDoMDcFNoUtday1hdjn0nGp3+KZyyFw=="
+        crossorigin="anonymous" />
 
     <!-- my own custom styling -->
     <link href="{{ url_for('static',filename='stylesheets/styles.css') }}" rel="stylesheet" />
@@ -110,11 +116,13 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ nav_language }}
+                        {{ globeicon_detail() }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% for lang in config["LANGUAGES"] %}
-                        <a class="dropdown-item" href="#">{{ lang }}</a>
+                        {% for lang, code in config["LANGUAGES"].items() %}
+                        <a class="dropdown-item" href="#"><span
+                                class="flag-icon flag-icon-{{ code }} flag-icon-squared"></span>
+                            {{ lang }}</a>
                         {% endfor %}
                     </div>
                 </li>
