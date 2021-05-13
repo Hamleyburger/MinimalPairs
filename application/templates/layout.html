@@ -125,7 +125,7 @@
 
                         {% for lang, code in config["LANGUAGES"].items() %}
                         <a class="dropdown-item"
-                            href='{{ url_for("user_blueprint.ajax_change_language", newlocale=lang) }}'><span
+                            href='{{ url_for("user_blueprint.change_language", newlocale=lang) }}'><span
                                 class="flag-icon flag-icon-{{ code }} flag-icon-squared"></span>
                             {{ lang }}</a>
                         {% endfor %}

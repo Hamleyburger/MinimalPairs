@@ -290,7 +290,7 @@ def ajax_clear():
 
 @ user_blueprint.route("/ajax_change_language/<newlocale>", methods=["GET", "POST"])
 # Receives changes from user and makes changes in session
-def ajax_change_language(newlocale):
+def change_language(newlocale):
     print(request.referrer)
 
     if newlocale in app.config["LANGUAGES"]:
