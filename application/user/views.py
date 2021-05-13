@@ -19,39 +19,19 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 @app.before_request
 def before_request_callback():
 
-    print("\n\nBefore request:")
     locale = session.get("locale")
-    if locale:
-        print("- session locale: {}".format(locale))
-        if g.get("locale"):
-            print(
-                "- changing g.locale from {} to {} from session".format(g.locale, locale))
-        else:
-            print("- no g.locale. Setting to {} from session".format(locale))
-        g.locale = locale
-
-    else:
+    if not locale:
+        print("no locale")
         browser_lang = request.accept_languages.best_match(
             app.config["LANGUAGES"])
-        print("- no locale in session. Getting browser best ({})".format(browser_lang))
-        if g.get("locale"):
-            print(
-                "- changing g.locale from {} to {} from browser".format(g.locale, browser_lang))
-        else:
-            print("- no g.locale. Setting to {} from browser".format(browser_lang))
-        print("- setting session locale to {} form browser".format(browser_lang))
-        g.locale = browser_lang
         session["locale"] = browser_lang
 
 
 @app.after_request
 def after_request_callback(response):
-    print("After request:")
-    print("- g.locale: {}".format(g.locale))
-    if session.get("locale"):
-        print("- session locale: {}".format(session["locale"]))
-    else:
-        "- no locale in session"
+
+    # print stuff here for debugging
+
     return response
 
 
@@ -59,7 +39,6 @@ def after_request_callback(response):
 @user_blueprint.route("/<locale>", methods=["GET"])
 @ensure_locale
 def index(locale):
-    print("now rendering locale: {}".format(g.locale))
     """ cute front page """
 
     return render_template("index.html")
@@ -105,11 +84,11 @@ def wordinfo(word_id, locale):
 
         return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets)
     else:
-        return redirect(url_for("user_blueprint.index", locale=g.locale))
+        return redirect(url_for("user_blueprint.index", locale=session["locale"]))
 
 
-@user_blueprint.route("/en/sound-search", methods=["GET", "POST"], defaults={"locale": "en"})
-@user_blueprint.route("/da/find-kontraster", methods=["GET", "POST"], defaults={"locale": "da"})
+@user_blueprint.route("/<locale>/sound-search", methods=["GET", "POST"], defaults={"locale": "en"})
+@user_blueprint.route("/<locale>/find-kontraster", methods=["GET", "POST"], defaults={"locale": "da"})
 @ensure_locale
 def contrasts(locale):
 
@@ -126,9 +105,12 @@ def contrasts(locale):
     collectedAll = True  # For accurate button condition on reload
     collectedPairs = []  # For accurate button condition on reload
     MOmode = False  # Show MO form when user last searched for MOs
+    searched = False
 
     if request.method == "POST":
         if (request.form["searchBtn"] == "pair") and pairSearchForm.validate_on_submit():
+
+            searched = True
 
             # Easy keyboard typing enabled:
             inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
@@ -152,6 +134,8 @@ def contrasts(locale):
             MOmode = True
             if MOSearchForm.validate_on_submit():
                 print("MOsearchform validated")
+
+                searched = True
 
                 # Convert common typos to what user actually meant
                 inputSound1 = easyIPAtyping(MOSearchForm.sound1.data)
@@ -194,7 +178,8 @@ def contrasts(locale):
                            collectedPairs=collectedPairs,
                            MOsets=MOsets,
                            MOsets2=MOsets2,
-                           MOmode=MOmode)
+                           MOmode=MOmode,
+                           searched=searched)
 
 
 @user_blueprint.route("/<locale>/collection", methods=["GET", "POST"], defaults={"locale": "en"})
@@ -228,28 +213,6 @@ def collection(locale):
                 return render_pdf(html, stylesheets=[css])
 
     return render_template("collection.html", collection=collection, form=form)
-
-
-@user_blueprint.route("/topdf", methods=["GET"], defaults={"locale": ""})
-@user_blueprint.route("/<locale>/topdf", methods=["GET"])
-@ensure_locale
-def topdf(locale):
-    """Make a pdf"""
-    collection = []
-    print("**************************************topdf")
-    if session.get("collection"):
-        id_collection = session["collection"]
-
-        # for id in id_collection:
-        #    collection.append(Word.query.get(int(id)))
-
-    for number in range(18):
-        collection.append(Word.query.get(number+1))
-
-    template = render_template("mypdf.html", collection=collection)
-    html = HTML(string=template)
-
-    return render_pdf(html)
 
 
 @ user_blueprint.route("/ajax_add2collection", methods=["POST"])
@@ -323,3 +286,18 @@ def ajax_clear():
     return jsonify(
         session=getCollection()
     )
+
+
+@ user_blueprint.route("/ajax_change_language/<newlocale>", methods=["GET", "POST"])
+# Receives changes from user and makes changes in session
+def ajax_change_language(newlocale):
+    print(request.referrer)
+
+    if newlocale in app.config["LANGUAGES"]:
+        print("lang exists")
+        session["locale"] = newlocale
+        session["force_session_lang"] = True
+    else:
+        print("lang bad: {}".format(newlocale))
+
+    return redirect(request.referrer)

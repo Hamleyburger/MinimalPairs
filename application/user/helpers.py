@@ -12,39 +12,31 @@ from ..content_management import Content
 def ensure_locale(func):
     @functools.wraps(func)
     def decorated(*args, **kwargs):
-        print("\n@ensure_locale:")
-        print("- incoming args to function: {}".format(args))
-        print("- incoming kwargs to function: {}".format(kwargs))
-        notallowed = False
-        # Check request path's locale and redirect if not allowed
+
+        allowed = True
+        # Gets locale from url's args (only routes with locale in url are decorated)
         firstarg = request.path.split('/', 2)[1]
-        print("- URL's arg: {}".format(firstarg))
 
         if firstarg not in app.config['LANGUAGES']:
-            print("- WARNING: first arg not accepted. Setting to session locale: {}.".format(
-                session["locale"]))
+            # if url's locale is invalid, pass current session locale to redirect
             kwargs["locale"] = session["locale"]
-            notallowed = True
-        else:
-            print("- URL contains valid locale: {}".format(firstarg))
+            allowed = False
 
-            if session["locale"] != firstarg:
-                print("url does not match session")
-                session["locale"] = firstarg
-                g.locale = firstarg
-                kwargs["locale"] = firstarg
-                notallowed = True
+        elif session["locale"] != firstarg:
+
+            if session.get("force_session_lang"):
+                # if url's arg is different from session and session has precedence, pass session locale to redirect
+                kwargs["locale"] = session["locale"]
+                session.pop("force_session_lang", None)
+                allowed = False
             else:
-                print("url matches session. You may pass")
 
-            # Check that path language matches requested locale, if not redirect
-            print("**********************************")
+                # if url's arg is different and url has precedence, redirect to same endpoint
+                # with new session locale (which will be same as url - route will be accepted next check)
+                session["locale"] = firstarg
+                allowed = False
 
-        if notallowed:
-            print("- Redirect with:")
-            print("Redirect kwargs: {}".format(kwargs))
-            print("Redirect request endpoint: {}".format(request.endpoint))
-            print(url_for(request.endpoint, *args, **kwargs))
+        if not allowed:
             return redirect(url_for(request.endpoint, *args, **kwargs), 302)
         else:
             return func(*args, **kwargs)

@@ -18,7 +18,7 @@
     <a onclick="insertAtCursor('v');" href="javascript:;">v</a>
     <a onclick="insertAtCursor('ð');" href="javascript:;">ð</a>
     <a onclick="insertAtCursor('s');" href="javascript:;">s</a>
-    <a onclick="insertAtCursor('ʁ');" href="javascript:;">f</a>
+    <a onclick="insertAtCursor('ʁ');" href="javascript:;">ʁ</a>
     <a onclick="insertAtCursor('h');" href="javascript:;">h</a>
     <a onclick="insertAtCursor('j');" href="javascript:;">j</a>
     <a onclick="insertAtCursor('l');" href="javascript:;">l</a>
@@ -155,8 +155,8 @@
         data-placement="top" title="{{ tooltip_rmword }}"><i class="fas fa-minus-circle"></i></a>
     {% endif %}
     {% if infobutton %}
-    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id, locale=g.locale, url_wordinfo=url_wordinfo) }}"
-        data-toggle="tooltip" data-placement="top" title="{{ tooltip_wordinfo }}"><i class="fas fa-info-circle"></i></a>
+    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id, locale=session.locale) }}" data-toggle="tooltip"
+        data-placement="top" title="{{ tooltip_wordinfo }}"><i class="fas fa-info-circle"></i></a>
     {% endif %}
 </div>
 {% endmacro %}

@@ -23,7 +23,7 @@
     </div>
 
     <div class="collapse" id="pdf-form-collapsable">
-        <form method="POST" action="{{ url_for('user_blueprint.collection', locale=g.locale) }}">
+        <form method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
 
             {{ form.hidden_tag() }}
 
@@ -43,7 +43,7 @@
                         {% endfor %}
                         <div class="col-12">
                             <button type="submit" class="pdfbtn shadow"><i class="pdfbtn fas fa-file-pdf"
-                                    formaction="{{ url_for('user_blueprint.collection', locale=g.locale) }}"></i></button>
+                                    formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i></button>
                         </div>
                     </div>
 

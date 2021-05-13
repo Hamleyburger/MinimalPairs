@@ -77,7 +77,7 @@
 <body>
     <nav class="navbar navbar-expand-md py-3 shadow">
 
-        <a href="{{ url_for('user_blueprint.index', locale=g.locale) }}">
+        <a href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
             <div class="logo">
                 {{ catmacro() }}
 
@@ -85,7 +85,8 @@
         </a>
 
 
-        <a class="navbar-brand" href="{{ url_for('user_blueprint.index', locale=g.locale) }}"><span class="blue">{{
+        <a class="navbar-brand" href="{{ url_for('user_blueprint.index', locale=session.locale) }}"><span
+                class="blue">{{
                 title_all |safe
                 }}</span></a>
         <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
@@ -101,32 +102,37 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
                 {% endif %}
                 <li class="nav-item"><a class="nav-link"
-                        href="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}">{{
+                        href="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}">{{
                         nav_find
                         |safe }}</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                        href="{{ url_for('user_blueprint.collection', locale=g.locale) }}">{{
+                        href="{{ url_for('user_blueprint.collection', locale=session.locale) }}">{{
                         nav_collection |safe }}</a>
                 </li>
             </ul>
 
             <!-- nav links that sit on the right when expanded -->
             <ul class="navbar-nav ml-auto mt-2">
+
+                <!-- language select drop-down -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ globeicon_detail() }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
                         {% for lang, code in config["LANGUAGES"].items() %}
-                        <a class="dropdown-item" href="#"><span
+                        <a class="dropdown-item"
+                            href='{{ url_for("user_blueprint.ajax_change_language", newlocale=lang) }}'><span
                                 class="flag-icon flag-icon-{{ code }} flag-icon-squared"></span>
                             {{ lang }}</a>
                         {% endfor %}
                     </div>
                 </li>
 
+                <!-- logout button -->
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>

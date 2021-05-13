@@ -44,7 +44,7 @@ def Content(locale=None):
         # Find contrasts
         "title_soundsearch": "Find kontraster",
         "url_soundsearch": "find-kontraster",
-        "btn_sound": "Lyde",
+        "btn_sound": "lydsøgning",
         "tab_pairs": "Minimale par",
         "tab_MOs": "Multiple oppositioner",
         "IPA_description": "Marker tekstfeltet og tryk på et tegn for at indsætte",
@@ -52,6 +52,7 @@ def Content(locale=None):
         "btn_clearall": "Fjern alle",
         "exactmatch": "Resultater med alle lyde",
         "partialmatch": "Alternative forslag",
+        "nomatches": "Ingen resultater",
 
         "tooltip_searchpairs": "søg efter minimale par",
         "tooltip_searchMOs": "søg efter multiple oppositioner",
@@ -116,7 +117,7 @@ def Content(locale=None):
         # Find contrasts
         "title_soundsearch": "Sound search",
         "url_soundsearch": "sound-search",
-        "btn_sound": "Sounds",
+        "btn_sound": "sound search",
         "tab_pairs": "Pairs",
         "tab_MOs": "Multiple oppositions",
         "IPA_description": "Marker boksen og tryk på et tegn for at indsætte",
@@ -136,6 +137,7 @@ def Content(locale=None):
         "tooltip_rmMO": "remove MO from collection",
         "exactmatch": "Exact matches",
         "partialmatch": "Partial matches",
+        "nomatches": "No results",
 
         # Collection
         "title_collection": "Collection",
@@ -161,5 +163,3 @@ def Content(locale=None):
 
 da_content = Content("da")
 en_content = Content("en")
-
-print(da_content["url_wordinfo"])

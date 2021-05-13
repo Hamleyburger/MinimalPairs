@@ -76,7 +76,7 @@
                         <div class="form-wrapper">
 
                             <form id="searchPairs" method="POST"
-                                action="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}" novalidate>
+                                action="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}" novalidate>
                                 {{ form.hidden_tag() }}
                                 <div class="search-sounds-field">
                                     {{ form.sound1(class="sound_input_field", size="1") }}
@@ -85,7 +85,7 @@
                                     <button name="searchBtn" value="pair" type="submit" class="shadow"
                                         data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchpairs }}"><i
                                             class="fa fa-search"
-                                            formaction="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}"></i>
+                                            formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
                                     </button>
                                 </div>
                             </form>
@@ -99,7 +99,7 @@
                         <div class="form-wrapper">
 
                             <form id="searchMOs" method="POST"
-                                action="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}" novalidate>
+                                action="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}" novalidate>
                                 {{ form2.hidden_tag() }}
                                 <div class="search-sounds-field MO-search-sounds-field">
 
@@ -116,7 +116,7 @@
                                     <button type="submit" name="searchBtn" value="MO" class="shadow MO-search-button"
                                         data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchMOs }}"><i
                                             class="fa fa-search"
-                                            formaction="{{ url_for('user_blueprint.contrasts', locale=g.locale) }}"></i>
+                                            formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
                                     </button>
                                 </div>
                             </form>
@@ -222,6 +222,16 @@
     </div>
     <!-- For loop "pairs" end -->
     {% endfor %}
+    {% endif %}
+
+    {% if searched and (not pairs or MOsets or MOsets2) %}
+    <div class="titlebox">
+        <div class="title-text">
+            <p>
+                {{ nomatches }}
+            </p>
+        </div>
+    </div>
     {% endif %}
 </div>
 

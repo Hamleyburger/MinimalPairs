@@ -176,3 +176,25 @@ function refreshWordGroupBtns(session) {
      });
 
 }
+
+
+
+// Ajax function for changing language
+
+function change_language(event, url_for, newlocale) {
+ 
+    console.log("Change lang ajax: " + newlocale)
+        event.preventDefault();
+        
+        $.ajax({
+            data: {
+                newlocale: newlocale
+            },
+            // Scripts.js is NOT dynamically generated and therefore dynamic url_for can't be used.
+            url: url_for,
+            type: "POST",
+            success: function() {   
+                //location.reload();  
+            }
+        });
+}
