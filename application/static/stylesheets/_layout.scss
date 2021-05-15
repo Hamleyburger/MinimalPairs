@@ -8,6 +8,9 @@
     .nav-link {
         font-size: 18px;
         text-align: center;
+        &:hover {
+            color: unset;
+        }
 
     }
 
@@ -43,6 +46,10 @@
     .navbar-toggler{
         font-size: 2rem !important;
         padding: 0;
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
     }
     .navbar-toggler-icon {
         display: table-cell;

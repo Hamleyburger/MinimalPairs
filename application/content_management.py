@@ -5,7 +5,10 @@ from markupsafe import Markup
 def Content(locale=None):
     """ If you pass a locale in here session will be ignored """
     text_da = {
+
+        # Cross page
         "locale_code": "da",
+        "btn_clearall": "Fjern alle",
 
         # Layout.html
         "title_all": "Minimale Par",
@@ -49,7 +52,6 @@ def Content(locale=None):
         "tab_MOs": "Multiple oppositioner",
         "IPA_description": "Marker tekstfeltet og tryk på et tegn for at indsætte",
         "btn_addall": "Tilføj alle",
-        "btn_clearall": "Fjern alle",
         "exactmatch": "Resultater med alle lyde",
         "partialmatch": "Alternative forslag",
         "nomatches": "Ingen resultater",
@@ -66,20 +68,33 @@ def Content(locale=None):
         "tooltip_addMO": "føj MO-sæt til samling",
         "tooltip_rmMO": "fjern MO-sæt fra samling",
 
+        # Word info
+        "title_wordinfo": "Info-om-ord",
+        "url_wordinfo": "info-om-ord",
+
         # Collection
         "title_collection": "Samling",
         "url_collection": "samling",
         "tooltip_cleareall": "Ryd samling",
+        "btn_PDFtool": "PDF-værktøj",
         "btn_makePDF": "Generer PDF",
         "collection_tip": 'Føj ord til samlingen med <i class="fas fa-plus-circle"></i> og fjern dem med <i class="fas fa-minus-circle"></i>',
 
-        # Word info
-        "title_wordinfo": "Info-om-ord",
-        "url_wordinfo": "info-om-ord"
+        # Backside image names
+        # actual files must be svg for source (static/permaimages) and png for thumbnail (static/permaimages/thumbnails/_thumb*)
+        "bs_label_fishcookies": "Fiskekager",
+        "bs_filename_fishcookies": "fiskpattern",
+
+        "bs_label_logocat": "Logokatte",
+        "bs_filename_logocat": "catpattern",
+
     }
 
     text_en = {
+
+        # Cross page
         "locale_code": "en",
+        "btn_clearall": "Clear all",
 
         # Layout.html
         "title_all": "Minimal Pairs",
@@ -122,7 +137,6 @@ def Content(locale=None):
         "tab_MOs": "Multiple oppositions",
         "IPA_description": "Marker boksen og tryk på et tegn for at indsætte",
         "btn_addall": "Add all",
-        "btn_clearall": "Clear all",
 
         "tooltip_searchpairs": "search for minimal pairs",
         "tooltip_searchMOs": "search for multiple oppositions",
@@ -139,17 +153,25 @@ def Content(locale=None):
         "partialmatch": "Partial matches",
         "nomatches": "No results",
 
+        # Word info
+        "title_wordinfo": "Word-info",
+        "url_wordinfo": "word-info",
+
         # Collection
         "title_collection": "Collection",
         "url_collection": "collection",
         "tooltip_cleareall": "clear collection",
+        "btn_PDFtool": "PDF tool",
         "btn_makePDF": "Make PDF",
         "collection_tip": 'Add words to your collection with <i class="fas fa-plus-circle"></i> and remove them with <i class="fas fa-minus-circle"></i>',
 
-        # Word info
-        "title_wordinfo": "Word-info",
-        "url_wordinfo": "word-info"
+        # Backside image names
+        # actual files must be svg for source (static/permaimages) and png for thumbnail (static/permaimages/thumbnails/_thumb*)
+        "bs_label_fishcookies": "Fish cookies",
+        "bs_filename_fishcookies": "fiskpattern",
 
+        "bs_label_logocat": "Logo cats",
+        "bs_filename_logocat": "catpattern",
     }
 
     if locale == None:

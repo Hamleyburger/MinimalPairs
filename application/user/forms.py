@@ -8,14 +8,14 @@ from application import db
 # from flask_wtf.file import FileField, FileRequired
 # from werkzeug.utils import secure_filename
 from ipapy import is_valid_ipa
-from markupsafe import Markup
+from application.content_management import Content
 
 
 def isIPA(form, field):
     """ Checks if input is valid IPA. Accepts if lower case version is valid """
 
     if not is_valid_ipa(field.data):
-        if field.data is not "-":
+        if field.data != "-":
             if not is_valid_ipa(field.data.lower()):
                 raise ValidationError("Not valid IPA")
             else:
@@ -89,7 +89,14 @@ class SearchMOs(FlaskForm):
     sound5 = StringField(validators=[IPAOrNothing])
 
 
-class toPDF(FlaskForm):
-    # First argument of each choice needs to be file name of the background image file
-    background = RadioField(
-        'Label', choices=[('fiskpattern.svg', 'Fish cookies'), ('catpattern.svg', 'Logo cats')], validators=[DataRequired()])
+def toPDF_wrap(locale):
+
+    content = Content(locale)
+
+    class toPDF(FlaskForm):
+
+        # First argument of each choice needs to be file name of the background image file
+        background = RadioField(
+            'Label', choices=[(content["bs_filename_fishcookies"], content["bs_label_fishcookies"]), (content["bs_filename_logocat"], content["bs_label_logocat"])], validators=[DataRequired()])
+
+    return toPDF

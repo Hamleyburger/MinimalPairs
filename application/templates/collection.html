@@ -12,14 +12,15 @@
     <div class="row">
 
         <button id="search-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
-            data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">{{ btn_makePDF }}<i
+            data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">{{ btn_PDFtool }} <i
                 id="rotate-icon" class="fas fa-angle-down"></i>
         </button>
         <script>
             var url_for_clear = "{{ url_for('user_blueprint.ajax_clear') }}";
         </script>
         <button type="button" class="btn shadow" onclick="clear_collection(url_for_clear, event)" data-toggle="tooltip"
-            data-placement="top" title="{{ tooltip_clearall }}"><i class="fas fa-trash-alt"></i></button>
+            data-placement="top" title="{{ tooltip_clearall }}"><i class="fas fa-trash-alt"></i> {{ btn_clearall
+            }}</button>
     </div>
 
     <div class="collapse" id="pdf-form-collapsable">
@@ -32,18 +33,20 @@
                 <fieldset class="shadow">
                     <div class="row">
                         {% for subfield in form.background %}
-                        <div class="col-6 col-sm-5">
-                            <div class="bgexample shadow"
-                                style="background-image: url(/static/permaimages/{{ subfield.data }});">
+                        <div class="col">
+                            <div class="bg-btn-wrap" style="background-image:
+                            url(/static/permaimages/thumbnails/thumb_{{subfield.data}}.png);">
+                                <div class="text-background"></div>
+                                {{ subfield(class="btn-check") }}
+                                {{ subfield.label(class="bgexample shadow btn font-weight-bold") }}
                             </div>
-                            {{ subfield }}
-                            {{ subfield.label(class="font-weight-bold") }}
                         </div>
 
                         {% endfor %}
                         <div class="col-12">
                             <button type="submit" class="pdfbtn shadow"><i class="pdfbtn fas fa-file-pdf"
-                                    formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i></button>
+                                    formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i>
+                                {{ btn_makePDF }} </button>
                         </div>
                     </div>
 

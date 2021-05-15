@@ -53,6 +53,7 @@
   font-size: 30px;
   padding: 5px;
   font-family: "Times New Roman";
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 350px) {
@@ -219,6 +220,10 @@
   text-align: center;
 }
 
+.navbar .nav-link:hover {
+  color: unset;
+}
+
 .navbar a {
   margin: 0;
   border: 0px dotted purple;
@@ -253,6 +258,12 @@
 .navbar .navbar-toggler {
   font-size: 2rem !important;
   padding: 0;
+}
+
+.navbar .navbar-toggler:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .navbar .navbar-toggler-icon {
@@ -1096,15 +1107,21 @@ footer a {
   -ms-flex-line-pack: center;
       align-content: center;
   font-family: Arial, Helvetica, sans-serif;
-  padding-top: 40px;
+  margin-top: 8%;
   margin-bottom: 0;
+  width: 600px;
+  max-width: 100%;
+}
+
+.pdfgenerator .background-choices {
+  padding: 0;
 }
 
 .pdfgenerator .row {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin: 30px -15px;
+  margin: 0;
 }
 
 .pdfgenerator legend {
@@ -1114,40 +1131,45 @@ footer a {
 .pdfgenerator fieldset {
   border-radius: 15px;
   background-color: #fe586396;
-  margin: 0% -15px;
-  padding: 0% 5%;
+  margin: 0;
+  padding: 0;
+  padding-top: 20px;
 }
 
-@media (min-width: 450px) {
-  .pdfgenerator fieldset {
-    margin: 0% 10%;
-  }
+.pdfgenerator fieldset .row {
+  margin: 0;
 }
 
-@media (min-width: 600px) {
-  .pdfgenerator fieldset {
-    margin: 0% 15%;
-  }
+.pdfgenerator fieldset .row .col {
+  max-width: 130px;
 }
 
-@media (min-width: 750px) {
-  .pdfgenerator fieldset {
-    margin: 0% 20%;
-  }
+.pdfgenerator .bg-btn-wrap {
+  background-size: cover;
+  position: relative;
+  border-radius: 13px;
 }
 
-@media (min-width: 900px) {
-  .pdfgenerator fieldset {
-    margin: 0% 30%;
-  }
+.pdfgenerator .bg-btn-wrap:active {
+  height: 108px;
+  width: 99%;
+  margin-left: 1px;
+  margin-top: 1px;
 }
 
-.pdfgenerator .bgexample {
-  height: 0;
+.pdfgenerator .bg-btn-wrap .btn-check:focus + .btn, .pdfgenerator .bg-btn-wrap .btn:focus, .pdfgenerator .bg-btn-wrap .btn-check:checked + .btn, .pdfgenerator .bg-btn-wrap .btn:checked {
+  border: 1px solid #ffd06c;
+  -webkit-box-shadow: 0 0.1rem 0.5rem #ffd06c !important;
+          box-shadow: 0 0.1rem 0.5rem #ffd06c !important;
+  border-radius: inherit;
+  -webkit-transition: none;
+  transition: none;
+}
+
+.pdfgenerator .bg-btn-wrap .bgexample {
+  height: 110px;
+  margin: 0;
   /* top and bottom padding must add up to 100% because they determine the height and makes div be square */
-  padding-bottom: 75%;
-  padding-top: 25%;
-  margin-bottom: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1155,13 +1177,27 @@ footer a {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background-size: 100px;
-  background-repeat: repeat;
-  border-radius: 50%;
-  font-size: 20px;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  border: none;
+  border-radius: inherit;
+  font-size: 16px;
+  image-rendering: -webkit-optimize-contrast;
+  background-color: none;
+  position: inherit;
+  z-index: 1;
+}
+
+.pdfgenerator .bg-btn-wrap .text-background {
+  position: absolute;
+  height: 2.5rem;
+  background-color: rgba(255, 246, 218, 0.5);
+  width: 100%;
+  z-index: 0;
+  bottom: 0;
+  border-bottom-right-radius: inherit;
+  border-bottom-left-radius: inherit;
 }
 
 .pdfgenerator button {
@@ -1172,15 +1208,13 @@ footer a {
   background-color: #915491;
   color: #370e2f;
   padding: 8px 15px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .pdfgenerator button:hover {
   cursor: pointer;
-  background: #fe5862;
-}
-
-.pdfgenerator .pdfbtn {
-  font-size: x-large;
 }
 
 .sorry {

@@ -6,9 +6,9 @@ from .helpers import getCollection, json_to_ints, manageCollection, pairCollecte
 from application.models import Word, Group, Sound
 from .models import User
 from application import db, app
-from .forms import SearchSounds, toPDF, SearchMOs
+from .forms import SearchSounds, SearchMOs, toPDF_wrap
 from flask_weasyprint import HTML, CSS, render_pdf
-from application.content_management import da_content, en_content
+from application.content_management import da_content, en_content, Content
 
 
 user_blueprint = Blueprint("user_blueprint", __name__,
@@ -187,7 +187,8 @@ def contrasts(locale):
 @ensure_locale
 def collection(locale):
 
-    form = toPDF()
+    form = toPDF_wrap(locale)()
+
     print(request.method)
     collection = []
     # Get pairs from session object
@@ -208,7 +209,7 @@ def collection(locale):
                 html = HTML(string=template)
                 # This bit of CSS is dynamically generated, the rest is hard coded in the template
                 css = CSS(
-                    string='@page :left { background-image: url(/static/permaimages/' + bgfilename + ');}')
+                    string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
 
                 return render_pdf(html, stylesheets=[css])
 
