@@ -1,4 +1,4 @@
-{% from 'macros.html' import word_card with context %}
+{% from 'macros.html' import help_container, word_card with context %}
 {% extends "layout.html" %}
 
 {% block title %}
@@ -30,7 +30,13 @@
 
 
             <div class="container-fluid background-choices">
-                <fieldset class="shadow">
+
+                <fieldset class="shadow container">
+
+                    <div class="row">
+
+                        {{ help_container("pdf-", help_pdf_title, help_pdf_cue, help_pdf_content) }}
+                    </div>
                     <div class="row">
                         {% for subfield in form.background %}
                         <div class="col">
@@ -41,8 +47,11 @@
                                 {{ subfield.label(class="bgexample shadow btn font-weight-bold") }}
                             </div>
                         </div>
-
                         {% endfor %}
+
+                    </div>
+
+                    <div class="row">
                         <div class="col-12">
                             <button type="submit" class="pdfbtn shadow"><i class="pdfbtn fas fa-file-pdf"
                                     formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i>

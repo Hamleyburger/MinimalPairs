@@ -30,14 +30,28 @@
     font-family: Arial, Helvetica, sans-serif;
 
 
-    button {
+    .main-btn {
+
         border-radius: 15px;
         font-size: 20px;
         background-color: $color-purp2;
+    
+        margin-top: 15px;
+        height: 38px;
+        min-width: 40px;
+        background: $color-purp2;
+        font-size: 17px;
+        border-radius: 10px;
+        border: none;
+        &:hover {
+        cursor:pointer;
+        }
+        
     }
+
+    
     .top-button {
-        margin: 20px;
-        margin-left: 15px;
+        margin: 40px 0px;
     }
 
     .removeallbtn {
@@ -77,22 +91,9 @@
             text-align: center;
 
         }
-        .MO-search-button {
-            margin-top: 20px;
-        }
 
-        button {
-            height: 38px;
-            width: 40px;
-            background: $color-purp2;
-            font-size: 17px;
-            border-radius: 10px;
-            border: none;
-            &:hover {
-            cursor:pointer;
-            }
-        }
     }
+    
 
     .MO-search-sounds-field {
         display: flex;
@@ -229,6 +230,7 @@ margin-bottom: 20px;
   .tab-content {
       //padding: 15px;
       .tab-pane {
+        padding-top: 15px;
         border-bottom-left-radius: 15px;
         border-bottom-right-radius: 15%;
         @media only screen and (min-width: 371px) { 
@@ -242,7 +244,7 @@ margin-bottom: 20px;
             align-items: center;
             align-content: center;
             justify-content: center;
-            height: 200px;
+            height: 180px;
         }
 
     }

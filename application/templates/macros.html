@@ -160,3 +160,38 @@
     {% endif %}
 </div>
 {% endmacro %}
+
+
+
+{% macro help_container(idprefix, help_title, help_cue, help_content) %}
+<div class="container-fluid help-container">
+    <span>
+        {{ help_cue }}
+
+        <button type="button" class="help-btn" data-bs-toggle="modal" data-bs-target="#{{ idprefix }}helpModal">
+            <i class="fas fa-question-circle"></i>
+        </button>
+    </span>
+
+    <!-- Modal -->
+    <div class="modal fade" id="{{ idprefix }}helpModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content help-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ help_title }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
+                            class="fas fa-times-circle"></i></button>
+                </div>
+                <div class="modal-body">
+                    {{ help_content | safe }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn main-btn modal-close-btn shadow" data-bs-dismiss="modal">{{ close
+                        }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import ipa_picker, word_card, word_card_buttons with context %}
+{% from 'macros.html' import ipa_picker, word_card, help_container, word_card_buttons with context %}
 {% from 'admin_macros.html' import enable_chosenjs, chosenjs_filtering %}
 {% from 'MOmacro.html' import MOmacro with context%}
 
@@ -19,8 +19,9 @@
 
 <div class="container-fluid text-center titlebox">
     <!-- Buttons for collapsing forms -->
-    <button id="search-pair-collapse-btn" type="button" class="btn shadow top-button" data-toggle="collapse"
-        data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
+    <button id="search-pair-collapse-btn main-btn mt-5" type="button" class="btn shadow top-button main-btn"
+        data-toggle="collapse" data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i
+            class="fa fa-search"></i>
         {{ btn_sound }} <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
     </button>
 
@@ -28,14 +29,14 @@
     {% if pairs or MOsets %}
 
     <div class="wordgroup" data-ids="{{ renderedids | safe }}">
-        <button type="button" class="top-button removegroupbtn removeallbtn btn shadow m-auto"
+        <button type="button" class="top-button removegroupbtn removeallbtn btn shadow main-btn m-auto"
             style="display: {{ 'inline-block' if collectedAll else 'none' }};"
             onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=true)"
             data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i
                 class="fas fa-minus-circle"></i> {{
             btn_clearall }} </button>
 
-        <button type="button" class="top-button addgroupbtn btn shadow m-auto"
+        <button type="button" class="top-button addgroupbtn btn shadow m-auto main-btn"
             style="display: {{ 'none' if collectedAll else 'inline-block' }};"
             onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=false)"
             data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i
@@ -73,6 +74,7 @@
                     <!-- form pane: search for pairs -->
                     <div class="tab-pane shadow orangebg {{'show active' if not MOmode else ''}}" id="searchPairs"
                         role="tabpanel" aria-labelledby="home-tab">
+                        {{ help_container("pairs-", help_pairs_title, help_soundsearch_cue, help_pairs_content) }}
                         <div class="form-wrapper">
 
                             <form id="searchPairs" method="POST"
@@ -82,12 +84,12 @@
                                     {{ form.sound1(class="sound_input_field", size="1") }}
                                     vs.
                                     {{ form.sound2(class="sound_input_field", size="1") }}
-                                    <button name="searchBtn" value="pair" type="submit" class="shadow"
-                                        data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchpairs }}"><i
-                                            class="fa fa-search"
-                                            formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
-                                    </button>
                                 </div>
+                                <button name="searchBtn" value="pair" type="submit" class="shadow main-btn"
+                                    data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchpairs }}"><i
+                                        class="fa fa-search"
+                                        formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
+                                </button>
                             </form>
 
                         </div>
@@ -96,6 +98,7 @@
                     <div class="tab-pane shadow redbg {{'show active' if MOmode else ''}}" id="searchMOs"
                         role="tabpanel" aria-labelledby="profile-tab">
                         <!-- collapsing form: search for multiple opposition sets -->
+                        {{ help_container("MO-", help_MO_title, help_soundsearch_cue, help_MO_content) }}
                         <div class="form-wrapper">
 
                             <form id="searchMOs" method="POST"
@@ -113,9 +116,9 @@
                                         {{ form2.sound5(class="sound_input_field", size="1") }}
                                     </div>
 
-                                    <button type="submit" name="searchBtn" value="MO" class="shadow MO-search-button"
-                                        data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchMOs }}"><i
-                                            class="fa fa-search"
+                                    <button type="submit" name="searchBtn" value="MO"
+                                        class="shadow MO-search-button main-btn" data-toggle="tooltip"
+                                        data-placement="top" title="{{ tooltip_searchMOs }}"><i class="fa fa-search"
                                             formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
                                     </button>
                                 </div>

@@ -9,6 +9,8 @@ def Content(locale=None):
         # Cross page
         "locale_code": "da",
         "btn_clearall": "Fjern alle",
+        "tooltip_help": "Hjælp",
+        "close": "Luk",
 
         # Layout.html
         "title_all": "Minimale Par",
@@ -56,6 +58,19 @@ def Content(locale=None):
         "partialmatch": "Alternative forslag",
         "nomatches": "Ingen resultater",
 
+        "help_soundsearch_cue": "Indtast mållyde",
+        "help_pairs_title": "Søg efter minimale par",
+        "help_pairs_content": '\
+            <p>Søg efter sæt med minimale par ved at indsætte mållydene i søgefelterne. Du kan også indsætte konsonantklynger.</p>\
+            <p>Hvis du ikke har IPA-tegnet på dit keyboard, kan du klikke i det felt, du vil indsætte et tegn i, og bagefter klikke på tegnet i tegnvælgeren.</p>\
+            ',
+        "help_MO_title": "Søg efter sæt med multiple oppositioner",
+        "help_MO_content": '\
+            <p>Søg efter sæt med multiple oppositioner ved at indsætte mållydene i søgefelterne.</p>\
+            <p>Hvis du ikke har IPA-tegnet på dit keyboard, kan du klikke i det felt, du vil indsætte et tegn i, og bagefter klikke på tegnet i tegnvælgeren.</p>\
+            <p>Alle felterne behøver ikke være fyldt ud, men det øverste felt må ikke stå tomt. En “tom” lyd kan skrives med et minus “-“, så “ø” over for “sø” er “-“ over for “s”.</p>\
+            ',
+
         "tooltip_searchpairs": "søg efter minimale par",
         "tooltip_searchMOs": "søg efter multiple oppositioner",
         "tooltip_addresults": "føj alle resultater til samling",
@@ -79,6 +94,13 @@ def Content(locale=None):
         "btn_PDFtool": "PDF-værktøj",
         "btn_makePDF": "Generer PDF",
         "collection_tip": 'Føj ord til samlingen med <i class="fas fa-plus-circle"></i> og fjern dem med <i class="fas fa-minus-circle"></i>',
+        "help_pdf_cue": "Vælg bagside yadda yadda",
+        "help_pdf_title": "Generer PDF-fil med bagside",
+        "help_pdf_content": '\
+            <p>Generer en PDF-fil med ordkort med alle ordene i din samling. Kortene kan bruges til f.eks. at spille vendespil eller fisk.</p>\
+            <p>PDF-filen er beregnet til at blive printet to-sidet, således at hveranden side har et mønster, som vil blive printet på bagsiden af hvert ark med ordkort.</p>\
+            <p>Ved at trykke på “generer PDF”, vil du blive videresendt til en side, hvor du kan vælge at gemme filen på din enhed.</p>\
+            ',
 
         # Backside image names
         # actual files must be svg for source (static/permaimages) and png for thumbnail (static/permaimages/thumbnails/_thumb*)
@@ -95,6 +117,8 @@ def Content(locale=None):
         # Cross page
         "locale_code": "en",
         "btn_clearall": "Clear all",
+        "tooltip_help": "Help",
+        "close": "Close",
 
         # Layout.html
         "title_all": "Minimal Pairs",
@@ -137,6 +161,23 @@ def Content(locale=None):
         "tab_MOs": "Multiple oppositions",
         "IPA_description": "Marker boksen og tryk på et tegn for at indsætte",
         "btn_addall": "Add all",
+        "exactmatch": "Exact matches",
+        "partialmatch": "Partial matches",
+        "nomatches": "No results",
+
+
+        "help_soundsearch_cue": "Insert target sounds",
+        "help_pairs_title": "Search for minimal pairs",
+        "help_pairs_content": '\
+            <p>Search for minimal pairs by inserting the target sounds in the search fields. You can also insert consonant clusters.</p>\
+            <p>If you’re missing a symbol your keyboard you can insert it by first selecting a search field and then selecting the symbol in the IPA symbol picker.</p>\
+            ',
+        "help_MO_title": "Search for multiple opposition sets",
+        "help_MO_content": '\
+            <p>Search for multiple opposition sets by inserting the target sounds in the search fields.</p>\
+            <p>If you’re missing a symbol your keyboard you can insert it by first selecting a search field and then selecting the symbol in the IPA symbol picker.</p>\
+            <p>Some search fields can be left empty, but there must be a sound in the top field. An “empty” sound can be written with a minus “-“, so “ø” against “sø” would be “-“ against “s”.</p>\
+            ',
 
         "tooltip_searchpairs": "search for minimal pairs",
         "tooltip_searchMOs": "search for multiple oppositions",
@@ -149,9 +190,6 @@ def Content(locale=None):
         "tooltip_rmpair": "remove pair from collection",
         "tooltip_addMO": "add MO to collection",
         "tooltip_rmMO": "remove MO from collection",
-        "exactmatch": "Exact matches",
-        "partialmatch": "Partial matches",
-        "nomatches": "No results",
 
         # Word info
         "title_wordinfo": "Word-info",
@@ -164,6 +202,15 @@ def Content(locale=None):
         "btn_PDFtool": "PDF tool",
         "btn_makePDF": "Make PDF",
         "collection_tip": 'Add words to your collection with <i class="fas fa-plus-circle"></i> and remove them with <i class="fas fa-minus-circle"></i>',
+        "help_pdf_cue": "Choose a back design",
+        "help_pdf_title": "Generate a PDF file with a back design",
+        "help_pdf_content": '\
+            <p>Generate a PDF file with word cards for all the words in your collection. The cards can be used for playing Memory, for example, or Go Fish.</p>\
+            <p>The PDF is meant for double-sided printing so that each sheet with word cards will have a design printed on its back.</p>\
+            <p>By clicking "Generate PDF”, you will be redirected to a page where you will have the option of saving the file.</p>\
+            ',
+
+
 
         # Backside image names
         # actual files must be svg for source (static/permaimages) and png for thumbnail (static/permaimages/thumbnails/_thumb*)

@@ -89,7 +89,7 @@
     }
 
     [class*="col-"], .col {
-        color: var(--color-yel2);
+        color: lighten($color-yel2, 5%);
         //margin: 40px 0px;
         
     }
