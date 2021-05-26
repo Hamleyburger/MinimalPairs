@@ -63,12 +63,14 @@ def Content(locale=None):
         "help_pairs_content": '\
             <p>Søg efter sæt med minimale par ved at indsætte mållydene i søgefelterne. Du kan også indsætte konsonantklynger.</p>\
             <p>Hvis du ikke har IPA-tegnet på dit keyboard, kan du klikke i det felt, du vil indsætte et tegn i, og bagefter klikke på tegnet i tegnvælgeren.</p>\
+            <p>I resultaterne kan du tilføje et ord til din samling med <i class = "fas fa-plus-circle"></i> og fjerne det med <i class ="fas fa-minus-circle"></i>. </p>\
             ',
         "help_MO_title": "Søg efter sæt med multiple oppositioner",
         "help_MO_content": '\
             <p>Søg efter sæt med multiple oppositioner ved at indsætte mållydene i søgefelterne.</p>\
             <p>Hvis du ikke har IPA-tegnet på dit keyboard, kan du klikke i det felt, du vil indsætte et tegn i, og bagefter klikke på tegnet i tegnvælgeren.</p>\
             <p>Alle felterne behøver ikke være fyldt ud, men det øverste felt må ikke stå tomt. En “tom” lyd kan skrives med et minus “-“, så “ø” over for “sø” er “-“ over for “s”.</p>\
+            <p>I resultaterne kan du tilføje et ord til din samling med <i class = "fas fa-plus-circle"></i> og fjerne det med <i class ="fas fa-minus-circle"></i>. </p>\
             ',
 
         "tooltip_searchpairs": "søg efter minimale par",
@@ -159,7 +161,7 @@ def Content(locale=None):
         "btn_sound": "sound search",
         "tab_pairs": "Pairs",
         "tab_MOs": "Multiple oppositions",
-        "IPA_description": "Marker boksen og tryk på et tegn for at indsætte",
+        "IPA_description": "Select an input field and click a symbol to insert",
         "btn_addall": "Add all",
         "exactmatch": "Exact matches",
         "partialmatch": "Partial matches",
@@ -171,12 +173,14 @@ def Content(locale=None):
         "help_pairs_content": '\
             <p>Search for minimal pairs by inserting the target sounds in the search fields. You can also insert consonant clusters.</p>\
             <p>If you’re missing a symbol your keyboard you can insert it by first selecting a search field and then selecting the symbol in the IPA symbol picker.</p>\
+            <p> In the results use <i class = "fas fa-plus-circle"></i> to add a word to your collection. Use <i class ="fas fa-minus-circle"></i> to remove it. </p>\
             ',
         "help_MO_title": "Search for multiple opposition sets",
         "help_MO_content": '\
             <p>Search for multiple opposition sets by inserting the target sounds in the search fields.</p>\
             <p>If you’re missing a symbol your keyboard you can insert it by first selecting a search field and then selecting the symbol in the IPA symbol picker.</p>\
             <p>Some search fields can be left empty, but there must be a sound in the top field. An “empty” sound can be written with a minus “-“, so “ø” against “sø” would be “-“ against “s”.</p>\
+            <p> In the results use <i class = "fas fa-plus-circle"></i> to add a word to your collection. Use <i class ="fas fa-minus-circle"></i> to remove it. </p>\
             ',
 
         "tooltip_searchpairs": "search for minimal pairs",

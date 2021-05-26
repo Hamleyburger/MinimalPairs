@@ -1,4 +1,4 @@
-{% from 'catmacros.html' import catmacro %}
+{% from 'catmacros.html' import catmacro, logotitle %}
 {% from 'icon_earth_detailed.html' import globeicon_detail, globeicon_stylized %}
 
 
@@ -16,8 +16,9 @@
     <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
 
-    <!-- https://favicon.io/emoji-favicons/money-mouth-face/ -->
-    <link href="{{ url_for('static',filename='favicon.ico') }}" rel="icon" />
+    <!-- the icon that shows in browser tab -->
+    <link href="{{ url_for('static',filename='permaimages/logos/logocat3d.png') }}" type="image/png" rel="icon" />
+    <!--link href="{{ url_for('static',filename='caticon.svg') }}" type="image/svg" rel="icon" /-->
 
     <!-- base imports-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -81,8 +82,10 @@
 
 </head>
 
+
+
 <body>
-    <nav class="navbar navbar-expand-md py-3 shadow">
+    <nav class="navbar navbar-expand-md shadow">
 
         <a href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
             <div class="logo">
@@ -92,18 +95,19 @@
         </a>
 
 
-        <a class="navbar-brand" href="{{ url_for('user_blueprint.index', locale=session.locale) }}"><span
-                class="blue">{{
-                title_all |safe
-                }}</span></a>
-        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+        <a class="logotext_a mx-md-4" href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
+            <div class="logotext">
+                {{ logotitle() }}
+            </div>
+        </a>
+        <a aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler hamburger"
             data-target="#navbar" data-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"><i class="fas fa-ellipsis-v"></i></span>
-        </button>
+        </a>
         <div class="collapse navbar-collapse" id="navbar">
 
             <!-- nav links that sit on the right when expanded -->
-            <ul class="navbar-nav mr-auto mt-2">
+            <ul class="navbar-nav mr-auto">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
@@ -120,12 +124,12 @@
             </ul>
 
             <!-- nav links that sit on the right when expanded -->
-            <ul class="navbar-nav ml-auto mt-2">
+            <ul class="navbar-nav ml-auto">
 
                 <!-- language select drop-down -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="earthtoggle nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         {{ globeicon_detail() }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">

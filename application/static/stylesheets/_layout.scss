@@ -4,44 +4,63 @@
 
     background-color: var(--color-purp2);
     padding: 1.3%;
+    padding-top: 10px;
+    padding-bottom: 26px;
 
     .nav-link {
         font-size: 18px;
         text-align: center;
+        padding: 0;
+        margin-bottom: 12px; // used to align manually with SVG text logo
+        display: flex;
+        align-items: flex-end;
+
         &:hover {
             color: unset;
         }
-
     }
 
     a {
-
-        margin: 0;
-
-        @media only screen and (min-width: 575px) {
-            // Corresponds to Bootstrap's sm breakpoint used by class on navbar-toggler
-            margin: 6px;
-            &.navbar-brand {
-                /* size for brand */
-                margin-right: 20px;
-                margin-left: 30px;
-            }
-        }
+        margin: 20px 6px;
+        height: 40px;
+        
+        
         .logo {
             width: 40px;
-            height: 40px;
+            height: 100%;
             padding-left: 8px;
             
+        }
+        
+        .logotext {
+            height: 100%;
+            padding-top: 12px; //also used to align  manually wtith logo and nav links
+            
+            img {
+                width: 200px;
+            }
         }
         border: 0px dotted purple;
         color: var(--color-purp1);
     }
+    .hamburger {
+        padding-top: 7px !important; // also used to align manually with SVG text logo
+    }
+
+
     #catlogo {
         fill: var(--color-purp1);
     }
     .navbar-brand {
         font-size: xx-large;
     }
+
+
+        border: 1px olid green;
+        .navbar-nav {
+            align-items: center;
+        }
+    
 
     .navbar-toggler{
         font-size: 2rem !important;
@@ -65,7 +84,17 @@
     }
 
     .dropdown {
-        //width: 78px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .earthtoggle {
+            padding-top: 12px; // also used to align manually with text logo
+            &::after {
+            display: none;
+            }
+        }
         .earthicon {
             fill: $color-purp1;
             width: 30px;
@@ -73,12 +102,12 @@
 
         .dropdown-menu {
             //width: 78px;
-            min-width: 100%;
+            min-width: 70px;
             background-color: rgba($color-purp3, 0.7);
             border: 0;
             color: $color-purp1;
             .dropdown-item {
-                padding: 0;
+                padding: 12%;
                 margin: 0;
                 text-align: center;
                 &:hover {
@@ -108,6 +137,7 @@ body {
 
     background-attachment: fixed;
     box-sizing: border-box;
+    // font-family: monospace;
 }
 
 

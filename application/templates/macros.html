@@ -3,7 +3,7 @@
 <!-- insertAtCursor can insert into fields of class .sound_input_field -->
 
 <div class="ipa_picker">
-    <span class="label float-left">{{ IPA_description | safe }}</span><br>
+    <span class="label">{{ IPA_description | safe }}</span><br>
 
     <a onclick="insertAtCursor('p');" href="javascript:;">p</a>
     <a onclick="insertAtCursor('b');" href="javascript:;">b</a>
@@ -168,8 +168,11 @@
     <span>
         {{ help_cue }}
 
-        <button type="button" class="help-btn" data-bs-toggle="modal" data-bs-target="#{{ idprefix }}helpModal">
-            <i class="fas fa-question-circle"></i>
+        <button type="button" class="help-btn" data-bs-toggle="modal" data-bs-target="#{{ idprefix }}helpModal"
+            data-toggle="tooltip" data-placement="top">
+            <span data-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_help }}">
+                <i class="fas fa-question-circle"></i>
+            </span>
         </button>
     </span>
 

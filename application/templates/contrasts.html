@@ -19,9 +19,8 @@
 
 <div class="container-fluid text-center titlebox">
     <!-- Buttons for collapsing forms -->
-    <button id="search-pair-collapse-btn main-btn mt-5" type="button" class="btn shadow top-button main-btn"
-        data-toggle="collapse" data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i
-            class="fa fa-search"></i>
+    <button id="search-pair-collapse-btn" type="button" class="btn shadow top-button main-btn" data-toggle="collapse"
+        data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
         {{ btn_sound }} <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
     </button>
 
@@ -69,8 +68,11 @@
                     </ul>
                 </div>
 
+
                 <!-- tab content -->
                 <div class="tab-content" id="search-tabs-content">
+
+
                     <!-- form pane: search for pairs -->
                     <div class="tab-pane shadow orangebg {{'show active' if not MOmode else ''}}" id="searchPairs"
                         role="tabpanel" aria-labelledby="home-tab">
@@ -93,7 +95,12 @@
                             </form>
 
                         </div>
+                        <div class="ipa-container">
+                            {{ ipa_picker() }}
+                        </div>
                     </div>
+
+
                     <!-- form pane: search for MOs -->
                     <div class="tab-pane shadow redbg {{'show active' if MOmode else ''}}" id="searchMOs"
                         role="tabpanel" aria-labelledby="profile-tab">
@@ -124,14 +131,15 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="ipa-container">
+                            {{ ipa_picker() }}
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
-        <div class="ipa-container">
-            {{ ipa_picker() }}
-        </div>
     </div>
 </div>
 
@@ -204,13 +212,16 @@
             style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false)"
             data-toggle="tooltip" data-placement="top" title="{{ tooltip_addpair }}"><i
-                class="fas fa-plus-circle shadow"></i>
+                class="fas fa-plus-circle shadow"><i class="fas fa-circle"></i></i>
         </a>
         <a href="#" type="button" class="removegroupbtn removegroupbtn-pair btn"
             style="display: {{ 'inline-block' if pair.id in collectedPairs else 'none' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true)"
-            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmpair }}"><i
-                class="fas fa-minus-circle shadow"></i>
+            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmpair }}">
+            <i class="fas fa-minus-circle shadow">
+
+                <i class="fas fa-circle"></i>
+            </i>
         </a>
 
         <div class="col-6 col-sm-5">
@@ -227,7 +238,7 @@
     {% endfor %}
     {% endif %}
 
-    {% if searched and (not pairs or MOsets or MOsets2) %}
+    {% if searched and not pairs and not MOsets and not MOsets2 %}
     <div class="titlebox">
         <div class="title-text">
             <p>
@@ -244,12 +255,15 @@
 
 {% block script %}
 <script>
+    $(document).ready(function () {
 
-    $("#search-pair-collapse-btn").click(function () {
-        //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
-        $("#rotate-icon").toggleClass("fa-rotate-180");
+        $("#search-pair-collapse-btn").click(function () {
+            //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
+            console.log("click");
+            $("#rotate-icon").toggleClass("fa-rotate-180");
+        });
+        // This url is defined for passing into add_to_collection which is defined in scripts.js
     });
-    // This url is defined for passing into add_to_collection which is defined in scripts.js
     var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_many') }}";
 
 </script>

@@ -40,24 +40,46 @@
 }
     
 // ipa picker used in add.html and contrasts.html as macro
-.ipa_picker {
-    a {
-        
-        color: black;
-        font-size: 30px;
-        padding: 5px;
-        font-family: "Times New Roman";
-        text-decoration: none;
-        
-        @media only screen and (max-width: 350px) {
 
-        padding-top: 7px;
-        font-size: 1.5rem;
+.ipa-container {
+    margin: 0 auto;
+    border: 2px solid $color-purp1;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.212);
+    width: 600px;
+    max-width: 100%;
 
-        }
+    @media only screen and (max-width: 620px) {
+        width: 340px;
     }
-    span.line {
-    display: inline-block;
+
+    @media only screen and (max-width: 350px) {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .ipa_picker {
+    
+        padding: 10px;
+    
+        a {
+            
+            color: $color-purp1;
+            font-size: 30px;
+            padding: 4px;
+            font-family: "Times New Roman";
+            text-decoration: none;
+            text-align: center;
+            
+            @media only screen and (max-width: 350px) {
+    
+            padding-top: 7px;
+            font-size: 1.5rem;
+    
+            }
+        }
+        span.line {
+        display: inline-block;
+        }
     }
 }
 
@@ -85,6 +107,13 @@
 }
 .fa-plus-circle {
     color: $color-purp1;
+}
+.fa-circle {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    transform: translateX(-50%);
+    color: $color-yel3;
 }
 .about-text .fa-plus-circle {
     color: $color-purp3;
@@ -164,21 +193,19 @@ margin: 0;
 
     position: absolute;
     z-index: 1;
-    width: 28px;
-    height: 28px;
-    margin-left: -14px;
-    margin-bottom: -14px;
+    width: fit-content;
     padding: 0;
     i {
         background: none;
         border-radius: 50%;
-        font-size: 27px;
+        font-size: 34px;
     }
 }
 
 .addgroupbtn-pair, .removegroupbtn-pair {
     left: 50%;
-    bottom: 50%;
+    transform:translateX(-50%);
+    bottom: 15%;
 }
 
 .addgroupbtn-MO, .removegroupbtn-MO {

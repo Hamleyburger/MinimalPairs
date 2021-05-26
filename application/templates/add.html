@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import ipa_picker %}
+{% from 'macros.html' import ipa_picker with context %}
 {% from 'admin_macros.html' import show_input_file_name, enable_chosenjs, chosenjs_filtering %}
 
 {% block title %}
@@ -123,7 +123,9 @@
         </div>
     </div>
     <!-- end of container-->
-    {{ ipa_picker() }}
+    <div class="ipa-container container">
+        {{ ipa_picker() }}
+    </div>
 </div>
 </div>
 <!--end of row-->
