@@ -39,9 +39,7 @@
    "density": "4.0"
   }
  ],
- "start_url": "https://www.minimalepar.dk",
  "background_color": "#3b1734",
  "display": "standalone",
- "scope": "/",
  "theme_color": "#3b1734"
 }
