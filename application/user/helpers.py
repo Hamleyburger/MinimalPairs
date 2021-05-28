@@ -34,7 +34,7 @@ def ensure_locale(func):
                 # if url's arg is different and url has precedence, redirect to same endpoint
                 # with new session locale (which will be same as url - route will be accepted next check)
                 session["locale"] = firstarg
-                allowed = False
+                #allowed = False
 
         if not allowed:
             return redirect(url_for(request.endpoint, *args, **kwargs), 302)
