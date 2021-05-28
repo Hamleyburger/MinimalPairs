@@ -1,5 +1,7 @@
 {
  "name": "Minimale Par",
+  "start_url": "/",
+  "display": "standalone",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
@@ -37,5 +39,13 @@
    "type": "image\/png",
    "density": "4.0"
   }
- ]
+ ],
+ "shortcuts": [
+    {
+      "name": "Minimale Par",
+      "short_name": "Minimale Par",
+      "description": "Søg efter ord med kontrastlyde",
+      "url": "/",
+      "icons": [{ "src": "\/android-icon-192x192.png", "sizes": "192x192" }]
+    },
 }
