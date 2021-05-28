@@ -19,6 +19,7 @@ def ensure_locale(func):
 
         if firstarg not in app.config['LANGUAGES']:
             # if url's locale is invalid, pass current session locale to redirect
+            print("firstarg not in cfg")
             kwargs["locale"] = session["locale"]
             allowed = False
 
@@ -28,6 +29,7 @@ def ensure_locale(func):
                 # if url's arg is different from session and session has precedence, pass session locale to redirect
                 kwargs["locale"] = session["locale"]
                 session.pop("force_session_lang", None)
+                print("session has precedence")
                 allowed = False
             else:
 
@@ -37,6 +39,8 @@ def ensure_locale(func):
                 #allowed = False
 
         if not allowed:
+            print("redirect to {}".format(
+                url_for(request.endpoint, *args, **kwargs)))
             return redirect(url_for(request.endpoint, *args, **kwargs), 302)
         else:
             return func(*args, **kwargs)
