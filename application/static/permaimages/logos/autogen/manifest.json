@@ -1,5 +1,6 @@
 {
- "name": "App",
+ "short_name": "Minimale",
+ "name": "Minimale Par",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
@@ -37,5 +38,10 @@
    "type": "image\/png",
    "density": "4.0"
   }
- ]
+ ],
+ "start_url": "https://www.minimalepar.dk",
+ "background_color": "#3b1734",
+ "display": "standalone",
+ "scope": "/",
+ "theme_color": "#3b1734"
 }
