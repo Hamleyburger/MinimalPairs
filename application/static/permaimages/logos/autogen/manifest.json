@@ -47,5 +47,5 @@
       "description": "Søg efter ord med kontrastlyde",
       "url": "/",
       "icons": [{ "src": "\/android-icon-192x192.png", "sizes": "192x192" }]
-    },
+    }]
 }
