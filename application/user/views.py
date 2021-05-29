@@ -1,5 +1,8 @@
-from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g
+from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, send_from_directory, send_file
 import json
+import os
+import random
+import tempfile
 
 from pyphen import LANGUAGES
 from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale
@@ -212,7 +215,16 @@ def collection(locale):
                 css = CSS(
                     string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
 
-                return render_pdf(html, stylesheets=[css])
+                # Save file with unique filename to temporary storage that is deleted when session has expired
+
+                mypdf = html.write_pdf(stylesheets=[css])
+                tmp = tempfile.NamedTemporaryFile(mode="wb")
+                tmp.write(mypdf)
+                print(tmp.name)
+                attname = Content(locale).get("title_pdf") + ".pdf"
+
+                return send_file(tmp.name, as_attachment=True, attachment_filename=attname)
+                # return render_pdf(html, stylesheets=[css])
 
     return render_template("collection.html", collection=collection, form=form)
 
