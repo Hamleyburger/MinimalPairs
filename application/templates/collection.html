@@ -24,7 +24,7 @@
     </div>
 
     <div class="collapse" id="pdf-form-collapsable">
-        <form method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
+        <form method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}" target="_blank">
 
             {{ form.hidden_tag() }}
 

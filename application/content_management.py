@@ -112,6 +112,9 @@ def Content(locale=None):
         "bs_label_logocat": "Logokatte",
         "bs_filename_logocat": "catpattern",
 
+        # Rendered PDF
+        "title_pdf": "Ordkort"
+
     }
 
     text_en = {
@@ -223,6 +226,9 @@ def Content(locale=None):
 
         "bs_label_logocat": "Logo cats",
         "bs_filename_logocat": "catpattern",
+
+        # Rendered PDF
+        "title_pdf": "Word cards"
     }
 
     if locale == None:
