@@ -57,12 +57,17 @@
                                     formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i>
                                 {{ btn_makePDF }} </button>
                         </div>
+                        <script>
+                            var pdfurl = "{{ url_for('user_blueprint.getpdf') }}";
+                        </script>
                         <div class="col-12">
-                            <button type="button" class="pdfbtn shadow"
-                                onclick='window.open("https://www.google.com", "_blank");'><i
+                            <button type="button" class="pdfbtn shadow" onclick='window.open(pdfurl, "_blank");'><i
                                     class="pdfbtn fas fa-file-pdf"></i>
                                 get my pdf </button>
+                            <a class="pdfbtn" style="width: 40px; height: 40px; background: black;"
+                                href="{{ url_for('user_blueprint.getpdf') }}"></a>
                         </div>
+
                     </div>
 
                 </fieldset>
