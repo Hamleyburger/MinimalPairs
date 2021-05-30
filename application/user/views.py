@@ -235,8 +235,8 @@ def collection(locale):
                 print(tmp.name)
                 attname = Content(locale).get("title_pdf") + ".pdf"
 
-                # return send_file(tmp.name, as_attachment=True, attachment_filename=attname)
-                return render_pdf(html, stylesheets=[css])
+                return send_file(tmp.name, as_attachment=True, attachment_filename=attname)
+                # return render_pdf(html, stylesheets=[css])
 
     return render_template("collection.html", collection=collection, form=form)
 
