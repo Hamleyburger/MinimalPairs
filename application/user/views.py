@@ -29,13 +29,6 @@ def before_request_callback():
             app.config["LANGUAGES"])
         session["locale"] = browser_lang
 
-    useragent = session.get("useragent")
-    if not useragent:
-        useragent = request.user_agent
-        print(useragent.platform)
-        print(useragent.browser)
-        print(useragent.version)
-
 
 @app.after_request
 def after_request_callback(response):
@@ -222,7 +215,8 @@ def collection(locale):
                 css = CSS(
                     string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
 
-                # make tempfile and send
+                # Save file with unique filename to temporary storage that is deleted when session has expired
+
                 mypdf = html.write_pdf(stylesheets=[css])
                 tmp = tempfile.NamedTemporaryFile(mode="wb")
                 tmp.write(mypdf)
