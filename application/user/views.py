@@ -40,7 +40,7 @@ def before_request_callback():
         print(useragent.string)
         print(useragents)
         user_agent = parse(useragent.string)
-        print(user_agent.browser.family)  # This will get you what you need
+        print(user_agent.os.family)  # This will get you what you need
 
 
 @app.after_request
