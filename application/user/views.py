@@ -3,10 +3,8 @@ import json
 import os
 import random
 import tempfile
-from user_agents import parse
 
 from pyphen import LANGUAGES
-from werkzeug import useragents
 from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale
 from application.models import Word, Group, Sound
 from .models import User
@@ -37,10 +35,6 @@ def before_request_callback():
         print(useragent.platform)
         print(useragent.browser)
         print(useragent.version)
-        print(useragent.string)
-        print(useragents)
-        user_agent = parse(useragent.string)
-        print(user_agent.os.family)  # This will get you what you need
 
 
 @app.after_request
