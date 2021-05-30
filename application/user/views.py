@@ -241,12 +241,6 @@ def collection(locale):
     return render_template("collection.html", collection=collection, form=form)
 
 
-@user_blueprint.route("/getpdf", methods=["GET", "POST"])
-def getpdf():
-
-    return render_template("getpdf.html")
-
-
 @ user_blueprint.route("/ajax_add2collection", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_add2collection():
