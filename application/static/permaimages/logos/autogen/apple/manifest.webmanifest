@@ -1,7 +1,6 @@
 {
  "name": "Minimale Par",
   "start_url": "/",
-  "display": "standalone",
  "icons": [
     {
         "src": "/static/permaimages/logos/autogen/favicon-16x16.png",

@@ -1,5 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g
 import json
+from user_agents import parse
 
 from pyphen import LANGUAGES
 from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale
@@ -25,6 +26,15 @@ def before_request_callback():
         browser_lang = request.accept_languages.best_match(
             app.config["LANGUAGES"])
         session["locale"] = browser_lang
+
+    if not session.get("manifest"):
+        useragent = parse(request.user_agent.string)
+        browser = useragent.browser.family.lower()
+        if browser == "safari":
+            print("safari")
+            session["manifest"] = "apple/manifest.webmanifest"
+        else:
+            session["manifest"] = "manifest.webmanifest"
 
 
 @app.after_request
