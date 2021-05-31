@@ -221,7 +221,7 @@ def collection(locale):
 @user_blueprint.route("/<locale>/hentpdf", methods=["GET", "POST"], defaults={"locale": "da"}, subdomain="pdf")
 @ensure_locale
 def getpdf(locale):
-    return "okay"
+    return render_template("mypdf.html")
 
 
 @ user_blueprint.route("/ajax_add2collection", methods=["POST"])
