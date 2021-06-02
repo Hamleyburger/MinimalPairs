@@ -3,7 +3,6 @@ import os
 from flask import current_app
 from PIL import Image
 import imghdr
-import os
 import filecmp
 from ..exceptions import invalidImageError
 
@@ -52,28 +51,43 @@ def store_image(image):
     print("store image running")
 
     directory = current_app.config["IMAGE_UPLOADS"]
-    filename = generateFilename(image.filename, directory)
+    uniquefilename = generateFilename(image.filename, directory)
 
     print("validating image")
     validate_image(image)
 
-    print("Finished validating. File name will be {}".format(filename))
-
+    print("Finished validating. File name will be {}".format(uniquefilename))
+    print("***")
     # Store original (is removed if it turns out to be duplicate)
-    image.save(os.path.join(directory, filename))
+    image.save(os.path.join(directory, uniquefilename))
     print("saved image")
 
     # Make thumbnail if file is  actually new
-    oldFilename = uniqueFile(directory, filename)
-    if filename == oldFilename:
+
+    # ensure file uniqueness
+    properfilename = uniqueFile(directory, uniquefilename)
+
+    # ensure thumbnail
+    properfilename = ensureThumbnail(directory, properfilename, image)
+
+    return properfilename
+
+
+def ensureThumbnail(directory, filename, image):
+
+    thumbnaildir = directory + "/thumbnails"
+    thumbnailfilename = "thumbnail_" + filename
+
+    if os.path.isfile(thumbnaildir + thumbnailfilename):
+        print("this thumbnail exists already")
+    else:
+        print("this thumb didn't exist")
+
         size = 128, 128
         thumb = Image.open(image)
         thumb.thumbnail(size)
         thumb.save(os.path.join(
-            current_app.config["IMAGE_UPLOADS"] + "/thumbnails", "thumbnail_" + filename))
-    else:
-        # File already existed, so we use the old one
-        filename = oldFilename
+            thumbnaildir, thumbnailfilename))
 
     return filename
 
@@ -99,7 +113,7 @@ def generateFilename(filename, directory):
 
 
 def uniqueFile(directory, filename):
-    """ Checks if new file is duplicate. If yes delete new and return old. """
+    """ Ensure file uniqueness. Checks if new file is actually duplicate. Returns name for the correct file. """
 
     file1 = directory + "/" + filename
     for oldfilename in os.listdir(directory):
