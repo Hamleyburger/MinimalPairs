@@ -811,6 +811,8 @@ class Image(db.Model):
         imgdir = current_app.config["IMAGE_UPLOADS"]
 
         # detect and remove files that have no db links
+        print("path: {}".format(current_app.root_path))
+        print("searching: {}".format(os.listdir(imgdir)))
         for file in os.listdir(imgdir):
             # make sure we're not counting subdirectories as files
             if not os.path.isdir(os.path.join(imgdir, file)):
