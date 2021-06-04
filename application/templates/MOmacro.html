@@ -52,7 +52,7 @@
             onmouseout="hide_thumbnail('MO-wrap-{{ index }}')">
 
             <script>
-                var img{{ word1.id }}url = "{{ url_for('static', filename='images/thumbnails/thumbnail_' + word1.image.name)}}";
+                var img{{ word1.id }}url = "{{ url_for('static', filename='images/thumbnails/' + word1.image.name)}}";
             </script>
             {% if word1.image.name == "default.svg" or word1.image.name == "default.jpg" %}
             <span style="display: inline-block; width: 16px;"> {{ possible_img_icon(word1) }} </span>
@@ -107,7 +107,7 @@
 <!-- makes an icon if word has an image and sets background image on display element on hover -->
 <!-- the display element can be entered as a string. Fx "this.parentNode.parentNode" -->
 <script>
-    var img{{ word.id }}url = "{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}";
+    var img{{ word.id }}url = "{{ url_for('static', filename='images/thumbnails/' + word.image.name)}}";
 </script>
 {% if word.image.name == "default.svg" or word.image.name == "default.jpg" %}
 <i class="fas fa-image text-muted"> </i>

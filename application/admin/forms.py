@@ -6,7 +6,7 @@ from application.models import Word
 from flask_wtf.file import FileField, FileRequired
 from werkzeug.utils import secure_filename
 from ipapy import is_valid_ipa
-from .helpers import validate_image
+from .filehelpers import validate_image
 
 
 def emptyFiedList(fieldList):

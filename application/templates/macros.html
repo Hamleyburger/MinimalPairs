@@ -58,9 +58,8 @@
 {% macro pair_card(pairList) %}
 <div class="item card" style="box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.55)">
     <div class="img-wrap">
-        <img class="card-img"
-            src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + pairList[0].w2.image.name)}}" class=""
-            alt="...">
+        <img class="card-img" src="{{ url_for('static', filename='images/thumbnails/' + pairList[0].w2.image.name)}}"
+            class="" alt="...">
     </div>
 
     <div class="card-body">
@@ -105,8 +104,7 @@
 
 <div class="card text-center wordcard shadow" style="width: 18rem;">
     <div class="img-container">
-        <img class="card-img-top"
-            src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
+        <img class="card-img-top" src="{{ url_for('static', filename='images/thumbnails/' + word.image.name)}}"
             alt="image of '{{ word.word }}''">
     </div>
     <div class="card-body">

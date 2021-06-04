@@ -1,11 +1,12 @@
 from application.exceptions import invalidImageError
-from flask import flash
+from flask import flash, current_app
 from application import db
 # import decimal
 import copy
+import os
 from sqlalchemy.sql import func
 from sqlalchemy import or_, and_
-from .admin.helpers import store_image
+from .admin.filehelpers import store_image, ensureThumbnail
 from ipapy import is_valid_ipa
 
 word_grouping = db.Table('groupwords',
@@ -151,7 +152,7 @@ class Sound(db.Model):
             for pair in pairs:
                 if pair.s2 in newSound2List:
                     filteredPairs.append(pair)
-                    #print("appending pair: {}".format(pair.textify()))
+                    # print("appending pair: {}".format(pair.textify()))
 
             if len(filteredPairs) == len(sound2List):
                 # This is where it checks if all sound2s are present. Can be modified with a minimum criterion.
@@ -175,7 +176,7 @@ class Sound(db.Model):
         for group in groups:
             if all(elem in group.sounds for elem in (sound2s + [self])):
                 relevantGroups.append(group)
-                #print("Group {} has all the sounds!".format(group.id))
+                # print("Group {} has all the sounds!".format(group.id))
 
         # Search relevant groups and add their MO-sets to pair list
         pairLists = []
@@ -452,6 +453,8 @@ class Word(db.Model):
         Remember to first call store_image to get appropriate file name in\n
         case of duplicates"""
 
+        print("WORD ADD")
+
         # If word exists, figure out if it's homonymous or same
         entry = db.session.query(Word).filter_by(word=word).all()
         if not entry:
@@ -471,6 +474,8 @@ class Word(db.Model):
 
         db.session.flush()
 
+        print(image)
+        print("image is ^^^")
         # If added img is in db already connect old img
         if image != None and image != "":
 
@@ -515,6 +520,7 @@ class Word(db.Model):
             word.cue = newcue
         if newimg != "":
             try:
+                print("trying to store image")
                 image = Image.store(newimg)  # return appropriate image object
                 word.image = image
             except Exception as e:
@@ -524,12 +530,7 @@ class Word(db.Model):
         print("Commit from 'change'")
         db.session.commit()
 
-        # Check if there are idle images lying around
-        images = db.session.query(Image).all()
-        for image in images:
-            if len(image.words) == 0:
-                print(
-                    "Warning: this image has no connected words: {}".format(image.name))
+        Image.cleanImages()
 
         return word
 
@@ -747,7 +748,8 @@ class Image(db.Model):
     # is pointed to by at least one word. One-to-many with word.
     words = db.relationship("Word", back_populates="image")
 
-    def store(imageFile):
+    @classmethod
+    def store(cls, imageFile):
         """ Stores file in folder if it's new\n
         Changes name if necessary\n
         Adds to database (no commit)\n
@@ -755,13 +757,81 @@ class Image(db.Model):
 
         # appropriate imageName - can be old or new
         imageName = store_image(imageFile)
-        image = Image.query.filter_by(name=imageName).first()
+        image = cls.query.filter_by(name=imageName).first()
 
         if not image:
-            image = Image(name=imageName)
+            image = cls(name=imageName)
             db.session.add(image)
 
         return image
+
+    def remove(self):
+        """ deletes image from db """
+        db.session.delete(self)
+
+        print("remove: {}".format(self.name))
+
+        dir = current_app.config["IMAGE_UPLOADS"]
+        file = os.path.join(dir, self.name)
+        thumbname = self.name
+        thumbdir = dir + "/thumbnails"
+        thumbnail = os.path.join(thumbdir, thumbname)
+
+        print("dir to delete; {}".format(file))
+
+        if os.path.isfile(file):
+            os.remove(file)
+
+        if os.path.isfile(thumbnail):
+            os.remove(thumbnail)
+
+    def file(self):
+        filename = self.name
+
+        dir = current_app.config["IMAGE_UPLOADS"]
+        file = os.path.join(dir, filename)
+
+        return file
+
+    @classmethod
+    def cleanImages(cls):
+
+        images = cls.query.all()
+
+        # Clears out unlinked images from db
+        for image in images:
+            if len(image.words) == 0:
+                print(
+                    "Warning: this image has no connected words. Deleting: {}".format(image.name))
+                image.remove()
+                db.session.commit()
+
+        # Clears out files that do not exist in db
+        images = cls.query.all()
+        imgdir = current_app.config["IMAGE_UPLOADS"]
+
+        # detect and remove files that have no db links
+        for file in os.listdir(imgdir):
+            # make sure we're not counting subdirectories as files
+            if not os.path.isdir(os.path.join(imgdir, file)):
+                if not file == ".DS_Store":
+                    if file not in [image.name for image in images]:
+                        print(file + " not linked to a word")
+                        if file in [image.name for image in images]:
+                            print("but exists in db")
+                        else:
+                            print("and does not exist in db. EXTERMINATE")
+                            os.remove(os.path.join(imgdir, file))
+
+        # make sure all images in have thumbnails
+        for image in images:
+            ensureThumbnail(imgdir, image.name, image.file())
+
+        # find and delete orphan thumbnails
+        for thumbnailname in os.listdir(os.path.join(imgdir, "thumbnails")):
+            if thumbnailname not in os.listdir(imgdir):
+                print("orphan thumbnail: {}".format(thumbnailname))
+                os.remove(os.path.join(imgdir, "thumbnails", thumbnailname))
 
     @classmethod
     def setDefault(cls):

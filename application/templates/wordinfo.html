@@ -17,7 +17,7 @@
 
                 <div class="col-xl-6 order-xl-0 col-md-5 col-sm-5 col-8 cols-word text-center">
                     <div class="word1-img-div shadow">
-                        <img src="{{ url_for('static', filename='images/thumbnails/thumbnail_' + word.image.name)}}"
+                        <img src="{{ url_for('static', filename='images/thumbnails/' + word.image.name)}}"
                             alt="image for the word '{{ word.word }}'">
                     </div>
                     {{ word_card_buttons(word, infobutton=false) }}

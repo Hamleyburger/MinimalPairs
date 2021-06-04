@@ -1,8 +1,10 @@
 from flask import request
 import os
+import shutil
 from flask import current_app
 from PIL import Image
 import imghdr
+import time
 import filecmp
 from ..exceptions import invalidImageError
 
@@ -23,9 +25,11 @@ from ..exceptions import invalidImageError
 
 # validate_image is in helpers.py because it's used from different forms (add and change)
 def validate_image(image):
-    valid_formats = ["jpg", "jpeg", "png"]
-    valid_extension = [".jpg", ".jpeg", ".png"]
+    valid_formats = ["jpg", "jpeg", "png", "svg"]
+    valid_extension = [".jpg", ".jpeg", ".png", ".svg"]
     max_image_size = 3000000
+
+    fileExists(image, current_app.config["IMAGE_UPLOADS"])
 
     image.seek(0, os.SEEK_END)
     size = image.tell()
@@ -36,6 +40,7 @@ def validate_image(image):
         raise invalidImageError("Image must be less than 3 MB")
 
     print("checking for format")
+
     print(str(imghdr.what(image)))
     if imghdr.what(image) not in valid_formats:
         print("invalid image format")
@@ -51,43 +56,55 @@ def store_image(image):
     print("store image running")
 
     directory = current_app.config["IMAGE_UPLOADS"]
-    uniquefilename = generateFilename(image.filename, directory)
 
-    print("validating image")
-    validate_image(image)
+    # check if file exists and set filename if not
+    uniquefilename = fileExists(image, directory)
+    if not uniquefilename:
+        uniquefilename = generateFilename(image.filename, directory)
 
-    print("Finished validating. File name will be {}".format(uniquefilename))
-    print("***")
-    # Store original (is removed if it turns out to be duplicate)
-    image.save(os.path.join(directory, uniquefilename))
-    print("saved image")
+        # only validate if new file
+        print("validating image")
+        validate_image(image)
 
-    # Make thumbnail if file is  actually new
-
-    # ensure file uniqueness
-    properfilename = uniqueFile(directory, uniquefilename)
+        print("Finished validating. File name will be {}".format(uniquefilename))
+        print("***")
+        # Store original (is removed if it turns out to be duplicate)
+        image.save(os.path.join(directory, uniquefilename))
+        print("saved image")
 
     # ensure thumbnail
-    properfilename = ensureThumbnail(directory, properfilename, image)
+    ensureThumbnail(directory, uniquefilename, image)
 
-    return properfilename
+    return uniquefilename
 
 
-def ensureThumbnail(directory, filename, image):
+def ensureThumbnail(directory, filename, image=None):
+    """ makes sure there's a thumbnail and returns filename """
 
     thumbnaildir = directory + "/thumbnails"
-    thumbnailfilename = "thumbnail_" + filename
+    thumbnailfilename = filename
 
     if os.path.isfile(thumbnaildir + thumbnailfilename):
         print("this thumbnail exists already")
     else:
-        print("this thumb didn't exist")
+        if filename.lower().endswith((".jpg", ".png", ".jpeg")):
 
-        size = 128, 128
-        thumb = Image.open(image)
-        thumb.thumbnail(size)
-        thumb.save(os.path.join(
-            thumbnaildir, thumbnailfilename))
+            # raster images are resized for thumbnail*
+            size = 128, 128
+            thumb = Image.open(image)
+            thumb.thumbnail(size)
+            thumb.save(os.path.join(
+                thumbnaildir, thumbnailfilename))
+        elif filename.lower().endswith(".svg"):
+            # svg are not resized, but simply copied as thumbnail* to thumbnail dir
+            print("svg")
+            image = os.path.join(directory + "/" + filename)
+            print("osjoin: {}".format(image))
+            shutil.copy(image, thumbnaildir)
+            dst_image = os.path.join(thumbnaildir, filename)
+            newname = os.path.join(thumbnaildir, thumbnailfilename)
+            print("putting {} in {}".format(newname, thumbnaildir))
+            os.rename(dst_image, newname)
 
     return filename
 
@@ -127,3 +144,20 @@ def uniqueFile(directory, filename):
                 break
 
     return filename
+
+
+def fileExists(file, directory):
+    """ Checks if file exists in directory. Returns filename of existing file or None  """
+    tmpdir = directory + "/check_file"
+    os.mkdir(tmpdir)
+    file1 = os.path.join(tmpdir, "check_file")
+    file.save(file1)
+    for filename in os.listdir(directory):
+        file2 = directory + "/" + filename
+        if filecmp.cmp(file1, file2):
+            print("exists")
+            shutil.rmtree(tmpdir)
+            return os.path.basename(file2)
+    print("not exists")
+    shutil.rmtree(tmpdir)
+    return None

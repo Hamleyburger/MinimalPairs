@@ -1,9 +1,8 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
-# from .helpers import clearSessionExcept
 from application.models import Word, Pair, Sound, Group
 from .forms import AddForm, AddPairForm
 from application import db, app
-from .helpers import store_image
+from .filehelpers import store_image
 from flask_user import roles_required
 
 admin_blueprint = Blueprint(
@@ -48,16 +47,16 @@ def add_word():
     if form.validate_on_submit():
         print("was valid")
 
+        # first store word without image
         image_name = None
+        # Store image if there was one
+        if request.files["image"]:
+            image_name = store_image(request.files["image"])
 
         # Add word to db and also store in session
         wordToRemember = Word.add(word=form.word.data,
                                   cue=form.cue.data, image=image_name)
         session["word1"] = str(wordToRemember.id)
-
-        # Store image if there was one
-        if request.files["image"]:
-            store_image(request.files["image"])
 
         db.session.commit()
 
