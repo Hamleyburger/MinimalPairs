@@ -17,7 +17,9 @@
     {% block submeta %}
     <meta property="og:image"
         content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg', _external=True ) }}">
-    <meta property="og:image:secure_url" content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg') }}">
+
+    <meta property="og:image:secure_url"
+        content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg', _external=True) }}">
 
     {% endblock %}
 
