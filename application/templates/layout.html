@@ -12,8 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#995f8b">
 
+
     <title> {{ title_all | safe }} {% block title %}{% endblock %}</title>
-    {% block individual_meta %}{% endblock individual_meta %}
+    {% block submeta %}
+    <meta property="og:image" content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg') }}">
+    {% endblock %}
 
 
     <!-- favicons -->
