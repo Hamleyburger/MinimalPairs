@@ -14,7 +14,7 @@ from .content_management import Content
 
 # Configure application
 app = Flask(__name__)
-app.jinja_options['extensions'].append('jinja2.ext.do')
+app.jinja_env.add_extension('jinja2.ext.do')
 
 
 # All configs are taken from object in config.py
