@@ -16,6 +16,8 @@
     <title> {{ title_all | safe }} {% block title %}{% endblock %}</title>
     {% block submeta %}
     <meta property="og:image" content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg') }}">
+    <meta property="og:image:secure_url" content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg') }}">
+
     {% endblock %}
 
 
