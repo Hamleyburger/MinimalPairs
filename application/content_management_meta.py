@@ -69,8 +69,8 @@ meta_da = {
         "og_title": "Info om ordet ",  # set word.word in template
         # husk at sætte url i template
 
-        "og_image_width": "1000",
-        "og_image_height": "1000",
+        "og_image_width": "400",
+        "og_image_height": "400",
     },
 
 }
