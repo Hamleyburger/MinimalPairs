@@ -3,9 +3,23 @@
 <!-- {% from 'macros.html' import group_card, pair_card %} -->
 
 {% block title %}
-: {{ title_index }}
+{{ title_index }}
 {% endblock %}
+{% block submeta %}
+<!-- page specific tags -->
+<meta name="description" content="{{ index.description }}" />
 
+<!-- page specific open graph -->
+<meta property="og:description" content="{{ index.og_description }}" />
+<meta property="og:image" content="{{ url_for('static', filename=index.og_image, _external=True ) }}">
+<meta property=" og:image:secure_url" content="{{ url_for('static', filename=index.og_image, _external=True ) }}">
+<meta property="og:title" content="{{ index.og_title }}" />
+<meta property="og:url" content="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
+
+<meta property="og:image:type" content="{{ layout.og_image_type }}" />
+<meta property="og:image:width" content="{{ layout.og_image_width }}" />
+<meta property="og:image:height" content="{{ layout.og_image_height }}" />
+{% endblock %}
 
 {% block main %}
 <div class="frontpage-container">

@@ -1,9 +1,11 @@
 from flask import session
 from markupsafe import Markup
+from .content_management_meta import meta_en, meta_da
 
 
 def Content(locale=None):
     """ If you pass a locale in here session will be ignored """
+
     text_da = {
 
         # Cross page
@@ -18,6 +20,7 @@ def Content(locale=None):
         "nav_collection": "Samling",
         "nav_language": "Sprog",
         "footer_copyright": "Copyright 2021 | <a href='https://github.com/Hamleyburger'>Alma Manley</a> | All Rights Reserved",
+
 
         # Front page
         "title_index": "Velkommen",
@@ -86,7 +89,7 @@ def Content(locale=None):
         "tooltip_rmMO": "fjern MO-sæt fra samling",
 
         # Word info
-        "title_wordinfo": "Info-om-ord",
+        "title_wordinfo": "info om ",  # set word.word in template
         "url_wordinfo": "info-om-ord",
 
         # Collection
@@ -199,7 +202,7 @@ def Content(locale=None):
         "tooltip_rmMO": "remove MO from collection",
 
         # Word info
-        "title_wordinfo": "Word-info",
+        "title_wordinfo": "info about ",  # set word.word in template
         "url_wordinfo": "word-info",
 
         # Collection
@@ -230,6 +233,9 @@ def Content(locale=None):
         # Rendered PDF
         "title_pdf": "Word cards"
     }
+
+    text_da.update(meta_da)
+    text_en.update(meta_en)
 
     if locale == None:
         locale = session["locale"]

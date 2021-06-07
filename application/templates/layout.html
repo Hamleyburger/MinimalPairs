@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 
-<html lang="da">
+<html lang="{{ locale_code }}">
 
 <head>
     <!-- Required meta tags -->
@@ -12,27 +12,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#995f8b">
 
+    <!-- page specific meta tags -->
+    <title> {{ title_all | safe }} -{% block title %}{% endblock %}</title>
 
-    <title> {{ title_all | safe }} {% block title %}{% endblock %}</title>
     {% block submeta %}
-    <meta property="og:image"
-        content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg', _external=True ) }}">
-    <meta property="og:image:secure_url"
-        content="{{ url_for('static', filename='permaimages/og/ogfrontpage.jpg', _external=True) }}">
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="1200" />
-    <meta property="og:image:alt" content="Forsideillustration til minimalepar.dk" />
+    <!-- if no specific meta tags are supplied -->
+    <meta name="description" content="{{ index.description }}" />
 
+    <!-- if no specific open graph is supplied -->
+    <meta property="og:description" content="{{ layout.og_description }}" />
+    <meta property="og:image" content="{{ url_for('static', filename='{{ layout.og_image }}', _external=True ) }}">
+    <meta property="og:image:secure_url"
+        content="{{ url_for('static', filename='{{ layout.og_image }}', _external=True) }}">
+    <meta property="og:image:alt" content="{{ layout.og_image_alt }}" />
     <meta property="og:title" content="Minimale Par" />
-    <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
-    <meta property="og:description" content="En voksende database med minimale par" />
-    <meta property="og:locale" content="da_DK" />
-    <meta property="og:locale:alternate" content="en_GB" />
-    <meta property="og:site_name" content="minimalepar.dk" />
+
+    <meta property="og:image:type" content="{{ layout.og_image_type }}" />
+    <meta property="og:image:width" content="{{ layout.og_image_width }}" />
+    <meta property="og:image:height" content="{{ layout.og_image_height }}" />
 
     {% endblock %}
+    <!-- general open grapg -->
+    <meta property="og:type" content="{{ layout.og_type }}" />
+    <meta property="og:site_name" content="{{ layout.og_site_name }}" />
+    <meta property="og:locale" content="{{ layout.og_locale }}" />
+    <meta property="og:locale:alternate" content="{{ layout.og_locale_alternate }}" />
 
 
     <!-- favicons -->

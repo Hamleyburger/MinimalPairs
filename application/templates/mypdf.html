@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="apple-mobile-web-app-capable" content="no">
-    <title> {{ title_all }} : {% block title %} {{ title_pdf }} {% endblock %}</title>
+    <title> {{ title_all }}{% block title %} {{ title_pdf }} {% endblock %}</title>
     {% block individual_meta %}
     {% endblock individual_meta %}
 
