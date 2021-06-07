@@ -36,6 +36,9 @@ def before_request_callback():
         else:
             session["manifest"] = "manifest.webmanifest"
 
+    if not session.get("collection"):
+        session["collection"] = []
+
 
 @app.after_request
 def after_request_callback(response):
