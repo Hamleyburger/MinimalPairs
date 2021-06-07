@@ -26,10 +26,10 @@ meta_da = {
     "index": {
 
         "description": "Velkommen til minimalepar.dk. Søg efter lyde og find minimale par og multiple oppositioner med billeder. Lav ark med ordkort som PDF, der kan printes.",
-        "og_description": "Find minimale par og multiple oppositioner i databasen",
+        "og_description": "En voksende database med minimale par og multiple oppositioner",
         "og_image": "permaimages/og/ogfrontpage.jpg",  # Just the path to the image
         "og_image_alt": "Forsideillustration med en kat, en hat, en sol og en stol",
-        "og_title": "Find kontraster",
+        "og_title": "Velkommen til minimalepar.dk",
         # husk at sætte url i template
         # uses default image type, width and height from layout
 
