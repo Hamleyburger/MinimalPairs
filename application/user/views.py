@@ -98,7 +98,7 @@ def wordinfo(word_id, locale):
 
         return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets)
     else:
-        return redirect(url_for("user_blueprint.index", locale=session["locale"]))
+        abort(404)
 
 
 @user_blueprint.route("/<locale>/sound-search", methods=["GET", "POST"], defaults={"locale": "en"})
@@ -318,11 +318,12 @@ def change_language(newlocale):
     return redirect(request.referrer)
 
 
+"""
 @user_blueprint.route("/error/<error>", methods=["GET"])
 def makeerror(error):
     try:
         error = int(error)
     except Exception:
         error = 404
-    """ cute front page """
     abort(error)
+"""
