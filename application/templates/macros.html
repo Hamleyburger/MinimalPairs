@@ -102,7 +102,7 @@
 {% macro word_card(word) %}
 
 
-<div class="card text-center wordcard shadow" style="width: 18rem;">
+<div class="card text-center wordcard word-font shadow" style="width: 18rem;">
     <div class="img-container">
         <img class="card-img-top" src="{{ url_for('static', filename='images/thumbnails/' + word.image.name)}}"
             alt="image of '{{ word.word }}''">

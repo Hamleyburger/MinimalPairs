@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="error-message">
+    <h1>403</h1>
+    <h4>Forbidden</h4>
+    <img src="{{ url_for('static', filename='permaimages/errorscreens/error403.svg') }}"
+        alt="image for 403 unauthorized">
+    <p>Can't let you in here</p>
+</div>
+
+{% endblock main %}

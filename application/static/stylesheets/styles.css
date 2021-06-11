@@ -27,6 +27,10 @@
           box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
 }
 
+.word-font {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .alert-wrapper {
   position: absolute !important;
   left: 0;
@@ -158,6 +162,7 @@
   width: 100%;
   max-width: 300px;
   min-width: 267px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .MO-row .MO-col .MO-wrapper {
@@ -455,6 +460,9 @@ body {
   background-attachment: fixed;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  font-family: century-gothic, sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 footer {
@@ -784,7 +792,6 @@ footer a {
   color: #3b1734;
   -ms-flex-line-pack: center;
       align-content: center;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .titlebox .main-btn {
@@ -975,7 +982,6 @@ footer a {
 
 .wordcard .card-body .card-title {
   font-size: 25px;
-  font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
   margin-bottom: 0.1rem;
 }
@@ -1119,6 +1125,7 @@ footer a {
   width: 100%;
   height: 0;
   padding-bottom: 100%;
+  margin-bottom: 10px;
   border-radius: 50%;
   -o-object-fit: scale-down;
      object-fit: scale-down;
@@ -1173,6 +1180,7 @@ footer a {
 .word-info-container .outer-row .slider .owl-stage-outer .card .img-wrap {
   width: auto;
   overflow: hidden;
+  aspect-ratio: 1/1;
 }
 
 .word-info-container .outer-row .slider .owl-stage-outer .card .img-wrap img {
@@ -1213,7 +1221,6 @@ footer a {
 .pdfgenerator {
   -ms-flex-line-pack: center;
       align-content: center;
-  font-family: Arial, Helvetica, sans-serif;
   margin-top: 8%;
   margin-bottom: 0;
   width: 600px;
@@ -1347,5 +1354,21 @@ footer a {
 .sorry p {
   color: #3b1734;
   font-size: larger;
+}
+
+.error-message {
+  margin: 70px 0px;
+  padding: 0px 15px;
+  text-align: center;
+  color: #3b1734;
+}
+
+.error-message h1, .error-message .h1 {
+  font-size: 4rem;
+}
+
+.error-message img {
+  width: 300px;
+  max-width: 100%;
 }
 /*# sourceMappingURL=styles.css.map */

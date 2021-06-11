@@ -41,9 +41,11 @@ user_manager = UserManager(app, db, User)
 
 from application.admin.views import admin_blueprint
 from application.user.views import user_blueprint
+from application.errors.handlers import errors
 
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(user_blueprint)
+app.register_blueprint(errors)
 # app.register_blueprint(transactions)
 # app.register_blueprint(main)
 

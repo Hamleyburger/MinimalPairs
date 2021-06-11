@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="error-message">
+    <h1>404</h1>
+    <h4>Not found</h4>
+    <img src="{{ url_for('static', filename='permaimages/errorscreens/error404.svg') }}" alt="image for 404 not found">
+
+    <p>Maybe there's a typo in the URL?</p>
+</div>
+
+{% endblock main %}

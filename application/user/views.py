@@ -1,4 +1,4 @@
-from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g
+from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort
 import json
 from user_agents import parse
 
@@ -316,3 +316,13 @@ def change_language(newlocale):
         print("lang bad: {}".format(newlocale))
 
     return redirect(request.referrer)
+
+
+@user_blueprint.route("/error/<error>", methods=["GET"])
+def makeerror(error):
+    try:
+        error = int(error)
+    except Exception:
+        error = 404
+    """ cute front page """
+    abort(error)

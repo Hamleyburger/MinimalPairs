@@ -17,6 +17,10 @@
     box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
 }
 
+.word-font {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .alert-wrapper {
 
     position: absolute !important;
@@ -136,6 +140,8 @@
         width: 100%;
         max-width: 300px;
         min-width: 267px;
+        font-family: Arial, Helvetica, sans-serif;
+
         
         .MO-wrapper {
             background: $color-yel3;
