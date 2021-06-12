@@ -181,6 +181,8 @@
             <!-- nav links that sit on the right when expanded -->
             <ul class="navbar-nav ml-auto">
 
+                {% if g.showglobe %}
+                {# showglobe makes language change show. Is set in decorator 'ensure_locale' #}
                 <!-- language select drop-down -->
                 <li class="nav-item dropdown">
                     <a class="earthtoggle nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -197,6 +199,7 @@
                         {% endfor %}
                     </div>
                 </li>
+                {% endif %}
 
                 <!-- logout button -->
                 {% if current_user.is_authenticated %}

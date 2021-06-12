@@ -9,6 +9,11 @@ admin_blueprint = Blueprint(
     "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
 
 
+@admin_blueprint.before_request
+def before_request_callback():
+    session["locale"] = "en"
+
+
 @admin_blueprint.route("/add", methods=["GET"])
 @roles_required('Admin')
 def add():

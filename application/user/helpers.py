@@ -1,7 +1,7 @@
 from werkzeug.utils import redirect
 from application.models import Pair
 import json
-from flask import session, g, request, redirect, url_for
+from flask import session, g, request, redirect, url_for, abort
 from application.models import Sound
 import functools
 from application import app
@@ -13,36 +13,46 @@ def ensure_locale(func):
     @functools.wraps(func)
     def decorated(*args, **kwargs):
 
+        g.showglobe = True
+
         allowed = True
         # Gets locale from url's args (only routes with locale in url are decorated)
         firstarg = request.path.split('/', 2)[1]
 
         if firstarg not in app.config['LANGUAGES']:
             # if url's locale is invalid, pass current session locale to redirect
+            print(request.endpoint)
             print("firstarg not in cfg")
-            kwargs["locale"] = session["locale"]
-            allowed = False
+            abort(404)
+            #kwargs["locale"] = session["locale"]
+            #allowed = False
 
         elif session["locale"] != firstarg:
+            print("ses locale not in url")
 
             if session.get("force_session_lang"):
+                print("force ses lang")
                 # if url's arg is different from session and session has precedence, pass session locale to redirect
                 kwargs["locale"] = session["locale"]
                 session.pop("force_session_lang", None)
                 print("session has precedence")
                 allowed = False
             else:
+                print("not force ses lang")
 
                 # if url's arg is different and url has precedence, redirect to same endpoint
                 # with new session locale (which will be same as url - route will be accepted next check)
+                print("serring ses to firstarg: {}".format(firstarg))
                 session["locale"] = firstarg
-                #allowed = False
+                allowed = False
 
         if not allowed:
+            print("not allowed, redirect")
             print("redirect to {}".format(
                 url_for(request.endpoint, *args, **kwargs)))
             return redirect(url_for(request.endpoint, *args, **kwargs), 302)
         else:
+            print("allowed, not redirect")
             return func(*args, **kwargs)
 
     return decorated
