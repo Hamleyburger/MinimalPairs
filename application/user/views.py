@@ -11,6 +11,8 @@ from .forms import SearchSounds, SearchMOs, toPDF_wrap
 from flask_weasyprint import HTML, CSS, render_pdf
 from application.content_management import da_content, en_content, Content
 
+import sentry_sdk
+
 
 user_blueprint = Blueprint("user_blueprint", __name__,
                            static_folder="static", template_folder="templates")

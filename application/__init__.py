@@ -1,6 +1,8 @@
 #!/bin/env python
 
+import sentry_sdk
 from flask import Flask, g
+from sentry_sdk.integrations.flask import FlaskIntegration
 # flask_session could only be imported when downgrading werkzeug:
 # pip uninstalled werkzeug and pip installed werkzeug==0.16.0
 from flask_session import Session
@@ -9,6 +11,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
 from .content_management import Content
 
+
+
+sentry_sdk.init(
+    dsn="https://f9fb4e8eb2904b20869f5e8d11f138e2@o837681.ingest.sentry.io/5813571",
+    integrations=[FlaskIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0
+)
 
 
 
