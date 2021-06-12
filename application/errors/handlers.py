@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, g
 import sentry_sdk
 
 errors = Blueprint('errors', __name__)
@@ -20,4 +20,8 @@ def error_403(error):
 @errors.app_errorhandler(Exception)
 def error_500(error):
     sentry_sdk.capture_exception(error)
-    return render_template("errors/500.html"), 500
+    try:
+        return render_template("errors/500.html"), 500
+    except Exception:
+        g.errorpage = True
+        return render_template("errors/500.html"), 500

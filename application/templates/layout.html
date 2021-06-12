@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#995f8b">
 
+    {% if not g.get("errorpage") %}
     <!-- page specific meta tags -->
     <title> {{ title_all | safe }} -{% block title %}{% endblock %}</title>
 
@@ -65,6 +66,7 @@
     <meta name="msapplication-config" content="/static/permaimages/logos/autogen/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
+    {% endif %}
 
 
     <!-- jquery and popper -->
