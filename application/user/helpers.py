@@ -20,12 +20,15 @@ def ensure_locale(func):
         firstarg = request.path.split('/', 2)[1]
 
         if firstarg not in app.config['LANGUAGES']:
-            # if url's locale is invalid, pass current session locale to redirect
-            print(request.endpoint)
-            print("firstarg not in cfg")
-            abort(404)
-            #kwargs["locale"] = session["locale"]
-            #allowed = False
+            if firstarg == "":
+                kwargs["locale"] = session["locale"]
+                allowed = False
+            else:
+                # if url's locale is invalid, pass current session locale to redirect
+                print(request.endpoint)
+                print("firstarg not in cfg")
+                abort(404)
+
 
         elif session["locale"] != firstarg:
             print("ses locale not in url")
