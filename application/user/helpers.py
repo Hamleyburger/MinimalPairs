@@ -13,6 +13,8 @@ def ensure_locale(func):
     @functools.wraps(func)
     def decorated(*args, **kwargs):
 
+        print("NEW REQUEST")
+
         g.showglobe = True
 
         allowed = True
@@ -21,6 +23,8 @@ def ensure_locale(func):
 
         if firstarg not in app.config['LANGUAGES']:
             if firstarg == "":
+                print("FIRST ARG NOT IN LANGUAGES")
+                print("firstarg is {}".format(firstarg))
                 kwargs["locale"] = session["locale"]
                 allowed = False
             else:
@@ -47,7 +51,11 @@ def ensure_locale(func):
                 # with new session locale (which will be same as url - route will be accepted next check)
                 print("serring ses to firstarg: {}".format(firstarg))
                 session["locale"] = firstarg
-                allowed = False
+                kwargs["locale"] = session["locale"]
+                # Setting allow to False means the url locale arg can be changed and the url will not be translated
+                # This is only a problem if Google interprets it as a duplicate url for the same content.
+                # TODO: make a robot.txt and provide tags for crawlers to not index all except canonical urls (?)
+                # allowed = False
 
         if not allowed:
             print("not allowed, redirect")

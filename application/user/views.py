@@ -24,7 +24,8 @@ def before_request_callback():
 
     locale = session.get("locale")
     if not locale:
-        print("no locale")
+        print("no locale. Agent:")
+        print(request.headers.get('User-Agent'))
         browser_lang = request.accept_languages.best_match(
             app.config["LANGUAGES"])
         session["locale"] = browser_lang

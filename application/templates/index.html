@@ -16,6 +16,7 @@
 <meta property="og:image:alt" content="{{ index.og_image_alt }}" />
 <meta property="og:title" content="{{ index.og_title }}" />
 <meta property="og:url" content="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
+<link rel="canonical" href="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
 
 <meta property="og:image:type" content="{{ layout.og_image_type }}" />
 <meta property="og:image:width" content="{{ layout.og_image_width }}" />
