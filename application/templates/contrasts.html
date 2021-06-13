@@ -12,10 +12,11 @@
 <meta name="description" content="{{ contrasts.description }}" />
 
 <!-- page specific open graph -->
+<meta property="og:title" content="{{ contrasts.og_title }}" />
 <meta property="og:description" content="{{ contrasts.og_description }}" />
 <meta property="og:image" content="{{ url_for('static', filename=contrasts.og_image, _external=True ) }}">
 <meta property=" og:image:secure_url" content="{{ url_for('static', filename=contrasts.og_image, _external=True ) }}">
-<meta property="og:title" content="{{ contrasts.og_title }}" />
+<meta property="og:image:alt" content="{{ contrasts.og_image_alt }}" />
 <meta property="og:url" content="{{ url_for('user_blueprint.contrasts', locale=session.locale, _external=True) }}" />
 
 <meta property="og:image:type" content="{{ layout.og_image_type }}" />

@@ -16,6 +16,7 @@
     content="{{ url_for('static', filename=collection_meta.og_image, _external=True ) }}">
 <meta property="og:title" content="{{ collection_meta.og_title }}" />
 <meta property="og:url" content="{{ url_for('user_blueprint.collection', locale=session.locale, _external=True) }}" />
+<meta property="og:image:alt" content="{{ collection_meta.og_image_alt }}" />
 
 <meta property="og:image:type" content="{{ layout.og_image_type }}" />
 <meta property="og:image:width" content="{{ layout.og_image_width }}" />

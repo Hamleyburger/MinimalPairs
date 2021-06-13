@@ -13,6 +13,7 @@
 <meta property="og:description" content="{{ index.og_description }}" />
 <meta property="og:image" content="{{ url_for('static', filename=index.og_image, _external=True ) }}">
 <meta property=" og:image:secure_url" content="{{ url_for('static', filename=index.og_image, _external=True ) }}">
+<meta property="og:image:alt" content="{{ index.og_image_alt }}" />
 <meta property="og:title" content="{{ index.og_title }}" />
 <meta property="og:url" content="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
 

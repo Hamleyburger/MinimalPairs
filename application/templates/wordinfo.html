@@ -16,6 +16,7 @@
     content="{{ url_for('static', filename='images/thumbnails/' + word.image.name, _external=True)}}">
 <meta property=" og:image:secure_url"
     content="{{ url_for('static', filename='images/thumbnails/' + word.image.name, _external=True)}}">
+<meta property="og:image:alt" content="{{ wordinfo.og_image_alt }}" />
 <meta property="og:title" content="{{ wordinfo.og_title }}'{{ word.word }}'" />
 <meta property="og:url"
     content="{{ url_for('user_blueprint.wordinfo', locale=session.locale, word_id=word.id, _external=True) }}" />
