@@ -48,9 +48,11 @@ def ensure_locale(func):
 
                 # if url's arg is different and url has precedence, redirect to same endpoint
                 # with new session locale (which will be same as url - route will be accepted next check)
-                print("serring ses to firstarg: {}".format(firstarg))
+                print("setting ses to firstarg: {}".format(firstarg))
                 session["locale"] = firstarg
+                print("ses locale: {}".format(session["locale"]))
                 kwargs["locale"] = session["locale"]
+                print("kwargs locale: {}".format(kwargs["locale"]))
                 # Setting allow to False means the url locale arg can be changed and the url will not be translated
                 # This is only a problem if Google interprets it as a duplicate url for the same content.
                 # TODO: make a robot.txt and provide tags for crawlers to not index all except canonical urls (?)
