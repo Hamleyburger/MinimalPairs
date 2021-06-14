@@ -56,7 +56,7 @@ def ensure_locale(func):
                 # Setting allow to False means the url locale arg can be changed and the url will not be translated
                 # This is only a problem if Google interprets it as a duplicate url for the same content.
                 # TODO: make a robot.txt and provide tags for crawlers to not index all except canonical urls (?)
-                allowed = False
+                # allowed = False
 
         if not allowed:
             print("not allowed, redirect")
