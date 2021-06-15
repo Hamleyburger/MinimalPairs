@@ -22,6 +22,8 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 @app.before_request
 def before_request_callback():
 
+    print("Before request.")
+
     locale = session.get("locale")
     if not locale:
         print("BR: no locale. Agent:")

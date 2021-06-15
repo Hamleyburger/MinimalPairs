@@ -20,31 +20,38 @@ def ensure_locale(func):
         allowed = True
         # Gets locale from url's args (only routes with locale in url are decorated)
         firstarg = request.path.split('/', 2)[1]
+        print()
+        print("running ensure_locale")
+        print("Agent: {}".format(request.headers.get("User-Agent")))
 
         if firstarg not in app.config['LANGUAGES']:
+            print(f"firstarg '{ firstarg }' not in config.")
             if firstarg == "":
-                print("FIRST ARG NOT IN LANGUAGES")
+                print(f"'firstarg is empty")
                 print("firstarg is {}".format(firstarg))
                 kwargs["locale"] = session["locale"]
                 allowed = False
             else:
                 # if url's locale is invalid, pass current session locale to redirect
+                print(
+                    f"firstarg '{ firstarg }' is something other than a language. This is a locale required url:")
                 print(request.endpoint)
-                print("firstarg not in cfg")
                 abort(404)
 
         elif session["locale"] != firstarg:
-            print("ses locale not in url")
+            print("firstarg '{}' is different from session: '{}'.".format(
+                firstarg, session.get("locale")))
 
             if session.get("force_session_lang"):
-                print("force ses lang")
+                print(
+                    "Button has not been pressed and session changed. Session wins. Redirecting.")
                 # if url's arg is different from session and session has precedence, pass session locale to redirect
                 kwargs["locale"] = session["locale"]
                 session.pop("force_session_lang", None)
-                print("session has precedence")
                 allowed = False
             else:
-                print("not force ses lang")
+                print(
+                    "URL's lang: '{}' is being set in session. Not redirecting".format(firstarg))
 
                 # if url's arg is different and url has precedence, redirect to same endpoint
                 # with new session locale (which will be same as url - route will be accepted next check)
@@ -57,6 +64,9 @@ def ensure_locale(func):
                 # This is only a problem if Google interprets it as a duplicate url for the same content.
                 # TODO: make a robot.txt and provide tags for crawlers to not index all except canonical urls (?)
                 # allowed = False
+        else:
+            print("all is looking good. Firstag is '{}', session is '{}', endpoint is '{}', kwargs are '{}'".format(
+                firstarg, session["locale"], request.endpoint, kwargs))
 
         if not allowed:
             print("not allowed, redirect")
