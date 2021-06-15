@@ -23,14 +23,17 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 def before_request_callback():
 
     locale = session.get("locale")
+    g.locale = session.get("locale")
     if not locale:
-        print("BR: no locale. Agent:")
+        print("\nNo locale in session\n")
         print(request.headers.get('User-Agent'))
         browser_lang = request.accept_languages.best_match(
             app.config["LANGUAGES"])
         session["locale"] = browser_lang
-    else:
-        print("BR: locale: {}".format(locale))
+        g.locale = browser_lang
+        if not browser_lang:
+            session["locale"] = "da"
+            g.locale = "da"
 
     if not session.get("manifest"):
         useragent = parse(request.user_agent.string)
@@ -53,7 +56,7 @@ def after_request_callback(response):
     return response
 
 
-@user_blueprint.route("/", methods=["GET"], defaults={"locale": ""})
+@user_blueprint.route("/", methods=["GET"])
 @user_blueprint.route("/<locale>", methods=["GET"], defaults={"locale": f"{en_content['locale_code']}"})
 @user_blueprint.route("/<locale>", methods=["GET"], defaults={"locale": f"{da_content['locale_code']}"})
 @ensure_locale
@@ -314,7 +317,7 @@ def change_language(newlocale):
     print(request.referrer)
 
     if newlocale in app.config["LANGUAGES"]:
-        print("lang exists")
+        print("clicked valid lang button: {}".format(newlocale))
         session["locale"] = newlocale
         session["force_session_lang"] = True
     else:

@@ -150,5 +150,3 @@ meta_en = {
     },
 
 }
-print(meta_da["collection_meta"]["description"])
-print("loaded content")

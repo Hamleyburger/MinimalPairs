@@ -17,57 +17,86 @@ def ensure_locale(func):
 
         g.showglobe = True
 
-        allowed = True
         # Gets locale from url's args (only routes with locale in url are decorated)
         firstarg = request.path.split('/', 2)[1]
 
-        if firstarg not in app.config['LANGUAGES']:
-            if firstarg == "":
-                print("FIRST ARG NOT IN LANGUAGES")
-                print("firstarg is {}".format(firstarg))
-                kwargs["locale"] = session["locale"]
-                allowed = False
-            else:
-                # if url's locale is invalid, pass current session locale to redirect
-                print(request.endpoint)
-                print("firstarg not in cfg")
-                abort(404)
+        if firstarg == "":
+            print("FIRST ARG EMPTY. Temporarily set to session")
+            firstarg = session["locale"]
+        elif firstarg not in app.config['LANGUAGES']:
+            print("helpers aborting")
+            abort(404)
 
+        # decide whether kwarg should be firstarg or session
+
+        if not session.get("force_session_lang"):
+            print("session precedence: false. Firstarg suggested")
+            session["locale"] = firstarg
+            kwargs["locale"] = firstarg
+        else:
+            print("session precedence: '{}'".format(
+                session.get("force_session_lang")))
+            kwargs["locale"] = session["locale"]
+            session.pop("force_session_lang")
+
+        # decide whether to redirect (if suggested url is different from starting url)
+
+        current_path = request.path
+        redirect_path = url_for(request.endpoint, *args, **kwargs)
+        print("incoming path: {}".format(current_path))
+        print("redirect path: {}".format(redirect_path))
+
+        if str(current_path) != str(redirect_path):
+            print("*******REDIRECT")
+            return redirect(redirect_path, 301)
+
+        """
         elif session["locale"] != firstarg:
-            print("ses locale not in url")
+            print(4)
 
             if session.get("force_session_lang"):
-                print("force ses lang")
+                print(5)
                 # if url's arg is different from session and session has precedence, pass session locale to redirect
                 kwargs["locale"] = session["locale"]
                 session.pop("force_session_lang", None)
-                print("session has precedence")
                 allowed = False
             else:
-                print("not force ses lang")
+                print(6)
 
                 # if url's arg is different and url has precedence, redirect to same endpoint
                 # with new session locale (which will be same as url - route will be accepted next check)
-                print("setting ses to firstarg: {}".format(firstarg))
+
                 session["locale"] = firstarg
-                print("ses locale: {}".format(session["locale"]))
+
                 kwargs["locale"] = session["locale"]
-                print("kwargs locale: {}".format(kwargs["locale"]))
+
                 # Setting allow to False means the url locale arg can be changed and the url will not be translated
                 # This is only a problem if Google interprets it as a duplicate url for the same content.
                 # TODO: make a robot.txt and provide tags for crawlers to not index all except canonical urls (?)
                 # allowed = False
 
         if not allowed:
+            print(8)
             print("not allowed, redirect")
             print("redirect to {}".format(
                 url_for(request.endpoint, *args, **kwargs)))
             return redirect(url_for(request.endpoint, *args, **kwargs), 301)
         else:
+            print(9)
             print("allowed, not redirect")
-            return func(*args, **kwargs)
+        """
+        return func(*args, **kwargs)
 
     return decorated
+
+
+def setlocale():
+
+    firstarg = request.path.split('/', 2)[1]
+    if firstarg in app.config['LANGUAGES']:
+        session["locale"] = firstarg
+    print("set ses to firstarg {}".format(firstarg))
+    return session["locale"]
 
 
 # turn json string into int or list of ints
