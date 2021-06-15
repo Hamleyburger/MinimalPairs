@@ -25,8 +25,8 @@ def Content(locale=None):
         # Front page
         "title_index": "Velkommen",
         "about": [
-            "Minimale Par",
-            ' <p> <i>Minimale par</i> er kort beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd. </p>\
+            "Velkommen til minimalepar.dk",
+            ' <p><i>Minimale par</i> er kort beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd. </p>\
                 Derfor er minimale par gode til at vise hvordan en lyd\
                 kan være afgørende for den opfattede betydning af ordet. Hvis jeg for eksempel siger [d] når jeg mener [k], bliver "krage" til "drage", og\
                 så har jeg pludselig en flok drager på taget.\

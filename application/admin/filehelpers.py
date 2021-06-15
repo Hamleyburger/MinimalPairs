@@ -90,7 +90,7 @@ def ensureThumbnail(directory, filename, image=None):
         if filename.lower().endswith((".jpg", ".png", ".jpeg")):
 
             # raster images are resized for thumbnail*
-            size = 128, 128
+            size = 200, 200
             thumb = Image.open(image)
             thumb.thumbnail(size)
             thumb.save(os.path.join(

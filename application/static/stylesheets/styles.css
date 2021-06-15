@@ -596,6 +596,10 @@ footer a {
   position: relative;
 }
 
+.frontpage-container .text-container .about-text .text-wrapper h1 {
+  font-size: 30px;
+}
+
 .frontpage-container .text-container .about-text .text-wrapper .biggercircle {
   position: absolute;
   width: 200%;
