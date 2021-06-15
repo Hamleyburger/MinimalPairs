@@ -23,7 +23,6 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 def before_request_callback():
 
     print("Before request.")
-    print(request.url)
 
     locale = session.get("locale")
     if not locale:
@@ -57,8 +56,8 @@ def after_request_callback(response):
 
 
 @user_blueprint.route("/", methods=["GET"], defaults={"locale": ""})
-@user_blueprint.route("/<locale>/home", methods=["GET"], defaults={"locale": f"{en_content['locale_code']}"})
-@user_blueprint.route("/<locale>/hjem", methods=["GET"], defaults={"locale": f"{da_content['locale_code']}"})
+@user_blueprint.route("/<locale>", methods=["GET"], defaults={"locale": f"{en_content['locale_code']}"})
+@user_blueprint.route("/<locale>", methods=["GET"], defaults={"locale": f"{da_content['locale_code']}"})
 @ensure_locale
 def index(locale):
     """ cute front page """
