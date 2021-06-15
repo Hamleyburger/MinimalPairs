@@ -20,6 +20,7 @@ def ensure_locale(func):
         allowed = True
         # Gets locale from url's args (only routes with locale in url are decorated)
         firstarg = request.path.split('/', 2)[1]
+        print("at beginning of request firstarg s '{}'".format(firstarg))
         print()
         print("running ensure_locale")
         print("Agent: {}".format(request.headers.get("User-Agent")))
@@ -29,6 +30,9 @@ def ensure_locale(func):
             if firstarg == "":
                 print(f"'firstarg is empty")
                 print("firstarg is {}".format(firstarg))
+                if session.get("locale") == None:
+                    print("couldn't find browser lang, set to DA")
+                    session["locale"] = "da"
                 kwargs["locale"] = session["locale"]
                 allowed = False
             else:
@@ -42,28 +46,34 @@ def ensure_locale(func):
             print("firstarg '{}' is different from session: '{}'.".format(
                 firstarg, session.get("locale")))
 
-            if session.get("force_session_lang"):
-                print(
-                    "Button has not been pressed and session changed. Session wins. Redirecting.")
-                # if url's arg is different from session and session has precedence, pass session locale to redirect
-                kwargs["locale"] = session["locale"]
-                session.pop("force_session_lang", None)
-                allowed = False
-            else:
-                print(
-                    "URL's lang: '{}' is being set in session. Not redirecting".format(firstarg))
+            if session["locale"] != None:
 
-                # if url's arg is different and url has precedence, redirect to same endpoint
-                # with new session locale (which will be same as url - route will be accepted next check)
-                print("setting ses to firstarg: {}".format(firstarg))
+                if session.get("force_session_lang"):
+                    print(
+                        "Button has not been pressed and session changed. Session wins. Redirecting.")
+                    # if url's arg is different from session and session has precedence, pass session locale to redirect
+                    kwargs["locale"] = session["locale"]
+                    session.pop("force_session_lang", None)
+                    allowed = False
+                else:
+                    print(
+                        "URL's lang: '{}' is being set in session. Redirect to ensure URL matches locale".format(firstarg))
+
+                    # if url's arg is different and url has precedence, redirect to same endpoint
+                    # with new session locale (which will be same as url - route will be accepted next check)
+                    print("setting ses to firstarg: {}".format(firstarg))
+                    session["locale"] = firstarg
+                    print("ses locale: {}".format(session["locale"]))
+                    kwargs["locale"] = session["locale"]
+                    print("kwargs locale: {}".format(kwargs["locale"]))
+                    # Setting allow to False means the url locale arg can be changed and the url will not be translated
+                    # This is only a problem if Google interprets it as a duplicate url for the same content.
+                    # TODO: make a robot.txt and provide tags for crawlers to not index all except canonical urls (?)
+                    allowed = False
+            else:
+                print("WHY IS THERE NOTHING IN SESSION")
+                print("allowing and setting session to firstarg")
                 session["locale"] = firstarg
-                print("ses locale: {}".format(session["locale"]))
-                kwargs["locale"] = session["locale"]
-                print("kwargs locale: {}".format(kwargs["locale"]))
-                # Setting allow to False means the url locale arg can be changed and the url will not be translated
-                # This is only a problem if Google interprets it as a duplicate url for the same content.
-                # TODO: make a robot.txt and provide tags for crawlers to not index all except canonical urls (?)
-                # allowed = False
         else:
             print("all is looking good. Firstag is '{}', session is '{}', endpoint is '{}', kwargs are '{}'".format(
                 firstarg, session["locale"], request.endpoint, kwargs))
