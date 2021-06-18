@@ -11,8 +11,8 @@ from ipapy import is_valid_ipa
 from application.content_management import Content
 
 
-def isIPA(form, field):
-    """ Checks if input is valid IPA. Accepts if lower case version is valid """
+def isValidSymbol(form, field):
+    """ Checks if input is valid IPA or accepted alternative. Accepts if lower case version is valid IPA """
 
     if not is_valid_ipa(field.data):
         if field.data != "-":
@@ -22,9 +22,14 @@ def isIPA(form, field):
                 field.data = field.data.lower()
 
 
+def isWildCard(form, field):
+    if field.data != "*":
+        isValidSymbol(form, field)
+
+
 def IPAOrNothing(form, field):
     if not field.data == "":
-        isIPA(form, field)
+        isValidSymbol(form, field)
 
 
 def minimumFields(form, field):
@@ -46,43 +51,14 @@ def minimumFields(form, field):
         raise ValidationError("Input at least two opposition sounds")
 
 
-# Commented out this admin login form since I'm experimenting with Flask-User
-
-# def adminExists(form, field):
-#    admin = db.session.query(User).filter_by(
-#        username=field.data).filter_by(role=2).first()
-#    if not admin:
-#        raise ValidationError("Invalid username")
-
-
-# def pwCorrect(form, field):
-#    admin = db.session.query(User).filter_by(
-#        username=form.username.data).filter_by(role=2).first()
-#    print(str(admin) + " attempted to login")
-#    if not admin:
-#        print("not admin")
-#        return
-#    elif admin.password != field.data:
-#        print("pw not the same")
-#        print(field.data)
-#        raise ValidationError("Incorrect password")
-#    else:
-#        form.id = admin.id
-
-
-# class AdminLogin(FlaskForm):
-#    username = StringField("label", validators=[DataRequired(), adminExists])
-#    password = PasswordField("label", validators=[DataRequired(), pwCorrect])
-#    id = None
-
-
 class SearchSounds(FlaskForm):
-    sound1 = StringField(validators=[DataRequired(), isIPA])
-    sound2 = StringField(validators=[DataRequired(), isIPA])
+    sound1 = StringField(validators=[DataRequired(), isValidSymbol])
+    sound2 = StringField(validators=[DataRequired(), isWildCard])
 
 
 class SearchMOs(FlaskForm):
-    sound1 = StringField(validators=[DataRequired(), isIPA, minimumFields])
+    sound1 = StringField(
+        validators=[DataRequired(), isValidSymbol, minimumFields])
     sound2 = StringField(validators=[IPAOrNothing])
     sound3 = StringField(validators=[IPAOrNothing])
     sound4 = StringField(validators=[IPAOrNothing])

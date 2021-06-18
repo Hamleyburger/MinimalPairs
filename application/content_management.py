@@ -66,6 +66,8 @@ def Content(locale=None):
         "help_pairs_content": '\
             <p>Søg efter sæt med minimale par ved at indsætte mållydene i søgefelterne. Du kan også indsætte konsonantklynger.</p>\
             <p>Hvis du ikke har IPA-tegnet på dit keyboard, kan du klikke i det felt, du vil indsætte et tegn i, og bagefter klikke på tegnet i tegnvælgeren.</p>\
+            <p>Du kan bruge bindestreg <span class="texthighlight">-</span> til at søge efter udeladte lyde - f.eks. "sø" vs. "ø" med udeladelse af [s].</p>\
+            <p>Du kan bruge asterisk <span class="texthighlight">*</span> til at søge efter "alle lyde" - f.eks. [s] vs. "*" for at finde alle par med [s].</p>\
             <p>I resultaterne kan du tilføje et ord til din samling med <i class = "fas fa-plus-circle"></i> og fjerne det med <i class ="fas fa-minus-circle"></i>. </p>\
             ',
         "help_MO_title": "Søg efter sæt med multiple oppositioner",

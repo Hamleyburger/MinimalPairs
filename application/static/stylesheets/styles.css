@@ -241,6 +241,13 @@
   text-align: center;
 }
 
+.help-container .texthighlight {
+  color: #3b1734;
+  background: #caabbf;
+  padding: 0px 9px;
+  border-radius: 4px;
+}
+
 .help-container .help-btn {
   padding: 0;
   margin: 0;
@@ -899,6 +906,7 @@ footer a {
 .contentbox {
   width: 100% !important;
   padding: 15px;
+  margin-bottom: 150px;
 }
 
 .contentbox [class*="col-"] {

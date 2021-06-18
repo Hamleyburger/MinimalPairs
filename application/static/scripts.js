@@ -1,9 +1,17 @@
 // Enable tooltips across pages
 $(function () {
     $('[data-toggle="tooltip"]').tooltip({
-        'delay': { show: 1000, hide: 500 }
-   });
+        'delay': { show: 500, hide: 500 }
+    });
+
+   $('[data-toggle="tooltip"]').on('click', function () {
+    $(this).tooltip('hide')
+    });
+
+
+
 })
+
 
 
 

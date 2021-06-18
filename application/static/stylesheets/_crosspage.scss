@@ -222,6 +222,12 @@ margin: 0;
 .help-container {
     position: relative;
     text-align: center;
+    .texthighlight {
+        color: $color-purp1;
+        background: $color-purp3;
+        padding: 0px 9px;
+        border-radius: 4px;
+    }
     .help-btn {
         //position: absolute;
         //top: 0px;

@@ -106,11 +106,16 @@ class Sound(db.Model):
 
         sound1 = self
 
-        # Make a query for populating the contrasts to be returned in the list
-        clauseA = and_(Pair.s1 == sound1,
-                       Pair.s2 == Sound.get(soundString=sound2))
-        clauseB = and_(Pair.s1 == Sound.get(soundString=sound2),
-                       Pair.s2 == sound1)
+        if sound2 != "*":
+            # Make a query for populating the contrasts to be returned in the list
+            clauseA = and_(Pair.s1 == sound1,
+                           Pair.s2 == Sound.get(soundString=sound2))
+            clauseB = and_(Pair.s1 == Sound.get(soundString=sound2),
+                           Pair.s2 == sound1)
+        else:
+            clauseA = Pair.s1 == sound1
+            clauseB = Pair.s2 == sound1
+
         contrastsQuery = db.session.query(Pair).filter(or_(
             clauseA, clauseB)).all()
 
