@@ -105,11 +105,17 @@
         color: $color-purp2;
     }
 }
+
+    /* Ensure the size of the image fit the container perfectly */
+
 // Icons for buttons in general
 .fa-minus-circle {
     color: $color-red1;
 }
 .fa-plus-circle {
+    color: $color-purp1;
+}
+.fa-upload {
     color: $color-purp1;
 }
 .fa-circle {
@@ -240,43 +246,46 @@ margin: 0;
         background-color: unset;
     }
 
-    .help-modal {
-        background-color: $color-red2;
-        border-radius:13px;
+}
+.help-modal, .my-cropper-modal {
+    background-color: $color-red2;
+    border-radius:13px;
 
-        .modal-header {
-            border: 0;
-            .btn-close {
-                font-size: 23px;
-                background: none;
-                padding: 0;
-                margin: 0;
-                position: absolute;
-                top: 3px;
-                right: 7px;
-                color: $color-purp1;
-                opacity: 0.6;
-                &:hover {
-                    opacity: 0.8;
-                }
-            }
-        }
-
-        .modal-body {
-            background-color: $color-yel3;
-            margin: 0px 15px;
-            border-radius: 11px;
-            text-align: left;
-            border: 2px solid darken($color-red2, 7%);
-        }
-
-        .modal-footer {
-            border: 0;
-            justify-content: center;
-
-            .modal-close-btn {
-                margin-top: unset;
+    .modal-header {
+        border: 0;
+        .btn-close {
+            font-size: 23px;
+            background: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 3px;
+            right: 7px;
+            color: $color-purp1;
+            opacity: 0.6;
+            &:hover {
+                opacity: 0.8;
             }
         }
     }
+
+    .modal-body {
+        background-color: $color-yel3;
+        margin: 0px 15px;
+        border-radius: 11px;
+        text-align: left;
+        border: 2px solid darken($color-red2, 7%);
+    }
+
+    .modal-footer {
+        border: 0;
+        justify-content: center;
+
+        .modal-close-btn {
+            margin-top: unset;
+        }
+    }
 }
+
+
+

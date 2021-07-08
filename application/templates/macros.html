@@ -71,7 +71,7 @@
             {% endfor %}
         </p>
     </div>
-    {{ word_card_buttons(pairList[0].w2, ) }}
+    {{ word_card_buttons(pairList[0].w2) }}
 </div>
 {% endmacro %}
 
@@ -99,7 +99,7 @@
 
 <!-- Word cards with jinja for 'contrasts' card -->
 <!-- Requires a word and a collection (of ids) -->
-{% macro word_card(word) %}
+{% macro word_card(word, uploadbutton=false) %}
 
 
 <div class="card text-center wordcard word-font shadow" style="width: 18rem;">
@@ -109,7 +109,7 @@
     </div>
     <div class="card-body">
         <h5 class="card-title">{{ word.word }}</h5>
-        {{ word_card_buttons(word) }}
+        {{ word_card_buttons(word, uploadbutton=uploadbutton) }}
     </div>
 </div>
 
@@ -119,7 +119,7 @@
 
 
 <!-- The buttons all word cards must have to add/remove from collection -->
-{% macro word_card_buttons(word, infobutton=true) %}
+{% macro word_card_buttons(word, infobutton=true, uploadbutton=false) %}
 <!-- Set collection -->
 <script>
     // This url is defined for passing into add_to_collection which is defined in scripts.js
@@ -155,6 +155,22 @@
     {% if infobutton %}
     <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id, locale=session.locale) }}" data-toggle="tooltip"
         data-placement="top" title="{{ tooltip_wordinfo }}"><i class="fas fa-info-circle"></i></a>
+    {% endif %}
+    {% if uploadbutton %}
+
+    <div>
+        <script>
+            upload_url = "{{ url_for('user_blueprint.upload_image') }}"
+        </script>
+        <form id="upload-file" action="" method="POST" enctype="multipart/form-data">
+            <input type="file" onchange="uploadFile()" class="custom-file-input" name="image" id="image"
+                accept="image/*">
+            <label for="image" class="p-0 file-label" onclick="set_upload_word_id('{{ word.id }}')"><i
+                    class="fas fa-upload"></i></label>
+            <input type="hidden" id="upload_word_id" name="upload_word_id" value="">
+        </form>
+    </div>
+
     {% endif %}
 </div>
 {% endmacro %}

@@ -1,3 +1,14 @@
+// Color variables referenced from style sheet. Used in front page animation (user index) but must be avaiable to all pages
+var colorpurp1 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp1');
+var colorpurp2 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp2');
+var colorpurp3 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp3');
+var colorred1 = getComputedStyle(document.documentElement).getPropertyValue('--color-red1');
+var colorred2 = getComputedStyle(document.documentElement).getPropertyValue('--color-red2');
+var coloryel1 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel1');
+var coloryel2 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel2');
+var coloryel3 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel3');
+
+
 // Enable tooltips across pages
 $(function () {
     $('[data-toggle="tooltip"]').tooltip({
@@ -7,11 +18,7 @@ $(function () {
    $('[data-toggle="tooltip"]').on('click', function () {
     $(this).tooltip('hide')
     });
-
-
-
 })
-
 
 
 
@@ -30,22 +37,7 @@ function insertAtCursor(sound) {
 
 
 
-// Color variables referenced from style sheet. Used in front page animation (user index) but must be avaiable to all pages
-var colorpurp1 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp1');
-var colorpurp2 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp2');
-var colorpurp3 = getComputedStyle(document.documentElement).getPropertyValue('--color-purp3');
-var colorred1 = getComputedStyle(document.documentElement).getPropertyValue('--color-red1');
-var colorred2 = getComputedStyle(document.documentElement).getPropertyValue('--color-red2');
-var coloryel1 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel1');
-var coloryel2 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel2');
-var coloryel3 = getComputedStyle(document.documentElement).getPropertyValue('--color-yel3');
-
-
-
-
 // AJAX functions for adding and removing from collection
-
-
 // keep track of what words and word groups are in the window
 var renderedids = [];
 var renderedWordGroups = [];
@@ -182,6 +174,92 @@ function refreshWordGroupBtns(session) {
         }
     
      });
+}
+
+
+// AJAX and JS funcitons for for adding custom images temporarily to collection,
+// cropping them and uploading the cropped version all while keeping track of the
+// word id.
+
+let upload_word_id;
+
+function set_upload_word_id(id) {
+    console.log("Setting word id to " + id);
+    $("#upload_word_id").attr("value",id);
+    upload_word_id = id;
+}
+
+function uploadFile() {
+
+
+    var form_data = new FormData($('#upload-file')[0]);
+    var files = $('#image')[0].files;
+    
+    // Check file selected or not
+    if(files.length > 0 ){
+        
+        $.ajax({
+            type: 'POST',
+            url: upload_url,
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                console.log('Success!');
+            },
+        }).done(function(data) {
+            if (data.error) {
+                
+                alert(data.error)
+            }
+            else {
+                    $("#croppermodal").modal("show");
+                    unique = Date.now();
+                    $('#croppermodal').on('shown.bs.modal', function () {
+                        // your on click event binding here.
+                
+                        // example of triggering an input.
+                        $("#cropperimage").attr("src", data.path + "?" + unique );
+                        start_cropper(data.path);
+                        console.log("WORD ID LET = " + upload_word_id);
+
+                    })
+                }
+           });
+        }else{
+           alert("Please select a file.");
+        }
 
 }
+
+
+
+function start_cropper(new_url) {
+    const image = document.getElementById('cropperimage');
+
+    console.log("starting cropper");
+
+    
+    const cropper = new Cropper(image, {
+        aspectRatio: 16 / 9,
+        crop(event) {
+            // console.log(event.detail.x);
+            // console.log(event.detail.y);
+            // console.log(event.detail.width);
+            // console.log(event.detail.height);
+            // console.log(event.detail.rotate);
+            // console.log(event.detail.scaleX);
+            // console.log(event.detail.scaleY);
+        },
+    });
+
+    // make sure image gets refreshed when start_cropper is called
+    image.cropper.replace(new_url);
+
+
+}
+
+
+// End of collection-related AJAX
 

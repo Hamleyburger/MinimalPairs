@@ -141,3 +141,32 @@
         font-size: larger;
     }
 }
+
+
+.newcroppermodal {
+
+    .preview {
+        overflow: hidden;
+        width: 160px;
+        height: 160px;
+        margin: 10px;
+        border: 1px solid red;
+    }
+}
+.cropper_styles {
+
+
+    /* Ensure the size of the image fit the container perfectly */
+    img {
+        display: block;
+        /* This rule is very important, please don't ignore this */
+        max-width: 100%;
+    }
+    
+}
+.custom-file-input {
+    display: none;
+}
+.file-label {
+    margin: 6px 3px;
+}

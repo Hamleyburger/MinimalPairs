@@ -1,6 +1,6 @@
 from flask import session
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectMultipleField, RadioField, Form, FormField, PasswordField
+from wtforms import StringField, SubmitField, SelectMultipleField, RadioField, Form, FormField, PasswordField, FileField
 from wtforms.fields.simple import HiddenField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from .models import User
@@ -9,6 +9,7 @@ from application import db
 # from werkzeug.utils import secure_filename
 from ipapy import is_valid_ipa
 from application.content_management import Content
+import imghdr
 
 
 def isValidSymbol(form, field):

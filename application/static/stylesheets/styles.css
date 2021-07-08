@@ -121,11 +121,16 @@
   color: #995f8b;
 }
 
+/* Ensure the size of the image fit the container perfectly */
 .fa-minus-circle {
   color: #eb757d;
 }
 
 .fa-plus-circle {
+  color: #3b1734;
+}
+
+.fa-upload {
   color: #3b1734;
 }
 
@@ -257,16 +262,16 @@
   background-color: unset;
 }
 
-.help-container .help-modal {
+.help-modal, .my-cropper-modal {
   background-color: #eba48b;
   border-radius: 13px;
 }
 
-.help-container .help-modal .modal-header {
+.help-modal .modal-header, .my-cropper-modal .modal-header {
   border: 0;
 }
 
-.help-container .help-modal .modal-header .btn-close {
+.help-modal .modal-header .btn-close, .my-cropper-modal .modal-header .btn-close {
   font-size: 23px;
   background: none;
   padding: 0;
@@ -278,11 +283,11 @@
   opacity: 0.6;
 }
 
-.help-container .help-modal .modal-header .btn-close:hover {
+.help-modal .modal-header .btn-close:hover, .my-cropper-modal .modal-header .btn-close:hover {
   opacity: 0.8;
 }
 
-.help-container .help-modal .modal-body {
+.help-modal .modal-body, .my-cropper-modal .modal-body {
   background-color: #fffae9;
   margin: 0px 15px;
   border-radius: 11px;
@@ -290,14 +295,14 @@
   border: 2px solid #e68c6d;
 }
 
-.help-container .help-modal .modal-footer {
+.help-modal .modal-footer, .my-cropper-modal .modal-footer {
   border: 0;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
 }
 
-.help-container .help-modal .modal-footer .modal-close-btn {
+.help-modal .modal-footer .modal-close-btn, .my-cropper-modal .modal-footer .modal-close-btn {
   margin-top: unset;
 }
 
@@ -1369,6 +1374,32 @@ footer a {
 .sorry p {
   color: #3b1734;
   font-size: larger;
+}
+
+.newcroppermodal .preview {
+  overflow: hidden;
+  width: 160px;
+  height: 160px;
+  margin: 10px;
+  border: 1px solid red;
+}
+
+.cropper_styles {
+  /* Ensure the size of the image fit the container perfectly */
+}
+
+.cropper_styles img {
+  display: block;
+  /* This rule is very important, please don't ignore this */
+  max-width: 100%;
+}
+
+.custom-file-input {
+  display: none;
+}
+
+.file-label {
+  margin: 6px 3px;
 }
 
 .error-message {

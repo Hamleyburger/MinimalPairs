@@ -10,6 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
 from .content_management import Content
+from .user.scheduler import start_scheduler
 
 
 
@@ -47,6 +48,8 @@ db = SQLAlchemy(app)
 from .user.models import User
 user_manager = UserManager(app, db, User)
 
+# Start scheduler
+start_scheduler(app.config)
 
 
 

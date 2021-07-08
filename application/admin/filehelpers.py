@@ -7,6 +7,7 @@ import imghdr
 import time
 import filecmp
 from ..exceptions import invalidImageError
+from .monkeypatch import monkeypatch_imghdr_bug
 
 # Helpers is being used by models
 # Helpers so far handles session, decorators for views and stock API
@@ -41,6 +42,7 @@ def validate_image(image):
 
     print("checking for format")
 
+    monkeypatch_imghdr_bug()
     print(str(imghdr.what(image)))
     if imghdr.what(image) not in valid_formats:
         print("invalid image format")

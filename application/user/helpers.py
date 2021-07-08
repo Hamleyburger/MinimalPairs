@@ -6,6 +6,7 @@ from application.models import Sound
 import functools
 from application import app
 from ..content_management import Content
+import uuid
 
 
 # Decorator: redirect with localized url if no locale
@@ -245,3 +246,12 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
                 sound1, reducedList, completeMatches=usedMOsets, partialMatches=partialMatches, counter=counter)
 
     return partialMatches
+
+
+def get_uid():
+    uid = session.get("user_id")
+    if not uid:
+        uid = uuid.uuid4()
+        session["user_id"] = uid
+    print("user has id: {}".format(uid))
+    return uid

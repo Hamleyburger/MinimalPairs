@@ -1,16 +1,18 @@
-from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort
+from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort, send_from_directory
 import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale
+from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, get_uid
 from application.models import Word, Group, Sound
 from .models import User
 from application import db, app
 from .forms import SearchSounds, SearchMOs, toPDF_wrap
 from flask_weasyprint import HTML, CSS, render_pdf
 from application.content_management import da_content, en_content, Content
-
+from application.admin.filehelpers import validate_image
+import os
+from werkzeug.utils import secure_filename
 import sentry_sdk
 
 
@@ -45,7 +47,7 @@ def before_request_callback():
             session["manifest"] = "manifest.webmanifest"
 
     if not session.get("collection"):
-        session["collection"] = []
+        session["collection"] = [1, 39, 36]
 
 
 @app.after_request
@@ -210,7 +212,6 @@ def contrasts(locale):
 def collection(locale):
 
     form = toPDF_wrap(locale)()
-
     print(request.method)
     collection = []
     # Get pairs from session object
@@ -324,6 +325,46 @@ def change_language(newlocale):
         print("lang bad: {}".format(newlocale))
 
     return redirect(request.referrer)
+
+
+@ user_blueprint.route("/ajax_upload_image", methods=["POST"])
+# For user to upload image to be cropped
+def upload_image(cropped=None):
+    print("upload_image is called")
+    if request.files.get("image"):
+        file = request.files["image"]
+        print("upload_image: {}".format(file.filename))
+        try:
+            validate_image(file)
+
+            wordid = request.form.get("upload_word_id")
+            if cropped:
+                filename = "cropped"
+            else:
+                filename = "full"
+
+            uniquepath = os.path.join(str(get_uid()), wordid)
+            user_path = os.path.join(
+                app.config["TEMP_UPLOADS"], uniquepath)
+            if not os.path.exists(user_path):
+                os.makedirs(user_path)
+            file.save(os.path.join(
+                user_path, filename))
+            print("image saved in: {}".format(os.path.join(
+                user_path, filename)))
+
+            filepath = os.path.join("tempuploads", uniquepath, filename)
+            print(filepath)
+
+            private_url = url_for("static",
+                                  filename=filepath)
+            print("private URL is: {}".format(private_url))
+
+            return jsonify({'path': private_url})
+        except Exception as e:
+            print(e)
+            return jsonify({'error': str(e)})
+    return jsonify({'error': 'Missing file'})
 
 
 """
