@@ -11,6 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
 from .content_management import Content
 from .user.scheduler import start_scheduler
+from flask_migrate import Migrate
 
 
 
@@ -47,6 +48,9 @@ db = SQLAlchemy(app)
 # Initialize flask-user and make an admin user if not exists
 from .user.models import User
 user_manager = UserManager(app, db, User)
+
+# Flask migrate
+migrate = Migrate(app, db)
 
 # Start scheduler
 start_scheduler(app.config)

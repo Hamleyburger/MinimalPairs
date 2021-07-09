@@ -9,6 +9,7 @@ from sqlalchemy import or_, and_
 from .admin.filehelpers import store_image, ensureThumbnail
 from ipapy import is_valid_ipa
 
+
 word_grouping = db.Table('groupwords',
                          db.Column('group_id', db.Integer,
                                    db.ForeignKey('groups.id')),
@@ -434,6 +435,9 @@ class Word(db.Model):
         "Group",
         secondary=word_grouping,
         back_populates="members")
+
+    userimages = db.relationship(
+        "Userimage", backref=db.backref('word'), cascade="all, delete")
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):

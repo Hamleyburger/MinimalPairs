@@ -3,9 +3,9 @@ import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, get_uid
+from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection
 from application.models import Word, Group, Sound
-from .models import User
+from .models import User, Userimage
 from application import db, app
 from .forms import SearchSounds, SearchMOs, toPDF_wrap
 from flask_weasyprint import HTML, CSS, render_pdf
@@ -214,13 +214,15 @@ def collection(locale):
     form = toPDF_wrap(locale)()
     print(request.method)
     collection = []
-    # Get pairs from session object
-    if session.get("collection"):
-        print("there's a collection")
-        id_collection = session["collection"]
+    custom_image_ids = []
 
-        for id in id_collection:
-            collection.append(Word.query.get(int(id)))
+    # Get pairs from session object
+    for id in getCollection():
+        collection.append(Word.query.get(int(id)))
+
+    custom_image_ids = custom_images_in_collection(collection)
+
+    print(custom_image_ids)
 
     if request.method == "POST":
         print("**************************************post colle")
@@ -333,34 +335,15 @@ def upload_image(cropped=None):
     print("upload_image is called")
     if request.files.get("image"):
         file = request.files["image"]
-        print("upload_image: {}".format(file.filename))
+
+        print("checking image: {}".format(file.filename))
         try:
+
             validate_image(file)
-
             wordid = request.form.get("upload_word_id")
-            if cropped:
-                filename = "cropped"
-            else:
-                filename = "full"
-
-            uniquepath = os.path.join(str(get_uid()), wordid)
-            user_path = os.path.join(
-                app.config["TEMP_UPLOADS"], uniquepath)
-            if not os.path.exists(user_path):
-                os.makedirs(user_path)
-            file.save(os.path.join(
-                user_path, filename))
-            print("image saved in: {}".format(os.path.join(
-                user_path, filename)))
-
-            filepath = os.path.join("tempuploads", uniquepath, filename)
-            print(filepath)
-
-            private_url = url_for("static",
-                                  filename=filepath)
-            print("private URL is: {}".format(private_url))
-
+            private_url = Userimage.store(file, wordid)
             return jsonify({'path': private_url})
+
         except Exception as e:
             print(e)
             return jsonify({'error': str(e)})

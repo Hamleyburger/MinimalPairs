@@ -10,7 +10,7 @@ def print_date_time():
 
 def start_scheduler(config):
     scheduler = BackgroundScheduler()
-    scheduler.add_job(func=print_date_time, trigger="interval", seconds=60)
+    scheduler.add_job(func=print_date_time, trigger="interval", seconds=120)
     scheduler.start()
 
     # Shut down the scheduler when exiting the app

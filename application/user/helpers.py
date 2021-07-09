@@ -249,9 +249,31 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
 
 
 def get_uid():
+    """ Returns user id as string """
     uid = session.get("user_id")
     if not uid:
-        uid = uuid.uuid4()
+        uid = str(uuid.uuid4())
         session["user_id"] = uid
     print("user has id: {}".format(uid))
-    return uid
+    return str(uid)
+
+
+def custom_images_in_collection(collection):
+    """ Takes a collection of WORDS and returns a dict {id: 'staticpath'} user's own cropped images """
+
+    image_ids = {}
+
+    user_id = session.get("user_id")
+    if not user_id:
+        return image_ids
+
+    for word in collection:
+        for userimage in word.userimages:
+            if userimage.userid == user_id:
+                print("user has image")
+                if userimage.cropped:
+                    image_ids[userimage.wordid] = userimage.staticpath
+                    print("image cropped")
+                else:
+                    print("not cropped")
+    return image_ids

@@ -194,9 +194,12 @@ function uploadFile() {
 
     var form_data = new FormData($('#upload-file')[0]);
     var files = $('#image')[0].files;
+    console.log("upload file called");
     
     // Check file selected or not
     if(files.length > 0 ){
+
+        console.log("file detected");
         
         $.ajax({
             type: 'POST',
@@ -206,11 +209,11 @@ function uploadFile() {
             cache: false,
             processData: false,
             success: function(data) {
-                console.log('Success!');
+                console.log('File reached server...!');
             },
         }).done(function(data) {
             if (data.error) {
-                
+                console.log("but wasn't saved.");
                 alert(data.error)
             }
             else {
