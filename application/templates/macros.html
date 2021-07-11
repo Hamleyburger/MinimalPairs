@@ -159,12 +159,13 @@
     {% if uploadbutton %}
 
     <div>
-        <script>
-            upload_url = "{{ url_for('user_blueprint.upload_image') }}"
-        </script>
         <form id="upload-file" action="" method="POST" enctype="multipart/form-data">
-            <input type="file" onchange="uploadFile()" class="custom-file-input" name="image" id="image"
-                accept="image/*">
+            <script>
+                url_for_img_validation = "{{ url_for('user_blueprint.validate_browser_image') }}"
+                url_for_img_upload = "{{ url_for('user_blueprint.upload_image') }}"
+            </script>
+            <input type="file" onchange="fileSelected(url_for_img_upload)" class="custom-file-input" name="image"
+                id="image" accept="image/*">
             <label for="image" class="p-0 file-label" onclick="set_upload_word_id('{{ word.id }}')"><i
                     class="fas fa-upload"></i></label>
             <input type="hidden" id="upload_word_id" name="upload_word_id" value="">

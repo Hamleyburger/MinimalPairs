@@ -30,6 +30,7 @@
         <div class="modal-content my-cropper-modal">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <div id="preview" style="width: 100px; height: 100px; overflow: hidden;"></div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -44,7 +45,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="cropper-confirm">Save</button>
             </div>
         </div>
     </div>
@@ -111,12 +112,7 @@
 </div>
 </div>
 
-<script>
-    $("#search-collapse-btn").click(function () {
-        //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
-        $("#rotate-icon").toggleClass("fa-rotate-180");
-    });
-</script>
+
 
 <div class="container contentbox">
     <!-- For loop "pairs" for iterating over pairs -->
@@ -144,3 +140,15 @@
 {% endif %}
 
 {% endblock %}
+
+{% block script %}
+
+<script>
+    $("#search-collapse-btn").click(function () {
+        //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html
+        $("#rotate-icon").toggleClass("fa-rotate-180");
+    });
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='cropper_scripts.js') }}"></script>
+
+{% endblock script %}

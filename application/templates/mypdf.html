@@ -112,6 +112,7 @@
     {% for word in collection %}
     <div class="imgcard">
         <div class="imgcontainer">
+            <!-- if word.id in userimages, filename = 'fullpath' -->
             <img class="card-img-top" src="{{ url_for('static', filename='images/' + word.image.name)}}"
                 alt="image of '{{ word.word }}'">
 

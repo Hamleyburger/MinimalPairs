@@ -225,7 +225,6 @@ def collection(locale):
     print(custom_image_ids)
 
     if request.method == "POST":
-        print("**************************************post colle")
         if getCollection():
             if form.validate_on_submit():
                 # Background file name is defined in the declaration of wtf choices in forms.py
@@ -331,14 +330,13 @@ def change_language(newlocale):
 
 @ user_blueprint.route("/ajax_upload_image", methods=["POST"])
 # For user to upload image to be cropped
-def upload_image(cropped=None):
-    print("upload_image is called")
-    if request.files.get("image"):
-        file = request.files["image"]
+def upload_image():
+
+    if request.files.get("file"):
+        file = request.files["file"]
 
         print("checking image: {}".format(file.filename))
         try:
-
             validate_image(file)
             wordid = request.form.get("upload_word_id")
             private_url = Userimage.store(file, wordid)
@@ -346,7 +344,28 @@ def upload_image(cropped=None):
 
         except Exception as e:
             print(e)
-            return jsonify({'error': str(e)})
+            return jsonify({'error': 'There was a problem uploading the image.'})
+    return jsonify({'error': 'Missing file'})
+
+
+@ user_blueprint.route("/ajax_validate_image", methods=["POST"])
+# For validating the image with python
+def validate_browser_image():
+
+    if request.files.get("image"):
+        file = request.files["image"]
+
+        print("validating image: {}".format(file.filename))
+        try:
+            validate_image(file, temp=True)
+            print("validated, returning True")
+            print(jsonify({'valid': True}))
+            return jsonify({'valid': True})
+
+        except Exception as e:
+            print(e)
+            return jsonify({'error': str(e), 'valid': False})
+
     return jsonify({'error': 'Missing file'})
 
 

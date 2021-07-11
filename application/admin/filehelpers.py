@@ -25,12 +25,14 @@ from .monkeypatch import monkeypatch_imghdr_bug
 #            session.pop(key)
 
 # validate_image is in helpers.py because it's used from different forms (add and change)
-def validate_image(image):
+def validate_image(image, temp=None):
+    """ Image validation. Use with try/except """
     valid_formats = ["jpg", "jpeg", "png", "svg"]
     valid_extension = [".jpg", ".jpeg", ".png", ".svg"]
     max_image_size = 3000000
 
-    fileExists(image, current_app.config["IMAGE_UPLOADS"])
+    if not temp:
+        fileExists(image, current_app.config["IMAGE_UPLOADS"])
 
     image.seek(0, os.SEEK_END)
     size = image.tell()
