@@ -29,17 +29,18 @@ def validate_image(image, temp=None):
     """ Image validation. Use with try/except """
     valid_formats = ["jpg", "jpeg", "png", "svg"]
     valid_extension = [".jpg", ".jpeg", ".png", ".svg"]
-    max_image_size = 3000000
+    max_image_size = 3500000
 
     if not temp:
         fileExists(image, current_app.config["IMAGE_UPLOADS"])
 
     image.seek(0, os.SEEK_END)
     size = image.tell()
+    print("file size: {} MB".format(size/1000000))
     # seek to its beginning, so you might save it entirely
     image.seek(0)
     if size > max_image_size:
-        print("File is > 2.9 mb")
+        print("File is > ca. 3.4 mb")
         raise invalidImageError("Image must be less than 3 MB")
 
     print("checking for format")

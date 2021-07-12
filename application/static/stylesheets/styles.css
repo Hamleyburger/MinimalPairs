@@ -49,7 +49,7 @@
 
 .alert-wrapper .alert-danger {
   color: #3b1734;
-  background-color: #caabbf;
+  background-color: #eb757d;
 }
 
 .ipa-container {
@@ -1154,6 +1154,7 @@ footer a {
 
 .word-info-container .outer-row [class*='col-'] .word1-img-div img {
   width: 100%;
+  background-color: #fffae9;
 }
 
 .word-info-container .outer-row .slider {

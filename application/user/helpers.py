@@ -271,9 +271,6 @@ def custom_images_in_collection(collection):
         for userimage in word.userimages:
             if userimage.userid == user_id:
                 print("user has image")
-                if userimage.cropped:
-                    image_ids[userimage.wordid] = userimage.staticpath
-                    print("image cropped")
-                else:
-                    print("not cropped")
+                image_ids[userimage.wordid] = userimage.staticpath
+
     return image_ids

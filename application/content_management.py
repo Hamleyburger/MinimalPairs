@@ -104,7 +104,7 @@ def Content(locale=None):
         "help_pdf_cue": "Vælg bagside yadda yadda",
         "help_pdf_title": "Generer PDF-fil med bagside",
         "help_pdf_content": '\
-            <p>Generer en PDF-fil med ordkort med alle ordene i din samling. Kortene kan bruges til f.eks. at spille vendespil eller fisk.</p>\
+            <p>Generer en PDF-fil med ordkort med alle ordene i din samling. Hvis ordet ikke har et billede, kan du tilføje dit eget ved at trykke på <i class="fas fa-upload"></i></p>\
             <p>PDF-filen er beregnet til at blive printet to-sidet, således at hveranden side har et mønster, som vil blive printet på bagsiden af hvert ark med ordkort.</p>\
             <p>Ved at trykke på “generer PDF”, vil du blive videresendt til en side, hvor du kan vælge at gemme filen på din enhed.</p>\
             ',
@@ -118,7 +118,8 @@ def Content(locale=None):
         "bs_filename_logocat": "catpattern",
 
         # Rendered PDF
-        "title_pdf": "Ordkort"
+        "title_pdf": "Ordkort",
+        "missing_custom_image": "Brugerdefinerede billeder slettes efter noget tid. Hvis billedet mangler, så prøv at uploade billedet igen: ",
 
     }
 
@@ -233,7 +234,8 @@ def Content(locale=None):
         "bs_filename_logocat": "catpattern",
 
         # Rendered PDF
-        "title_pdf": "Word cards"
+        "title_pdf": "Word cards",
+        "missing_custom_image": "Custom images are removed from the server after a while. If the image is missing try uploading it again: ",
     }
 
     text_da.update(meta_da)

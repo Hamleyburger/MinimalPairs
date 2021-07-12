@@ -4,7 +4,7 @@ from flask_user import UserMixin, UserManager
 import datetime
 import os
 from pathlib import Path, PurePath
-from flask import jsonify, url_for
+from flask import jsonify, url_for, session
 from .helpers import get_uid
 import sentry_sdk
 
@@ -81,6 +81,7 @@ class Userimage(db.Model):
 
         try:
 
+            print("store...")
             # find/make dir
             temp_path = os.path.join(
                 app.config["TEMP_UPLOADS"], user_id)
@@ -100,7 +101,7 @@ class Userimage(db.Model):
             if userimage:
                 # If user has replaced a previous image for a particular word, update entry
                 userimage.cropped = cropped
-                userimage.created_date = datetime.datetime.utcnow
+                userimage.created_date = datetime.datetime.utcnow()
 
             else:
                 # create new db entry for saved user image
@@ -112,8 +113,11 @@ class Userimage(db.Model):
                     cropped=cropped
                 )
 
-                db.session.add(userimage)
-                db.session.commit()
+            db.session.add(userimage)
+            # Add to session
+            userimage.toSession()
+            print("commit")
+            db.session.commit()
 
             return image_url
 
@@ -123,17 +127,29 @@ class Userimage(db.Model):
                 "Apologies! There was a problem storing the image. Dev has been notified.")
 
     def remove(self):
-        """ Remove the image object from database and its correponding file. """
+        """ Remove the image object from database and its correponding file and session entry. """
 
         word_id = self.wordid
         full_path = self.fullpath
         user_id = self.userid
+
+        if session.get("userimages"):
+            if int(word_id) in session["userimages"]:
+                print("this image is in the session")
+                element = session["userimages"].pop(word_id)
+                print("popped {}".format(element))
 
         if os.path.exists(full_path):
             os.remove(full_path)
         Userimage.query.filter_by(userid=user_id, wordid=word_id).delete()
 
         db.session.commit()
+
+    def toSession(self):
+
+        if not session.get("userimages"):
+            session["userimages"] = {}
+        session["userimages"][self.wordid] = self.staticpath
 
     @classmethod
     def remove_empty_dirs(cls):
@@ -177,7 +193,7 @@ class Userimage(db.Model):
                 if not file_exists:
                     print("file not exist in db. Orphan")
                     orphans.append(this_file)
-                    print("this is supposed to be an orphan:").format(this_file)
+                    print("this is supposed to be an orphan:".format(this_file))
 
         if orphans:
             print("orphans")
@@ -196,12 +212,11 @@ class Userimage(db.Model):
 
         for image in userimages:
 
-            file = image.wordid
             created = image.created_date
             age = now - created
             max_hours = 2
             interval = datetime.timedelta(hours=max_hours)
-            econds = age.total_seconds()
+
             print("age (hr, min, sec, ms): {}".format(str(age)))
 
             if age > interval:

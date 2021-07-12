@@ -104,11 +104,20 @@
 
 <div class="card text-center wordcard word-font shadow" style="width: 18rem;">
     <div class="img-container">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/thumbnails/' + word.image.name)}}"
-            alt="image of '{{ word.word }}''">
+        <!-- define filename based on whether the user has added custom images -->
+        {% if word.id in session.userimages %}
+        {% set filename = session.userimages[word.id] %}
+        {% set alt = "Custom images are removed from the server after a while. Try uploading the image again: " %}
+        {% else %}
+        {% set filename = "images/" + word.image.name %}
+        {% set alt = "image of " %}
+        {% endif %}
+        <img class="card-img-top" src="{{ url_for('static', filename=filename)}}" alt="{{ alt }}'{{ word.word }}'"
+            data-image-wordid={{ word.id }}>
     </div>
     <div class="card-body">
         <h5 class="card-title">{{ word.word }}</h5>
+
         {{ word_card_buttons(word, uploadbutton=uploadbutton) }}
     </div>
 </div>
@@ -212,4 +221,35 @@
         </div>
     </div>
 </div>
+{% endmacro %}
+
+
+{% macro croppermodal() %}
+
+<div class="modal fade" id="croppermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content my-cropper-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <div id="preview" style="width: 100px; height: 100px; overflow: hidden;"></div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Wrap the image or canvas element with a block element (container) -->
+                <div class="container cropper_styles">
+                    <div>
+                        <img id="cropperimage" src="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="cropper-confirm">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endmacro %}

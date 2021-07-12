@@ -37,6 +37,9 @@ def before_request_callback():
             session["locale"] = "da"
             g.locale = "da"
 
+    if not session.get("userimages"):
+        session["userimages"] = {}
+
     if not session.get("manifest"):
         useragent = parse(request.user_agent.string)
         browser = useragent.browser.family.lower()
@@ -47,7 +50,7 @@ def before_request_callback():
             session["manifest"] = "manifest.webmanifest"
 
     if not session.get("collection"):
-        session["collection"] = [1, 39, 36]
+        session["collection"] = []
 
 
 @app.after_request
@@ -340,6 +343,7 @@ def upload_image():
             validate_image(file)
             wordid = request.form.get("upload_word_id")
             private_url = Userimage.store(file, wordid)
+            print("returned to upload_image")
             return jsonify({'path': private_url})
 
         except Exception as e:
@@ -367,14 +371,3 @@ def validate_browser_image():
             return jsonify({'error': str(e), 'valid': False})
 
     return jsonify({'error': 'Missing file'})
-
-
-"""
-@user_blueprint.route("/error/<error>", methods=["GET"])
-def makeerror(error):
-    try:
-        error = int(error)
-    except Exception:
-        error = 404
-    abort(error)
-"""

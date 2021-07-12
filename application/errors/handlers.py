@@ -26,6 +26,7 @@ def error_500(error):
     else:
         print(error)
         print(sys.stderr)
+
     try:
         return render_template("errors/500.html"), 500
     except Exception:

@@ -1,4 +1,4 @@
-{% from 'macros.html' import help_container, word_card with context %}
+{% from 'macros.html' import help_container, croppermodal, word_card with context %}
 {% extends "layout.html" %}
 
 {% block title %}
@@ -25,6 +25,8 @@
 {% endblock %}
 
 {% block main %}
+
+
 <div class="modal fade" id="croppermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content my-cropper-modal">

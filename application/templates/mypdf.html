@@ -112,9 +112,15 @@
     {% for word in collection %}
     <div class="imgcard">
         <div class="imgcontainer">
-            <!-- if word.id in userimages, filename = 'fullpath' -->
-            <img class="card-img-top" src="{{ url_for('static', filename='images/' + word.image.name)}}"
-                alt="image of '{{ word.word }}'">
+            <!-- define filename based on whether the user has added custom images -->
+            {% if word.id in session.userimages %}
+            {% set filename = session.userimages[word.id] %}
+            {% set alt = "Custom images are removed from the server after a while. Try uploading the image again: " %}
+            {% else %}
+            {% set filename = "images/" + word.image.name %}
+            {% set alt = "image of " %}
+            {% endif %}
+            <img class="card-img-top" src="{{ url_for('static', filename=filename)}}" alt="{{ alt }}'{{ word.word }}'">
 
         </div>
         <div class="card-body">
