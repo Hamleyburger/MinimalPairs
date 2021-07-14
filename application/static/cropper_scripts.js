@@ -133,26 +133,32 @@ function get_resized_url(file) {
 
                 const canvas = document.createElement("canvas");
                 const MAX_WIDTH_OR_HEIGHT = 800;
+                
+                let canvas_width = this.width;
+                let canvas_height = this.height;
 
+                // First find the biggest side, then scale it down
                 if (this.width > this.height) {
                     // Scale down with width as the biggest size
                     if (this.width > MAX_WIDTH_OR_HEIGHT) {
-                        console.log("too wide");
                         const scaleSize = MAX_WIDTH_OR_HEIGHT / e.target.width;
-                        canvas.width = MAX_WIDTH_OR_HEIGHT;
-                        canvas.height = e.target.height * scaleSize;
+                        canvas_width = MAX_WIDTH_OR_HEIGHT;
+                        canvas_height = e.target.height * scaleSize;
                     }
                 }
                 else {
                     // Scale down with height as the biggest size
                     if (this.height > MAX_WIDTH_OR_HEIGHT) {
-                        console.log("too tall");
                         const scaleSize = MAX_WIDTH_OR_HEIGHT / e.target.height;
-                        canvas.height = MAX_WIDTH_OR_HEIGHT;
-                        canvas.width = e.target.width * scaleSize;
+                        canvas_height = MAX_WIDTH_OR_HEIGHT;
+                        canvas_width = e.target.width * scaleSize;
                     }
+
                 }
-                
+
+                // canvas height and width will need to be adjusted to the image in any case
+                canvas.width = canvas_width;
+                canvas.height = canvas_height;
                 const ctx = canvas.getContext("2d");
                 ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
                 const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg");
@@ -181,6 +187,7 @@ async function start_cropper() {
         autoCropArea: 1,
         movable: false,
         rotatable: false,
+        responsive: true,
 
     });
 
