@@ -61,7 +61,7 @@
 
     {% set manifest_url = url_for('static',filename='permaimages/logos/autogen/' ~ session.manifest) %}
 
-    <link rel="manifest" href="{{ manifest_url }}">
+    <link rel="manifest" href="{{ manifest_url }}" crossorigin="use-credentials">
     <link rel="mask-icon" href="/static/permaimages/logos/autogen/apple/safari-pinned-tab.svg" color="#49184e">
     <meta name="msapplication-TileColor" content="#603cba">
     <meta name="msapplication-config" content="/static/permaimages/logos/autogen/browserconfig.xml">
