@@ -19,7 +19,8 @@ function fileSelected() {
     var files = $('#image')[0].files;
 
     if(files.length > 0 ){
-        if (prevalidate_image(files[0])) {
+        file = files[0];
+        if (prevalidate_image_type(file)) {
             show_cropper_modal();
         }
     }
@@ -79,19 +80,13 @@ function getType(file) {
     }
 }
 
-function prevalidate_image(file) {
+function prevalidate_image_type(file) {
 
     // This is here to save the user from wasting time on cropping images that won't get accepted by the server anyway
     var t = getType(file);
 
     if (t != "jpeg" && t != "jpg" && t != "png") {
         alert('File must be .png or .jpg');
-        document.getElementById("image").value = '';
-        return false;
-    }
-
-    if (file.size > (3000000)) {
-        alert('File size must be less than 3MB');
         document.getElementById("image").value = '';
         return false;
     }
@@ -121,14 +116,62 @@ $('#croppermodal').on('hidden.bs.modal', function () {
 
 });
 
+function get_resized_url(file) {
+
+    // Fun fact: This is my first Promise (I FINALLY got it to work!) :-D (sorry..)
+    return new Promise(resolve => {
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (event) {
+            const imgElement = document.createElement("img");
+            // Event.target.result is the URL to be put in a src
+            imgElement.src = event.target.result;
+            // Document.querySelector("#input").src = event.target.result;
+            
+            imgElement.onload = function (e) {
+
+                const canvas = document.createElement("canvas");
+                const MAX_WIDTH_OR_HEIGHT = 800;
+
+                if (this.width > this.height) {
+                    // Scale down with width as the biggest size
+                    if (this.width > MAX_WIDTH_OR_HEIGHT) {
+                        console.log("too wide");
+                        const scaleSize = MAX_WIDTH_OR_HEIGHT / e.target.width;
+                        canvas.width = MAX_WIDTH_OR_HEIGHT;
+                        canvas.height = e.target.height * scaleSize;
+                    }
+                }
+                else {
+                    // Scale down with height as the biggest size
+                    if (this.height > MAX_WIDTH_OR_HEIGHT) {
+                        console.log("too tall");
+                        const scaleSize = MAX_WIDTH_OR_HEIGHT / e.target.height;
+                        canvas.height = MAX_WIDTH_OR_HEIGHT;
+                        canvas.width = e.target.width * scaleSize;
+                    }
+                }
+                
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+                const srcEncoded = ctx.canvas.toDataURL(e.target, "image/jpeg");
+                
+                resolve(srcEncoded);
+            };
+        };
+    });
+}
+
+
 // initialize cropper
-function start_cropper() {
+async function start_cropper() {
 
     const image = document.getElementById('cropperimage'); // Define cropper element
     const input = $("#image"); // Get input field
-    const img_data = input[0].files[0]; // Get image from input field
-    const image_url = URL.createObjectURL(img_data); // Make URL for image
-
+    const input_image_file = input[0].files[0]; // Get image from input field
+    const image_url = await get_resized_url(input_image_file); // Make URL for image
+    // const image_url = // Get url from variable.
     
     const cropper = new Cropper(image, {
 

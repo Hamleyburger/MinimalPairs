@@ -50,7 +50,7 @@ def before_request_callback():
             session["manifest"] = "manifest.webmanifest"
 
     if not session.get("collection"):
-        session["collection"] = []
+        session["collection"] = [36, 39]
 
 
 @app.after_request

@@ -109,7 +109,7 @@
         {% set filename = session.userimages[word.id] %}
         {% set alt = "Custom images are removed from the server after a while. Try uploading the image again: " %}
         {% else %}
-        {% set filename = "images/" + word.image.name %}
+        {% set filename = "images/thumbnails/" + word.image.name %}
         {% set alt = "image of " %}
         {% endif %}
         <img class="card-img-top" src="{{ url_for('static', filename=filename)}}" alt="{{ alt }}'{{ word.word }}'"

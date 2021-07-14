@@ -72,14 +72,9 @@
 
     <div class="collapse" id="pdf-form-collapsable">
         <form method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
-
             {{ form.hidden_tag() }}
-
-
             <div class="container-fluid background-choices">
-
                 <fieldset class="shadow container">
-
                     <div class="row">
                         {{ help_container("pdf-", help_pdf_title, help_pdf_cue, help_pdf_content) }}
                     </div>
@@ -94,9 +89,7 @@
                             </div>
                         </div>
                         {% endfor %}
-
                     </div>
-
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" class="pdfbtn shadow"><i class="pdfbtn fas fa-file-pdf"
@@ -104,13 +97,9 @@
                                 {{ btn_makePDF }} </button>
                         </div>
                     </div>
-
                 </fieldset>
-
         </form>
     </div>
-
-
 </div>
 </div>
 
@@ -139,7 +128,9 @@
 </div>
 </div>
 
+
 {% endif %}
+
 
 {% endblock %}
 

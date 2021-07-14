@@ -86,16 +86,22 @@ def store_image(image):
 def ensureThumbnail(directory, filename, image=None):
     """ makes sure there's a thumbnail and returns filename """
 
-    thumbnaildir = directory + "/thumbnails"
-    thumbnailfilename = filename
+    print("ensure thumbnail")
 
-    if os.path.isfile(thumbnaildir + thumbnailfilename):
+    thumbnaildir = directory + "/thumbnails"
+    thumbnaildir = os.path.join(directory, "thumbnails")
+    thumbnailfilename = filename
+    full_path_to_thumbnail = os.path.join(thumbnaildir, thumbnailfilename)
+
+    if os.path.isfile(full_path_to_thumbnail):
         print("this thumbnail exists already")
     else:
+        print("this thumbnail does not exist/is not a file: {}".format(
+            full_path_to_thumbnail))
         if filename.lower().endswith((".jpg", ".png", ".jpeg")):
 
             # raster images are resized for thumbnail*
-            size = 200, 200
+            size = 300, 300
             thumb = Image.open(image)
             thumb.thumbnail(size)
             thumb.save(os.path.join(

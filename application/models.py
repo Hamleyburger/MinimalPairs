@@ -821,18 +821,15 @@ class Image(db.Model):
 
         # detect and remove files that have no db links
         print("path: {}".format(current_app.root_path))
-        print("searching: {}".format(os.listdir(imgdir)))
+        print("searching: {}".format(imgdir))
         for file in os.listdir(imgdir):
             # make sure we're not counting subdirectories as files
             if not os.path.isdir(os.path.join(imgdir, file)):
                 if not file == ".DS_Store":
+                    print("file in imagedir not folder or DS_Store: {}".format(file))
                     if file not in [image.name for image in images]:
-                        print(file + " not linked to a word")
-                        if file in [image.name for image in images]:
-                            print("but exists in db")
-                        else:
-                            print("and does not exist in db. EXTERMINATE")
-                            os.remove(os.path.join(imgdir, file))
+                        print(file + " not linked to a word in database... and?")
+                        os.remove(os.path.join(imgdir, file))
 
         # make sure all images in have thumbnails
         for image in images:

@@ -5,7 +5,7 @@ import datetime
 import os
 from pathlib import Path, PurePath
 from flask import jsonify, url_for, session
-from .helpers import get_uid
+from .helpers import get_uid, resize_crop_image
 import sentry_sdk
 
 
@@ -70,14 +70,16 @@ class Userimage(db.Model):
     userid = db.Column(db.String(), nullable=False)
     wordid = db.Column(db.Integer, db.ForeignKey('words.id'))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    cropped = db.Column(db.Boolean, unique=False, default=False)
 
     @classmethod
-    def store(cls, file, wordid, cropped=False):
-        """ Stores a temporary user image. Remeber to set cropped to True if it's a cropped version or it won't be used. Returns url_for saved image """
+    def store(cls, file, wordid):
+        """ Stores a temporary user image. Returns url_for saved image """
 
         Userimage.cleanup()
         user_id = get_uid()
+
+        file = resize_crop_image(file)
+        print("file returned")
 
         try:
 
@@ -89,8 +91,11 @@ class Userimage(db.Model):
                 os.makedirs(temp_path)
 
             # Save file
+            print("saving returned image")
+            # file.save is a PIL save becuse file came from resize_crop_image(file)
             file.save(os.path.join(
-                temp_path, wordid))
+                temp_path, wordid), file.format)
+            print("finished saving")
             static_path = os.path.join("tempuploads", user_id, wordid)
             image_url = url_for("static",
                                 filename=static_path)
@@ -100,7 +105,6 @@ class Userimage(db.Model):
                 staticpath=static_path).first()
             if userimage:
                 # If user has replaced a previous image for a particular word, update entry
-                userimage.cropped = cropped
                 userimage.created_date = datetime.datetime.utcnow()
 
             else:
@@ -109,8 +113,7 @@ class Userimage(db.Model):
                     fullpath=os.path.join(temp_path, wordid),
                     staticpath=static_path,
                     userid=user_id,
-                    wordid=int(wordid),
-                    cropped=cropped
+                    wordid=int(wordid)
                 )
 
             db.session.add(userimage)
