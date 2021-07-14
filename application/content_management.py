@@ -101,7 +101,7 @@ def Content(locale=None):
         "btn_PDFtool": "PDF-værktøj",
         "btn_makePDF": "Generer PDF",
         "collection_tip": 'Føj ord til samlingen med <i class="fas fa-plus-circle"></i> og fjern dem med <i class="fas fa-minus-circle"></i>',
-        "help_pdf_cue": "Vælg bagside yadda yadda",
+        "help_pdf_cue": "Vælg bagside",
         "help_pdf_title": "Generer PDF-fil med bagside",
         "help_pdf_content": '\
             <p>Generer en PDF-fil med ordkort med alle ordene i din samling. Hvis ordet ikke har et billede, kan du tilføje dit eget ved at trykke på <i class="fas fa-upload"></i></p>\
