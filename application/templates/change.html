@@ -55,12 +55,12 @@ Change word
                 </td>
                 <td style="text-align: center;">
                     <button class="lil-buttonon"
-                        onclick="openForm(this, '{{ entry.id }}', '{{ entry.word }}', '{{ entry.cue }}', '{{ entry.image.name }}')">
-                        ;(
+                        onclick='openForm(this, {{ entry.id | tojson }}, {{ entry.word | tojson }}, {{ entry.cue | tojson }}, {{ entry.image.name | tojson }})'>
+                        <i class="fas fa-cogs"></i>
                     </button>
                     {% set url = url_for("user_blueprint.wordinfo", word_id=entry.id, locale=session.locale) %}
                     <button class="lil-buttonon" onclick="window.location.href='{{ url }}';">
-                        PP
+                        <i class="fas fa-info-circle"></i>
                     </button>
                 </td>
             </tr>

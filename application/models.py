@@ -1,3 +1,4 @@
+from PIL.Image import new
 from application.exceptions import invalidImageError
 from flask import flash, current_app
 from application import db
@@ -255,13 +256,36 @@ class Group(db.Model):
                 self.sounds.append(sound)
                 print("added '{}' to group {}".format(sound.sound, self.id))
 
+    def textify(self):
+        """ Prints a group """
+        print("Group {}:".format(self.id))
+        for word in self.members:
+            print(word.word, end=", ")
+        print("")
+        return None
+
+    def has_two_members_of(self, words):
+
+        acquainted_members = 0
+
+        for member in self.members:
+            if member in words:
+                acquainted_members += 1
+
+        if acquainted_members >= 2:
+            return True
+
     @classmethod
     def check(cls, ko):
         """ Checks a word and its partners to see if they can be grouped.\n
-        Adds to or creates a group if they can. """
+        Adds to or creates a group if they can. This is (should be) run\n
+        whenever two words are paired.\n
+        Returns a group if the word was added in one """
 
         db.session.flush()
         koCandidateSets = []
+        return_groups = []
+
         print("checking word '{}' to see if it can be grouped anywhere.".format(ko.word))
         # Check if new word has mutual friends with its partners
         for to in ko.allPartners():
@@ -287,12 +311,15 @@ class Group(db.Model):
 
         if koCandidateSets:
             # Add to appropriate group or make new
-            Group.group(koCandidateSets)
+            return_groups = Group.group(koCandidateSets)
+
+        print("returning return_groups from check")
+        return return_groups
 
     @classmethod
     def group(cls, candidateLists: list):
-        """ Checks a list of word lists to see if a group already exists for this set\n
-        Returns group """
+        """ Checks a lists of words lists to see if groups already exist for those lists\n
+        Returns any groups[] found or created group """
 
         groups = cls.query.all()
         modifiedGroups = []
@@ -415,7 +442,7 @@ class Word(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     word = db.Column(db.String(), nullable=False)
-    cue = db.Column(db.String(), server_default="No cue")
+    cue = db.Column(db.String(), server_default="")
     img_id = db.Column(db.Integer, db.ForeignKey(
         'images.id'), nullable=True, server_default="1")
 
@@ -526,6 +553,8 @@ class Word(db.Model):
         if newword != "":
             word.word = newword
         if newcue != "":
+            if newcue == "-":
+                newcue = ""
             word.cue = newcue
         if newimg != "":
             try:
@@ -570,7 +599,11 @@ class Word(db.Model):
         # Prøv her (eller efter commit?) at lave rekursivt tjek af lydstrenge
         db.session.commit()
 
-        Group.check(self)
+        any_groups = Group.check(self)
+        if any_groups:
+            print("Found or created groups for {}___:".format(newPair.textify()))
+        for group in any_groups:
+            group.textify()
 
         return pairs
 
@@ -743,6 +776,46 @@ class Word(db.Model):
         print("deleting " + "'" + self.word + "'")
         db.session.delete(self)
         db.session.commit()
+
+    def get_partner_suggestions(self, unadded_ids=None):
+        """ Returns a list of word ids for forgotten/suggested partners based on existing partners\n
+        and unadded ones whose ids must be passed in via unadded_ids """
+
+        # Get list of the words we're assuming that this word is or will be partnered with
+        expected_partners = self.partners
+        for word in expected_partners:
+            if word.id in unadded_ids:
+                unadded_ids.remove(word.id)
+        unadded_words = db.session.query(Word).filter(
+            Word.id.in_(unadded_ids)).all()
+        expected_partners = expected_partners + unadded_words
+        print("Expected partners: {}".format(
+            [word.word for word in expected_partners]))
+
+        # Find relevant groups that have two or more expected partners.
+        relevant_group_ids = []
+        relevant_groups = []
+        for word in expected_partners:
+            for group in word.groups:
+                if group.has_two_members_of(expected_partners):
+                    if group.id not in relevant_group_ids:
+                        relevant_group_ids.append(group.id)
+                        relevant_groups.append(group)
+
+        print("Groups that contain forgotten partners:")
+        for group in relevant_groups:
+            group.textify()
+
+        # Pick out the words that are not already in ANY of expected partners (existing and AJAX picked) and suggest ids
+        # Using set() to prevent duplicates since we might add from many groups
+        suggest_word_ids = set()
+        for group in relevant_groups:
+            for word in group.members:
+                if word.id != self.id:
+                    if word.id not in [word.id for word in expected_partners]:
+                        suggest_word_ids.add(word.id)
+
+        return list(suggest_word_ids)
 
 
 class Image(db.Model):

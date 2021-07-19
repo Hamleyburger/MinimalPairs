@@ -93,6 +93,7 @@ def Content(locale=None):
         # Word info
         "title_wordinfo": "info om ",  # set word.word in template
         "url_wordinfo": "info-om-ord",
+        "group_name": "Gruppe",
 
         # Collection
         "title_collection": "Samling",
@@ -207,6 +208,7 @@ def Content(locale=None):
         # Word info
         "title_wordinfo": "info about ",  # set word.word in template
         "url_wordinfo": "word-info",
+        "group_name": "Group",
 
         # Collection
         "title_collection": "Collection",

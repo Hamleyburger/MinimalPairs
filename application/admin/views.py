@@ -1,8 +1,8 @@
-from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for
+from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
 from application.models import Word, Pair, Sound, Group
 from .forms import AddForm, AddPairForm
 from application import db, app
-from .filehelpers import store_image
+from .filehelpers import store_image, configure_add_template
 from flask_user import roles_required
 
 admin_blueprint = Blueprint(
@@ -19,14 +19,10 @@ def before_request_callback():
 def add():
     """admin stuff"""
     Group.updateMeta()
-    session.pop("homonyms", None)
-    session.pop("existingPairs", None)
     form = AddForm()
     pairForm = AddPairForm()
-    pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
-                              for word in db.session.query(Word).all()]
-    pairForm.pairs.choices = [(str(word.id), word.word + " (" + word.cue + ")")
-                              for word in db.session.query(Word).all()]
+    configure_add_template(pairForm, db.session.query(Word).all())
+
     wordToRemember_id = session.get("word1") if session.get("word1") else None
     pairForm.word1.default = wordToRemember_id
     pairForm.process()
@@ -37,14 +33,9 @@ def add():
 @admin_blueprint.route("/add_word", methods=["POST"])
 @roles_required('Admin')
 def add_word():
-    session.pop("homonyms", None)
-    session.pop("existingPairs", None)
     form = AddForm()
     pairForm = AddPairForm()
-    pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
-                              for word in db.session.query(Word).all()]
-    pairForm.pairs.choices = [(str(word.id), word.word + " (" + word.cue + ")")
-                              for word in db.session.query(Word).all()]
+    configure_add_template(pairForm, db.session.query(Word).all())
 
     if form.cancel.data:
         return redirect(url_for("admin_blueprint.add"))
@@ -76,14 +67,9 @@ def add_word():
 @ admin_blueprint.route("/add_pairs", methods=["POST"])
 @roles_required('Admin')
 def add_pairs():
-    session.pop("homonyms", None)
-    session.pop("existingPairs", None)
     form = AddForm()
     pairForm = AddPairForm()
-    pairForm.word1.choices = [(str(word.id), word.word + " (" + word.cue + ")")
-                              for word in db.session.query(Word).all()]
-    pairForm.pairs.choices = [(str(word.id), word.word + " (" + word.cue + ")")
-                              for word in db.session.query(Word).all()]
+    configure_add_template(pairForm, db.session.query(Word).all())
 
     if pairForm.validate_on_submit():
         print("pairform valid")
@@ -160,8 +146,10 @@ def ajax_delete():
 
 @ admin_blueprint.route("/ajax_possible_pairs", methods=["POST"])
 @roles_required('Admin')
-# Receives a word id and returns words in a way so client can see which pairs already exist
 def ajax_possible_pairs():
+    """ Greys out/inactivates already paired words and keeps the rest black/choosable/possible.\n
+    Not to be confused with 'suggested pairs' """
+    # Receives a word id and returns words in a way so client can see which pairs already exist
     word_id = request.form["id"]
     word = Word.query.get(int(word_id))
     partners = word.allPartners()
@@ -171,4 +159,36 @@ def ajax_possible_pairs():
         partner_ids.append(word.id)
     return jsonify(
         id=partner_ids
+    )
+
+
+@ admin_blueprint.route("/ajax_suggested_pairs", methods=["POST"])
+@roles_required('Admin')
+# Receives a word id and returns words in a way so client can see which pairs already exist
+def ajax_suggested_pairs():
+    """ Based on groups suggests words to pair """
+
+    word1 = Word.query.get(1)
+    all_indexes = json.loads(request.form.get("all_indexes"))
+    chosen_ids = json.loads(request.form.get("chosen_ids"))
+    #chosen_ids = []
+    suggested_ids = []
+    suggested_indexes = []
+
+    if all_indexes and chosen_ids:
+
+        suggested_ids = word1.get_partner_suggestions(chosen_ids)
+
+        for index, id in enumerate(all_indexes):
+            if id in suggested_ids:
+                suggested_indexes.append(index)
+
+        print("suggested indexes: {}".format(suggested_indexes))
+        return jsonify(
+            suggested_indexes=suggested_indexes,
+            suggested_ids=suggested_ids
+        )
+
+    return jsonify(
+        error="something went wrong"
     )

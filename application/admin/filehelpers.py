@@ -1,7 +1,7 @@
 from flask import request
 import os
 import shutil
-from flask import current_app
+from flask import current_app, session
 from PIL import Image
 import imghdr
 import time
@@ -172,3 +172,21 @@ def fileExists(file, directory):
     print("not exists")
     shutil.rmtree(tmpdir)
     return None
+
+
+def configure_add_template(pairForm, words):
+    def cue_string(word):
+        if word.cue:
+            string = word.word + " (" + word.cue + ")"
+        else:
+            string = word.word
+        return string
+
+    pairForm.word1.choices = [(str(word.id), cue_string(word))
+                              for word in words]
+    pairForm.pairs.choices = [(str(word.id), cue_string(word))
+                              for word in words]
+    print(pairForm.word1.choices)
+    session.pop("homonyms", None)
+    session.pop("existingPairs", None)
+    session["pair_choice_tuples"] = pairForm.pairs.choices

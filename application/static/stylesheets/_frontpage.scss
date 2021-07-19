@@ -6,6 +6,7 @@
 
 .frontpage-container {
     overflow: hidden;
+    margin-bottom: neg($footer-margin-top);
 
     .illustration-container {
         padding: 0;

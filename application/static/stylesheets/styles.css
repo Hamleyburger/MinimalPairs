@@ -53,7 +53,7 @@
 }
 
 .ipa-container {
-  margin: 0 auto;
+  margin: 50px auto;
   border: 2px solid #3b1734;
   border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.212);
@@ -465,7 +465,6 @@ html {
 body {
   position: relative;
   min-height: 100%;
-  padding-bottom: 100px;
   background-color: var(--color-red2);
   background: radial-gradient(circle at 0px 500px, #f8d894 600px, #eba48b 110%);
   background-repeat: no-repeat;
@@ -478,12 +477,12 @@ body {
 }
 
 footer {
-  position: absolute;
   background: #995f8b;
   color: #3b1734;
   padding: 20px;
   padding-bottom: 40px;
   padding-top: 40px;
+  margin-top: 100px;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -498,6 +497,7 @@ footer a {
 
 .frontpage-container {
   overflow: hidden;
+  margin-bottom: -100px;
 }
 
 .frontpage-container .illustration-container {
@@ -793,6 +793,40 @@ footer a {
   color: #fff;
   background-color: #17a2b8;
   border-color: #17a2b8;
+}
+
+.chosen-container {
+  width: 100%;
+}
+
+.chosen-container .chosen-results li.suggested-result {
+  display: list-item;
+  cursor: pointer;
+  font-weight: 900;
+  background-color: aliceblue;
+  color: blue;
+}
+
+.word-suggestions {
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin: 0 -3px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.word-suggestions .word-suggestion {
+  background-color: #eba48b;
+  border: 1px solid #eb757d;
+  border-radius: 12px;
+  margin: 3px;
+  padding: 1px 7px;
 }
 
 :root {
@@ -1225,6 +1259,31 @@ footer a {
 .word-info-container .outer-row .slider .owl-stage-outer .card .card-body .card-title {
   margin-top: 0px;
   margin-bottom: 2px;
+}
+
+.word-info-container .group-row {
+  padding: 8px;
+  background: #caabbf;
+}
+
+.word-info-container .group-row .row {
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.word-info-container .group-row .col {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.word-info-container .group-row .col .groupcard {
+  width: 100%;
+  min-width: 160px;
+  min-height: 200px;
 }
 
 :root {

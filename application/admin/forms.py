@@ -106,8 +106,7 @@ class AddForm(FlaskForm):
     # First argument will be name and will be used as label
     word = StringField("Word", validators=[
         DataRequired(), Length(min=1, max=30), isHomonym])
-    cue = StringField("Cue", validators=[
-        DataRequired(), Length(min=0, max=30)])
+    cue = StringField("Cue", validators=[Length(min=0, max=30)])
     image = FileField("Image", validators=[imageOK])
     add = SubmitField("Add")
     addAnyway = SubmitField("Add homonym")

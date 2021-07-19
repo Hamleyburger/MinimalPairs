@@ -19,6 +19,7 @@
 
     .row {
         margin-bottom: 30px;
+
     }
     .vs {
         font-weight: bolder;
@@ -42,5 +43,33 @@
             background-color: #17a2b8;
             border-color: #17a2b8;
         }
+    }
+}
+
+
+
+.chosen-container {
+width: 100%;
+    .chosen-results li.suggested-result {
+        display: list-item;
+        cursor: pointer;
+        font-weight: 900;
+        background-color: aliceblue;
+        color: blue;
+    }
+}
+
+.word-suggestions {
+padding: 0;
+display: flex;
+flex-direction: row;
+margin: 0 -3px;
+flex-wrap: wrap;
+    .word-suggestion {
+        background-color: $color-red2;
+        border: 1px solid $color-red1;
+        border-radius: 12px;
+        margin: 3px;
+        padding: 1px 7px;
     }
 }

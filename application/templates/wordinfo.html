@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import pair_card, word_card_buttons with context %}
+{% from 'macros.html' import pair_card, group_card, word_card_buttons with context %}
 {% from 'MOmacro.html' import MOmacro with context %}
 
 {% block title %}
@@ -67,52 +67,40 @@
 
 
         <div class="col-12 col-xl-7 col-pairs mt-5 mt-xl-0 shadow">
-
             <div class="slider owl-carousel owl-theme">
                 {% for pairList in pairLists %}
                 {{ pair_card(pairList) }}
                 {% endfor %}
             </div>
         </div>
-
     </div>
 
 
 
     <div class="row MO-row shadow outer-row justify-content-center mb-5">
-
         {% for MOset in MOsets %}
         <div class="MO-col col">
             {{ MOmacro(MOset, loop.index) }}
-
         </div>
         {% endfor %}
-
     </div>
 
+    {% if current_user.is_authenticated %}
+    <div class="row outer-row group-row shadow">
+        <div class="col">
+            <div class="row m-0">
+                {% for group in groups %}
+                <div class="col col-md-3 m-1">
+                    {{ group_card(group) }}
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {% endblock %}
-
-
 
 
 {% block script %}

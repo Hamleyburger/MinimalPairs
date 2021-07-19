@@ -127,7 +127,7 @@ html {
 body {
     position: relative;
     min-height: 100%;
-    padding-bottom: 100px; // must be same height as footer
+    // padding-bottom: 100px; // must be same height as footer
     background-color: var(--color-red2);
     background: radial-gradient(
         circle at 0px 500px,
@@ -146,7 +146,7 @@ body {
 
 
 footer {
-    position: absolute;
+    // position: absolute;
     background: $color-purp2;
     color: $color-purp1;
     a {
@@ -155,6 +155,7 @@ footer {
     padding: 20px;
     padding-bottom: 40px;
     padding-top: 40px;
+    margin-top: $footer-margin-top;
     bottom: 0;
     left: 0;
     width: 100%;

@@ -109,7 +109,9 @@ def wordinfo(word_id, locale):
         print(str(url_for(
             'static', filename='images/thumbnails/' + word.image.name)))
 
-        return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets)
+        groups = word.groups
+
+        return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets, groups=groups)
     else:
         abort(404)
 

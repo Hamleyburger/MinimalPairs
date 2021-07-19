@@ -148,5 +148,24 @@
             }
         }
     }
+
+    .group-row {
+        padding: 8px;
+        background: $color-purp3;
+
+        .row {
+            justify-content: space-around;
+        }
+        .col {
+            display: flex;
+            justify-content: center;
+
+            .groupcard {
+                width: 100%;
+                min-width: 160px;
+                min-height: 200px;
+            }
+        }
+    }
 }
 

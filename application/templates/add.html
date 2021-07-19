@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from 'macros.html' import ipa_picker with context %}
-{% from 'admin_macros.html' import show_input_file_name, enable_chosenjs, chosenjs_filtering %}
+{% from 'admin_macros.html' import show_input_file_name, enable_chosenjs, chosenjs_filtering,
+chosenjs_highlight_suggestions %}
 
 {% block title %}
 Add word
@@ -14,8 +15,8 @@ Add word
 
     <!-- insert novalidate as attribute if you only want to user server side validation-->
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-6">
+        <div class="row mb-5">
+            <div class="col-12 col-md-6">
                 <form id="addForm" method="POST" action="{{ url_for('admin_blueprint.add_word') }}"
                     enctype="multipart/form-data" novalidate>
                     {{ form.hidden_tag() }}
@@ -58,16 +59,25 @@ Add word
 
             </div>
 
-            <div class="col-6">
+            <div class="col-12 col-md-6">
                 <form id="pairForm" method="POST" action="{{ url_for('admin_blueprint.add_pairs') }}" novalidate>
                     {{ form.hidden_tag() }}
 
 
                     <fieldset>
-                        <legend for="pairs">Find all matching words:</legend>
-                        {{ pairForm.word1(class="chosen-select") }}
-                        {{ pairForm.pairs(class="chosen-select") }}
-                        {{ pairForm.definePairs(class="btn btn-primary btn-outline-info") }}
+                        <div class="form-group">
+
+                            <legend for="pairs">Find all matching words:</legend>
+                            {{ pairForm.word1(class="chosen-select") }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ pairForm.pairs(class="chosen-select") }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ pairForm.definePairs(class="btn btn-primary btn-outline-info") }}
+                        </div>
                     </fieldset>
 
                     {% if pairForm.pairSounds.data %}
@@ -120,6 +130,8 @@ Add word
             {% endif %}{{ word.word }}{% endfor %}{% endif %}
 
             </form>
+            <div class="word-suggestions" id="word-suggestions">
+            </div>
         </div>
     </div>
     <!-- end of container-->
@@ -133,7 +145,11 @@ Add word
 {% endblock %}
 
 {% block script %}
+<script>
+    let url_for_suggested_pairs = {{ url_for('admin_blueprint.ajax_suggested_pairs') | tojson | safe }}
+</script>
 {{ show_input_file_name() }}
-{{ enable_chosenjs() }}
 {{ chosenjs_filtering() }}
+{{ enable_chosenjs() }}
+
 {% endblock script %}
