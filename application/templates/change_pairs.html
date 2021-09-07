@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% from 'macros.html' import ipa_picker with context %}
+
+{% block title %}
+Change word
+{% endblock %}
+
+{% block main %}
+
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h3>
+            {{ word.word }}
+            </h3>
+        </div>
+    </div>
+
+    {% for pair in pairs %}
+    <div class="row justify-content-center mb-1">
+        <div class="col-6">
+                {{ pair.w1.word }} ({{pair.s1.sound}}) - {{ pair.w2.word }} ({{ pair.s2.sound }})
+                <button onclick='change_pair_modal({{ pair.id }}, "{{ pair.w1.word }}", "{{ pair.s1.sound }}", "{{ pair.w2.word }}", "{{ pair.s2.sound }}")'>Change</button>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="change_pair_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form id="change_pair_form" action="#" method="post">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <!--input type="hidden" id="pair_id" name="pair_id" value="#"-->
+                <div class="col">
+                    <label id="w1label" for="s1-input" class="form-label">Word 1</label>
+                    <!--input type="text" class="form-control sound_input_field" id="s1-input" name="s1" aria-describedby="w1Help" value="sound1"-->
+                    {{ form.s1(class_="form-control sound_input_field") }}
+                    <div id="w1Help" class="form-text">Word one's sound</div>
+                </div>
+                <div class="col">
+                    <label id="w2label" for="s2-input" class="form-label">Word 2</label>
+                    <!--input type="text" class="form-control sound_input_field" id="s2-input" name="s2" aria-describedby="w2Help" value="sound2"-->
+                    {{ form.s2(class_="form-control sound_input_field") }}
+                    <div id="w2Help" class="form-text">Word two's sound</div>
+                </div>
+            </div>
+        </form>
+        <div class="ipa-container container">
+            {{ ipa_picker() }}
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" name="submit" class="btn btn-primary" form="change_pair_form" value="save">Save changes</button>
+
+        <button type="submit" name="submit" class="btn btn-danger" form="change_pair_form" value="delete">Delete pair</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function change_pair_modal (id, w1, s1, w2, s2) {
+        $("#pair_id").val(id);
+        $("#w1label").html(w1);
+        $("#w2label").html(w2);
+        $("#s1-input").val(s1);
+        $("#s1-input").attr("placeholder", s1);
+        $("#s2-input").val(s2);
+        $("#s2-input").attr("placeholder", s2);
+        $('#change_pair_modal').modal('toggle');
+
+        let change_pair_url = "{{ url_for('admin_blueprint.change_pairs', word=word.id) }}";
+        newurl = change_pair_url.replace("DUMMYVAL", {{ word.id }});
+        $("#change_pair_form").attr("action", newurl)
+    }
+
+$('#change_pair_modal').on('hidden.bs.modal', function (e) {
+  // do something...
+  console.log(this);
+  $(this).modal("dispose");
+})
+</script>
+{% endblock %}

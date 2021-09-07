@@ -10,6 +10,7 @@ Change word
 <div class="popup-form-wrapper" id="myForm">
     <form name="myform" class="popup-form" method="POST" enctype="multipart/form-data"
         action="{{ url_for('admin_blueprint.change') }}">
+        <button id="closeButton" style="float: right;" type="button" class="cancel" onclick="closeForm()">Close</button>
         <h1 id="formtitle"></h1>
 
         <input type="hidden" id="custId" name="newwordid" value="">
@@ -24,9 +25,9 @@ Change word
         <input autocomplete="off" id="image" name="newimg" required="" type="file">
         <label class="change-file-label file-label-name" for="image"></label>
 
-        <button type="button" class="btn save" onclick="sendChanges()">Save</button>
-        <button type="button" class="btn delete" onclick="requestDelete()">Delete</button>
-        <button id="closeButton" type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        <a id="change-pair-btn" href="" class="btn btn-warning">Change pairs</a>
+        <button type="button" class="btn btn-success save" onclick="sendChanges()">Save</button>
+        <button type="button" class="btn btn-danger delete" onclick="requestDelete()">Delete</button>
     </form>
 </div>
 
@@ -102,11 +103,16 @@ Change word
 
     function openForm(element, word_id, word, cue, image) {
         document.getElementById("myForm").style.display = "block";
+        console.log(word_id);
         $('#formtitle').html($("#word" + word_id).html());
         $('input[name ="newword"]').attr("placeholder", word);
         $('input[name ="newcue"]').attr("placeholder", cue);
         $('.file-label-name').html(image);
         $('input[name ="newwordid"]').attr("value", word_id);
+
+        let change_pair_url = "{{ url_for('admin_blueprint.change_pairs', word='DUMMYVAL') }}";
+        newurl = change_pair_url.replace("DUMMYVAL", word_id);
+        $('#change-pair-btn').attr('href', newurl);
         console.log(word + cue + image);
 
         current_word_id = word_id;

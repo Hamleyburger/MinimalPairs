@@ -1,7 +1,7 @@
 from flask import session
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectMultipleField, SelectField, Form, FieldList, FormField, HiddenField
-from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, EqualTo, Required, ValidationError
 from application.models import Word
 from flask_wtf.file import FileField, FileRequired
 from werkzeug.utils import secure_filename
@@ -152,3 +152,23 @@ class ChangeForm(FlaskForm):
     </form>
     """
     pass
+
+class ChangePairForm(FlaskForm):
+        # <form id="change_pair_form" action="#" method="post">
+
+        #         <input type="hidden" id="pair_id" name="pair_id" value="#">
+
+        #             <label id="w1label" for="s1-input" class="form-label">Word 1</label>
+        #             <input type="text" class="form-control sound_input_field" id="s1-input" name="s1" aria-describedby="w1Help" value="sound1">
+        #             <div id="w1Help" class="form-text">Word one's sound</div>
+
+
+        #             <label id="w2label" for="s2-input" class="form-label">Word 2</label>
+        #             <input type="text" class="form-control sound_input_field" id="s2-input" name="s2" aria-describedby="w2Help" value="sound2">
+        #             <div id="w2Help" class="form-text">Word two's sound</div>
+
+        # </form>
+
+    pair_id = HiddenField("pair_id", id="pair_id", validators=[DataRequired()])
+    s1 = StringField("s1", id="s1-input", validators=[DataRequired(), Length(min=1, max=5)])
+    s2 = StringField("s2", id="s2-input", validators=[DataRequired(), Length(min=1, max=5)])

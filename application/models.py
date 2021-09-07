@@ -415,6 +415,13 @@ class Pair(db.Model):
         secondary=group_pairs,
         back_populates="pairs")
 
+    def __str__(self):
+        string = "{}: {} / {} - ({} vs. {})".format(self.id, self.w1.word,
+                                                    self.w2.word, self.s1.sound, self.s2.sound)
+        return string
+
+
+
     @classmethod
     def allPairCombinations(cls, wordSet):
         """ Takes a list of words and returns a list of all possible existing pairs between them"""
@@ -445,6 +452,9 @@ class Word(db.Model):
     cue = db.Column(db.String(), server_default="")
     img_id = db.Column(db.Integer, db.ForeignKey(
         'images.id'), nullable=True, server_default="1")
+
+    def __str__(self):
+        return "<{}> {}".format(self.id, self.word)
 
     # Relationships
     image = db.relationship("Image", back_populates="words")
@@ -575,6 +585,10 @@ class Word(db.Model):
     def pair(self, word2, sound1, sound2):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound\n
         Always put the longest cluster combinations as possible, so they can be reduced """
+        
+        sound1 = str(Sound.get(sound1).sound)
+        sound2 = str(Sound.get(sound2).sound)
+        print("attempting to pair {} {}".format(sound1, sound2))
 
         db.session.flush()
 
@@ -583,7 +597,7 @@ class Word(db.Model):
             return
 
         # check if this particular pair exists
-        if self.pairExists(word2, sound1):
+        if self.pairExists(word2, sound1, sound2):
             return
 
         newPair = Pair(w1=self, w2=word2,
@@ -607,13 +621,12 @@ class Word(db.Model):
 
         return pairs
 
-    def pairExists(self, word2, sound1):
+    def pairExists(self, word2, sound1, sound2):
         """ Returns True if pair exists with these sounds """
         # check if this particular pair exists
         if self.getPairs(word2):
             for pair in self.getPairs(word2):
-                if (sound1 == pair.s1.sound) or (sound1 == pair.s2.sound):
-                    print("Pair exists with these sounds already!")
+                if (sound1 == pair.s1.sound and sound2 == pair.s2.sound) or (sound1 == pair.s2.sound and sound2 == pair.s1.sound):
                     return True
             return False
 
@@ -667,11 +680,11 @@ class Word(db.Model):
                 exists = False
                 # Check if pair exists in list
                 for pair in pairList:
-                    if (pair.s1.sound == sound1) or (pair.s1.sound == sound2):
+                    if (pair.s1.sound == sound1 and pair.s2.sound == sound2) or (pair.s1.sound == sound2 and pair.s2.sound == sound1):
                         exists = True
                 # And then check if it exists in database
                 if not exists:
-                    if word1.pairExists(word2, sound1):
+                    if word1.pairExists(word2, sound1, sound2):
                         exists = True
                 return exists
 

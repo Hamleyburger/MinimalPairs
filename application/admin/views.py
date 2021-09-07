@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
 from application.models import Word, Pair, Sound, Group
-from .forms import AddForm, AddPairForm
+from .forms import AddForm, AddPairForm, ChangePairForm
 from application import db, app
 from .filehelpers import store_image, configure_add_template
 from flask_user import roles_required
@@ -96,6 +96,43 @@ def change():
         # print(word)
     words = Word.query.all()
     return render_template("change.html", words=words)
+
+@ admin_blueprint.route("/change/pairs", methods=["GET", "POST"])
+@roles_required('Admin')
+def change_pairs():
+    form = ChangePairForm()
+    if request.args.get("word"):
+        word_id = request.args.get('word')
+        word = Word.query.get(int(word_id))
+        pairs = word.getPairs()
+
+        if request.method == "POST":
+
+            pair_id = form.pair_id.data
+            pair = Pair.query.get(int(pair_id))
+
+            if form.validate():
+                if request.form.get("submit") == "save":
+                    s1 = form.s1.data
+                    s2 = form.s2.data
+                    word1 = pair.w1
+                    word2 = pair.w2
+                    word1.pair(word2, s1, s2)
+
+                elif request.form.get("submit") == "delete":
+                    db.session.delete(pair)
+                    db.session.commit()
+            else:
+                print(form.errors)
+                flash("Form invalid")
+
+        pairs = word.getPairs()
+        return render_template("change_pairs.html", word=word, pairs=pairs, form=form)
+    else:
+        flash("the requested URL needs the word argument: ?word=<id>")
+        return redirect(url_for("admin_blueprint.change", form=form))
+
+
 
 
 @ admin_blueprint.route("/upload_image", methods=["POST"])

@@ -30,6 +30,7 @@ $(".sound_input_field" ).focus(function() {
     });  
     
 function insertAtCursor(sound) {
+    // Remember to give input field class .sound_input_field
     if (typeof (selected_input) === "object") {
         $(selected_input).val($(selected_input).val() + sound);
     }
