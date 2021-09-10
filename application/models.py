@@ -217,6 +217,15 @@ class Group(db.Model):
         secondary=group_pairs,
         back_populates="groups", lazy="dynamic")
 
+
+    def __str__(self):
+        """ Prints a group """
+        string = "Group {}: ".format(self.id)
+        for word in self.members:
+            string = string + "{}, ".format(word)
+        return string
+
+
     def add(self, word=None, words=[]):
         """ Adds word or word list to caller group. Avoids duplicates. No commit. """
         if word:
@@ -237,7 +246,6 @@ class Group(db.Model):
             for pair in pairs:
                 if pair not in self.pairs:
                     self.pairs.append(pair)
-                    print("Group: added pair '{}'".format(pair.textify()))
 
     def updateSounds(self, pairs):
         """ Extracts sounds from pairs, adds to group. Also adds to database if new. """
@@ -302,10 +310,9 @@ class Group(db.Model):
                                 added = True
 
                     if not added:
-                        print("Looks like '{}' and '{}' both know '{}'. Are they already grouped? ".format(
+                        print("Since '{}' and '{}' both know '{}' we put them in a candidate list to see if they're already grouped ".format(
                             ko.word, to.word, tøbo.word))
-                        print(
-                            "None of them were grouped. Making new candidate group for actual group. Next up: group()")
+
                         newList = [ko, to, tøbo]
                         koCandidateSets.append(newList)
 
@@ -313,7 +320,6 @@ class Group(db.Model):
             # Add to appropriate group or make new
             return_groups = Group.group(koCandidateSets)
 
-        print("returning return_groups from check")
         return return_groups
 
     @classmethod
@@ -335,18 +341,27 @@ class Group(db.Model):
             return group
 
         for candidates in candidateLists:
+            print("checking candidate list: {}".format(candidates))
             added = False
             for group in groups:
+                print("in group {} - {}".format(group.id, str(group)))
                 counter = 0
                 for member in group.members:
                     if member in candidates:
                         counter += 1
                         if counter == 2:  # it means there are two members from candidates existing in a group, meaning the rest of the candidates belong in this group too
-
+                            print("group fits!")
                             group = addGroupAndAll(group, candidates)
                             modifiedGroups.append(group)
                             added = True
                             break
+                if added:
+                    # If we've found or added a group, don't check the next groups for this candidate list
+                    break
+                else:
+                    print("group does not fit")
+                        
+
             if not added:
                 newGroup = Group()
                 db.session.add(newGroup)
@@ -475,6 +490,9 @@ class Word(db.Model):
 
     userimages = db.relationship(
         "Userimage", backref=db.backref('word'), cascade="all, delete")
+
+    def __str__(self):
+        return "{} <{}>".format(self.word, self.id)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -614,8 +632,7 @@ class Word(db.Model):
         db.session.commit()
 
         any_groups = Group.check(self)
-        if any_groups:
-            print("Found or created groups for {}___:".format(newPair.textify()))
+
         for group in any_groups:
             group.textify()
 

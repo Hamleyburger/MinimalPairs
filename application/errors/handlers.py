@@ -24,8 +24,7 @@ def error_500(error):
     if app.config["DEBUG"] == 0:
         sentry_sdk.capture_exception(error)
     else:
-        print(error)
-        print(sys.stderr)
+        raise error
 
     try:
         return render_template("errors/500.html"), 500

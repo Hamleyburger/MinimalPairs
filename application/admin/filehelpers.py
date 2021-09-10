@@ -186,7 +186,7 @@ def configure_add_template(pairForm, words):
                               for word in words]
     pairForm.pairs.choices = [(str(word.id), cue_string(word))
                               for word in words]
-    print(pairForm.word1.choices)
+
     session.pop("homonyms", None)
     session.pop("existingPairs", None)
     session["pair_choice_tuples"] = pairForm.pairs.choices
