@@ -310,9 +310,8 @@ class Group(db.Model):
                                 added = True
 
                     if not added:
-                        print("Since '{}' and '{}' both know '{}' we put them in a candidate list to see if they're already grouped ".format(
-                            ko.word, to.word, tøbo.word))
-
+                        # print("Since '{}' and '{}' both know '{}' we put them in a candidate list to see if they're already grouped ".format(
+                        #     ko.word, to.word, tøbo.word))
                         newList = [ko, to, tøbo]
                         koCandidateSets.append(newList)
 
@@ -344,13 +343,12 @@ class Group(db.Model):
             print("checking candidate list: {}".format(candidates))
             added = False
             for group in groups:
-                print("in group {} - {}".format(group.id, str(group)))
                 counter = 0
                 for member in group.members:
                     if member in candidates:
                         counter += 1
                         if counter == 2:  # it means there are two members from candidates existing in a group, meaning the rest of the candidates belong in this group too
-                            print("group fits!")
+                            print("found group")
                             group = addGroupAndAll(group, candidates)
                             modifiedGroups.append(group)
                             added = True
@@ -358,8 +356,6 @@ class Group(db.Model):
                 if added:
                     # If we've found or added a group, don't check the next groups for this candidate list
                     break
-                else:
-                    print("group does not fit")
                         
 
             if not added:
@@ -469,7 +465,7 @@ class Word(db.Model):
         'images.id'), nullable=True, server_default="1")
 
     def __str__(self):
-        return "<{}> {}".format(self.id, self.word)
+        return "<{}>".format(self.word)
 
     # Relationships
     image = db.relationship("Image", back_populates="words")
