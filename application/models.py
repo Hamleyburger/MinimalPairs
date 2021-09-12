@@ -46,7 +46,7 @@ class Sound(db.Model):
     groups = db.relationship(
         "Group",
         secondary=group_sounds,
-        back_populates="sounds", lazy="dynamic")
+        back_populates="sounds", lazy="select")
     db.UniqueConstraint('sound')
 
     @ classmethod
@@ -283,6 +283,21 @@ class Group(db.Model):
         if acquainted_members >= 2:
             return True
 
+    def remove(self):
+        """ unlink words(members) and delete group """
+        print(self)
+        members = self.members.all()
+        print("removing members one by one")
+        for member in members:
+            self.members.remove(member)
+        db.session.flush()
+        print("result:")
+        print(self)
+        print("delete group")
+        db.session.delete(self)
+        print("done")
+
+
     @classmethod
     def check(cls, ko):
         """ Checks a word and its partners to see if they can be grouped.\n
@@ -336,6 +351,7 @@ class Group(db.Model):
             pairs = Pair.allPairCombinations(group.members)
             group.addPairs(pairs=pairs)
             group.updateSounds(pairs)
+            db.session.commit()
 
             return group
 
@@ -361,8 +377,8 @@ class Group(db.Model):
             if not added:
                 newGroup = Group()
                 db.session.add(newGroup)
+                db.session.commit()
                 group = addGroupAndAll(newGroup, candidates)
-                db.session.flush()
                 print("\nMade new group ({}):".format(group.id), end="")
 
                 for member in group.members:
@@ -464,9 +480,6 @@ class Word(db.Model):
     img_id = db.Column(db.Integer, db.ForeignKey(
         'images.id'), nullable=True, server_default="1")
 
-    def __str__(self):
-        return "<{}>".format(self.word)
-
     # Relationships
     image = db.relationship("Image", back_populates="words")
     # partners = db.relationship("Word", secondary="pairs",
@@ -488,7 +501,7 @@ class Word(db.Model):
         "Userimage", backref=db.backref('word'), cascade="all, delete")
 
     def __str__(self):
-        return "{} <{}>".format(self.word, self.id)
+        return "<{}>".format(self.word)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -791,7 +804,7 @@ class Word(db.Model):
         return MOsets
 
     def remove(self):
-        """ Deletes given word and its associated pairs form database"""
+        """ Deletes given word and its associated pairs form database. Removes group if too small """
         pairs = db.session.query(Pair).filter(or_(
             (Pair.w1 == self), (Pair.w2 == self))).all()
 
@@ -800,6 +813,18 @@ class Word(db.Model):
             print("deleting " + pair.textify())
             db.session.delete(pair)
         print("deleting " + "'" + self.word + "'")
+
+        groups = self.groups
+
+        print("deleted word's group member counts:")
+        for group in groups:
+            group = db.session.query(Group).filter_by(id=group.id).first()
+            members = group.members.all()
+            count = len(members)
+            if count <= 3:
+                print("this group ({}) will no longer be valid after deletion of word".format(group))
+                group.remove()
+
         db.session.delete(self)
         db.session.commit()
 
