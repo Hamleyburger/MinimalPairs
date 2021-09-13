@@ -50,7 +50,7 @@ def before_request_callback():
             session["manifest"] = "manifest.webmanifest"
 
     if not session.get("collection"):
-        session["collection"] = [36, 39]
+        session["collection"] = []
 
 
 @app.after_request
@@ -137,27 +137,28 @@ def contrasts(locale):
     searched = False
 
     if request.method == "POST":
-        if (request.form["searchBtn"] == "pair") and pairSearchForm.validate_on_submit():
+        if (request.form["searchBtn"] == "pair"):
+            if pairSearchForm.validate_on_submit():
 
-            searched = True
+                searched = True
 
-            # Easy keyboard typing enabled:
-            inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
-            inputSound2 = easyIPAtyping(pairSearchForm.sound2.data)
+                # Easy keyboard typing enabled:
+                inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
+                inputSound2 = easyIPAtyping(pairSearchForm.sound2.data)
 
-            sound1 = Sound.get(inputSound1)
-            pairs = sound1.getContrasts(inputSound2)
+                sound1 = Sound.get(inputSound1)
+                pairs = sound1.getContrasts(inputSound2)
 
-            # Make a lists of ids rendered and in collection for comparison
-            for pair in pairs:
-                idlist = [pair.w1.id, pair.w2.id]
-                renderedids.extend(idlist)
-                if pairCollected(pair):
-                    collectedPairs.extend([pair.id])
+                # Make a lists of ids rendered and in collection for comparison
+                for pair in pairs:
+                    idlist = [pair.w1.id, pair.w2.id]
+                    renderedids.extend(idlist)
+                    if pairCollected(pair):
+                        collectedPairs.extend([pair.id])
 
-        else:
-            print("error in pair form: ")
-            print(pairSearchForm.errors)
+            else:
+                print("error in pair form: ")
+                print(pairSearchForm.errors)
 
         if request.form["searchBtn"] == "MO":
             MOmode = True
@@ -179,7 +180,9 @@ def contrasts(locale):
 
                 # Search database for exact and partial matches
                 sound1 = Sound.get(inputSound1)
+                print("Getting MO sets...")
                 MOsets = sound1.getMOPairs(MOsounds)
+                print("Getting second best MO sets...")
                 MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
 
                 # add each word id to list from every MO and strip duplicates using set

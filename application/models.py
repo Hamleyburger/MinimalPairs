@@ -49,6 +49,11 @@ class Sound(db.Model):
         back_populates="sounds", lazy="select")
     db.UniqueConstraint('sound')
 
+
+    def __str__(self):
+        return"[{}]".format(self.sound)
+
+
     @ classmethod
     def get(cls, soundString=None, soundStringList=None):
         """ Converts both sounds and lists of sounds to Sound objects, stores them if new and returns either list or single entity """
@@ -132,8 +137,9 @@ class Sound(db.Model):
 
     def orderedPairs(self, pairs, sound2List=None):
         """ (Sound) Sorts a given list of pairs so sound1 is self. Throws out pairs without sound1==self\n
-        If sound2List is given, only returns a list of pairs if all contrasts are present """
-
+        If sound2List is given, only returns a list of pairs if all contrasts are present\n
+        Returns every pair from a group where sound 1 is the same, but word 1 is NOT necessarily the same:\n
+        (kor, Thor - klor, glor) <-- k is sound1 """
         # Arranging words in pairs so given sound always comes first.
         swappedPairs = []
         for pair in pairs:
@@ -150,7 +156,6 @@ class Sound(db.Model):
 
         # If sound2list is given, filter out pairs where s2 is not in list
         if sound2List:
-            print("")
             filteredPairs = []
             # Convert strings to Sound objects in case they're strings
             newSound2List = Sound.get(soundStringList=sound2List)
@@ -159,7 +164,6 @@ class Sound(db.Model):
             for pair in pairs:
                 if pair.s2 in newSound2List:
                     filteredPairs.append(pair)
-                    # print("appending pair: {}".format(pair.textify()))
 
             if len(filteredPairs) == len(sound2List):
                 # This is where it checks if all sound2s are present. Can be modified with a minimum criterion.
@@ -175,6 +179,28 @@ class Sound(db.Model):
         Searches in relevant groups for Multiple Oppositions and returns\n
         a list of lists containg MO-sets for each group. """
 
+
+        def group_pairs_by_w1(inputList):
+            """ Returns a list of pair lists where word 1 is the same in each list """
+            newLists = []
+
+            for checkpair in inputList: # pairList's pairs each need to be checked to be distributed into w1-unique lists
+                add_to_pairList = False # see if checkpair can be added to any of the pairlists in newlists, if not, add to new list in newlists
+                for pairList in newLists:
+                    for savedpair in pairList:
+                        if checkpair.w1 == savedpair.w1:
+                            # if yes we can add checkpair to pairList in newlist adn we can break this loop
+                            add_to_pairList = True
+                            break
+                    if add_to_pairList:
+                        pairList.append(checkpair)
+                        break
+                if not add_to_pairList:
+                    newLists.append([checkpair])
+
+            return newLists
+
+
         groups = db.session.query(Group).all()
         relevantGroups = []
 
@@ -188,10 +214,13 @@ class Sound(db.Model):
         # Search relevant groups and add their MO-sets to pair list
         pairLists = []
         for group in relevantGroups:
-
-            groupMOs = self.orderedPairs(group.pairs, sound2List)
-            if groupMOs:
-                pairLists.append(groupMOs)
+            pairs_ordered_by_sound = self.orderedPairs(group.pairs, sound2List)
+            # Split pair lists into smaller lists based on word 1 being the same. Only keep end result list if all sound2s are present.
+            uniqueLists = group_pairs_by_w1(pairs_ordered_by_sound)
+            # include only lists with more than one
+            for uniqueList in uniqueLists:
+                if len(uniqueList) > 1:
+                    pairLists.append(uniqueList)
 
         return pairLists
 
@@ -285,17 +314,11 @@ class Group(db.Model):
 
     def remove(self):
         """ unlink words(members) and delete group """
-        print(self)
         members = self.members.all()
-        print("removing members one by one")
         for member in members:
             self.members.remove(member)
         db.session.flush()
-        print("result:")
-        print(self)
-        print("delete group")
         db.session.delete(self)
-        print("done")
 
 
     @classmethod

@@ -42,8 +42,6 @@ def minimumFields(form, field):
     filledOut = 0
 
     for item in fields:
-        print("checking field")
-        print("item is {}".format(type(item.data)))
         if item.data:
             filledOut += 1
 

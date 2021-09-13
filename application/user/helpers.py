@@ -112,9 +112,6 @@ def MOcollected(MO: list):
 def easyIPAtyping(typedSound):
     """ Translates some keyboard inputs to the characters in the Sound table """
 
-    if typedSound.isascii():
-        print("typed sound is ascii")
-
     easyTypableSounds = {
         'r': 'ʁ',
         'sj': 'ɕ',
@@ -146,52 +143,11 @@ def stripEmpty(inputs):
     return outputs
 
 
-def getSecondBest2(sound1: Sound, MOsounds, completeMatches):
-    """ Return list of partially matching MO sets with words that haven't already been used\n
-    MOsounds: Original list of sounds\n
-    completeMatches: Complete matches that have already been found """
-
-    # Check what's already used to avoid duplicates
-    usedMOsets = completeMatches.copy()
-    usedKeyWords = []
-    partialMatches = []
-    for MOset in usedMOsets:
-        usedKeyWords.append(MOset[0].w1)
-
-    if len(MOsounds) > 2:
-        reducedSoundLists = []
-        # Loops through all potential sound lists where one sound is removed
-        for ignoredSound in MOsounds:
-            print("checking where {} is ignored".format(ignoredSound))
-            reducedList = []
-            for sound in MOsounds:
-                if sound != ignoredSound:
-                    reducedList.append(sound)
-            reducedSoundLists.append(reducedList)
-
-            # Search for all MOsets with reduced list (also potential dupes).
-            newMOsets = sound1.getMOPairs(reducedList)
-            if newMOsets:
-                print("found one")
-                # add if not dupe
-                approved = True
-                for MOset in newMOsets:
-                    if MOset[0].w1 in usedKeyWords:
-                        approved = False
-                if approved:
-                    print("adding")
-                    partialMatches.append(MOset)
-                    usedMOsets.append(MOset)
-                else:
-                    print("not approved")
-            else:
-                print("No complete MO sets for this combination")
-
-
 def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], counter=0):
     """ Return list of partially matching MO sets with words that haven't already been used\n
     MOsounds: Original list of sounds\n
     completeMatches: Complete matches that have already been found """
+
 
     if counter == 0:
         partialMatches = []
@@ -224,7 +180,7 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
                 if sound != ignoredSound:
                     reducedList.append(sound)
 
-            # Search for all MOsets with reduced list (including dupes).
+            # Search for all MOsets with reduced list (including dupes)
             newMOsets = sound1.getMOPairs(reducedList)
             if newMOsets:
                 # append if not dupe / replace with any shorter versions
@@ -236,7 +192,6 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
                             # Dertermine which one to keep based on length
                             if len(newMOset) <= len(usedMOset):
                                 approved = False
-
                     if approved:
                         # add to partialmatches for returning and to usedMOsets for checking
                         addReplaceMOset(partialMatches, newMOset)
