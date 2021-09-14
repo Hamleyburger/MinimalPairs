@@ -1,6 +1,14 @@
 {% from 'macros.html' import group_card, word_card_buttons with context %}
 
 {% macro MOmacro(MOset, index) %}
+
+<style>
+.MO-wrap-hoverable {
+    position: relative;
+    z-index: 2;
+}
+</style>
+
 <div class="MO-wrapper shadow" style="overflow: scroll;">
 
     <!-- It shouldn't be possible for an MOset to be less than 3, but we check anyway -->
@@ -24,13 +32,11 @@
 
 
 
-    <!-- show scrollable list of MO words -->
     <div class="MO-list-wrapper" id="MO-wrap-{{ index }}" style="position: relative">
 
+        <!-- Add/remove button for whole MO set -->
         <div class="absolute-colour-overlay"></div>
-
         <div class="wordgroup" data-ids='{{ wordids | safe }}'>
-
             <a href="#" type="button" class="addgroupbtn addgroupbtn-MO btn"
                 style="display: {{ 'none' if ns.collected else 'inline-block' }};"
                 onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=false)"
@@ -43,13 +49,13 @@
                 data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmMO }}"><i
                     class="fas fa-minus-circle shadow"></i>
             </a>
-
         </div>
 
+        <!-- Word 1 -->
         {% set word1 = MOset[0].w1 %}
-        <div class="card-title" style="position: relative; z-index: 2;"
-            onmouseover="show_thumbnail('MO-wrap-{{ index }}', img{{ word1.id }}url)"
-            onmouseout="hide_thumbnail('MO-wrap-{{ index }}')">
+        <div class="MO-wrap-hoverable"
+            onmouseover="show_thumbnail(this, 'MO-wrap-{{ index }}', img{{ word1.id }}url)"
+            onmouseout="hide_thumbnail(this, 'MO-wrap-{{ index }}')">
 
             <script>
                 var img{{ word1.id }}url = "{{ url_for('static', filename='images/thumbnails/' + word1.image.name)}}";
@@ -63,38 +69,36 @@
                 {{ MOset[0].w1.word }} [{{ MOset[0].s1.sound }}]
                 {{ word_card_buttons(MOset[0].w1) }}
             </b>
-
-
         </div>
 
-        <div class="card-text" style="position: relative; z-index: 2;">
-
-            {% for pair in MOset %}
-            {% set word2 = pair.w2 %}
-            <div class="MO-wrap-hoverable" onmouseover="show_thumbnail('MO-wrap-{{ index }}', img{{ word2.id }}url)"
-                onmouseout="hide_thumbnail('MO-wrap-{{ index }}')">
-                {{ possible_img_icon(word2) }}
-                {{ word2.word }} [{{pair.s2.sound }}] {{ word_card_buttons(word2) }} <br>
-            </div>
-            {% endfor %}
-
+        <!-- loop over MO partners (word 2s) -->
+        {% for pair in MOset %}
+        {% set word2 = pair.w2 %}
+        <div class="MO-wrap-hoverable" onmouseover="show_thumbnail(this, 'MO-wrap-{{ index }}', img{{ word2.id }}url)"
+            onmouseout="hide_thumbnail(this, 'MO-wrap-{{ index }}')">
+            {{ possible_img_icon(word2) }}
+            {{ word2.word }} [{{pair.s2.sound }}] {{ word_card_buttons(word2) }} <br>
         </div>
+        {% endfor %}
 
     </div>
 
     {% endif %}
 
+
+
     {% block script %}
     <script>
-        function show_thumbnail(id, imgurl) {
-
+        function show_thumbnail(thing, id, imgurl) {
+            image_container = $(thing).parent($(".MO-list-wrapper"));
             if (!imgurl.includes("default.")) {
-                $("#" + id).css('background-image', 'url(' + imgurl + ')');
+                image_container.css('background-image', 'url(' + imgurl + ')');
             }
 
         }
-        function hide_thumbnail(id) {
-            $("#" + id).css('background-image', 'none');
+        function hide_thumbnail(thing, id) {
+            image_container = $(thing).parent($(".MO-list-wrapper"));
+            image_container.css('background-image', 'none');
         }
         var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_many') }}";
     </script>
@@ -119,7 +123,7 @@
 
 
 
-
+<!-- First version with cute looking arrows -->
 {% macro MOmacro2(word1, MOset) %}
 <div class="item card" style="box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.55)">
     <div class="img-wrap">
