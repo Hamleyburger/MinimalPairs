@@ -218,7 +218,11 @@
     <div class="titlebox">
         <div class="title-text">
             <p>
-                [{{ pairs[0].s1.sound }}] vs [{{ pairs[0].s2.sound }}]
+            {% if sound2 == "*" %}
+                [{{ sound1.sound }}] vs *
+            {% else %}
+                [{{ sound1.sound }}] vs [{{ sound2.sound }}]
+            {% endif %}
             </p>
         </div>
     </div>

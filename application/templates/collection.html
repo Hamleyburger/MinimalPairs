@@ -104,16 +104,15 @@
 </div>
 
 
-
+<!-- Collection of words/images: -->
 <div class="container contentbox">
-    <!-- For loop "pairs" for iterating over pairs -->
-    <div class="row">
+    <div class="row" id="collectionrow">
         {% for word in collection %}
         <div class="col-12 col-md-4 col-sm-6 wordcols" id="wordcol{{word.id}}">
             {% if "default." in word.image.name %}
-            {{ word_card(word, uploadbutton=true) }}
+            {{ word_card(word, uploadbutton=true, duplicatebutton=true) }}
             {% else %}
-            {{ word_card(word) }}
+            {{ word_card(word, duplicatebutton=true) }}
             {% endif %}
         </div>
         {% endfor %}

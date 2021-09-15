@@ -135,18 +135,26 @@ def contrasts(locale):
     collectedPairs = []  # For accurate button condition on reload
     MOmode = False  # Show MO form when user last searched for MOs
     searched = False
+    sound1 = None
+    sound2 = None
 
     if request.method == "POST":
         if (request.form["searchBtn"] == "pair"):
+            searched = True
             if pairSearchForm.validate_on_submit():
 
-                searched = True
 
                 # Easy keyboard typing enabled:
                 inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
                 inputSound2 = easyIPAtyping(pairSearchForm.sound2.data)
 
                 sound1 = Sound.get(inputSound1)
+                print(inputSound2)
+                print(type(inputSound2))
+                if inputSound2 == "*":
+                    sound2 = "*"
+                else:
+                    sound2 = Sound.get(inputSound1)
                 pairs = sound1.getContrasts(inputSound2)
 
                 # Make a lists of ids rendered and in collection for comparison
@@ -162,10 +170,10 @@ def contrasts(locale):
 
         if request.form["searchBtn"] == "MO":
             MOmode = True
+            searched = True
             if MOSearchForm.validate_on_submit():
                 print("MOsearchform validated")
 
-                searched = True
 
                 # Convert common typos to what user actually meant
                 inputSound1 = easyIPAtyping(MOSearchForm.sound1.data)
@@ -198,11 +206,17 @@ def contrasts(locale):
         for id in list(renderedids):
             if id not in getCollection():
                 collectedAll = False
+    
+    print(pairs)
+    print(MOsets)
+    print(MOsets2)
 
     renderedids = json.dumps(renderedids)
 
     return render_template("contrasts.html",
                            pairs=pairs,
+                           sound1=sound1,
+                           sound2=sound2,
                            form=pairSearchForm,
                            form2=MOSearchForm,
                            renderedids=renderedids,
@@ -252,7 +266,7 @@ def collection(locale):
 # Receives changes from user and makes changes in session
 def ajax_add2collection():
 
-    print("u wanna add to collection with ajax")
+    print("add to collection with ajax")
     word_id = int(request.form["id"])
     word = Word.query.get(word_id)
     print("Adding word: " + str(word.word))
@@ -376,3 +390,19 @@ def validate_browser_image():
             return jsonify({'error': str(e), 'valid': False})
 
     return jsonify({'error': 'Missing file'})
+
+
+@ user_blueprint.route("/ajax_duplicate_in_collection", methods=["POST"])
+# Receives changes from user and makes changes in session
+def ajax_duplicate_in_collection():
+
+    print("you wanna duplicate a word?")
+    word_id = int(request.form["id"])
+    word = Word.query.get(int(word_id))
+    if word:
+        print(word)
+        session["collection"].append(word_id)
+
+    return jsonify(
+        session=getCollection()
+    )

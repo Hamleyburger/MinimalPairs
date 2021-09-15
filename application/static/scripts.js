@@ -52,7 +52,6 @@ function add_to_collection(id, url_for, event) {
         data: {
             id: id
         },
-        // Scripts.js is NOT dynamically generated and therefore dynamic url_for can't be used.
         url: url_for,
         type: "POST"
 
@@ -123,6 +122,23 @@ function clear_collection(url_for, event) {
     });
     $(".wordcols").remove();
 }
+
+function duplicate_in_collection(id, url_for, event) {
+    event.preventDefault();
+    $.ajax({
+        data: {
+            id: id
+        },
+        url: url_for,
+        type: "POST"
+    }).done(function (data) {
+        session = data["session"];
+        element = $("#wordcol" + id);
+        element.clone().appendTo("#collectionrow");
+        refreshBtns([id], session);
+    });
+}
+
 
 // "internal" functions that are only called from scripts.js :
 function refreshBtns(wordids, session) {

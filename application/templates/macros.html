@@ -99,7 +99,7 @@
 
 <!-- Word cards with jinja for 'contrasts' card -->
 <!-- Requires a word and a collection (of ids) -->
-{% macro word_card(word, uploadbutton=false) %}
+{% macro word_card(word, uploadbutton=false, duplicatebutton=false) %}
 
 
 <div class="card text-center wordcard word-font shadow" style="width: 18rem;">
@@ -118,7 +118,7 @@
     <div class="card-body">
         <h5 class="card-title">{{ word.word }}</h5>
 
-        {{ word_card_buttons(word, uploadbutton=uploadbutton) }}
+        {{ word_card_buttons(word, uploadbutton=uploadbutton, duplicatebutton=duplicatebutton) }}
     </div>
 </div>
 
@@ -128,19 +128,17 @@
 
 
 <!-- The buttons all word cards must have to add/remove from collection -->
-{% macro word_card_buttons(word, infobutton=true, uploadbutton=false) %}
+{% macro word_card_buttons(word, infobutton=true, uploadbutton=false, duplicatebutton=false) %}
 <!-- Set collection -->
 <script>
     // This url is defined for passing into add_to_collection which is defined in scripts.js
     var url_for_add = "{{ url_for('user_blueprint.ajax_add2collection') }}";
     var url_for_remove = "{{ url_for('user_blueprint.ajax_remove_from_collection') }}";
+    var url_for_duplicate = "{{ url_for('user_blueprint.ajax_duplicate_in_collection') }}";
 </script>
-{% if session["collection"] is defined %}
-{% set collection = session["collection"] %}
-{% else %}
-{% set collection = [] %}
-{% endif %}
+
 <!-- Check if word is in collection (for contrasts) -->
+{% set collection = session["collection"] %}
 {% set isCollected = false %}
 {% if word.id in collection %}
 {% set isCollected = true %}
@@ -181,6 +179,11 @@
         </form>
     </div>
 
+    {% endif %}
+    {% if duplicatebutton %}
+    <a class="w{{word.id}}-duplicate duplicatebtn" href="#"
+        onclick="duplicate_in_collection({{ word.id }}, url_for_duplicate, event)" data-toggle="tooltip"
+        data-placement="top" title="{{ tooltip_dupeword }}"><i class="fas fa-clone"></i></a>
     {% endif %}
 </div>
 {% endmacro %}

@@ -77,7 +77,8 @@ def getCollection():
 
 
 def manageCollection(wordids, remove=False):
-    """ Takes a list of word ids and adds them or removes them if remove is True """
+    """ Takes a list of word ids and adds them or removes them if remove is True\n
+    Only adds if word not already in collection """
     if not remove:
         print("adding words :)")
         for id in wordids:
