@@ -86,13 +86,13 @@
 
     .title-text {
         margin-top: 15px;
-        font-size: 1.5rem;
-        @media only screen and (max-width: 576px) {
-            //border: 3px solid red;
-            font-size: 1.5rem;
-        }
+        font-size: 1.7rem;
         font-weight: 700;
         text-align: center;
+        .ipa-font {
+            font-size: 1.7rem;
+        }
+
     }
 }
 

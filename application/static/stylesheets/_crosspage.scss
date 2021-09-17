@@ -87,6 +87,17 @@
     }
 }
 
+.ipa-font {
+    font-family: $ipa-font !important;
+    font-weight: 300 !important;
+    font-size: large;
+}
+.sound_input_field {
+    font-family: $ipa-font;
+    //margin-right: 30px;
+    font-size: 20px !important;
+}
+
 .buttons {
     display: flex;
     flex-direction: row;

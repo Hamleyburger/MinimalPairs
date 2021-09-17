@@ -155,7 +155,6 @@ function refreshBtns(wordids, session) {
             $(".w" + id + "-remove").hide();
         }
     }
-
     // refreshes add/remove buttons for all grouped words (all/pairs/MOs)
     if (typeof renderedids !== typeof undefined) {
         refreshWordGroupBtns(session);

@@ -19,7 +19,7 @@ Change word
     {% for pair in pairs %}
     <div class="row justify-content-center mb-1">
         <div class="col-6">
-                {{ pair.w1.word }} ({{pair.s1.sound}}) - {{ pair.w2.word }} ({{ pair.s2.sound }})
+                {{ pair.w1.word }} [<span class="ipa-font">{{pair.s1.sound}}</span>] - {{ pair.w2.word }} [<span class="ipa-font">{{ pair.s2.sound }}</span>]
                 <button onclick='change_pair_modal({{ pair.id }}, "{{ pair.w1.word }}", "{{ pair.s1.sound }}", "{{ pair.w2.word }}", "{{ pair.s2.sound }}")'>Change</button>
         </div>
     </div>

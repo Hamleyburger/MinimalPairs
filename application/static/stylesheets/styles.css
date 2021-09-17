@@ -98,6 +98,17 @@
   display: inline-block;
 }
 
+.ipa-font {
+  font-family: "Times New Roman" !important;
+  font-weight: 300 !important;
+  font-size: large;
+}
+
+.sound_input_field {
+  font-family: "Times New Roman";
+  font-size: 20px !important;
+}
+
 .buttons {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -760,10 +771,6 @@ footer a {
   width: 100%;
 }
 
-.pairSoundTable .sound_input_field {
-  margin-right: 30px;
-}
-
 .pairSoundTable input, .pairSoundTable label {
   display: block;
 }
@@ -930,15 +937,13 @@ footer a {
 
 .titlebox .title-text {
   margin-top: 15px;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 700;
   text-align: center;
 }
 
-@media only screen and (max-width: 576px) {
-  .titlebox .title-text {
-    font-size: 1.5rem;
-  }
+.titlebox .title-text .ipa-font {
+  font-size: 1.7rem;
 }
 
 .contentbox {

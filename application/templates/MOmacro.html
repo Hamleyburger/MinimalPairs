@@ -66,7 +66,7 @@
             <i class="fas fa-image"> </i>
             {% endif %}
             <b>
-                {{ MOset[0].w1.word }} [{{ MOset[0].s1.sound }}]
+                {{ MOset[0].w1.word }} [<span class="ipa-font">{{ MOset[0].s1.sound }}</span>]
                 {{ word_card_buttons(MOset[0].w1) }}
             </b>
         </div>
@@ -77,7 +77,7 @@
         <div class="MO-wrap-hoverable" onmouseover="show_thumbnail(this, 'MO-wrap-{{ index }}', img{{ word2.id }}url)"
             onmouseout="hide_thumbnail(this, 'MO-wrap-{{ index }}')">
             {{ possible_img_icon(word2) }}
-            {{ word2.word }} [{{pair.s2.sound }}] {{ word_card_buttons(word2) }} <br>
+            {{ word2.word }} [<span class="ipa-font">{{pair.s2.sound }}</span>] {{ word_card_buttons(word2) }} <br>
         </div>
         {% endfor %}
 

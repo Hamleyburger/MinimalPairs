@@ -67,7 +67,7 @@
         <h5 class="card-title"><span class="line">{{ pairList[0].w2.word }}</span></h5>
         <p class="card-text">
             {% for pair in pairList %}
-            [{{ pair.s1.sound }}]<span>&#x2192;</span>[{{ pair.s2.sound }}]
+            [<span class="ipa-font">{{ pair.s1.sound }}</span>]<span>&#x2192;</span>[<span class="ipa-font">{{ pair.s2.sound }}</span>]
             <br>
             {% endfor %}
         </p>

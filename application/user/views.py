@@ -154,7 +154,7 @@ def contrasts(locale):
                 if inputSound2 == "*":
                     sound2 = "*"
                 else:
-                    sound2 = Sound.get(inputSound1)
+                    sound2 = Sound.get(inputSound2)
                 pairs = sound1.getContrasts(inputSound2)
 
                 # Make a lists of ids rendered and in collection for comparison
@@ -206,10 +206,6 @@ def contrasts(locale):
         for id in list(renderedids):
             if id not in getCollection():
                 collectedAll = False
-    
-    print(pairs)
-    print(MOsets)
-    print(MOsets2)
 
     renderedids = json.dumps(renderedids)
 

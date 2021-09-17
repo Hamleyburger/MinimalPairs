@@ -23,7 +23,7 @@ $color-yel3: #fffae9; // Næsten hvid
 --color-yel3: #{$color-yel3};
 }
 
-
+$ipa-font: "Times New Roman";
 $border-radius-word-info: 3px;
 $footer-margin-top: 100px; // becasue front page illustration needs to go all the way down
 @function neg($val) {

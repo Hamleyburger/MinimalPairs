@@ -102,9 +102,9 @@
                                 action="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}" novalidate>
                                 {{ form.hidden_tag() }}
                                 <div class="search-sounds-field">
-                                    {{ form.sound1(class="sound_input_field", size="1") }}
+                                    {{ form.sound1(class="sound_input_field ipa-font", size="1") }}
                                     vs.
-                                    {{ form.sound2(class="sound_input_field", size="1") }}
+                                    {{ form.sound2(class="sound_input_field ipa-font", size="1") }}
                                 </div>
                                 <button name="searchBtn" value="pair" type="submit" class="shadow main-btn"
                                     data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchpairs }}"><i
@@ -132,14 +132,14 @@
                                 {{ form2.hidden_tag() }}
                                 <div class="search-sounds-field MO-search-sounds-field">
 
-                                    {{ form2.sound1(class="sound_input_field", size="1") }}
+                                    {{ form2.sound1(class="sound_input_field ipa-font", size="1") }}
                                     vs.
                                     <div class="opposing-sound-inputs">
 
-                                        {{ form2.sound2(class="sound_input_field", size="1") }}
-                                        {{ form2.sound3(class="sound_input_field", size="1") }}
-                                        {{ form2.sound4(class="sound_input_field", size="1") }}
-                                        {{ form2.sound5(class="sound_input_field", size="1") }}
+                                        {{ form2.sound2(class="sound_input_field ipa-font", size="1") }}
+                                        {{ form2.sound3(class="sound_input_field ipa-font", size="1") }}
+                                        {{ form2.sound4(class="sound_input_field ipa-font", size="1") }}
+                                        {{ form2.sound5(class="sound_input_field ipa-font", size="1") }}
                                     </div>
 
                                     <button type="submit" name="searchBtn" value="MO"
@@ -219,9 +219,9 @@
         <div class="title-text">
             <p>
             {% if sound2 == "*" %}
-                [{{ sound1.sound }}] vs *
+                [<span class="ipa-font">{{ sound1.sound }}</span>] vs *
             {% else %}
-                [{{ sound1.sound }}] vs [{{ sound2.sound }}]
+                [<span class="ipa-font">{{ sound1.sound }}</span>] vs [<span class="ipa-font">{{ sound2.sound }}</span>]
             {% endif %}
             </p>
         </div>

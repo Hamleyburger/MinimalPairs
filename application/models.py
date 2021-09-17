@@ -153,20 +153,26 @@ class Sound(db.Model):
             swappedPairs.append(pair)
 
         pairs = swappedPairs
+        swapped_pairs_sound_2s = []
 
-        # If sound2list is given, filter out pairs where s2 is not in list
+        # If sound2list, deal with it in the following code block
         if sound2List:
-            filteredPairs = []
+            
             # Convert strings to Sound objects in case they're strings
             newSound2List = Sound.get(soundStringList=sound2List)
 
             # Filter out pairs without wanted sound2
+            filteredPairs = []
             for pair in pairs:
                 if pair.s2 in newSound2List:
                     filteredPairs.append(pair)
+                else:
+                    print("filtering out {}".format(pair))
 
-            if len(filteredPairs) == len(sound2List):
-                # This is where it checks if all sound2s are present. Can be modified with a minimum criterion.
+            # Check that all wanted sound2s are present
+            for pair in filteredPairs:
+                swapped_pairs_sound_2s.append(pair.s2)
+            if all(sound in swapped_pairs_sound_2s for sound in newSound2List):
                 pairs = filteredPairs
             else:
                 pairs = []
@@ -179,7 +185,8 @@ class Sound(db.Model):
         Searches in relevant groups for Multiple Oppositions and returns\n
         a list of lists containg MO-sets for each group. """
 
-
+        print("sounds")
+        print(sound2List)
         def group_pairs_by_w1(inputList):
             """ Returns a list of pair lists where word 1 is the same in each list """
             newLists = []
@@ -209,18 +216,23 @@ class Sound(db.Model):
         for group in groups:
             if all(elem in group.sounds for elem in (sound2s + [self])):
                 relevantGroups.append(group)
+
                 # print("Group {} has all the sounds!".format(group.id))
 
         # Search relevant groups and add their MO-sets to pair list
         pairLists = []
         for group in relevantGroups:
+            print("ordering pairs and only returning if all sound2s are present?")
             pairs_ordered_by_sound = self.orderedPairs(group.pairs, sound2List)
+            for p in pairs_ordered_by_sound:
+                print(p)
             # Split pair lists into smaller lists based on word 1 being the same. Only keep end result list if all sound2s are present.
             uniqueLists = group_pairs_by_w1(pairs_ordered_by_sound)
             # include only lists with more than one
             for uniqueList in uniqueLists:
                 if len(uniqueList) > 1:
                     pairLists.append(uniqueList)
+
 
         return pairLists
 
