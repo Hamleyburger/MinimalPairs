@@ -237,6 +237,7 @@ class Sound(db.Model):
         return pairLists
 
 
+
 class Group(db.Model):
     __tablename__ = "groups"
     __table_args__ = {'extend_existing': True}
@@ -502,6 +503,46 @@ class Pair(db.Model):
         string = "{}: {} / {} - ({} vs. {})".format(self.id, self.w1.word,
                                                     self.w2.word, self.s1.sound, self.s2.sound)
         return string
+
+
+class SearchedPair(db.Model):
+
+    __tablename__ = "searched_pairs"
+    __table_args__ = {'extend_existing': True}
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    s1 = db.Column(db.String(), nullable=False)
+    s2 = db.Column(db.String(), nullable=False)
+    times_searched = db.Column(db.Integer)
+
+    def getPairs(self):
+        """ Returns the number of existing pairs with this sound combination """
+        sound1 = Sound.get(self.s1)
+        sound2 = Sound.get(self.s2)
+        pairs = []
+        if sound1:
+            pairs = sound1.getContrasts(sound2)
+        return pairs
+
+
+    @classmethod
+    def add(cls, sound1, sound2):
+        """ Adds new searched pair to SearchedPairs. Make sure provided sounds are sounds or wildcards. """
+
+        clause1 = and_(cls.s1 == sound1, cls.s2 == sound2)
+        clause2 = and_(cls.s1 == sound2, cls.s2 == sound1)
+        searched_pair = cls.query.filter(
+            or_(clause1, clause2)).all()
+        if searched_pair:
+            searched_pair.times_searched += 1
+        else:
+            searched_pair = cls(s1=sound1, s2=sound2, times_searched=1)
+        db.session.commit()
+
+
+
+
+
 
 
 class Word(db.Model):

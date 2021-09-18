@@ -14,6 +14,13 @@ from flask_migrate import Migrate
 
 
 
+def before_send(event, hint):
+    if app.config["DEBUG"]:
+        print("\n\nNot sending error event to Sentry.io")
+        return None
+    else:
+        return event
+
 sentry_sdk.init(
     dsn="https://f9fb4e8eb2904b20869f5e8d11f138e2@o837681.ingest.sentry.io/5813571",
     integrations=[FlaskIntegration()],
@@ -21,7 +28,9 @@ sentry_sdk.init(
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.
-    traces_sample_rate=1.0
+    traces_sample_rate=0.2,
+    before_send=before_send
+
 )
 
 

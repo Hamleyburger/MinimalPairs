@@ -21,7 +21,7 @@ def error_403(error):
 @errors.app_errorhandler(500)
 @errors.app_errorhandler(Exception)
 def error_500(error):
-    if app.config["DEBUG"] == 0:
+    if not app.config["DEBUG"]:
         sentry_sdk.capture_exception(error)
     else:
         raise error

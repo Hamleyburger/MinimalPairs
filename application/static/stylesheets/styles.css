@@ -640,6 +640,10 @@ footer a {
   }
 }
 
+.frontpage-container .text-container .about-text .text-wrapper dd {
+  margin-left: 20px;
+}
+
 .frontpage-container .text-container #planet {
   fill: #3b1734;
   display: none;

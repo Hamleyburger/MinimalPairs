@@ -28,24 +28,25 @@ def Content(locale=None):
             "Velkommen til minimalepar.dk",
             ' <p><i>Minimale par</i> er kort beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd. </p>\
                 Derfor er minimale par gode til at vise hvordan en lyd\
-                kan være afgørende for den opfattede betydning af ordet. Hvis jeg for eksempel siger [d] når jeg mener [k], bliver "krage" til "drage", og\
+                kan være afgørende for et ords betydning. Hvis jeg for eksempel erstatter [k] med [d], bliver "krage" til "drage", og\
                 så har jeg pludselig en flok drager på taget.\
-                <p> "Minimale Par" er en voksende database med ord, der danner par på kryds og tværs. \
-                Indholdet er tilpasset brug i logopædisk praksis, hvor det kan anvendes i arbejdet med udtale og skelnen af danske sproglyde:\
+                <p> "Minimale Par" er en voksende database med ord og (nogle) billeder, der danner par på kryds og tværs. \
                 <dl>\
-                <dt>Der sigtes efter ord, som er nemme at billedliggøre</dt>\
-                    <dd>- "ko" og "løbe" er nemme at se for sig. Men hvordan viser man for eksempel "bruge" og "hensigt"?</dd>\
-                <dt>Der kan tilføjes par, som ikke er ægte minimale par</dt>\
-                    <dd>- "skyr" vs. "dyr" har mere end en enkelt lyd til forskel. Men parret er relevant til brug med elever, der erstatter [sg] med [d]</dd>\
+                <dt>Indholdet er tilpasset brug i logopædisk praksis</dt>\
+                    <dd>Materialet er ikke videnskabeligt akkurat - ordparrene er tilføjet et af gangen efter behov, baseret på en kvalitativ vurdering</dd>\
+                <dt>Der sigtes efter ord, som er relativt nemme at billedliggøre</dt>\
+                    <dd>"ko" og "løbe" er nemme at se for sig. Men hvordan tegner man for eksempel "puds" (pudse i bydeform) og "hensigt" på en måde så børn har en change for at huske dem?</dd>\
+                <dt>Der kan tilføjes par, som ikke er ægte minimale par på fonemniveau</dt>\
+                    <dd>"skyr" vs. "dyr" har mere end en enkelt lyd til forskel. Men parret er relevant til brug med elever, der erstatter [sg] med [d]</dd>\
                 <dt>Der kan tilføjes par, som <i>kan</i> være minimale alt afhængigt af elevens udtale.</dt>\
-                    <dd>- "ruder" vs. "guder", kan have [ʁ] og [g] til forskel, med mindre [u] udsættes for nok r-påvirkning til at lyde mere som [o].</dd>\
+                    <dd>"ruder" vs. "guder", kan have [ʁ] og [g] til forskel, med mindre [u] udsættes for nok r-påvirkning til at lyde mere som [o]. Så ville "ruder" i stedet danne [ʁ g]-par med "goder". </dd>\
                 </dl>\
                 </p>\
                 \
                 <p>I siden <i>find kontraster</i> kan du søge på lyde med IPA-symboler og finde både minimale par og serier (multiple oppositioner). \
                 Ordene kan tilføjes til en samling med <i class = "fas fa-plus-circle" > \
                 </i> og fjernes med <i class ="fas fa-minus-circle"></i> \
-                Fra siden <i>samling</i> kan du generere en PDF-fil, \
+                Fra siden <i>samling</i> kan du tilføje de billeder, der mangler, dublere ord og generere en PDF-fil, \
                 som kan downloades og printes tosidet, så du får et billedmateriale med en bagside.w </p>'
         ],
 
@@ -64,10 +65,10 @@ def Content(locale=None):
         "help_soundsearch_cue": "Indtast mållyde",
         "help_pairs_title": "Søg efter minimale par",
         "help_pairs_content": '\
-            <p>Søg efter sæt med minimale par ved at indsætte mållydene i søgefelterne. Du kan også indsætte konsonantklynger.</p>\
+            <p>Søg efter ordpar ved at indsætte mållydene i søgefelterne. Du kan også indsætte konsonantklynger.</p>\
             <p>Hvis du ikke har IPA-tegnet på dit keyboard, kan du klikke i det felt, du vil indsætte et tegn i, og bagefter klikke på tegnet i tegnvælgeren.</p>\
-            <p>Du kan bruge bindestreg <span class="texthighlight">-</span> til at søge efter udeladte lyde - f.eks. "sø" vs. "ø" med udeladelse af [s].</p>\
-            <p>Du kan bruge asterisk <span class="texthighlight">*</span> til at søge efter "alle lyde" - f.eks. [s] vs. "*" for at finde alle par med [s].</p>\
+            <p>Du kan bruge bindestreg <span class="texthighlight">-</span> til at søge efter "tomme" lyde - f.eks. "sø" vs. "ø" med udeladelse af [s].</p>\
+            <p>Du kan bruge asterisk <span class="texthighlight">*</span> til at søge efter "alle lyde" - f.eks. [s] vs. "*" for at finde alle minimale par med [s].</p>\
             <p>I resultaterne kan du tilføje et ord til din samling med <i class = "fas fa-plus-circle"></i> og fjerne det med <i class ="fas fa-minus-circle"></i>. </p>\
             ',
         "help_MO_title": "Søg efter sæt med multiple oppositioner",
@@ -143,7 +144,7 @@ def Content(locale=None):
         # Front page
         "title_index": "Home",
         "about": [
-            "Out of words?",
+            "Welcome to minimalepar.dk?",
             ' <p> "Minimale Par" (Danish for "minimal pairs") is a growing database of minimal pairs. \
                 Here you can search and collect word pairs with images and generate \
                 convenient two-sided PDF files for printing and using in \
@@ -159,8 +160,8 @@ def Content(locale=None):
                 level - word pairs differing by clusters of sounds in the same positions.\
                  </p> <p> Additionally to word pairs it is possible to search for \
                 "multiple opposition sets" - sets of words that are all distinguished \
-                from each other by one sound(or cluster). Multiple opposition sets can \
-                be used when a number of differend sounds are all replaced by the same \
+                from each other by one sound (or cluster). Multiple opposition sets can \
+                be used when a number of different sounds are all replaced by the same \
                 sounds. </p> <p> When you like a word use <i class = "fas fa-plus-circle" > \
                 </i> to add it to your collection. Use <i class ="fas fa-minus-circle"></i> \
                 to remove it again. </p>'
