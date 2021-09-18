@@ -516,6 +516,9 @@ class SearchedPair(db.Model):
     times_searched = db.Column(db.Integer)
     existing_pairs = db.Column(db.Integer)
 
+    def __str__(self):
+        return "Search: [{} {}]".format(self.s1, self.s2)
+
     def getPairs(self):
         """ Returns the number of existing pairs with this sound combination. Haven't checked if this works. """
         sound1 = Sound.get(self.s1)
@@ -537,12 +540,13 @@ class SearchedPair(db.Model):
             or_(clause1, clause2)).first()
         if searched_pair:
             searched_pair.times_searched += 1
-
+        else:
             searched_pair = cls(s1=sound1, s2=sound2, times_searched=1)
             db.session.add(searched_pair)
         if existing_pairs:
             searched_pair.existing_pairs = existing_pairs
         if not current_app.config["DEBUG"]:
+            print("Added {}".format(searched_pair))
             db.session.commit()
 
 
