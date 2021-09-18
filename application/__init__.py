@@ -14,6 +14,7 @@ from flask_migrate import Migrate
 
 
 
+
 def before_send(event, hint):
     if app.config["DEBUG"]:
         print("\n\nNot sending error event to Sentry.io")
@@ -52,6 +53,7 @@ debugToolbar = DebugToolbarExtension(app)
 
 # Instantiate SQLAlchemy
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Initialize flask-user and make an admin user if not exists
 from .user.models import User, Userimage

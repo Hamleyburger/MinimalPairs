@@ -514,11 +514,12 @@ class SearchedPair(db.Model):
     s1 = db.Column(db.String(), nullable=False)
     s2 = db.Column(db.String(), nullable=False)
     times_searched = db.Column(db.Integer)
+    existing_pairs = db.Column(db.Integer)
 
     def getPairs(self):
-        """ Returns the number of existing pairs with this sound combination """
+        """ Returns the number of existing pairs with this sound combination. Haven't checked if this works. """
         sound1 = Sound.get(self.s1)
-        sound2 = Sound.get(self.s2)
+        sound2 = self.s2
         pairs = []
         if sound1:
             pairs = sound1.getContrasts(sound2)
@@ -526,18 +527,24 @@ class SearchedPair(db.Model):
 
 
     @classmethod
-    def add(cls, sound1, sound2):
+    def add(cls, sound1, sound2, existing_pairs: int = None):
         """ Adds new searched pair to SearchedPairs. Make sure provided sounds are sounds or wildcards. """
-
+        if sound1 == sound2:
+            return
         clause1 = and_(cls.s1 == sound1, cls.s2 == sound2)
         clause2 = and_(cls.s1 == sound2, cls.s2 == sound1)
         searched_pair = cls.query.filter(
-            or_(clause1, clause2)).all()
+            or_(clause1, clause2)).first()
         if searched_pair:
             searched_pair.times_searched += 1
-        else:
+
             searched_pair = cls(s1=sound1, s2=sound2, times_searched=1)
-        db.session.commit()
+            db.session.add(searched_pair)
+        if existing_pairs:
+            searched_pair.existing_pairs = existing_pairs
+        if not current_app.config["DEBUG"]:
+            db.session.commit()
+
 
 
 

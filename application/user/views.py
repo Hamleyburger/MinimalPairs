@@ -4,7 +4,7 @@ from user_agents import parse
 
 from pyphen import LANGUAGES
 from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection
-from application.models import Word, Group, Sound
+from application.models import Word, Group, Sound, SearchedPair
 from .models import User, Userimage
 from application import db, app
 from .forms import SearchSounds, SearchMOs, toPDF_wrap
@@ -149,13 +149,12 @@ def contrasts(locale):
                 inputSound2 = easyIPAtyping(pairSearchForm.sound2.data)
 
                 sound1 = Sound.get(inputSound1)
-                print(inputSound2)
-                print(type(inputSound2))
                 if inputSound2 == "*":
                     sound2 = "*"
                 else:
                     sound2 = Sound.get(inputSound2)
                 pairs = sound1.getContrasts(inputSound2)
+                SearchedPair.add(inputSound1, inputSound2, len(pairs))
 
                 # Make a lists of ids rendered and in collection for comparison
                 for pair in pairs:
@@ -192,6 +191,9 @@ def contrasts(locale):
                 MOsets = sound1.getMOPairs(MOsounds)
                 print("Getting second best MO sets...")
                 MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
+
+                for inputSound2 in MOsounds:
+                    SearchedPair.add(inputSound1, inputSound2)
 
                 # add each word id to list from every MO and strip duplicates using set
                 idList = [id for MO in MOsets +
