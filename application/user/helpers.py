@@ -1,8 +1,8 @@
 from werkzeug.utils import redirect
-from application.models import Pair
+from application.models import Pair, Sound, Word
+from application import db
 import json
 from flask import session, g, request, redirect, url_for, abort
-from application.models import Sound
 import functools
 from application import app
 from ..content_management import Content
@@ -103,6 +103,7 @@ def pairCollected(pair: Pair):
 
 
 def MOcollected(MO: list):
+
     """ Only returns True if ALL pairs in MO are collected """
     for pair in MO:
         if not pairCollected(pair):
@@ -270,3 +271,14 @@ def resize_crop_image(file):
     im.format = original_format
 
     return im
+
+def count_as_used(collection_ids):
+    new_ids = []
+    print(collection_ids)
+    new_ids = list(set(collection_ids))
+    print(new_ids)
+    for id in new_ids:
+        word = Word.query.get(id)
+        word.times_used += 1
+
+    db.session.commit()

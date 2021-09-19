@@ -566,6 +566,7 @@ class Word(db.Model):
     cue = db.Column(db.String(), server_default="")
     img_id = db.Column(db.Integer, db.ForeignKey(
         'images.id'), nullable=True, server_default="1")
+    times_used = db.Column(db.Integer, server_default="0", nullable=False)
 
     # Relationships
     image = db.relationship("Image", back_populates="words")

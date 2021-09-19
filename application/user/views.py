@@ -3,7 +3,7 @@ import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection
+from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used
 from application.models import Word, Group, Sound, SearchedPair
 from .models import User, Userimage
 from application import db, app
@@ -233,11 +233,12 @@ def collection(locale):
 
     form = toPDF_wrap(locale)()
     print(request.method)
+    collection_ids = getCollection()
     collection = []
     custom_image_ids = []
 
     # Get pairs from session object
-    for id in getCollection():
+    for id in collection_ids:
         collection.append(Word.query.get(int(id)))
 
     custom_image_ids = custom_images_in_collection(collection)
@@ -254,6 +255,8 @@ def collection(locale):
                 # This bit of CSS is dynamically generated, the rest is hard coded in the template
                 css = CSS(
                     string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
+                
+                count_as_used(collection_ids)
 
                 return render_pdf(html, stylesheets=[css])
 
