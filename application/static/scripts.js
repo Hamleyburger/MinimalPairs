@@ -62,6 +62,7 @@ function add_to_collection(id, url_for, event) {
 }
 
 function remove_from_collection(id, url_for, event) {
+    console.log(url_for);
     /** Removes all rendered words from collection  */
     event.preventDefault();
     $.ajax({

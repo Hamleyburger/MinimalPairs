@@ -1,0 +1,39 @@
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- jQuery script -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Space board game</title>
+
+        <style>
+
+            canvas {
+                /*A4*/
+                width: 29,7cm;
+                height: 21cm;
+                /*A3*/
+                /*
+                width: 42cm;
+                height: 29.7cm;  
+                */
+            }
+
+        </style>
+    </head>
+
+
+    <body>
+
+        <canvas width="3508" height="2480" id="background-canvas" style="position: absolute; z-index: 0;">
+        </canvas>
+        <canvas width="3508" height="2480" id="foreground-canvas" style="position: absolute; z-index: 1;">
+        </canvas>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='board_game_script.js') }}"></script>
+    </body>
+
+</html>

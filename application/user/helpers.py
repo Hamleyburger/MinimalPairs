@@ -75,6 +75,11 @@ def getCollection():
 
     return session["collection"]
 
+def get_word_collection():
+    
+    ids = getCollection()
+    words = db.session.query(Word).filter(Word.id.in_(ids)).all()
+    return words
 
 def manageCollection(wordids, remove=False):
     """ Takes a list of word ids and adds them or removes them if remove is True\n

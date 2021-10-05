@@ -3,7 +3,8 @@ import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used
+from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used
+import random
 from application.models import Word, Group, Sound, SearchedPair
 from .models import User, Userimage
 from application import db, app
@@ -14,6 +15,7 @@ from application.admin.filehelpers import validate_image
 import os
 from werkzeug.utils import secure_filename
 import sentry_sdk
+
 
 
 user_blueprint = Blueprint("user_blueprint", __name__,
@@ -263,6 +265,54 @@ def collection(locale):
     return render_template("collection.html", collection=collection, form=form)
 
 
+@user_blueprint.route("/<locale>/collection/gameboard", methods=["GET", "POST"], defaults={"locale": "en"})
+@user_blueprint.route("/<locale>/samling/spilleplade", methods=["GET", "POST"], defaults={"locale": "da"})
+@ensure_locale
+def boardgame(locale):
+
+    # form = toPDF_wrap(locale)()
+    # print(request.method)
+    collection_ids = getCollection()
+    collection = []
+    custom_image_ids = []
+
+    # Get pairs from session object
+    for id in collection_ids:
+        collection.append(Word.query.get(int(id)))
+
+    custom_image_ids = custom_images_in_collection(collection)
+
+    print(custom_image_ids)
+
+    # if request.method == "POST":
+    #     if getCollection():
+    #         if form.validate_on_submit():
+    #             # Background file name is defined in the declaration of wtf choices in forms.py
+    #             bgfilename = form.background.data
+    #             template = render_template("mypdf.html", collection=collection)
+    #             html = HTML(string=template)
+    #             # This bit of CSS is dynamically generated, the rest is hard coded in the template
+    #             css = CSS(
+    #                 string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
+    #             count_as_used(collection_ids)
+    #             return render_pdf(html, stylesheets=[css])
+
+
+    template = render_template("space_board_game.html", collection=collection)
+    html = HTML(string=template)
+    # This bit of CSS is dynamically generated, the rest is hard coded in the template
+    # css = CSS(
+    #     string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
+    count_as_used(collection_ids)
+
+    # return render_pdf(
+    #     html, 
+    #     # stylesheets=[css]
+    # )
+    return render_template("space_board_game.html", collection=collection)
+
+
+
 @ user_blueprint.route("/ajax_add2collection", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_add2collection():
@@ -407,3 +457,46 @@ def ajax_duplicate_in_collection():
     return jsonify(
         session=getCollection()
     )
+
+@ user_blueprint.route("/ajax_get_boardgame_filenames", methods=["POST"])
+# Receives changes from user and makes changes in session
+def ajax_get_boardgame_filenames():
+
+    ids_words_paths = []
+    words = get_word_collection()
+    number_of_words = len(words)
+    if number_of_words == 0:
+        return "no words"
+    print(len(words))
+    words_needed = (int(request.form.get("count")))
+    duplicates_needed = words_needed - len(words)
+    if duplicates_needed > 0:
+        for i in range(duplicates_needed):
+            j = i % number_of_words
+            words.append(words[j])
+    
+    print(len(words))
+    print(words)
+    random.shuffle(words)
+
+    for word in words:
+        if word.id in session["userimages"]:
+            ids_words_paths.append(
+            {   "id": word.id,
+                "word": word.word,
+                "path": session["userimages"][word.id]
+            }
+            )
+        else:
+            ids_words_paths.append(
+            {
+                "id": word.id,
+                "word": word.word,
+                "path": "images/" + word.image.name
+            }
+            )
+
+    json_words = json.dumps(ids_words_paths, ensure_ascii=False)
+
+    return json_words
+
