@@ -1,9 +1,21 @@
 
+function make_space_boardgame() {
+
 
     var staticroot = "/static/"
 
-    var canvas = document.getElementById('background-canvas');
-    var canvas_tmp = document.getElementById('foreground-canvas');
+    // var canvas = document.getElementById('background-canvas');
+    // var canvas_tmp = document.getElementById('foreground-canvas');
+
+
+    canvas = document.createElement('canvas');
+    canvas.width=3508;
+    canvas.height=2480;
+    canvas_tmp = document.createElement('canvas');
+    canvas_tmp.width=3508;
+    canvas_tmp.height=2480;
+
+    
     var end_ctx = canvas.getContext("2d");
     var tmp_ctx = canvas_tmp.getContext("2d");
     end_ctx.beginPath();
@@ -103,30 +115,52 @@
         
         // Draw foreground
         await drawImageToCtx(end_ctx, 0, 0, staticroot + "boardgames/images/a3space_foreground.png", 0, true);
-
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var pdf = new jsPDF('l', 'mm', [420, 297]);
+        
+        // If canvas is generated as an element programatically
+        pdf.addImage(imgData, 'JPEG', 0, 0, 420, 297);
+        var filename = prompt('Gem i "overførsler" som', "spilleplade_solsystem");
+        if (filename === null) {
+            filename = "spilleplade_solsystem";
+        }
+        pdf.save(filename + ".pdf");
         $(canvas_tmp).remove();
         
-}
+        
+    }
 
-// word image objects contain id, word and path
-var word_image_objects = [];
+    // word image objects contain id, word and path
+    var word_image_objects = [];
 
-$.ajax({
-    url: "/ajax_get_boardgame_filenames",
-    data: {
-        count: 30
-    },
-    type: "POST",
-  }).done(function(data) {
-    // word id is the entry for JSON objects that contain word and path
+
+    // Default export is a4 paper, portrait, using millimeters for units
+    $.ajax({
+        url: "/ajax_get_boardgame_filenames",
+        data: {
+            count: 30
+        },
+        type: "POST",
+    }).done(function(data) {
+        // word id is the entry for JSON objects that contain word and path
 
         word_image_objects = JSON.parse(data);
-        paths = []
-        for(var i = 0; i < word_image_objects.length; i++) {
-            var obj = word_image_objects[i];
-            paths.push(obj.path);
-            console.log(paths[i]);
-        }
 
-        build_space_board_game(paths);
-  });
+        if (word_image_objects.length === 0) {
+            console.log("no collection");
+        }
+        else {
+
+            paths = []
+            for(var i = 0; i < word_image_objects.length; i++) {
+                var obj = word_image_objects[i];
+                paths.push(obj.path);
+                console.log(paths[i]);
+            }
+            
+            build_space_board_game(paths);
+
+        }
+    });
+
+}

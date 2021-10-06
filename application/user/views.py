@@ -265,54 +265,6 @@ def collection(locale):
     return render_template("collection.html", collection=collection, form=form)
 
 
-@user_blueprint.route("/<locale>/collection/gameboard", methods=["GET", "POST"], defaults={"locale": "en"})
-@user_blueprint.route("/<locale>/samling/spilleplade", methods=["GET", "POST"], defaults={"locale": "da"})
-@ensure_locale
-def boardgame(locale):
-
-    # form = toPDF_wrap(locale)()
-    # print(request.method)
-    collection_ids = getCollection()
-    collection = []
-    custom_image_ids = []
-
-    # Get pairs from session object
-    for id in collection_ids:
-        collection.append(Word.query.get(int(id)))
-
-    custom_image_ids = custom_images_in_collection(collection)
-
-    print(custom_image_ids)
-
-    # if request.method == "POST":
-    #     if getCollection():
-    #         if form.validate_on_submit():
-    #             # Background file name is defined in the declaration of wtf choices in forms.py
-    #             bgfilename = form.background.data
-    #             template = render_template("mypdf.html", collection=collection)
-    #             html = HTML(string=template)
-    #             # This bit of CSS is dynamically generated, the rest is hard coded in the template
-    #             css = CSS(
-    #                 string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
-    #             count_as_used(collection_ids)
-    #             return render_pdf(html, stylesheets=[css])
-
-
-    template = render_template("space_board_game.html", collection=collection)
-    html = HTML(string=template)
-    # This bit of CSS is dynamically generated, the rest is hard coded in the template
-    # css = CSS(
-    #     string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
-    count_as_used(collection_ids)
-
-    # return render_pdf(
-    #     html, 
-    #     # stylesheets=[css]
-    # )
-    return render_template("space_board_game.html", collection=collection)
-
-
-
 @ user_blueprint.route("/ajax_add2collection", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_add2collection():

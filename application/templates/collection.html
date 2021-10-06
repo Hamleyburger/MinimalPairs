@@ -24,6 +24,15 @@
 <meta property="og:image:height" content="{{ layout.og_image_height }}" />
 {% endblock %}
 
+
+{% block extrahead %}
+<!-- jQuery script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- JSpdf -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" integrity="sha512-V/C9Axb8EEL4ix79ERIJmpRd6Mp1rWVSxa2PIBCdCxqhEsfCBWp/R0xJ4U495czhcuDWrGOFYo8+QI3lJ9DK5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock extrahead %}
+
+
 {% block main %}
 
 
@@ -134,7 +143,10 @@
 {% endblock %}
 
 {% block script %}
-
+<script>
+    window.jsPDF = window.jspdf.jsPDF
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='board_game_script.js') }}"></script>
 <script>
     $("#search-collapse-btn").click(function () {
         //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html

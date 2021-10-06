@@ -79,7 +79,12 @@ def get_word_collection():
     
     ids = getCollection()
     words = db.session.query(Word).filter(Word.id.in_(ids)).all()
-    return words
+    words_with_duplicates = []
+    for id in ids:
+        for word in words:
+            if int(id) == word.id:
+                words_with_duplicates.append(word)
+    return words_with_duplicates
 
 def manageCollection(wordids, remove=False):
     """ Takes a list of word ids and adds them or removes them if remove is True\n
