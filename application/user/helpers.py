@@ -15,33 +15,22 @@ def ensure_locale(func):
     @functools.wraps(func)
     def decorated(*args, **kwargs):
 
+        # Make sure routes with locale display globe icon for language change
         g.showglobe = True
-
-        # Gets locale from url's args (only routes with locale in url are decorated)
-        firstarg = request.path.split('/', 2)[1]
-
-        # Handle cases where first arg is not locale
-        if firstarg == "":
-            firstarg = session["locale"]
-        elif firstarg not in app.config['LANGUAGES']:
-            # Abort (remember that only localized routes have this decorator.)
-            abort(404)
 
         # decide whether kwarg["locale"] should be taken from URL or session
         if not session.get("force_session_lang"):
             # force_session_lang is if the language button was pressed
-            session["locale"] = firstarg
-            kwargs["locale"] = firstarg
+            if request.args.get("locale"):
+                session["locale"] = request.args.get("locale")
+            
         else:
-            kwargs["locale"] = session["locale"]
             session.pop("force_session_lang")
+        
+        kwargs["locale"] = session["locale"]
 
-        # Find optimal/canonical URL and redirect if canonical is different
-        current_path = request.path
-        canonical_path = url_for(request.endpoint, *args, **kwargs)
+        print("language is session: {}".format(session["locale"]))
 
-        if str(current_path) != str(canonical_path):
-            return redirect(canonical_path, 301)
         return func(*args, **kwargs)
     return decorated
 

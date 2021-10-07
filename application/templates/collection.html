@@ -79,14 +79,15 @@
             }}</button>
     </div>
 
-    <div class="collapse" id="pdf-form-collapsable">
-        <form method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
+    <div class="collapse shadow pdf-generator-dropdown" id="pdf-form-collapsable">
+        <div class="row pt-4">
+            {{ help_container("pdf-", help_pdf_title, help_pdf_cue, help_pdf_content) }}
+        </div>
+        <form class="pdf-showcase" method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
             {{ form.hidden_tag() }}
-            <div class="container-fluid background-choices">
-                <fieldset class="shadow container">
-                    <div class="row">
-                        {{ help_container("pdf-", help_pdf_title, help_pdf_cue, help_pdf_content) }}
-                    </div>
+            <div class="container-fluid background-choices pdf-showcase-inner">
+            <p>{{ help_pdf_choose_back }}</p>
+                <fieldset class="container">
                     <div class="row">
                         {% for subfield in form.background %}
                         <div class="col">
@@ -101,15 +102,22 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="pdfbtn shadow"><i class="pdfbtn fas fa-file-pdf"
+                            <button type="submit" class="pdfbtn shadow"><i class="fas fa-file-pdf"
                                     formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i>
                                 {{ btn_makePDF }} </button>
                         </div>
                     </div>
                 </fieldset>
+            </div>
         </form>
+        <div class="row pdf-showcase">
+            <div class="pdf-showcase-inner col-12 text-center d-flex flex-column align-items-center">
+            <p>{{ help_pdf_board_game }}</p>
+                <img class="pdf-example shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
+                <button class="pdfbtn shadow" onclick="(function(){ make_space_boardgame() })();"><i class="fas fa-file-pdf"></i> {{ btn_make_board_solar }}</button>
+            </div>
+        </div>
     </div>
-</div>
 </div>
 
 

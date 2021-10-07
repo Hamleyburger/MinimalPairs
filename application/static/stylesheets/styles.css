@@ -476,6 +476,7 @@ html {
 body {
   position: relative;
   min-height: 100%;
+  padding-bottom: 180px;
   background-color: var(--color-red2);
   background: radial-gradient(circle at 0px 500px, #f8d894 600px, #eba48b 110%);
   background-repeat: no-repeat;
@@ -493,13 +494,11 @@ footer {
   padding: 20px;
   padding-bottom: 40px;
   padding-top: 40px;
-  margin-top: 100px;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
+  height: 180px;
 }
 
 footer a {
@@ -508,7 +507,6 @@ footer a {
 
 .frontpage-container {
   overflow: hidden;
-  margin-bottom: -100px;
 }
 
 .frontpage-container .illustration-container {
@@ -1330,20 +1328,33 @@ footer a {
   width: auto;
 }
 
-.pdfgenerator fieldset {
+.pdfgenerator .pdf-generator-dropdown {
   border-radius: 15px;
   background-color: #fe586396;
   margin: 0;
   padding-bottom: 20px;
 }
 
-.pdfgenerator fieldset .row {
-  margin-top: 20px;
-}
-
-.pdfgenerator fieldset .row .col {
+.pdfgenerator .pdf-generator-dropdown .row .col {
   max-width: 130px;
   padding: 10px;
+}
+
+.pdfgenerator .pdf-generator-dropdown .pdf-showcase {
+  padding: 20px;
+}
+
+.pdfgenerator .pdf-generator-dropdown .pdf-showcase .pdf-showcase-inner {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.pdfgenerator .pdf-generator-dropdown .pdf-showcase .pdfbtn {
+  margin-top: 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
 }
 
 .pdfgenerator .bg-btn-wrap {

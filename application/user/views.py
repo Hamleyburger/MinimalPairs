@@ -27,17 +27,21 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 def before_request_callback():
 
     locale = session.get("locale")
+    print("before request: session locale is {}".format(session.get("locale")))
+    print("request path: {}".format(request.path))
     g.locale = session.get("locale")
     if not locale:
         print("\nNo locale in session\n")
         print(request.headers.get('User-Agent'))
         browser_lang = request.accept_languages.best_match(
             app.config["LANGUAGES"])
+
         session["locale"] = browser_lang
         g.locale = browser_lang
         if not browser_lang:
             session["locale"] = "da"
             g.locale = "da"
+        print("session locale set before request: {}".format(session["locale"]))
 
     if not session.get("userimages"):
         session["userimages"] = {}
@@ -52,7 +56,7 @@ def before_request_callback():
             session["manifest"] = "manifest.webmanifest"
 
     if not session.get("collection"):
-        session["collection"] = []
+        session["collection"] = [6, 8, 12]
 
 
 @app.after_request
@@ -64,8 +68,6 @@ def after_request_callback(response):
 
 
 @user_blueprint.route("/", methods=["GET"])
-@user_blueprint.route("/<locale>", methods=["GET"], defaults={"locale": f"{en_content['locale_code']}"})
-@user_blueprint.route("/<locale>", methods=["GET"], defaults={"locale": f"{da_content['locale_code']}"})
 @ensure_locale
 def index(locale):
     """ cute front page """
@@ -73,15 +75,14 @@ def index(locale):
     return render_template("index.html")
 
 
-@user_blueprint.route("/lukmigind", methods=["GET", "POST"])
+@user_blueprint.route("/lukmigind/", methods=["GET", "POST"])
 def adminLogin():
     """login for admin (user must know URL and no option of registering or feedback)"""
-
+    
     return redirect(url_for('user.login'))
 
 
-@user_blueprint.route(f"/<locale>/{en_content['url_wordinfo']}/<word_id>", methods=["GET"], defaults={"locale": f"{en_content['locale_code']}"})
-@user_blueprint.route(f"/<locale>/{da_content['url_wordinfo']}/<word_id>", methods=["GET"], defaults={"locale": f"{da_content['locale_code']}"})
+@user_blueprint.route(f"/info-om-ord/<word_id>/", methods=["GET"])
 @ensure_locale
 def wordinfo(word_id, locale):
 
@@ -118,8 +119,8 @@ def wordinfo(word_id, locale):
         abort(404)
 
 
-@user_blueprint.route("/<locale>/sound-search", methods=["GET", "POST"], defaults={"locale": "en"})
-@user_blueprint.route("/<locale>/find-kontraster", methods=["GET", "POST"], defaults={"locale": "da"})
+
+@user_blueprint.route("/find-kontraster/", methods=["GET", "POST"])
 @ensure_locale
 def contrasts(locale):
 
@@ -228,8 +229,7 @@ def contrasts(locale):
                            searched=searched)
 
 
-@user_blueprint.route("/<locale>/collection", methods=["GET", "POST"], defaults={"locale": "en"})
-@user_blueprint.route("/<locale>/samling", methods=["GET", "POST"], defaults={"locale": "da"})
+@user_blueprint.route("/samling/", methods=["GET", "POST"])
 @ensure_locale
 def collection(locale):
 
@@ -350,6 +350,8 @@ def change_language(newlocale):
     else:
         print("lang bad: {}".format(newlocale))
 
+    print("redirect request referrer: {}".format(request.referrer))
+    print("endpoint: {}".format(request.endpoint))
     return redirect(request.referrer)
 
 

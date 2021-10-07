@@ -26,7 +26,7 @@
         width: auto;
     }
 
-    fieldset {
+    .pdf-generator-dropdown {
 
         border-radius: 15px;
         background-color: $color-red1-transparent;
@@ -34,10 +34,28 @@
         padding-bottom: 20px;
         
         .row {
-            margin-top: 20px;
             .col {
                 max-width: 130px;
                 padding: 10px;
+            }
+        }
+
+        .pdf-showcase {
+            //width: 100%;
+            padding: 20px;
+            .pdf-showcase-inner {
+                border: 1px solid rgba(0,0,0,0.3);
+                border-radius: 10px;
+                padding: 20px;
+
+            }
+
+            .pdf-example {
+
+            }
+            .pdfbtn {
+                margin-top: 20px;
+                width: max-content;
             }
         }
 

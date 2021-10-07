@@ -25,7 +25,7 @@ $color-yel3: #fffae9; // Næsten hvid
 
 $ipa-font: "Times New Roman";
 $border-radius-word-info: 3px;
-$footer-margin-top: 100px; // becasue front page illustration needs to go all the way down
+$footer-height: 180px; // becasue footer needs to be absolute positioned for when page has too little content
 @function neg($val) {
     @return $val * -1
 };

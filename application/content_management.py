@@ -102,15 +102,18 @@ def Content(locale=None):
         "url_collection": "samling",
         "tooltip_cleareall": "Ryd samling",
         "btn_PDFtool": "PDF-værktøj",
-        "btn_makePDF": "Generer PDF",
+        "btn_makePDF": "Hent ordkort",
+        "btn_make_board_solar": 'Hent plade: "Solar"',
         "collection_tip": 'Føj ord til samlingen med <i class="fas fa-plus-circle"></i> og fjern dem med <i class="fas fa-minus-circle"></i>',
-        "help_pdf_cue": "Vælg bagside",
+        "help_pdf_cue": "Guide til PDF-værktøj",
         "help_pdf_title": "Generer PDF-fil med bagside",
         "help_pdf_content": '\
-            <p>Generer en PDF-fil med ordkort med alle ordene i din samling. Hvis ordet ikke har et billede, kan du tilføje dit eget ved at trykke på <i class="fas fa-upload"></i></p>\
-            <p>PDF-filen er beregnet til at blive printet to-sidet, således at hveranden side har et mønster, som vil blive printet på bagsiden af hvert ark med ordkort.</p>\
-            <p>Ved at trykke på “generer PDF”, vil du blive videresendt til en side, hvor du kan vælge at gemme filen på din enhed.</p>\
+            <p>Generer en PDF-fil med alle ordene i din samling. Hvis ordet ikke har et billede, kan du tilføje dit eget ved at trykke på <i class="fas fa-upload"></i>, og hvis du vil have det samme ord flere gange, kan du dublere det med <i class="fas fa-clone"></i></p>\
+            <p>Ordkortene med bagside er beregnet til at blive printet to-sidet, så hver anden side er et mønster.</p>\
+            <p>Tryk på PDF-knapperne <i class="fas fa-file-pdf"></i> for at generere det valgte design.</p>\
             ',
+        "help_pdf_choose_back": "Ordkort - vælg bagsidedekoration",
+        "help_pdf_board_game": "Spilleplade - vælg design",
 
         # Backside image names
         # actual files must be svg for source (static/permaimages) and png for thumbnail (static/permaimages/thumbnails/_thumb*)
@@ -218,15 +221,18 @@ def Content(locale=None):
         "url_collection": "collection",
         "tooltip_cleareall": "clear collection",
         "btn_PDFtool": "PDF tool",
-        "btn_makePDF": "Make PDF",
+        "btn_makePDF": "Download word cards",
+        "btn_make_board_solar": 'Download board: "Solar"',
         "collection_tip": 'Add words to your collection with <i class="fas fa-plus-circle"></i> and remove them with <i class="fas fa-minus-circle"></i>',
-        "help_pdf_cue": "Choose a back design",
+        "help_pdf_cue": "Guide to PDF tool",
         "help_pdf_title": "Generate a PDF file with a back design",
         "help_pdf_content": '\
-            <p>Generate a PDF file with word cards for all the words in your collection. The cards can be used for playing Memory, for example, or Go Fish.</p>\
-            <p>The PDF is meant for double-sided printing so that each sheet with word cards will have a design printed on its back.</p>\
-            <p>By clicking "Generate PDF”, you will be redirected to a page where you will have the option of saving the file.</p>\
+            <p>Generate a PDF file with all the words in your collection. If a word does not have an image you can add your own with <i class="fas fa-upload"></i>, and if you want more of the same word you can duplicate words with <i class="fas fa-clone"></i></p>\
+            <p>The word cards with back decorations are meant for double-sided printing so that each sheet with word cards will have a design printed on its back.</p>\
+            <p>Click the PDF buttons <i class="fas fa-file-pdf"></i> to generate a PDF with your chosen design.</p>\
             ',
+        "help_pdf_choose_back": "Word cards - choose deoration on back",
+        "help_pdf_board_game": "Game board - choose design",
 
 
 
