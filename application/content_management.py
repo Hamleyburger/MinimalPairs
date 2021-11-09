@@ -147,7 +147,7 @@ def Content(locale=None):
         # Front page
         "title_index": "Home",
         "about": [
-            "Welcome to minimalepar.dk?",
+            "Welcome to minimalepar.dk",
             ' <p> "Minimale Par" (Danish for "minimal pairs") is a growing database of minimal pairs. \
                 Here you can search and collect word pairs with images and generate \
                 convenient two-sided PDF files for printing and using in \

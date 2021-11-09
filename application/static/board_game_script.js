@@ -1,7 +1,9 @@
 
-function make_space_boardgame() {
 
+$("#make_space_boardgame_btn").click(function(){
 
+    $(this).prop('disabled', true);
+    $(this).css('opacity', '0.6');
     var staticroot = "/static/"
 
     // var canvas = document.getElementById('background-canvas');
@@ -122,10 +124,15 @@ function make_space_boardgame() {
         pdf.addImage(imgData, 'JPEG', 0, 0, 420, 297);
         var filename = prompt('Gem i "overførsler" som', "spilleplade_solsystem");
         if (filename === null) {
-            filename = "spilleplade_solsystem";
+            console.log("cancel");
         }
-        pdf.save(filename + ".pdf");
+        else {
+            pdf.save(filename + ".pdf");
+        }
         $(canvas_tmp).remove();
+        $("#make_space_boardgame_btn").prop('disabled', false);
+        $("#make_space_boardgame_btn").css('opacity', '1.0');
+
         
         
     }
@@ -155,12 +162,14 @@ function make_space_boardgame() {
             for(var i = 0; i < word_image_objects.length; i++) {
                 var obj = word_image_objects[i];
                 paths.push(obj.path);
-                console.log(paths[i]);
             }
             
             build_space_board_game(paths);
 
+
         }
     });
 
-}
+})
+
+
