@@ -260,7 +260,7 @@ margin: 0;
 }
 .help-modal, .my-cropper-modal {
     background-color: $color-red2;
-    border-radius:13px;
+    border-radius: $border-radius-modals;
 
     .modal-header {
         border: 0;

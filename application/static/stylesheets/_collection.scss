@@ -188,3 +188,112 @@
 .file-label {
     margin: 6px 3px;
 }
+
+
+.boardgame-wizard-modal {
+
+    .sw-theme-default>ul.step-anchor>li {
+        &.active, &.active > a, &.done, a {
+            color: $color-purp1 !important;
+        }
+    }
+    .modal-header {
+        border-bottom: none;
+        .close {
+            display: none;
+        }
+        .customclose {
+            display: flex;
+            color: $color-purp1;
+            &:hover {
+                color: $color-purp1;
+                opacity: 0.6;
+            }
+        }
+    }
+
+    .modal-content {
+        background-color: $color-red2;
+        border-radius: $border-radius-modals;
+        .theme-selector {
+            .row {
+                margin: 0;
+                [class*="col-"] {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 157px;
+                }
+                .pdf-example {
+                    max-width: 96%;
+                    height: auto;
+                    &:hover {
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    // Bottom with previous/next buttons
+    .sw-theme-default {
+        box-shadow: none;        
+        .sw-toolbar {
+            background-color: $color-red2;
+        }
+    }
+
+    .form-control:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: $color-purp2;
+        outline: 0;
+        box-shadow: 0 0 0 0rem rgba(0, 123, 255, .25)
+    }
+    
+    .btn-secondary:focus {
+        box-shadow: 0 0 0 0rem rgba(108, 117, 125, .5)
+    }
+    
+    .close:focus {
+        box-shadow: 0 0 0 0rem rgba(108, 117, 125, .5)
+    }
+    
+    .mt-200 {
+        margin-top: 200px
+    }
+    ul.step-anchor>li {
+        &.done>a::after{
+            background: darken($color-red2, 7%) !important;
+            -webkit-transform:scale(1);
+            -ms-transform:scale(1);
+            transform:scale(1);
+        }
+        &.active>a::after{
+
+            background:#130e11 !important;
+            -webkit-transform:scale(1);
+            -ms-transform:scale(1);
+            transform:scale(1);
+        }
+    }
+    .btn-secondary {
+        color: $color-purp1;
+        // Remaining styles copied straight from main-btn (can't change class)
+        border-radius: 15px;
+        font-size: 20px;
+        background-color: $color-purp2;
+    
+        margin-top: 15px;
+        height: 38px;
+        min-width: 40px;
+        background: $color-purp2;
+        font-size: 17px;
+        border-radius: 10px;
+        border: none;
+        &:hover {
+        cursor:pointer;
+        }
+    }
+}
+

@@ -1481,6 +1481,123 @@ footer a {
   margin: 6px 3px;
 }
 
+.boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li.active, .boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li.active > a, .boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li.done, .boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li a {
+  color: #3b1734 !important;
+}
+
+.boardgame-wizard-modal .modal-header {
+  border-bottom: none;
+}
+
+.boardgame-wizard-modal .modal-header .close {
+  display: none;
+}
+
+.boardgame-wizard-modal .modal-header .customclose {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  color: #3b1734;
+}
+
+.boardgame-wizard-modal .modal-header .customclose:hover {
+  color: #3b1734;
+  opacity: 0.6;
+}
+
+.boardgame-wizard-modal .modal-content {
+  background-color: #eba48b;
+  border-radius: 13px;
+}
+
+.boardgame-wizard-modal .modal-content .theme-selector .row {
+  margin: 0;
+}
+
+.boardgame-wizard-modal .modal-content .theme-selector .row [class*="col-"] {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 157px;
+}
+
+.boardgame-wizard-modal .modal-content .theme-selector .row .pdf-example {
+  max-width: 96%;
+  height: auto;
+}
+
+.boardgame-wizard-modal .modal-content .theme-selector .row .pdf-example:hover {
+  max-width: 100%;
+}
+
+.boardgame-wizard-modal .sw-theme-default {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.boardgame-wizard-modal .sw-theme-default .sw-toolbar {
+  background-color: #eba48b;
+}
+
+.boardgame-wizard-modal .form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #995f8b;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0rem rgba(0, 123, 255, 0.25);
+          box-shadow: 0 0 0 0rem rgba(0, 123, 255, 0.25);
+}
+
+.boardgame-wizard-modal .btn-secondary:focus {
+  -webkit-box-shadow: 0 0 0 0rem rgba(108, 117, 125, 0.5);
+          box-shadow: 0 0 0 0rem rgba(108, 117, 125, 0.5);
+}
+
+.boardgame-wizard-modal .close:focus {
+  -webkit-box-shadow: 0 0 0 0rem rgba(108, 117, 125, 0.5);
+          box-shadow: 0 0 0 0rem rgba(108, 117, 125, 0.5);
+}
+
+.boardgame-wizard-modal .mt-200 {
+  margin-top: 200px;
+}
+
+.boardgame-wizard-modal ul.step-anchor > li.done > a::after {
+  background: #e68c6d !important;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+.boardgame-wizard-modal ul.step-anchor > li.active > a::after {
+  background: #130e11 !important;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+.boardgame-wizard-modal .btn-secondary {
+  color: #3b1734;
+  border-radius: 15px;
+  font-size: 20px;
+  background-color: #995f8b;
+  margin-top: 15px;
+  height: 38px;
+  min-width: 40px;
+  background: #995f8b;
+  font-size: 17px;
+  border-radius: 10px;
+  border: none;
+}
+
+.boardgame-wizard-modal .btn-secondary:hover {
+  cursor: pointer;
+}
+
 .error-message {
   margin: 70px 0px;
   padding: 0px 15px;
