@@ -115,44 +115,32 @@ $(document).ready(function(){
                         <div>
                             <div id="step-1" class="theme-selector">
                                 <div class="row">
-                            
-                                    <div class="col-6">
-                                        <img class="pdf-example shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
-                                    </div>        <div class="col-6">
-                                        <img class="pdf-example shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
-                                    </div>
-                            
-                                    <div class="col-6">
-                                        <img class="pdf-example shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
-                                    </div>        <div class="col-6">
-                                        <img class="pdf-example shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
-                                    </div>
+                                    <div class="col-12 col-sm-6 justify-content-center justify-content-sm-end">
+                                        <div class="img-wrapper">
+                                            <img class="pdf-example selectable-theme shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame" data-count="30">
+                                        </div>
+                                    </div>        
+                                    <div class="col-12 col-sm-6 justify-content-center justify-content-sm-end">
+                                        <div class="img-wrapper">
+                                            <img class="pdf-example selectable-theme shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame" data-count="30">
+                                        </div>
+                                    </div>   
                                 </div>
                             </div>
 
                             <div id="step-2">
-
-                                <ul id="sortable">
-                                <!-- has to be list of relevant count -->
-                                {% for word in collection %}
-                                    <li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
-                                {% endfor %}
+                                {% if session["board_game_word_list"] %}
+                                    <ul id="sortable">
+                                    <!-- has to be list of relevant count -->
+                                    {% for word in session["board_game_word_list"] %}
+                                        <li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                No theme selected
+                                {% endif %}
 
                                 </ul>
-                                <script>
 
-                                // Sortable docs: https://api.jqueryui.com/sortable/ 
-                                $("#sortable").sortable({
-                                    revert: true,
-                                    update: function( event, ui ) {}, // So update event can be watched
-                                });
-                                
-                                $( "#sortable" ).on( "sortupdate", function( event, ui ) {
-                                    array = $( "#sortable" ).sortable( "toArray", {attribute: 'data-id'} );
-                                    console.log(array);
-                                } );
-                                
-                                </script>
 
 
 
@@ -267,7 +255,7 @@ $(document).ready(function(){
 <script>
     window.jsPDF = window.jspdf.jsPDF
 </script>
-<script type="text/javascript" src="{{ url_for('static', filename='scripts/board_game_script.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/pdf_maker_script.js') }}"></script>
 <script>
     $("#search-collapse-btn").click(function () {
         //$("#search-collapsable").collapse('toggle'); // This is done with aria stuff in the html

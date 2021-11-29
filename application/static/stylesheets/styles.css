@@ -1511,29 +1511,35 @@ footer a {
 }
 
 .boardgame-wizard-modal .modal-content .theme-selector .row {
-  margin: 0;
+  margin: 10px 0;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 .boardgame-wizard-modal .modal-content .theme-selector .row [class*="col-"] {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
   height: 157px;
 }
 
-.boardgame-wizard-modal .modal-content .theme-selector .row .pdf-example {
-  max-width: 96%;
-  height: auto;
+.boardgame-wizard-modal .modal-content .theme-selector .row .img-wrapper {
+  padding: 4px;
+  width: 193px;
+  max-height: 100%;
 }
 
-.boardgame-wizard-modal .modal-content .theme-selector .row .pdf-example:hover {
+.boardgame-wizard-modal .modal-content .theme-selector .row .img-wrapper:hover {
+  padding: 0;
+}
+
+.boardgame-wizard-modal .modal-content .theme-selector .row .pdf-example {
   max-width: 100%;
+  max-height: 100%;
 }
 
 .boardgame-wizard-modal .sw-theme-default {

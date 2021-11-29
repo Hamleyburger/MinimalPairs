@@ -431,7 +431,7 @@ def ajax_get_boardgame_filenames():
     
     print(len(words))
     print(words)
-    random.shuffle(words)
+    #random.shuffle(words)
 
     for word in words:
         if word.id in session["userimages"]:
@@ -451,6 +451,7 @@ def ajax_get_boardgame_filenames():
             )
 
     json_words = json.dumps(ids_words_paths, ensure_ascii=False)
+    session["board_game_word_list"] = ids_words_paths
 
     return json_words
 

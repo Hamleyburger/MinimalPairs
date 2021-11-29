@@ -1,27 +1,80 @@
 
 // Space board game's image count is hard coded to 30 because of the design of the game board.
 
-var space_board_count = 30
+var board_image_count = 30
+var word_image_objects = [];
 
 
-
-$("#arrange_boardgame_order_btn").click(function(){
+// MANAGEING DATA IN BOARDGAME STEP WIZARD (smartwizard)
+// Step 1: Get/set image objects based on selection
+$(".selectable-theme").click(function(){
+    count = $(this).data("count")
+    // get word count and maybe board game path(?)
+    board_image_count = $(this).data("count")
     
+    // Get an (ordered) list of word image objects from server based on count
+    $.ajax({
+        url: "/ajax_get_boardgame_filenames", // Gets list of file names
+        data: {
+            count: board_image_count
+        },
+        type: "POST",
+    }).done(function(data) {
+        // Store paths to objects in their own list
+        // word image objects contain id, word and path
+        word_image_objects = JSON.parse(data);
+        console.log(word_image_objects);
 
-    
+    });
+});
+
+// Step 2: User can sort and order list of image objects
+// Sortable docs: https://api.jqueryui.com/sortable/ 
+
+//TODO: Update/swap positions when moved () 
+// Find out how to get the index that the item has been moved to?
+// Generate new word_object_list by filling out info from existing
+// items to new list based on array indices and ids
+
+$("#sortable").sortable({
+    //revert: true,
+    update: function( event, ui ) {}, // So update event can be watched
+});
+
+$( "#sortable" ).on( "sortupdate", function( event, ui ) {
+    array = $( "#sortable" ).sortable( "toArray", {attribute: 'data-id'} );
+    /*
+    console.log(array);
+    word_image_objects.forEach(function(obj, i) {
+        console.log(obj.id);
+    });
+    */
+
+   elem = ui.item
+   console.log("own data for element:");
+   console.log($(elem).data("id"));
+   console.log($(elem).data("position"));
+
+   console.log("ui position:");
+   console.log(ui.position);
+
+   console.log("ui original oposition:");
+   console.log(ui.originalPosition);
 
 
-})
+} );
 
 
+
+
+
+// DRAW SPACE BOARD GAME WITH CANVAS
 $("#make_space_boardgame_btn").click(function(){
 
     $(this).prop('disabled', true);
     $(this).css('opacity', '0.6');
     var staticroot = "/static/"
 
-    // var canvas = document.getElementById('background-canvas');
-    // var canvas_tmp = document.getElementById('foreground-canvas');
 
 
     canvas = document.createElement('canvas');
@@ -151,6 +204,8 @@ $("#make_space_boardgame_btn").click(function(){
         
     }
 
+
+    /*
     // word image objects contain id, word and path
     var word_image_objects = [];
 
@@ -160,7 +215,7 @@ $("#make_space_boardgame_btn").click(function(){
     $.ajax({
         url: "/ajax_get_boardgame_filenames",
         data: {
-            count: space_board_count
+            count: board_image_count
         },
         type: "POST",
     }).done(function(data) {
@@ -182,6 +237,21 @@ $("#make_space_boardgame_btn").click(function(){
             build_space_board_game(word_image_paths);
         }
     });
+    */
+
+    if (word_image_objects.length === 0) {
+        console.log("no collection");
+    }
+    else {
+
+        word_image_paths = []
+        for(var i = 0; i < word_image_objects.length; i++) {
+            var obj = word_image_objects[i];
+            word_image_paths.push(obj.path);
+        }
+        
+        build_space_board_game(word_image_paths);
+    }
 
 })
 

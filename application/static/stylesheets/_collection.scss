@@ -217,19 +217,24 @@
         border-radius: $border-radius-modals;
         .theme-selector {
             .row {
-                margin: 0;
+                margin: 10px 0;
+                height: fit-content;
                 [class*="col-"] {
                     display: flex;
-                    justify-content: center;
                     align-items: center;
                     height: 157px;
                 }
-                .pdf-example {
-                    max-width: 96%;
-                    height: auto;
+                .img-wrapper {
+                    padding: 4px;
+                    width: 193px;
+                    max-height: 100%;
                     &:hover {
-                        max-width: 100%;
+                        padding: 0;
                     }
+                }
+                .pdf-example {
+                    max-width: 100%;
+                    max-height: 100%;
                 }
             }
         }
