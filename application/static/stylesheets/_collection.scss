@@ -5,13 +5,23 @@
 
 .pdfgenerator {
     
-    
     align-content: center;
     //font-family: Arial, Helvetica, sans-serif;
     margin-top: 8%;
     margin-bottom: 0;
     width: 600px;
     max-width: 100%;
+
+    .btn-wrap {
+        button {
+            min-width: 237px;
+        }
+        min-height: 200px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     .background-choices {
         padding: 0;
@@ -192,11 +202,28 @@
 
 .boardgame-wizard-modal {
 
+    ul {
+        list-style: none;
+    }
+
     .sw-theme-default>ul.step-anchor>li {
         &.active, &.active > a, &.done, a {
             color: $color-purp1 !important;
         }
     }
+
+    .sw-theme-default {
+
+        .step-content {
+            border: 2px solid darken($color-red2, 7%);
+            border-radius: 15px;
+        }
+        .nav-tabs {
+            border-bottom: none;
+        }
+
+    }
+
     .modal-header {
         border-bottom: none;
         .close {

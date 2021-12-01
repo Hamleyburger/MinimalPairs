@@ -421,7 +421,6 @@ def ajax_get_boardgame_filenames():
     number_of_words = len(words)
     if number_of_words == 0:
         return "no words"
-    print(len(words))
     words_needed = (int(request.form.get("count")))
     duplicates_needed = words_needed - len(words)
     if duplicates_needed > 0:

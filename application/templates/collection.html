@@ -86,6 +86,8 @@ $(document).ready(function(){
     transitionEffect:'fade',
     showStepURLhash: false,
     });
+    // Disable step
+    //$('#smartwizard').smartWizard("stepState", [1, 2], "disable");
 
 });
 </script>
@@ -110,7 +112,7 @@ $(document).ready(function(){
                         <ul>
                             <li><a href="#step-1">Step 1<br /><small>Select theme</small></a></li>
                             <li><a href="#step-2">Step 2<br /><small>Rearrange order</small></a></li>
-                            <li><a href="#step-3">Step 3<br /><small>Generate PDF</small></a></li>
+                            <li><a href="#step-3">Step 3<br /><small>Create</small></a></li>
                         </ul>
                         <div>
                             <div id="step-1" class="theme-selector">
@@ -120,7 +122,7 @@ $(document).ready(function(){
                                             <img class="pdf-example selectable-theme shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame" data-count="30">
                                         </div>
                                     </div>        
-                                    <div class="col-12 col-sm-6 justify-content-center justify-content-sm-end">
+                                    <div class="col-12 col-sm-6 justify-content-center justify-content-sm-start">
                                         <div class="img-wrapper">
                                             <img class="pdf-example selectable-theme shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame" data-count="30">
                                         </div>
@@ -129,31 +131,36 @@ $(document).ready(function(){
                             </div>
 
                             <div id="step-2">
+
+
+                                <ul id="sortable">
                                 {% if session["board_game_word_list"] %}
-                                    <ul id="sortable">
                                     <!-- has to be list of relevant count -->
                                     {% for word in session["board_game_word_list"] %}
                                         <li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
                                     {% endfor %}
-                                {% else %}
-                                No theme selected
-                                {% endif %}
-
+                                    {% else %}
+                                        No theme selected
+                                    {% endif %} 
                                 </ul>
 
 
 
 
+
+
+
                             </div>
-                            <div id="step-3" class="">
-                                <div class="row">
-                                    <div class="col-md-6"> <input type="text" class="form-control" placeholder="Card Number" required> </div>
-                                    <div class="col-md-6"> <input type="text" class="form-control" placeholder="Card Holder Name" required> </div>
+                            <div id="step-3" class="pdfgenerator">
+                                <div class="btn-wrap">
+                                    <button class="pdfbtn shadow" id="make_space_boardgame_btn">
+                                        <span class="btn-ready">
+                                            <i class="fas fa-file-pdf"></i> {{ btn_make_game_board }}
+                                        </span>
+                                        <span class="btn-loading" style="display: none;">LOADINg</span>
+                                    </button>
                                 </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-6"> <input type="text" class="form-control" placeholder="CVV" required> </div>
-                                    <div class="col-md-6"> <input type="text" class="form-control" placeholder="Mobile Number" required> </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -214,8 +221,7 @@ $(document).ready(function(){
             <div class="pdf-showcase-inner col-12 text-center d-flex flex-column align-items-center">
             <p>{{ help_pdf_board_game }}</p>
                 <img class="pdf-example shadow" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
-                <button class="pdfbtn shadow" id="arrange_boardgame_order_btn"><i class="fas fa-file-pdf"></i> {{ btn_make_board_solar }} (order)</button>
-                <button class="pdfbtn shadow" id="make_space_boardgame_btn"><i class="fas fa-file-pdf"></i> {{ btn_make_board_solar }}</button>
+                <button class="pdfbtn shadow" id="arrange_boardgame_order_btn"><i class="fas fa-file-pdf"></i> {{ btn_make_game_board }} (order)</button>
             </div>
         </div>
     </div>

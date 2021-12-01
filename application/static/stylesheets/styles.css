@@ -1313,6 +1313,24 @@ footer a {
   max-width: 100%;
 }
 
+.pdfgenerator .btn-wrap {
+  min-height: 200px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.pdfgenerator .btn-wrap button {
+  min-width: 237px;
+}
+
 .pdfgenerator .background-choices {
   padding: 0;
 }
@@ -1481,8 +1499,21 @@ footer a {
   margin: 6px 3px;
 }
 
+.boardgame-wizard-modal ul {
+  list-style: none;
+}
+
 .boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li.active, .boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li.active > a, .boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li.done, .boardgame-wizard-modal .sw-theme-default > ul.step-anchor > li a {
   color: #3b1734 !important;
+}
+
+.boardgame-wizard-modal .sw-theme-default .step-content {
+  border: 2px solid #e68c6d;
+  border-radius: 15px;
+}
+
+.boardgame-wizard-modal .sw-theme-default .nav-tabs {
+  border-bottom: none;
 }
 
 .boardgame-wizard-modal .modal-header {

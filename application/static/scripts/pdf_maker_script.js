@@ -23,46 +23,66 @@ $(".selectable-theme").click(function(){
         // Store paths to objects in their own list
         // word image objects contain id, word and path
         word_image_objects = JSON.parse(data);
-        console.log(word_image_objects);
+        put_words_in_DOM(word_image_objects);
 
     });
 });
 
+// When leaving a step update word_image_objects in the new order.
+$("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirection) {
+
+    var sortedIDs = $( "#sortable" ).sortable( "toArray", {attribute: "data-id"});
+    new_word_image_objects = []
+
+    $(sortedIDs).each(function() {
+
+        var new_id = this;
+        
+        $(word_image_objects).each(function() {
+
+            var word_obj = this;
+
+            if (word_obj.id == new_id) {
+
+                new_word_image_objects.push(word_obj);
+                return false;
+
+            }
+        });
+    });
+
+    word_image_objects = new_word_image_objects;
+ });
+
+
+
 // Step 2: User can sort and order list of image objects
 // Sortable docs: https://api.jqueryui.com/sortable/ 
 
-//TODO: Update/swap positions when moved () 
-// Find out how to get the index that the item has been moved to?
-// Generate new word_object_list by filling out info from existing
-// items to new list based on array indices and ids
 
 $("#sortable").sortable({
     //revert: true,
     update: function( event, ui ) {}, // So update event can be watched
 });
 
-$( "#sortable" ).on( "sortupdate", function( event, ui ) {
-    array = $( "#sortable" ).sortable( "toArray", {attribute: 'data-id'} );
-    /*
-    console.log(array);
-    word_image_objects.forEach(function(obj, i) {
-        console.log(obj.id);
+
+
+
+// Generate DOM ul from word image objects
+function put_words_in_DOM(list) {
+    //<li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
+
+    sort = $("#sortable");
+    sort.empty();
+
+    $(list).each(function(index){
+        console.log("appending " + this);
+        var li = $("<li>", {"data-id": this.id});
+        li.text(this.word);
+        sort.append(li);
     });
-    */
 
-   elem = ui.item
-   console.log("own data for element:");
-   console.log($(elem).data("id"));
-   console.log($(elem).data("position"));
-
-   console.log("ui position:");
-   console.log(ui.position);
-
-   console.log("ui original oposition:");
-   console.log(ui.originalPosition);
-
-
-} );
+};
 
 
 
@@ -71,8 +91,6 @@ $( "#sortable" ).on( "sortupdate", function( event, ui ) {
 // DRAW SPACE BOARD GAME WITH CANVAS
 $("#make_space_boardgame_btn").click(function(){
 
-    $(this).prop('disabled', true);
-    $(this).css('opacity', '0.6');
     var staticroot = "/static/"
 
 
@@ -144,13 +162,14 @@ $("#make_space_boardgame_btn").click(function(){
     
     
     async function build_space_board_game(word_image_paths){
+        $(".btn-loading").text("Wait....");
 
         // Draw background image
-        
         await drawImageToCtx(end_ctx, 0, 0, staticroot + "boardgames/images/a3space_background.jpg", 0, true);
         
         
         // Draw all fields
+        $(".btn-loading").text("Lighting the stars");
         await addMaskedImage(130, 1950, staticroot + word_image_paths[0], staticroot + "boardgames/images/mask-image1.png", 250);
         await addMaskedImage(60, 1600, staticroot + word_image_paths[1], staticroot + "boardgames/images/mask-image1.png", 265);
         await addMaskedImage(60, 1240, staticroot + word_image_paths[2], staticroot + "boardgames/images/mask-image3.png", 280);
@@ -161,13 +180,17 @@ $("#make_space_boardgame_btn").click(function(){
         await addMaskedImage(1240, 10, staticroot + word_image_paths[7], staticroot + "boardgames/images/mask-image1.png", 359);
         await addMaskedImage(1630, 15, staticroot + word_image_paths[8], staticroot + "boardgames/images/mask-image1.png", 2);
         await addMaskedImage(2010, 40, staticroot + word_image_paths[9], staticroot + "boardgames/images/mask-image2.png", 10);
+        $(".btn-loading").text("Adding planets");
         await addMaskedImage(2380, 130, staticroot + word_image_paths[10], staticroot + "boardgames/images/mask-image3.png", 25);
         await addMaskedImage(2720, 330, staticroot + word_image_paths[11], staticroot + "boardgames/images/mask-image2.png", 35);
         await addMaskedImage(3000, 575, staticroot + word_image_paths[12], staticroot + "boardgames/images/mask-image3.png", 60);
+        $(".btn-loading").text("Arguing with the sun");
         await addMaskedImage(3090, 945, staticroot + word_image_paths[13], staticroot + "boardgames/images/mask-image2.png", 89);
         await addMaskedImage(3080, 1320, staticroot + word_image_paths[14], staticroot + "boardgames/images/mask-image1.png", 100);
+        $(".btn-loading").text("Tidying asteroids");
         await addMaskedImage(2940, 1650, staticroot + word_image_paths[15], staticroot + "boardgames/images/mask-image2.png", 130);
         await addMaskedImage(2680, 1900, staticroot + word_image_paths[16], staticroot + "boardgames/images/mask-image3.png", 155);
+        $(".btn-loading").text("Drawing images");
         await addMaskedImage(2330, 2050, staticroot + word_image_paths[17], staticroot + "boardgames/images/mask-image5.png", 170);
         await addMaskedImage(1950, 2100, staticroot + word_image_paths[18], staticroot + "boardgames/images/mask-image4.png", 175);
         await addMaskedImage(1570, 2100, staticroot + word_image_paths[19], staticroot + "boardgames/images/mask-image4.png", 185);
@@ -181,6 +204,7 @@ $("#make_space_boardgame_btn").click(function(){
         await addMaskedImage(2140, 770, staticroot + word_image_paths[27], staticroot + "boardgames/images/mask-image2.png", 410);
         await addMaskedImage(2260, 1100, staticroot + word_image_paths[28], staticroot + "boardgames/images/mask-image3.png", 450);
         await addMaskedImage(2160, 1440, staticroot + word_image_paths[29], staticroot + "boardgames/images/mask-image5.png", 490);
+        $(".btn-loading").text("Finished");
         
         // Draw foreground
         await drawImageToCtx(end_ctx, 0, 0, staticroot + "boardgames/images/a3space_foreground.png", 0, true);
@@ -189,6 +213,7 @@ $("#make_space_boardgame_btn").click(function(){
         
         // If canvas is generated as an element programatically
         pdf.addImage(imgData, 'JPEG', 0, 0, 420, 297);
+
         var filename = prompt('Gem i "overførsler" som', "spilleplade_solsystem");
         if (filename === null) {
             console.log("cancel");
@@ -197,7 +222,10 @@ $("#make_space_boardgame_btn").click(function(){
             pdf.save(filename + ".pdf");
         }
         $(canvas_tmp).remove();
+
         $("#make_space_boardgame_btn").prop('disabled', false);
+        $(".btn-loading").hide();
+        $(".btn-ready").show();
         $("#make_space_boardgame_btn").css('opacity', '1.0');
 
         
@@ -205,54 +233,22 @@ $("#make_space_boardgame_btn").click(function(){
     }
 
 
-    /*
-    // word image objects contain id, word and path
-    var word_image_objects = [];
-
-
-    // Get an (ordered) list of word image objects from server based on count
-
-    $.ajax({
-        url: "/ajax_get_boardgame_filenames",
-        data: {
-            count: board_image_count
-        },
-        type: "POST",
-    }).done(function(data) {
-
-        // Store paths to objects in their own list
-        word_image_objects = JSON.parse(data);
-
-        if (word_image_objects.length === 0) {
-            console.log("no collection");
-        }
-        else {
-
-            word_image_paths = []
-            for(var i = 0; i < word_image_objects.length; i++) {
-                var obj = word_image_objects[i];
-                word_image_paths.push(obj.path);
-            }
-            
-            build_space_board_game(word_image_paths);
-        }
-    });
-    */
-
     if (word_image_objects.length === 0) {
         console.log("no collection");
     }
     else {
-
+        $(this).prop('disabled', true);
+        $(".btn-loading").show();
+        $(".btn-ready").hide();
         word_image_paths = []
         for(var i = 0; i < word_image_objects.length; i++) {
             var obj = word_image_objects[i];
             word_image_paths.push(obj.path);
         }
-        
+
         build_space_board_game(word_image_paths);
     }
 
-})
+});
 
 
