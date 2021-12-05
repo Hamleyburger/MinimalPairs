@@ -227,6 +227,71 @@
 {% endmacro %}
 
 
+{% macro smartwizardmodal(session) %}
+<!-- PDF Wizard modal -->
+<!-- Put the modal in a macro with other modals and take word list as argument? -->
+<div class="modal fade boardgame-wizard-modal" id="listWizardModal" tabindex="-1" role="dialog" aria-labelledby="listWizardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="listWizardModalLabel">{{ pdf_game_btn }}</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                <button type="button" class="close customclose" data-dismiss="modal" aria-label="Close"> <i class="fas fa-times-circle" aria-hidden="true"></i> </button>
+            </div>
+            <div class="modal-body">
+                <div id="smartwizard">
+                    <ul>
+                        <li><a href="#step-1">{{ step1 }}<br /><small>{{ step1_txt }}</small></a></li>
+                        <li><a href="#step-2">{{ step2 }}<br /><small>{{ step2_txt }}</small></a></li>
+                        <li><a href="#step-3">{{ step3 }}<br /><small>{{ step3_txt }}</small></a></li>
+                    </ul>
+                    <div>
+                        <div id="step-1" class="theme-selector">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 justify-content-center justify-content-sm-end">
+                                    <div class="img-wrapper">
+                                        <img class="pdf-example selectable-theme shadow" data-count="30" data-design="solar"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
+                                    </div>
+                                </div>        
+                                <div class="col-12 col-sm-6 justify-content-center justify-content-sm-start">
+                                    <!--div class="img-wrapper">
+                                        <img class="pdf-example selectable-theme shadow" data-count="30" src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
+                                    </div-->
+                                    <p>Flere designs kommer senere... :-)</p>
+                                </div>   
+                            </div>
+                        </div>
+
+                        <div id="step-2">
+                            <ul id="sortable">
+                            {% if session["board_game_word_list"] %}
+                                <!-- has to be list of relevant count -->
+                                {% for word in session["board_game_word_list"] %}
+                                    <li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
+                                {% endfor %}
+                                {% else %}
+                                    No theme selected
+                                {% endif %} 
+                            </ul>
+                        </div>
+                        <div id="step-3" class="pdfgenerator">
+                            <div class="btn-wrap">
+                                <button class="pdfbtn shadow" id="make_boardgame_btn">
+                                    <span class="btn-ready">
+                                        <i class="fas fa-file-pdf"></i> {{ btn_make_game_board }}
+                                    </span>
+                                    <span class="btn-loading" style="display: none;"></span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
 {% macro croppermodal() %}
 
 <div class="modal fade" id="croppermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

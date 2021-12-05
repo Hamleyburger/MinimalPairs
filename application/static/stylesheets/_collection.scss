@@ -64,7 +64,7 @@
 
             }
             .pdfbtn {
-                margin-top: 20px;
+                margin: 20px;
                 width: max-content;
             }
         }
@@ -258,10 +258,17 @@
                     &:hover {
                         padding: 0;
                     }
+                    &.selected {
+                        padding: 0;
+                    }
                 }
                 .pdf-example {
                     max-width: 100%;
                     max-height: 100%;
+                    &.selected {
+                        //border: 2px solid $color-red2;
+                        filter: drop-shadow(2px 1px 13px $color-purp3);
+                    }
                 }
             }
         }

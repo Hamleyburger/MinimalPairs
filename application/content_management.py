@@ -113,7 +113,14 @@ def Content(locale=None):
             <p>Tryk på PDF-knapperne <i class="fas fa-file-pdf"></i> for at generere det valgte design.</p>\
             ',
         "help_pdf_choose_back": "Ordkort - vælg bagsidedekoration",
-        "help_pdf_board_game": "Spilleplade - vælg design",
+        "pdf_game_btn": "Design et brætspil",
+        "step1": "Trin 1",
+        "step2": "Trin 2",
+        "step3": "Trin 3",
+        "step1_txt": "Vælg design",
+        "step2_txt": "Arranger rækkefølge",
+        "step3_txt": "Generer PDF",
+
 
         # Backside image names
         # actual files must be svg for source (static/permaimages) and png for thumbnail (static/permaimages/thumbnails/_thumb*)
@@ -232,7 +239,13 @@ def Content(locale=None):
             <p>Click the PDF buttons <i class="fas fa-file-pdf"></i> to generate a PDF with your chosen design.</p>\
             ',
         "help_pdf_choose_back": "Word cards - choose deoration on back",
-        "help_pdf_board_game": "Game board - choose design",
+        "pdf_game_btn": "Design a board game",
+        "step1": "Step 1",
+        "step2": "Step 2",
+        "step3": "Step 3",
+        "step1_txt": "Select a theme",
+        "step2_txt": "Order words",
+        "step3_txt": "Generate PDF",
 
 
 

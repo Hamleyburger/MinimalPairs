@@ -2,15 +2,18 @@
 // Space board game's image count is hard coded to 30 because of the design of the game board.
 
 var board_image_count = 30
+var board_game_design = "" // Can be set to "solar"
 var word_image_objects = [];
 
 
 // MANAGEING DATA IN BOARDGAME STEP WIZARD (smartwizard)
 // Step 1: Get/set image objects based on selection
 $(".selectable-theme").click(function(){
-    count = $(this).data("count")
+    elem =  $(this);
+    count = $(this).data("count");
+    board_game_design = $(this).data("design");
     // get word count and maybe board game path(?)
-    board_image_count = $(this).data("count")
+    board_image_count = $(this).data("count");
     
     // Get an (ordered) list of word image objects from server based on count
     $.ajax({
@@ -22,9 +25,13 @@ $(".selectable-theme").click(function(){
     }).done(function(data) {
         // Store paths to objects in their own list
         // word image objects contain id, word and path
+        $(".selected").removeClass("selected");
+        elem.addClass("selected");
+        elem.parent().addClass("selected");
         word_image_objects = JSON.parse(data);
         put_words_in_DOM(word_image_objects);
-
+        // Change theme
+        $(".sw-btn-next").prop( "disabled", false );
     });
 });
 
@@ -89,7 +96,7 @@ function put_words_in_DOM(list) {
 
 
 // DRAW SPACE BOARD GAME WITH CANVAS
-$("#make_space_boardgame_btn").click(function(){
+$("#make_boardgame_btn").click(function(){
 
     var staticroot = "/static/"
 
@@ -161,42 +168,44 @@ $("#make_space_boardgame_btn").click(function(){
     }
     
     
-    async function build_space_board_game(word_image_paths){
-        $(".btn-loading").text("Wait....");
+    async function build_solar_board_game(word_image_paths){ // Only called if board_game_design is "solar"
+        $(".btn-loading").text("Placerer Merkur og Venus");
 
         // Draw background image
         await drawImageToCtx(end_ctx, 0, 0, staticroot + "boardgames/images/a3space_background.jpg", 0, true);
         
         
         // Draw all fields
-        $(".btn-loading").text("Lighting the stars");
         await addMaskedImage(130, 1950, staticroot + word_image_paths[0], staticroot + "boardgames/images/mask-image1.png", 250);
         await addMaskedImage(60, 1600, staticroot + word_image_paths[1], staticroot + "boardgames/images/mask-image1.png", 265);
         await addMaskedImage(60, 1240, staticroot + word_image_paths[2], staticroot + "boardgames/images/mask-image3.png", 280);
+        $(".btn-loading").text("Placerer Jorden");
         await addMaskedImage(160, 880, staticroot + word_image_paths[3], staticroot + "boardgames/images/mask-image1.png", 295);
         await addMaskedImage(320, 560, staticroot + word_image_paths[4], staticroot + "boardgames/images/mask-image3.png", 305);
         await addMaskedImage(550, 250, staticroot + word_image_paths[5], staticroot + "boardgames/images/mask-image2.png", 315);
+        $(".btn-loading").text("Placerer Mars");
         await addMaskedImage(860, 60, staticroot + word_image_paths[6], staticroot + "boardgames/images/mask-image3.png", 340);
         await addMaskedImage(1240, 10, staticroot + word_image_paths[7], staticroot + "boardgames/images/mask-image1.png", 359);
         await addMaskedImage(1630, 15, staticroot + word_image_paths[8], staticroot + "boardgames/images/mask-image1.png", 2);
+        $(".btn-loading").text("Placerer Jupiter");
         await addMaskedImage(2010, 40, staticroot + word_image_paths[9], staticroot + "boardgames/images/mask-image2.png", 10);
-        $(".btn-loading").text("Adding planets");
         await addMaskedImage(2380, 130, staticroot + word_image_paths[10], staticroot + "boardgames/images/mask-image3.png", 25);
         await addMaskedImage(2720, 330, staticroot + word_image_paths[11], staticroot + "boardgames/images/mask-image2.png", 35);
         await addMaskedImage(3000, 575, staticroot + word_image_paths[12], staticroot + "boardgames/images/mask-image3.png", 60);
-        $(".btn-loading").text("Arguing with the sun");
         await addMaskedImage(3090, 945, staticroot + word_image_paths[13], staticroot + "boardgames/images/mask-image2.png", 89);
         await addMaskedImage(3080, 1320, staticroot + word_image_paths[14], staticroot + "boardgames/images/mask-image1.png", 100);
-        $(".btn-loading").text("Tidying asteroids");
+        $(".btn-loading").text("Placerer Saturn");
         await addMaskedImage(2940, 1650, staticroot + word_image_paths[15], staticroot + "boardgames/images/mask-image2.png", 130);
         await addMaskedImage(2680, 1900, staticroot + word_image_paths[16], staticroot + "boardgames/images/mask-image3.png", 155);
-        $(".btn-loading").text("Drawing images");
         await addMaskedImage(2330, 2050, staticroot + word_image_paths[17], staticroot + "boardgames/images/mask-image5.png", 170);
+        $(".btn-loading").text("Placerer Uranus");
         await addMaskedImage(1950, 2100, staticroot + word_image_paths[18], staticroot + "boardgames/images/mask-image4.png", 175);
         await addMaskedImage(1570, 2100, staticroot + word_image_paths[19], staticroot + "boardgames/images/mask-image4.png", 185);
         await addMaskedImage(1220, 1970, staticroot + word_image_paths[20], staticroot + "boardgames/images/mask-image5.png", 215);
+        $(".btn-loading").text("Placerer Neptun");
         await addMaskedImage(940, 1710, staticroot + word_image_paths[21], staticroot + "boardgames/images/mask-image3.png", 240);
         await addMaskedImage(820, 1355, staticroot + word_image_paths[22], staticroot + "boardgames/images/mask-image2.png", 270);
+        $(".btn-loading").text("Så blev det solens tur");
         await addMaskedImage(860, 999, staticroot + word_image_paths[23], staticroot + "boardgames/images/mask-image5.png", 295);
         await addMaskedImage(1110, 719, staticroot + word_image_paths[24], staticroot + "boardgames/images/mask-image4.png", 320);
         await addMaskedImage(1460, 590, staticroot + word_image_paths[25], staticroot + "boardgames/images/mask-image5.png", 350);
@@ -204,15 +213,17 @@ $("#make_space_boardgame_btn").click(function(){
         await addMaskedImage(2140, 770, staticroot + word_image_paths[27], staticroot + "boardgames/images/mask-image2.png", 410);
         await addMaskedImage(2260, 1100, staticroot + word_image_paths[28], staticroot + "boardgames/images/mask-image3.png", 450);
         await addMaskedImage(2160, 1440, staticroot + word_image_paths[29], staticroot + "boardgames/images/mask-image5.png", 490);
-        $(".btn-loading").text("Finished");
+        $(".btn-loading").text("Færdig");
         
         // Draw foreground
         await drawImageToCtx(end_ctx, 0, 0, staticroot + "boardgames/images/a3space_foreground.png", 0, true);
         var imgData = canvas.toDataURL("image/jpeg", 1.0);
         var pdf = new jsPDF('l', 'mm', [420, 297]);
         
+        
         // If canvas is generated as an element programatically
         pdf.addImage(imgData, 'JPEG', 0, 0, 420, 297);
+        
 
         var filename = prompt('Gem i "overførsler" som', "spilleplade_solsystem");
         if (filename === null) {
@@ -223,12 +234,10 @@ $("#make_space_boardgame_btn").click(function(){
         }
         $(canvas_tmp).remove();
 
-        $("#make_space_boardgame_btn").prop('disabled', false);
+        $("#make_boardgame_btn").prop('disabled', false);
         $(".btn-loading").hide();
         $(".btn-ready").show();
-        $("#make_space_boardgame_btn").css('opacity', '1.0');
-
-        
+        $("#make_boardgame_btn").css('opacity', '1.0');
         
     }
 
@@ -245,10 +254,33 @@ $("#make_space_boardgame_btn").click(function(){
             var obj = word_image_objects[i];
             word_image_paths.push(obj.path);
         }
-
-        build_space_board_game(word_image_paths);
+        if (board_game_design == "solar") {
+            build_solar_board_game(word_image_paths);
+        }
+        else {
+            $("#make_boardgame_btn").prop('disabled', false);
+            $(".btn-loading").hide();
+            $(".btn-ready").show();
+            $("#make_boardgame_btn").css('opacity', '1.0');
+        }
     }
 
 });
 
+
+$(document).ready(function(){
+
+    $('#smartwizard').smartWizard({
+    selected: 0,
+    theme: '',
+    autoAdjustHeight:true,
+    transitionEffect:'fade',
+    showStepURLhash: false,
+    });
+
+    $(".sw-btn-next").prop( "disabled", true );
+    // Disable step
+    //$('#smartwizard').smartWizard("stepState", [1, 2], "disable");
+
+});
 

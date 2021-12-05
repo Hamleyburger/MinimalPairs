@@ -1369,7 +1369,7 @@ footer a {
 }
 
 .pdfgenerator .pdf-generator-dropdown .pdf-showcase .pdfbtn {
-  margin-top: 20px;
+  margin: 20px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -1568,9 +1568,18 @@ footer a {
   padding: 0;
 }
 
+.boardgame-wizard-modal .modal-content .theme-selector .row .img-wrapper.selected {
+  padding: 0;
+}
+
 .boardgame-wizard-modal .modal-content .theme-selector .row .pdf-example {
   max-width: 100%;
   max-height: 100%;
+}
+
+.boardgame-wizard-modal .modal-content .theme-selector .row .pdf-example.selected {
+  -webkit-filter: drop-shadow(2px 1px 13px #caabbf);
+          filter: drop-shadow(2px 1px 13px #caabbf);
 }
 
 .boardgame-wizard-modal .sw-theme-default {
