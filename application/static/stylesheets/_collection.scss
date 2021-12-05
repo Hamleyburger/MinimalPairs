@@ -215,6 +215,7 @@
     .sw-theme-default {
 
         .step-content {
+            width: 100%;
             border: 2px solid darken($color-red2, 7%);
             border-radius: 15px;
         }

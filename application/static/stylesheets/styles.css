@@ -1508,6 +1508,7 @@ footer a {
 }
 
 .boardgame-wizard-modal .sw-theme-default .step-content {
+  width: 100%;
   border: 2px solid #e68c6d;
   border-radius: 15px;
 }
