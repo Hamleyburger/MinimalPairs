@@ -279,8 +279,10 @@ $(document).ready(function(){
     });
 
     $(".sw-btn-next").prop( "disabled", true );
-    // Disable step
-    //$('#smartwizard').smartWizard("stepState", [1, 2], "disable");
+    
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        $( "<p style='color: grey;'>Rækkefølgen kan desværre ikke ændres på mobile enheder.</p>" ).insertBefore( "#sortable" );
+       }
 
 });
 
