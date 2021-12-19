@@ -253,10 +253,11 @@ def collection(locale):
                 # Background file name is defined in the declaration of wtf choices in forms.py
                 bgfilename = form.background.data
                 template = render_template("mypdf.html", collection=collection)
-                html = HTML(string=template)
+                html = HTML(string=template, base_url=request.base_url)
+
                 # This bit of CSS is dynamically generated, the rest is hard coded in the template
                 css = CSS(
-                    string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.svg);}')
+                    string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.png);}')
                 
                 count_as_used(collection_ids)
 
