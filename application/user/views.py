@@ -3,7 +3,7 @@ import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used
+from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used, hasimage, order_MOsets_by_image
 import random
 from application.models import Word, Group, Sound, SearchedPair
 from .models import User, Userimage
@@ -146,7 +146,6 @@ def contrasts(locale):
             searched = True
             if pairSearchForm.validate_on_submit():
 
-
                 # Easy keyboard typing enabled:
                 inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
                 inputSound2 = easyIPAtyping(pairSearchForm.sound2.data)
@@ -159,7 +158,19 @@ def contrasts(locale):
                 pairs = sound1.getContrasts(inputSound2)
                 SearchedPair.add(inputSound1, inputSound2, len(pairs))
 
-                # Make a lists of ids rendered and in collection for comparison
+                pairs_with_images = []
+                pairs_without_images = []
+
+                # Sort pair list so pairs with images come on top
+                for pair in pairs:
+                    if hasimage(pair):
+                        pairs_with_images.append(pair)
+                    else:
+                        pairs_without_images.append(pair)
+                pairs = pairs_with_images + pairs_without_images
+
+
+                # Make a lists of ids rendered to determine if they're in collection
                 for pair in pairs:
                     idlist = [pair.w1.id, pair.w2.id]
                     renderedids.extend(idlist)
@@ -192,8 +203,10 @@ def contrasts(locale):
                 sound1 = Sound.get(inputSound1)
                 print("Getting MO sets...")
                 MOsets = sound1.getMOPairs(MOsounds)
+                MOsets = order_MOsets_by_image(MOsets)
                 print("Getting second best MO sets...")
                 MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
+                MOsets2 = order_MOsets_by_image(MOsets2)
 
                 for inputSound2 in MOsounds:
                     SearchedPair.add(inputSound1, inputSound2)

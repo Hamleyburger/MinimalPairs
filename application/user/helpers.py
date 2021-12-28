@@ -205,6 +205,35 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
     return partialMatches
 
 
+def hasimage(pair):
+    """ Checks if pair has image and returns boolean value """
+    hasimage = False
+    if "default" not in pair.w1.image.name or "default" not in pair.w2.image.name: 
+        hasimage = True
+    return hasimage
+
+
+def order_MOsets_by_image(MOsets):
+    """ Checks a list of MOsets and sorts the sets so ones with images are first """
+    all_sets = []
+    sets_with_images = []
+    sets_without_images = []
+    for MOset in MOsets:
+        MOset_has_image = False
+        for pair in MOset:
+            if hasimage(pair):
+                MOset_has_image = True
+        if MOset_has_image:
+            sets_with_images.append(MOset)
+        else:
+            sets_without_images.append(MOset)
+    all_sets = sets_with_images + sets_without_images
+    return all_sets
+
+
+
+
+
 def get_uid():
     """ Returns user id as string """
     uid = session.get("user_id")
