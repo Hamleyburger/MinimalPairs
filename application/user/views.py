@@ -252,14 +252,12 @@ def collection(locale):
     collection = []
     custom_image_ids = []
 
-    # Get pairs from session object
+    # Retrieve pair objects from session ids
     for id in collection_ids:
         collection.append(Word.query.get(int(id)))
-
     custom_image_ids = custom_images_in_collection(collection)
 
-    print(custom_image_ids)
-
+    # POST request for basic word card PDF (other pdfs are generated and served with ajax: see pdf_maker_script.js and ajax_get_boardgame_filenames() here )
     if request.method == "POST":
         if getCollection():
             if form.validate_on_submit():
@@ -427,12 +425,14 @@ def ajax_duplicate_in_collection():
     )
 
 @ user_blueprint.route("/ajax_get_boardgame_filenames", methods=["POST"])
-# Receives changes from user and makes changes in session
+# Receives changes from user (required number of words/images) and makes changes in session ()
 def ajax_get_boardgame_filenames():
 
     ids_words_paths = []
     words = get_word_collection()
     number_of_words = len(words)
+
+    # See how many duplicates are required to fill word count and add them to "words" (in front end - session remains unchanged)
     if number_of_words == 0:
         return "no words"
     words_needed = (int(request.form.get("count")))
@@ -446,15 +446,18 @@ def ajax_get_boardgame_filenames():
     print(words)
     #random.shuffle(words)
 
+    # Create JSON objects from all words, both with custom user images and originals
     for word in words:
-        if word.id in session["userimages"]:
+        # custom user images
+        if word.id in session["userimages"]: 
             ids_words_paths.append(
             {   "id": word.id,
                 "word": word.word,
                 "path": session["userimages"][word.id]
             }
             )
-        else:
+        # originals
+        else: 
             ids_words_paths.append(
             {
                 "id": word.id,
@@ -464,7 +467,7 @@ def ajax_get_boardgame_filenames():
             )
 
     json_words = json.dumps(ids_words_paths, ensure_ascii=False)
-    session["board_game_word_list"] = ids_words_paths
+    session["pdf_wiz_word_list"] = ids_words_paths
 
     return json_words
 

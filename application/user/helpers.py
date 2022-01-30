@@ -245,7 +245,9 @@ def get_uid():
 
 
 def custom_images_in_collection(collection):
-    """ Takes a collection of WORDS and returns a dict {id: 'staticpath'} user's own cropped images """
+    """ Use user's own uploaded images for displaying in collection.
+    Takes a collection of WORDS and returns a dict {id: 'staticpath'} 
+    where path points to user's own cropped images """
 
     image_ids = {}
 

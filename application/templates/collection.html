@@ -1,3 +1,13 @@
+<!-- 
+Content
+- metadata
+- cropper modal
+- pdf wizard modal
+- pdf generator section
+- collection images
+- inline scripts?
+ -->
+
 {% from 'macros.html' import help_container, croppermodal, smartwizardmodal, word_card with context %}
 {% extends "layout.html" %}
 
@@ -69,10 +79,11 @@
 </div>
 
 
-
+<!-- PDF wizard modal (macro) only displays if button pressed in PDF generator -->
 {{ smartwizardmodal(session) }}
 
 
+<!-- PDF generator -->
 {% if collection|length %}
 <div class="container-fluid text-center pdfgenerator">
     <div class="row">

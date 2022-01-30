@@ -2,8 +2,8 @@
 // Space board game's image count is hard coded to 30 because of the design of the game board.
 
 var board_image_count = 30
-var board_game_design = "" // Can be set to "solar"
-var word_image_objects = [];
+var board_game_design = "" // Can be set to solar | lottery-4 | ...
+var word_image_objects = []; // Is populated by ajax call when design selected/word count given
 
 
 // MANAGEING DATA IN BOARDGAME STEP WIZARD (smartwizard)
@@ -11,11 +11,11 @@ var word_image_objects = [];
 $(".selectable-theme").click(function(){
     elem =  $(this);
     count = $(this).data("count");
-    board_game_design = $(this).data("design");
+    board_game_design = $(this).data("design"); // data-design can be: solar | lottery-4 | ...
     // get word count and maybe board game path(?)
     board_image_count = $(this).data("count");
     
-    // Get an (ordered) list of word image objects from server based on count
+    // Get an (ordered) list of word image objects from server (user's collection) based on count
     $.ajax({
         url: "/ajax_get_boardgame_filenames", // Gets list of file names
         data: {
@@ -30,14 +30,18 @@ $(".selectable-theme").click(function(){
         elem.parent().addClass("selected");
         word_image_objects = JSON.parse(data);
         put_words_in_DOM(word_image_objects);
-        // Change theme
+        // Allow user to continue
         $(".sw-btn-next").prop( "disabled", false );
+
+        initialize_sortable(board_game_design);
+
     });
 });
 
 // When leaving a step update word_image_objects in the new order.
 $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirection) {
 
+    console.log("Leaving step. Implementing new order?");
     var sortedIDs = $( "#sortable" ).sortable( "toArray", {attribute: "data-id"});
     new_word_image_objects = []
 
@@ -59,18 +63,22 @@ $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirec
     });
 
     word_image_objects = new_word_image_objects;
+
  });
 
 
 
-// Step 2: User can sort and order list of image objects
+// Step 2: Initialize sortable based on selected board game design
 // Sortable docs: https://api.jqueryui.com/sortable/ 
+function initialize_sortable(selected_design) {
 
+    console.log("board game design is: " + selected_design);
+    $("#sortable").sortable({
+        //revert: true,
+        update: function( event, ui ) {}, // So update event can be watched
+    });
 
-$("#sortable").sortable({
-    //revert: true,
-    update: function( event, ui ) {}, // So update event can be watched
-});
+};
 
 
 
