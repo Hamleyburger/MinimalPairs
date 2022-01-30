@@ -275,21 +275,24 @@
 
                         <div id="step-2">
 
-                            <ul id="sortable">
-                                <!-- Not sure if server generated (jinja) list is necessary at any point here -->
-                                {% if session["pdf_wiz_word_list"] %} <!-- Ensure that everything has gone right -->
+                            <ul id="sortable" class="connectedSortable">
+                                <!--   Not sure if server generated (jinja) list is necessary at any point here -->
+                                <!--   {% if session["pdf_wiz_word_list"] %} <!-- Ensure that everything has gone right -->
                                     <!-- has to be list of relevant count -->
+                                <!--  
+
                                     {% for word in session["pdf_wiz_word_list"] %}
-                                        <li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
+                                    <li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
                                     {% endfor %}
-                                {% else %}
+                                    {% else %}
                                     No theme selected
-                                {% endif %} 
+                                    {% endif %} 
+                                --> 
 
                             </ul>
 
                             <!-- the ul #sortable2 is a test thing for deceloping connected lists for fx image lottery -->
-                            <ul id="sortable2">
+                            <ul id="sortable2" class="connectedSortable">
 
                             </ul>
 

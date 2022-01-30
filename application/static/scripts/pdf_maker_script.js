@@ -1,7 +1,6 @@
 
 // Space board game's image count is hard coded to 30 because of the design of the game board.
 
-var board_image_count = 30
 var board_game_design = "" // Can be set to solar | lottery-4 | ...
 var word_image_objects = []; // Is populated by ajax call when design selected/word count given
 
@@ -10,16 +9,14 @@ var word_image_objects = []; // Is populated by ajax call when design selected/w
 // Step 1: Get/set image objects based on selection
 $(".selectable-theme").click(function(){
     elem =  $(this);
-    count = $(this).data("count");
     board_game_design = $(this).data("design"); // data-design can be: solar | lottery-4 | ...
-    // get word count and maybe board game path(?)
-    board_image_count = $(this).data("count");
+    game = getGameObject(board_game_design);
     
     // Get an (ordered) list of word image objects from server (user's collection) based on count
     $.ajax({
         url: "/ajax_get_boardgame_filenames", // Gets list of file names
         data: {
-            count: board_image_count
+            count: game.imagecount
         },
         type: "POST",
     }).done(function(data) {
@@ -33,7 +30,7 @@ $(".selectable-theme").click(function(){
         // Allow user to continue
         $(".sw-btn-next").prop( "disabled", false );
 
-        initialize_sortable(board_game_design);
+        initialize_sortable(game);
 
     });
 });
@@ -70,15 +67,74 @@ $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirec
 
 // Step 2: Initialize sortable based on selected board game design
 // Sortable docs: https://api.jqueryui.com/sortable/ 
-function initialize_sortable(selected_design) {
+function initialize_sortable(game) {
 
-    console.log("board game design is: " + selected_design);
-    $("#sortable").sortable({
-        //revert: true,
-        update: function( event, ui ) {}, // So update event can be watched
-    });
+    var design = game.design
+    console.log("board game design is: " + design);
 
+/*
+    Baseret på game objekt:
+    For hver liste i game.listcount:
+        Put en ul med id sortable-(plus index) ind i element med id "step-2"
+    
+    Find det sted, hvor ordene faktisk indsættes i listen (put_words_in_DOM) og få det rigtige antal ord puttet ind i de rigtige antal lister
+
+    Der hvor lister gøres om til spil, sørg for at billederne tages fra de rigtige lister (fx solat sortable-0 i stedet for bare sortable)
+*/
+
+
+
+
+    if (design === "solar") {
+        $("#sortable").sortable({
+            //revert: true,
+            update: function( event, ui ) {}, // So update event can be watched
+        });
+    }
+    else if (design === "lottery-4") {
+        $( "#sortable, #sortable2" ).sortable({
+            //revert: true,
+            update: function( event, ui ) {}, // So update event can be watched
+            connectWith: ".connectedSortable"
+          }).disableSelection();
+
+    }
 };
+
+// Determine important board game generation variables based on selected design and return game (object)
+function getGameObject(selected_design) {
+
+    var game = {
+        design: selected_design,
+        listcount: 0,
+        img_pr_list: 0,
+        imagecount: 0,
+    }
+    switch(selected_design) {
+        case "solar":
+            console.log("switch solar");
+            game.listcount = 1;
+            game.img_pr_list = 30;
+            break;
+        case "lottery-4":
+            console.log("switch lottery 4")
+            game.listcount = 4;
+            game.img_pr_list = 4;
+            break;
+        case "lottery-6":
+            // code block
+            game.listcount = 4;
+            game.img_pr_list = 6;
+            break;
+        default:
+            // code block
+            console.log("switch case defaulted");
+      }
+      game.imagecount = game.listcount * game.img_pr_list;
+
+    return game;
+
+}
 
 
 
