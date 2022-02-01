@@ -1,3 +1,12 @@
+/* 
+TODO:
+Gør så ord bliver byttet om eller i hvert fald, at der aldrig kommer et forkert antal ord i en af sortable listerne
+Dette vil kræve ny kode, da sortable selv står for koden til at drag droppe
+Gør så andre game designs designer andre games.
+Omstrukturer click make boardgame btn?
+ */
+
+
 
 // Space board game's image count is hard coded to 30 because of the design of the game board.
 
@@ -26,11 +35,12 @@ $(".selectable-theme").click(function(){
         elem.addClass("selected");
         elem.parent().addClass("selected");
         word_image_objects = JSON.parse(data);
-        put_words_in_DOM(word_image_objects);
         // Allow user to continue
         $(".sw-btn-next").prop( "disabled", false );
-
+        
         initialize_sortable(game);
+        console.log("put words in DOM called:");
+        put_words_in_DOM(word_image_objects, game);
 
     });
 });
@@ -39,13 +49,22 @@ $(".selectable-theme").click(function(){
 $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirection) {
 
     console.log("Leaving step. Implementing new order?");
-    var sortedIDs = $( "#sortable" ).sortable( "toArray", {attribute: "data-id"});
+
+    var sortedIDs = [];
+
+    // Taking all sortable lists and combining to one array in order
+    $(".connectedSortable").each(function(index, obj){
+        partial_sortable_list = $(obj).sortable( "toArray", {attribute: "data-id"});
+        sortedIDs = sortedIDs.concat(partial_sortable_list);
+    });
+
+    // Updating the list of word image objects to user's preferred order
     new_word_image_objects = []
 
     $(sortedIDs).each(function() {
 
         var new_id = this;
-        
+
         $(word_image_objects).each(function() {
 
             var word_obj = this;
@@ -63,14 +82,63 @@ $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirec
 
  });
 
+// Determine important board game generation variables based on selected design and return game (object)
+function getGameObject(selected_design) {
 
+    var game = {
+        design: selected_design,
+        listcount: 0,
+        list_size: 0,
+        imagecount: 0,
+    }
+    switch(selected_design) {
+        case "solar":
+            console.log("switch solar");
+            game.listcount = 1;
+            game.list_size = 30;
+            break;
+        case "lottery-4":
+            console.log("switch lottery 4")
+            game.listcount = 4;
+            game.list_size = 4;
+            break;
+        case "lottery-6":
+            // code block
+            game.listcount = 4;
+            game.list_size = 6;
+            break;
+        default:
+            // code block
+            console.log("switch case defaulted");
+      }
+      game.imagecount = game.listcount * game.list_size;
 
-// Step 2: Initialize sortable based on selected board game design
+    return game;
+
+};
+
+// Step 2: Initialize sortable based on selected board game design (this will affect what is shown in step 2)
 // Sortable docs: https://api.jqueryui.com/sortable/ 
 function initialize_sortable(game) {
 
     var design = game.design
     console.log("board game design is: " + design);
+
+
+    // For every list (fx lottery plate) add a new sortable with class connectedSortable)
+    $("#step-2").empty();
+    for (var list_number = 0; list_number < game.listcount; ++ list_number) {
+        console.log(this);
+        var ul = $('<ul/>');
+        ul.attr("id", "sortable-" + list_number)
+        ul.addClass("connectedSortable");
+        ul.sortable({
+            update: function( event, ui ) {}, // So update event can be watched
+            connectWith: ".connectedSortable"
+        }).disableSelection();
+        $( "#step-2" ).append(ul);
+
+    }
 
 /*
     Baseret på game objekt:
@@ -84,75 +152,58 @@ function initialize_sortable(game) {
 
 
 
-
     if (design === "solar") {
-        $("#sortable").sortable({
-            //revert: true,
-            update: function( event, ui ) {}, // So update event can be watched
-        });
+        // $("#sortable").sortable({
+        //     //revert: true,
+        //     update: function( event, ui ) {}, // So update event can be watched
+        // });
     }
     else if (design === "lottery-4") {
-        $( "#sortable, #sortable2" ).sortable({
-            //revert: true,
-            update: function( event, ui ) {}, // So update event can be watched
-            connectWith: ".connectedSortable"
-          }).disableSelection();
+        // $( "#sortable, #sortable2" ).sortable({
+        //     //revert: true,
+        //     update: function( event, ui ) {}, // So update event can be watched
+        //     connectWith: ".connectedSortable"
+        //   }).disableSelection();
 
     }
+
+
 };
-
-// Determine important board game generation variables based on selected design and return game (object)
-function getGameObject(selected_design) {
-
-    var game = {
-        design: selected_design,
-        listcount: 0,
-        img_pr_list: 0,
-        imagecount: 0,
-    }
-    switch(selected_design) {
-        case "solar":
-            console.log("switch solar");
-            game.listcount = 1;
-            game.img_pr_list = 30;
-            break;
-        case "lottery-4":
-            console.log("switch lottery 4")
-            game.listcount = 4;
-            game.img_pr_list = 4;
-            break;
-        case "lottery-6":
-            // code block
-            game.listcount = 4;
-            game.img_pr_list = 6;
-            break;
-        default:
-            // code block
-            console.log("switch case defaulted");
-      }
-      game.imagecount = game.listcount * game.img_pr_list;
-
-    return game;
-
-}
-
 
 
 
 // Generate DOM ul from word image objects
-function put_words_in_DOM(list) {
-    //<li data-id="{{ word.id }}" data-position="{{ loop.index }}">{{ word.word }}</li>
+function put_words_in_DOM(word_image_objects, game) {
 
-    sort = $("#sortable");
-    sort.empty();
+    list_number = 0 // for keeping track of what list in loop
+    list_max_size = game.list_size
+    current_list_free_spaces = list_max_size
 
-    $(list).each(function(index){
-        console.log("appending " + this);
+    $(word_image_objects).each(function(index){
+        console.log(`Word ${index}, list ${list_number}, space left: ${current_list_free_spaces}`);
+        sort = $("#sortable-" + list_number);
         var li = $("<li>", {"data-id": this.id});
         li.text(this.word);
         sort.append(li);
-    });
+        current_list_free_spaces--;
+        if (current_list_free_spaces === 0) {
+            list_number ++
+            current_list_free_spaces = list_max_size;
+        }
+    }); 
 
+
+
+        // $(word_image_objects).each(function(index){
+        //     sort.empty();
+        //     console.log(sort);
+        
+        //     console.log("appending " + this);
+        //     var li = $("<li>", {"data-id": this.id});
+        //     li.text(this.word);
+        //     sort.append(li);
+        // });
+        
 };
 
 
@@ -161,6 +212,8 @@ function put_words_in_DOM(list) {
 
 // DRAW SPACE BOARD GAME WITH CANVAS
 $("#make_boardgame_btn").click(function(){
+
+    console.log("Make board game clicked");
 
     var staticroot = "/static/"
 
@@ -187,6 +240,7 @@ $("#make_boardgame_btn").click(function(){
         })
     }
     
+    console.log("Promise made");
     async function drawImageToCtx(context, x, y, src, degrees, fullwidth=false) {
 
         width = 370;
@@ -305,6 +359,7 @@ $("#make_boardgame_btn").click(function(){
         
     }
 
+    console.log("Many async functions defined");
 
     if (word_image_objects.length === 0) {
         console.log("no collection");
@@ -322,6 +377,7 @@ $("#make_boardgame_btn").click(function(){
             build_solar_board_game(word_image_paths);
         }
         else {
+            console.log("Wasn't solar");
             $("#make_boardgame_btn").prop('disabled', false);
             $(".btn-loading").hide();
             $(".btn-ready").show();
