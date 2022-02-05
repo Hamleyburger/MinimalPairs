@@ -249,22 +249,24 @@
                             
                             <!--
                                 See pdf_maker_script.js for onclick function for selectable-theme
+                                To set variables for a new game design change pdf_maker_scripts.js getGameObject() and add a div below
+                                with reference to design (data-design) and a thumbnail image
                             -->
 
                             <div class="row">
                                 <div class="col-12 col-sm-6 justify-content-center justify-content-sm-end">
                                     <div class="img-wrapper">
-                                        <img class="pdf-example selectable-theme shadow" data-count="30" data-design="solar"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
+                                        <img class="pdf-example selectable-theme shadow" data-design="solar"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
                                     </div>
                                 </div>        
                                 <div class="col-12 col-sm-6 justify-content-center justify-content-sm-start">
                                     <div class="img-wrapper">
-                                        <img class="pdf-example selectable-theme shadow" data-count="16" data-design="lottery-4"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of image lottery-4">
+                                        <img class="pdf-example selectable-theme shadow" data-design="lottery-4"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of image lottery-4">
                                     </div>
                                 </div>   
                                 <div class="col-12 col-sm-6 justify-content-center justify-content-sm-start">
                                     <!--div class="img-wrapper">
-                                        <img class="pdf-example selectable-theme shadow" data-count="16" data-design="lottery-4"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of image lottery-4">
+                                        <img class="pdf-example selectable-theme shadow" data-design="lottery-4"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of image lottery-4">
                                     </div-->
                                     <p>Flere designs kommer senere... :-)</p>
                                 </div>   
@@ -274,19 +276,20 @@
 
 
                         <div id="step-2">
-
-
-                            <!--
-
-                                <ul id="sortable" class="connectedSortable">
-                                    
-                                </ul>
+                            <div class="sortable-feedback">Fordel ordene i lister på <span id="list_size"></span></div>
+                            <div id="step-2-sortable_wrapper">
                                 
-                                <ul id="sortable2" class="connectedSortable">
-                                    
-                                </ul>
-                            -->
-
+                                                            <!--
+                                
+                                                                <ul id="sortable" class="connectedSortable">
+                                                                    
+                                                                </ul>
+                                                                
+                                                                <ul id="sortable2" class="connectedSortable">
+                                                                    
+                                                                </ul>
+                                                            -->
+                            </div>
                         </div>
 
 

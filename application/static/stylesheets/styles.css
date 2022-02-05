@@ -1645,6 +1645,43 @@ footer a {
   cursor: pointer;
 }
 
+.boardgame-wizard-modal #step-2-sortable_wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.boardgame-wizard-modal #step-2-sortable_wrapper .connectedSortable {
+  width: 150px;
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #caabbf;
+}
+
+.boardgame-wizard-modal #step-2-sortable_wrapper .connectedSortable.error {
+  background-color: rgba(235, 164, 139, 0.5);
+}
+
+.boardgame-wizard-modal .sortable-feedback {
+  color: #3b1734;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.boardgame-wizard-modal .sortable-feedback.error {
+  color: #eb757d;
+}
+
 .error-message {
   margin: 70px 0px;
   padding: 0px 15px;

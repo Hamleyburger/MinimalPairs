@@ -8,8 +8,6 @@ Omstrukturer click make boardgame btn?
 
 
 
-// Space board game's image count is hard coded to 30 because of the design of the game board.
-
 var board_game_design = "" // Can be set to solar | lottery-4 | ...
 var word_image_objects = []; // Is populated by ajax call when design selected/word count given
 
@@ -82,7 +80,8 @@ $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirec
 
  });
 
-// Determine important board game generation variables based on selected design and return game (object)
+// Determine important board game generation variables based on selected design and return a game (object)
+// Insert variables for designs here!!
 function getGameObject(selected_design) {
 
     var game = {
@@ -125,48 +124,57 @@ function initialize_sortable(game) {
     console.log("board game design is: " + design);
 
 
+    // 1. Dynamically generate sortable with multiple lists (ids: sortable-0, sortable-1, sortable-2 ...)
     // For every list (fx lottery plate) add a new sortable with class connectedSortable)
-    $("#step-2").empty();
+    $("#step-2-sortable_wrapper").empty();
+    $("#list_size").text(game.list_size);
+    if (game.listcount === 1) {
+        $(".sortable-feedback").hide();
+    }
+    else {
+        $(".sortable-feedback").show();
+    }
     for (var list_number = 0; list_number < game.listcount; ++ list_number) {
         console.log(this);
         var ul = $('<ul/>');
         ul.attr("id", "sortable-" + list_number)
         ul.addClass("connectedSortable");
+
         ul.sortable({
             update: function( event, ui ) {}, // So update event can be watched
-            connectWith: ".connectedSortable"
+            connectWith: ".connectedSortable", 
+            update: function(){
+                console.log("update");
+            },
+            // Long function in "stop" to reevaluate validity (list lengths) and enable/disable "next".
+            stop: function(){
+                console.log("stop");
+
+                var allowed = true;
+                $(".connectedSortable").each(function(index, obj){
+                    listitems = $(obj).find("li");
+                    if (listitems.length !== game.list_size) {
+                        allowed = false;
+                        $(obj).addClass("error");
+                        $(".sortable-feedback").addClass("error");
+                    }
+                    else {
+                        $(obj).removeClass("error");
+                    }
+                });
+                if (!allowed) {
+                    $(".sw-btn-next").prop( "disabled", true );
+                }
+                else {
+                    $(".sw-btn-next").prop( "disabled", false );
+                    $(".sortable-feedback").removeClass("error");
+                }
+            },
+
         }).disableSelection();
-        $( "#step-2" ).append(ul);
 
+        $( "#step-2-sortable_wrapper" ).append(ul);
     }
-
-/*
-    Baseret på game objekt:
-    For hver liste i game.listcount:
-        Put en ul med id sortable-(plus index) ind i element med id "step-2"
-    
-    Find det sted, hvor ordene faktisk indsættes i listen (put_words_in_DOM) og få det rigtige antal ord puttet ind i de rigtige antal lister
-
-    Der hvor lister gøres om til spil, sørg for at billederne tages fra de rigtige lister (fx solat sortable-0 i stedet for bare sortable)
-*/
-
-
-
-    if (design === "solar") {
-        // $("#sortable").sortable({
-        //     //revert: true,
-        //     update: function( event, ui ) {}, // So update event can be watched
-        // });
-    }
-    else if (design === "lottery-4") {
-        // $( "#sortable, #sortable2" ).sortable({
-        //     //revert: true,
-        //     update: function( event, ui ) {}, // So update event can be watched
-        //     connectWith: ".connectedSortable"
-        //   }).disableSelection();
-
-    }
-
 
 };
 
@@ -191,19 +199,6 @@ function put_words_in_DOM(word_image_objects, game) {
             current_list_free_spaces = list_max_size;
         }
     }); 
-
-
-
-        // $(word_image_objects).each(function(index){
-        //     sort.empty();
-        //     console.log(sort);
-        
-        //     console.log("appending " + this);
-        //     var li = $("<li>", {"data-id": this.id});
-        //     li.text(this.word);
-        //     sort.append(li);
-        // });
-        
 };
 
 
@@ -216,7 +211,6 @@ $("#make_boardgame_btn").click(function(){
     console.log("Make board game clicked");
 
     var staticroot = "/static/"
-
 
 
     canvas = document.createElement('canvas');
@@ -387,7 +381,7 @@ $("#make_boardgame_btn").click(function(){
 
 });
 
-
+// As soon as document is ready load the smart wizard where all the fun will take place
 $(document).ready(function(){
 
     $('#smartwizard').smartWizard({
