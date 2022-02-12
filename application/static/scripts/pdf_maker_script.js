@@ -1,9 +1,3 @@
-/* 
-TODO:
-Lav build_lottery_boardgame funktion, som bruger game objekt
-*/
-
-
 var staticroot = "/static/" // Static root is needed for loading any images into any product
 var game; // Will contain all information about game
 
@@ -21,6 +15,7 @@ class Game {
         this.canvas_width = 0;
         this.canvas_height = 0;
         this.imagecount = 0;
+        this.game_images = [];
         this.word_image_objects = []; // Is populated by ajax call when design selected/word count given
 
         switch(this.design) {
@@ -33,6 +28,39 @@ class Game {
                 this.fgimg_path = staticroot + "boardgames/images/a3space_foreground.png";
                 this.canvas_width = 3508; // A4 mm
                 this.canvas_height = 2480; // A4 mm
+                // Image placement needs to be hard coded for each indivisual board game.
+                this.game_images[0] = new Game_image(130, 1950, 250, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[1] = new Game_image(60, 1600, 265, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[2] = new Game_image(60, 1240, 280, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[3] = new Game_image(160, 880, 295, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[4] = new Game_image(320, 560, 305, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[5] = new Game_image(550, 250, 315, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[6] = new Game_image(860, 60, 340, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[7] = new Game_image(1240, 10, 359, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[8] = new Game_image(1630, 15, 2, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[9] = new Game_image(2010, 40, 10, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[10] = new Game_image(2380, 130, 25, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[11] = new Game_image(2720, 330, 35, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[12] = new Game_image(3000, 575, 60, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[13] = new Game_image(3090, 945, 89, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[14] = new Game_image(3080, 1320, 100, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[15] = new Game_image(2940, 1650, 130, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[16] = new Game_image(2680, 1900, 155, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[17] = new Game_image(2330, 2050, 170, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[18] = new Game_image(1950, 2100, 175, staticroot + "boardgames/images/mask-image4.png");
+                this.game_images[19] = new Game_image(1570, 2100, 185, staticroot + "boardgames/images/mask-image4.png");
+                this.game_images[20] = new Game_image(1220, 1970, 215, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[21] = new Game_image(940, 1710, 240, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[22] = new Game_image(820, 1355, 270, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[23] = new Game_image(860, 999, 295, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[24] = new Game_image(1110, 719, 320, staticroot + "boardgames/images/mask-image4.png");
+                this.game_images[25] = new Game_image(1460, 590, 350, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[26] = new Game_image(1820, 629, 370, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[27] = new Game_image(2140, 770, 410, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[28] = new Game_image(2260, 1100, 450, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[29] = new Game_image(2160, 1440, 490, staticroot + "boardgames/images/mask-image5.png");
+
+                console.log(this.game_images);
     
                 break;
             case "lottery-4":
@@ -59,47 +87,40 @@ class Game {
           
         this.imagecount = this.listcount * this.list_size;
 
+
     }
 
     get image_paths(){
         var word_image_paths = []
         for(var i = 0; i < this.word_image_objects.length; i++) {
-            var obj = staticroot + game.word_image_objects[i];
-            word_image_paths.push(obj.path);
+            var obj = game.word_image_objects[i];
+            var image_path = staticroot + obj.path;
+            word_image_paths.push(image_path);
         }
-        return word_image_paths;
-        
+        return word_image_paths; 
+    }
+
+    set image_objects(word_image_objects){
+        this.word_image_objects = word_image_objects;
+        for(var i = 0; i < this.word_image_objects.length; i++) {
+            var obj = game.word_image_objects[i];
+            var image_path = staticroot + obj.path;
+            this.game_images[i].path = image_path;
+        }
     }
 }
 
 
 class Game_image {
-    constructor(design) {
-        this.x = 0;
-        this.y = 0;
-        this.degrees = 0;
-        this.path = "";
-        this.mask_path = "";
-
-        switch(this.design) {
-            case "solar":
-    
-                break;
-            case "lottery-4":
-
-                // fgimg_path = 
-                break;
-            case "lottery-6":
-                // code block
-
-                break;
-            default:
-                // code block
-                console.log("switch case defaulted");
-          }
-
+    constructor(x, y, rot, mask_path) {
+        this.x = x;
+        this.y = y;
+        this.rot = rot;
+        this.mask_path = mask_path;
+        this.path = ""; // populate after worg_image_objects have been retrieved.
     }
 }
+
 
 // Step 2: Initialize sortable based on selected board game design (this will affect what is shown in step 2)
 // Sortable docs: https://api.jqueryui.com/sortable/ 
@@ -107,7 +128,6 @@ function initialize_sortable(game) {
 
     var design = game.design
     console.log("board game design is: " + design);
-
 
     // 1. Dynamically generate sortable with multiple lists (ids: sortable-0, sortable-1, sortable-2 ...)
     // For every list (fx lottery plate) add a new sortable with class connectedSortable)
@@ -120,7 +140,6 @@ function initialize_sortable(game) {
         $(".sortable-feedback").show();
     }
     for (var list_number = 0; list_number < game.listcount; ++ list_number) {
-        console.log(this);
         var ul = $('<ul/>');
         ul.attr("id", "sortable-" + list_number)
         ul.addClass("connectedSortable");
@@ -172,7 +191,7 @@ function put_words_in_DOM(game) {
     current_list_free_spaces = list_max_size
 
     $(game.word_image_objects).each(function(index){
-        console.log(`Word ${index}, list ${list_number}, space left: ${current_list_free_spaces}`);
+        // console.log(`Word ${index}, list ${list_number}, space left: ${current_list_free_spaces}`);
         sort = $("#sortable-" + list_number);
         var li = $("<li>", {"data-id": this.id});
         li.text(this.word);
@@ -232,7 +251,7 @@ async function drawImageToCtx(context, x, y, src, degrees, fullwidth=false, squa
 
 
 // Takes a mask shape and an image and uses a temp context and an end context to draw them onto the end context ------ all designs
-async function addMaskedImage(x, y, img_src, mask_src, degrees, end_context, temp_context) {
+async function addMaskedImage(x, y, degrees, mask_src, img_src, end_context, temp_context) {
 
     // draw mask on temporary, empty canvas with given coordinates
     await drawImageToCtx(temp_context, x, y, mask_src, degrees);
@@ -252,55 +271,18 @@ async function addMaskedImage(x, y, img_src, mask_src, degrees, end_context, tem
 }
 
 
-async function build_solar_board_game(end_context, temp_context){ // Only called if selected_game_design is "solar"
+async function build_board_game(end_context, temp_context){ // Only called if selected_game_design is "solar"
 
-    word_image_paths = game.image_paths 
-    $(".btn-loading").text("Placerer Merkur og Venus");
-
+    word_image_paths = game.image_paths;
     // Draw background image
     await drawImageToCtx(end_context, 0, 0, game.bgimg_path, 0, true);
     
-    // Draw all fields
-    await addMaskedImage(130, 1950, word_image_paths[0], staticroot + "boardgames/images/mask-image1.png", 250, end_context, temp_context);
-    await addMaskedImage(60, 1600, word_image_paths[1], staticroot + "boardgames/images/mask-image1.png", 265, end_context, temp_context);
-    await addMaskedImage(60, 1240, word_image_paths[2], staticroot + "boardgames/images/mask-image3.png", 280, end_context, temp_context);
-    $(".btn-loading").text("Placerer Jorden");
-    await addMaskedImage(160, 880, word_image_paths[3], staticroot + "boardgames/images/mask-image1.png", 295, end_context, temp_context);
-    await addMaskedImage(320, 560, word_image_paths[4], staticroot + "boardgames/images/mask-image3.png", 305, end_context, temp_context);
-    await addMaskedImage(550, 250, word_image_paths[5], staticroot + "boardgames/images/mask-image2.png", 315, end_context, temp_context);
-    $(".btn-loading").text("Placerer Mars");
-    await addMaskedImage(860, 60, word_image_paths[6], staticroot + "boardgames/images/mask-image3.png", 340, end_context, temp_context);
-    await addMaskedImage(1240, 10, word_image_paths[7], staticroot + "boardgames/images/mask-image1.png", 359, end_context, temp_context);
-    await addMaskedImage(1630, 15, word_image_paths[8], staticroot + "boardgames/images/mask-image1.png", 2, end_context, temp_context);
-    $(".btn-loading").text("Placerer Jupiter");
-    await addMaskedImage(2010, 40, word_image_paths[9], staticroot + "boardgames/images/mask-image2.png", 10, end_context, temp_context);
-    await addMaskedImage(2380, 130, word_image_paths[10], staticroot + "boardgames/images/mask-image3.png", 25, end_context, temp_context);
-    await addMaskedImage(2720, 330, word_image_paths[11], staticroot + "boardgames/images/mask-image2.png", 35, end_context, temp_context);
-    await addMaskedImage(3000, 575, word_image_paths[12], staticroot + "boardgames/images/mask-image3.png", 60, end_context, temp_context);
-    await addMaskedImage(3090, 945, word_image_paths[13], staticroot + "boardgames/images/mask-image2.png", 89, end_context, temp_context);
-    await addMaskedImage(3080, 1320, word_image_paths[14], staticroot + "boardgames/images/mask-image1.png", 100, end_context, temp_context);
-    $(".btn-loading").text("Placerer Saturn");
-    await addMaskedImage(2940, 1650, word_image_paths[15], staticroot + "boardgames/images/mask-image2.png", 130, end_context, temp_context);
-    await addMaskedImage(2680, 1900, word_image_paths[16], staticroot + "boardgames/images/mask-image3.png", 155, end_context, temp_context);
-    await addMaskedImage(2330, 2050, word_image_paths[17], staticroot + "boardgames/images/mask-image5.png", 170, end_context, temp_context);
-    $(".btn-loading").text("Placerer Uranus");
-    await addMaskedImage(1950, 2100, word_image_paths[18], staticroot + "boardgames/images/mask-image4.png", 175, end_context, temp_context);
-    await addMaskedImage(1570, 2100, word_image_paths[19], staticroot + "boardgames/images/mask-image4.png", 185, end_context, temp_context);
-    await addMaskedImage(1220, 1970, word_image_paths[20], staticroot + "boardgames/images/mask-image5.png", 215, end_context, temp_context);
-    $(".btn-loading").text("Placerer Neptun");
-    await addMaskedImage(940, 1710, word_image_paths[21], staticroot + "boardgames/images/mask-image3.png", 240, end_context, temp_context);
-    await addMaskedImage(820, 1355, word_image_paths[22], staticroot + "boardgames/images/mask-image2.png", 270, end_context, temp_context);
-    $(".btn-loading").text("Så blev det solens tur");
-    await addMaskedImage(860, 999, word_image_paths[23], staticroot + "boardgames/images/mask-image5.png", 295, end_context, temp_context);
-    await addMaskedImage(1110, 719, word_image_paths[24], staticroot + "boardgames/images/mask-image4.png", 320, end_context, temp_context);
-    await addMaskedImage(1460, 590, word_image_paths[25], staticroot + "boardgames/images/mask-image5.png", 350, end_context, temp_context);
-    await addMaskedImage(1820, 629, word_image_paths[26], staticroot + "boardgames/images/mask-image3.png", 370, end_context, temp_context);
-    await addMaskedImage(2140, 770, word_image_paths[27], staticroot + "boardgames/images/mask-image2.png", 410, end_context, temp_context);
-    await addMaskedImage(2260, 1100, word_image_paths[28], staticroot + "boardgames/images/mask-image3.png", 450, end_context, temp_context);
-    await addMaskedImage(2160, 1440, word_image_paths[29], staticroot + "boardgames/images/mask-image5.png", 490, end_context, temp_context);
-    $(".btn-loading").text("Færdig");
+    obs = game.game_images;
+    for (i = 0; i < obs.length; i ++) {
+        await addMaskedImage(obs[i].x, obs[i].y, obs[i].rot, obs[i].mask_path, obs[i].path, end_context, temp_context);
+        $(".btn-loading").text(i);
+    }
 
-    
     // Draw foreground
     await drawImageToCtx(end_context, 0, 0, game.fgimg_path, 0, true);
 
@@ -327,7 +309,7 @@ $(".selectable-theme").click(function(){
         $(".selected").removeClass("selected");
         elem.addClass("selected");
         elem.parent().addClass("selected");
-        game.word_image_objects = JSON.parse(data);
+        game.image_objects = JSON.parse(data);
         console.log(game.word_image_objects[0]);
         // Allow user to continue
         $(".sw-btn-next").prop( "disabled", false );
@@ -342,7 +324,7 @@ $(".selectable-theme").click(function(){
 // When leaving a step update word_image_objects in the new order.
 $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirection) {
 
-    console.log("Leaving step. Implementing new order?");
+    console.log("Leaving step. Updating order.");
 
     var sortedIDs = [];
 
@@ -372,11 +354,11 @@ $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirec
         });
     });
 
-    game.word_image_objects = new_word_image_objects;
+    game.image_objects = new_word_image_objects;
 
 });
 
-// DRAW SPACE BOARD GAME WITH CANVAS
+// Load images from server and make game object when button is clicked
 $("#make_boardgame_btn").click(async function(){
 
     if (game.word_image_objects.length > 0) {
@@ -408,7 +390,7 @@ $("#make_boardgame_btn").click(async function(){
             case "solar":
                 console.log("building solar game");
                 // Takes a list of 30 image paths and fits the images onto the solar board game image
-                await build_solar_board_game(end_ctx, tmp_ctx);    
+                await build_board_game(end_ctx, tmp_ctx);    
                 break;
             case "lottery-4":
                 console.log("building lottery-4, lalala");
@@ -457,7 +439,7 @@ $("#make_boardgame_btn").click(async function(){
     }
 });
 
-// As soon as document is ready load the smart wizard where all the fun will take place
+// Start SmartWizard - as soon as document is ready load the smart wizard where all the fun will take place
 $(document).ready(function(){
 
     $('#smartwizard').smartWizard({
