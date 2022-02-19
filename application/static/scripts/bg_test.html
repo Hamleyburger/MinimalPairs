@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<style>
+    input {
+        height: 80px;
+        font-size: 60px;
+    }
+    p {
+        font-size: 80px;
+    }
+
+    #test_canvas {
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        top: 700px;
+    }
+    #test_tmp_canvas {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 700px;
+    }
+</style>
+
+<body>
+    
+
+    <form action="" id="test_img_form">
+        <input type="number" id="test_x" value="50">
+        <input type="number" id="test_y" value="300">
+        <input type="number" id="test_rot" value="0">
+        <input type="number" id="test_size" value="600">
+    </form>
+    <p>x, y, rot: 
+    </p>
+    <nl>
+    </nl>
+    <p style="border: 1px solid black;">
+        new Game_image(
+        <span id="spanx"></span>, 
+        <span id="spany"></span>, 
+        <span id="spanrot"></span>);
+    </p>
+    <nl></nl>
+    <p>this.square_img_size = <span id="spansize"></span>;</p>
+
+    <canvas id="test_canvas" width="0" height="0" style="border: 1px solid black;"></canvas>
+    <canvas id="test_tmp_canvas" width="0" height="0" style="border: 1px solid black;"></canvas>
+
+
+
+
+<script>
+
+
+
+var staticroot = "../" // Static root is needed for loading any images into any productar staticroot = "/static/" // Static root is needed for loading any images into any product
+var game; // Will contain all information about game
+var canvas;
+var canvas_tmp;
+
+
+var test_selected_game_design = "lottery-4";
+var test_square_img_src = staticroot + "images/bad.jpg";
+var test_x = 200;
+var test_y = 200;
+var test_rot = 0;
+var test_square_size = 900;
+
+
+
+class Game {
+    constructor(design) {
+        this.design = design;
+        this.listcount = 0;
+        this.list_size = 0;
+        this.filename = "";
+        this.bgimg_path = "";
+        this.fgimg_path = "";
+        this.canvas_width = 0;
+        this.canvas_height = 0;
+        this.imagecount = 0;
+        this.game_images = [];
+        this.word_image_objects = []; // Is populated by ajax call when design selected/word count given
+
+        switch(this.design) {
+            case "solar":
+                console.log("switch solar");
+                this.listcount = 1;
+                this.list_size = 30;
+                this.filename = "solsystem_spilleplade";
+                this.bgimg_path = staticroot + "boardgames/images/a3space_background.jpg";
+                this.fgimg_path = staticroot + "boardgames/images/a3space_foreground.png";
+                this.canvas_width = 3508; // A4 mm
+                this.canvas_height = 2480; // A4 mm
+                // Image placement needs to be hard coded for each indivisual board game.
+                this.game_images[0] = new Game_image(130, 1950, 250, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[1] = new Game_image(60, 1600, 265, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[2] = new Game_image(60, 1240, 280, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[3] = new Game_image(160, 880, 295, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[4] = new Game_image(320, 560, 305, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[5] = new Game_image(550, 250, 315, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[6] = new Game_image(860, 60, 340, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[7] = new Game_image(1240, 10, 359, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[8] = new Game_image(1630, 15, 2, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[9] = new Game_image(2010, 40, 10, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[10] = new Game_image(2380, 130, 25, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[11] = new Game_image(2720, 330, 35, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[12] = new Game_image(3000, 575, 60, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[13] = new Game_image(3090, 945, 89, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[14] = new Game_image(3080, 1320, 100, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[15] = new Game_image(2940, 1650, 130, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[16] = new Game_image(2680, 1900, 155, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[17] = new Game_image(2330, 2050, 170, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[18] = new Game_image(1950, 2100, 175, staticroot + "boardgames/images/mask-image4.png");
+                this.game_images[19] = new Game_image(1570, 2100, 185, staticroot + "boardgames/images/mask-image4.png");
+                this.game_images[20] = new Game_image(1220, 1970, 215, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[21] = new Game_image(940, 1710, 240, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[22] = new Game_image(820, 1355, 270, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[23] = new Game_image(860, 999, 295, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[24] = new Game_image(1110, 719, 320, staticroot + "boardgames/images/mask-image4.png");
+                this.game_images[25] = new Game_image(1460, 590, 350, staticroot + "boardgames/images/mask-image5.png");
+                this.game_images[26] = new Game_image(1820, 629, 370, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[27] = new Game_image(2140, 770, 410, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[28] = new Game_image(2260, 1100, 450, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[29] = new Game_image(2160, 1440, 490, staticroot + "boardgames/images/mask-image5.png");
+
+                console.log(this.game_images);
+    
+                break;
+            case "lottery-4":
+                console.log("switch lottery 4")
+                this.listcount = 4;
+                this.list_size = 4;
+                this.filename = "lotteri_med_4_billeder";
+                this.bgimg_path = staticroot + "boardgames/images/lottery4_inka_background.png";
+                this.fgimg_path = staticroot + ""; // No foreground
+                this.canvas_width = 2480; // A4 mm same as solar?
+                this.canvas_height = 3508; // A4 mm same as solar?
+                break;
+            case "lottery-6":
+                // code block
+                this.listcount = 4;
+                this.list_size = 6;
+                this.filename = "lotteri_med_6_billeder";
+                this.bgimg_path = staticroot + "boardgames/images/a3space_background.jpg";
+                this.fgimg_path = staticroot + "boardgames/images/a3space_foreground.png";
+                break;
+            default:
+                // code block
+                console.log("switch case defaulted");
+          }
+          
+          
+        this.imagecount = this.listcount * this.list_size;
+
+
+    }
+
+    get image_paths(){
+        var word_image_paths = []
+        for(var i = 0; i < this.word_image_objects.length; i++) {
+            var obj = game.word_image_objects[i];
+            var image_path = staticroot + obj.path;
+            word_image_paths.push(image_path);
+        }
+        return word_image_paths; 
+    }
+
+    set image_objects(word_image_objects){
+        this.word_image_objects = word_image_objects;
+        for(var i = 0; i < this.word_image_objects.length; i++) {
+            var obj = game.word_image_objects[i];
+            var image_path = staticroot + obj.path;
+            this.game_images[i].path = image_path;
+        }
+    }
+}
+class Game_image {
+    constructor(x, y, rot, mask_path) {
+        this.x = x;
+        this.y = y;
+        this.rot = rot;
+        this.mask_path = mask_path;
+        this.path = ""; // populate after worg_image_objects have been retrieved.
+    }
+}
+
+// Loads and returns an image. Use with await when an image needs to be loaded before continuing
+function loadImage(src){
+    return new Promise((resolve) => {
+        image = new Image();
+        image.src = src;
+        image.onload = () => resolve(image);
+    })
+}
+
+
+// Draws an image with specified size, coords and rotation on a canvas. Can be awaited.
+async function drawImageToCtx(context, x, y, src, degrees, fullwidth=false, square_height_width=370) {
+    /*Draws a given src to a given context at given coords - Only draws squares
+    - which context
+    - what coordinates
+    - path to image/png mask
+    - rotation
+    - is it full width? Optional
+    - height and width (same) of square. Optional. (Default is 370/solar size)
+    */
+
+    width = square_height_width;
+    height = square_height_width;
+    const loaded_image = await loadImage(src);
+
+    if (fullwidth) {
+        width = canvas.width;
+        height = canvas.height;
+    }
+
+    if (degrees > 0) {
+        // Save context. Set anchor point in the middle. Rotate canvas. Insert image. Rotate canvas back. Restore context.
+        context.save();
+        context.translate(x + width/2, y+height/2);
+        context.rotate(degrees*Math.PI/180);
+        context.drawImage(loaded_image, width/2 * (-1), height/2 * (-1), width, height);
+        context.rotate(-(degrees*Math.PI/180));
+        context.restore();
+    }
+    else {
+        context.drawImage(loaded_image, x, y, width, height);
+    }
+}
+
+
+// Takes a mask shape and an image and uses a temp context and an end context to draw them onto the end context ------ all designs
+async function addMaskedImage(x, y, degrees, mask_src, img_src, end_context, temp_context) {
+
+    // draw mask on temporary, empty canvas with given coordinates
+    await drawImageToCtx(temp_context, x, y, mask_src, degrees);
+
+    // draw image inside mask with same given coordinates
+    temp_context.globalCompositeOperation = "source-in";
+    await drawImageToCtx(temp_context, x, y, img_src, degrees);
+    temp_context.globalCompositeOperation = "source-over";
+
+    // Draw masked image on the "real" canvas - the whole canvas is drawn, therefore 0,0
+    tmp_src = canvas_tmp.toDataURL();
+    await drawImageToCtx(end_context, 0, 0, tmp_src, 0, true);
+
+    // Clear temporary canvas for more drawing
+    temp_context.clearRect(0, 0, canvas_tmp.width, canvas_tmp.height);
+
+}
+
+
+game = new Game(test_selected_game_design); // Has no game_image_objects (fx paths) yet
+
+
+
+// When make boardgame clicked initialize a canvas: 
+
+// Set canvas size to landscape A4 dimensions and make context
+canvas = document.getElementById('test_canvas');
+canvas.width=game.canvas_width; // A4 mm
+canvas.height=game.canvas_height; // A4 mm
+var end_ctx = canvas.getContext("2d");
+end_ctx.beginPath();
+end_ctx.fillStyle = "white";
+end_ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// Create a temporary, similar canvas for generating stuff before putting it onto the real canvas ----- solar specific
+canvas_tmp = document.getElementById('test_tmp_canvas');
+canvas_tmp.width=canvas.width;
+canvas_tmp.height=canvas.height;
+var tmp_ctx = canvas_tmp.getContext("2d");
+
+async function draw_test_canvas(){
+    tmp_ctx.clearRect(0, 0, canvas.width, canvas.height);
+    await drawImageToCtx(tmp_ctx, test_x, test_y, test_square_img_src, test_rot, false, square_height_width=test_square_size);
+    $("#test_y").val(test_y);
+    $("#test_x").val(test_x);
+    $("#test_rot").val(test_rot);
+    $("#spanx").text(test_x);
+    $("#spany").text(test_y);
+    $("#spanrot").text(test_rot);
+    
+}
+
+async function draw_bg_canvas(){
+    await drawImageToCtx(end_ctx, 0, 0, game.bgimg_path, 0, true, 40);
+    await draw_test_canvas();
+}
+draw_bg_canvas();
+
+
+$("#test_img_form").change(function(){
+    test_x = parseInt($("#test_x").val());
+    test_y = parseInt($("#test_y").val());
+    test_rot = parseInt($("#test_rot").val());
+    test_square_size = parseInt($("#test_size").val());
+    $("#spanx").text(test_x);
+    $("#spany").text(test_y);
+    $("#spanrot").text(test_rot);
+    $("#spansize").text(test_square_size);
+    //end_ctx.clearRect();
+    draw_test_canvas();
+});
+
+document.onkeydown = function(e) {
+    switch(e.which) {
+        case 37: // left
+        test_x -= 10;
+        draw_test_canvas();
+        break;
+
+        case 38: // up
+        test_y -= 10;
+        draw_test_canvas();
+        break;
+
+        case 39: // right
+        test_x += 10;
+        draw_test_canvas();
+        break;
+
+        case 40: // down
+        test_y += 10;
+        draw_test_canvas();
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+};
+
+</script>
+
+
+
+
+</body>
+</html>

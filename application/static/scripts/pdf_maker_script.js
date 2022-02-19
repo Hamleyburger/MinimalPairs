@@ -1,9 +1,11 @@
 var staticroot = "/static/" // Static root is needed for loading any images into any product
 var game; // Will contain all information about game
-
+var canvas;
+var canvas_tmp;
 
 // Determine important board game generation variables based on selected design and return a game (object)
 // Insert variables for designs here!!
+// Use bg_test.html to adjust parametres to fit and hard code.
 class Game {
     constructor(design) {
         this.design = design;
@@ -17,6 +19,7 @@ class Game {
         this.imagecount = 0;
         this.game_images = [];
         this.word_image_objects = []; // Is populated by ajax call when design selected/word count given
+        this.orientation = "l";
 
         switch(this.design) {
             case "solar":
@@ -26,8 +29,13 @@ class Game {
                 this.filename = "solsystem_spilleplade";
                 this.bgimg_path = staticroot + "boardgames/images/a3space_background.jpg";
                 this.fgimg_path = staticroot + "boardgames/images/a3space_foreground.png";
-                this.canvas_width = 3508; // A4 mm
-                this.canvas_height = 2480; // A4 mm
+                this.canvas_width = 3508; // A4 px
+                this.canvas_height = 2480; // A4 px
+                this.orientation = "l"; // portrait
+                this.square_img_size = 370;
+
+
+
                 // Image placement needs to be hard coded for each indivisual board game.
                 this.game_images[0] = new Game_image(130, 1950, 250, staticroot + "boardgames/images/mask-image1.png");
                 this.game_images[1] = new Game_image(60, 1600, 265, staticroot + "boardgames/images/mask-image1.png");
@@ -69,7 +77,39 @@ class Game {
                 this.list_size = 4;
                 this.filename = "lotteri_med_4_billeder";
                 this.bgimg_path = staticroot + "boardgames/images/lottery4_inka_background.png";
-                // fgimg_path = 
+                this.fgimg_path = "";
+                this.canvas_width = 2480; // A4 px
+                this.canvas_height = 3508; // A4 px
+                this.orientation = "p"; // portrait
+                this.square_img_size = 502;
+
+                var x1 = 86;
+                var x2 = 653;
+                var x3 = 1323;
+                var x4 = 1897;
+                var y1 = 598;
+                var y2 = 1168;
+                var y3 = 1838;
+                var y4 = 2408;
+                // Image placement needs to be hard coded for each indivisual board game.
+                this.game_images[0] = new Game_image(x1, y1, 0);
+                this.game_images[1] = new Game_image(x2, y1, 0);
+                this.game_images[2] = new Game_image(x1, y2, 0);
+                this.game_images[3] = new Game_image(x2, y2, 0);
+                this.game_images[4] = new Game_image(x3, y1, 0);
+                this.game_images[5] = new Game_image(x4, y1, 0);
+                this.game_images[6] = new Game_image(x3, y2, 0);
+                this.game_images[7] = new Game_image(x4, y2, 0);
+
+                this.game_images[8] = new Game_image(x1, y3, 0);
+                this.game_images[9] = new Game_image(x2, y3, 0);
+                this.game_images[10] = new Game_image(x1, y4, 0);
+                this.game_images[11] = new Game_image(x2, y4, 0);
+                this.game_images[12] = new Game_image(x3, y3, 0);
+                this.game_images[13] = new Game_image(x4, y3, 0);
+                this.game_images[14] = new Game_image(x3, y4, 0);
+                this.game_images[15] = new Game_image(x4, y4, 0);
+
                 break;
             case "lottery-6":
                 // code block
@@ -112,7 +152,7 @@ class Game {
 
 
 class Game_image {
-    constructor(x, y, rot, mask_path) {
+    constructor(x, y, rot, mask_path="") {
         this.x = x;
         this.y = y;
         this.rot = rot;
@@ -216,7 +256,7 @@ function loadImage(src){
 
 
 // Draws an image with specified size, coords and rotation on a canvas. Can be awaited.
-async function drawImageToCtx(context, x, y, src, degrees, fullwidth=false, square_height_width=370) {
+async function drawImageToCtx(context, x, y, src, degrees, fullwidth=false, square_height_width=game.square_img_size) {
     /*Draws a given src to a given context at given coords - Only draws squares
     - which context
     - what coordinates
@@ -253,11 +293,16 @@ async function drawImageToCtx(context, x, y, src, degrees, fullwidth=false, squa
 // Takes a mask shape and an image and uses a temp context and an end context to draw them onto the end context ------ all designs
 async function addMaskedImage(x, y, degrees, mask_src, img_src, end_context, temp_context) {
 
-    // draw mask on temporary, empty canvas with given coordinates
-    await drawImageToCtx(temp_context, x, y, mask_src, degrees);
+    if(mask_src !== "") {
 
-    // draw image inside mask with same given coordinates
-    temp_context.globalCompositeOperation = "source-in";
+        // draw mask on temporary, empty canvas with given coordinates
+        await drawImageToCtx(temp_context, x, y, mask_src, degrees);
+        
+        // draw image inside mask with same given coordinates
+        temp_context.globalCompositeOperation = "source-in";
+    }
+
+
     await drawImageToCtx(temp_context, x, y, img_src, degrees);
     temp_context.globalCompositeOperation = "source-over";
 
@@ -283,8 +328,11 @@ async function build_board_game(end_context, temp_context){ // Only called if se
         $(".btn-loading").text(i);
     }
 
-    // Draw foreground
-    await drawImageToCtx(end_context, 0, 0, game.fgimg_path, 0, true);
+    if(game.fgimg_path !== "") {
+        // Draw foreground
+        await drawImageToCtx(end_context, 0, 0, game.fgimg_path, 0, true);
+
+    }
 
 }
 
@@ -372,6 +420,8 @@ $("#make_boardgame_btn").click(async function(){
         canvas.height=game.canvas_height; // A4 mm
         var end_ctx = canvas.getContext("2d");
         end_ctx.beginPath();
+        end_ctx.fillStyle = "white";
+        end_ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         // Create a temporary, similar canvas for generating stuff before putting it onto the real canvas ----- solar specific
         canvas_tmp = document.createElement('canvas');
@@ -394,6 +444,7 @@ $("#make_boardgame_btn").click(async function(){
                 break;
             case "lottery-4":
                 console.log("building lottery-4, lalala");
+                await build_board_game(end_ctx, tmp_ctx);  
                 break;
             case "lottery-6":
                 console.log("building lottery-6, lalala");
@@ -413,11 +464,20 @@ $("#make_boardgame_btn").click(async function(){
     
         // Convert canvas to downloadable image and prompt user to save it
         var imgData = canvas.toDataURL("image/jpeg", 1.0);
-        var pdf = new jsPDF('l', 'mm', [420, 297]);
-        
-        
+
+        if (game.orientation === "l") {
+            var w = 420; // landscape mm width
+            var h = 297; // landscape mm height
+        }
+        else { // orientation is "p"
+            var w = 297; // landscape mm width
+            var h = 420; // landscape mm height            
+        }
+
+
+        var pdf = new jsPDF(game.orientation, 'mm', [w, h]);
         // If canvas is generated as an element programatically
-        pdf.addImage(imgData, 'JPEG', 0, 0, 420, 297);
+        pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
         
     
         var filename = prompt('Gem i "overførsler" som', game.filename);
