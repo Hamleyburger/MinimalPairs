@@ -12,72 +12,67 @@ class Game {
         this.listcount = 0;
         this.list_size = 0;
         this.filename = "";
-        this.bgimg_path = "";
-        this.fgimg_path = "";
         this.canvas_width = 0;
         this.canvas_height = 0;
-        this.imagecount = 0;
-        this.game_images = [];
+        this.imagecount = 0; // Calculated programmatically after switch check is completed.
         this.word_image_objects = []; // Is populated by ajax call when design selected/word count given
         this.orientation = "l";
+        this.square_img_size = 500; // Pixel size of custom added game images
+        this.pages = [];
+        this.game_images = [];
+        
 
         switch(this.design) {
             case "solar":
-                console.log("switch solar");
                 this.listcount = 1;
                 this.list_size = 30;
                 this.filename = "solsystem_spilleplade";
-                this.bgimg_path = staticroot + "boardgames/images/a3space_background.jpg";
-                this.fgimg_path = staticroot + "boardgames/images/a3space_foreground.png";
                 this.canvas_width = 3508; // A4 px
                 this.canvas_height = 2480; // A4 px
                 this.orientation = "l"; // portrait
                 this.square_img_size = 370;
-
-
-
-                // Image placement needs to be hard coded for each indivisual board game.
-                this.game_images[0] = new Game_image(130, 1950, 250, staticroot + "boardgames/images/mask-image1.png");
-                this.game_images[1] = new Game_image(60, 1600, 265, staticroot + "boardgames/images/mask-image1.png");
-                this.game_images[2] = new Game_image(60, 1240, 280, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[3] = new Game_image(160, 880, 295, staticroot + "boardgames/images/mask-image1.png");
-                this.game_images[4] = new Game_image(320, 560, 305, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[5] = new Game_image(550, 250, 315, staticroot + "boardgames/images/mask-image2.png");
-                this.game_images[6] = new Game_image(860, 60, 340, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[7] = new Game_image(1240, 10, 359, staticroot + "boardgames/images/mask-image1.png");
-                this.game_images[8] = new Game_image(1630, 15, 2, staticroot + "boardgames/images/mask-image1.png");
-                this.game_images[9] = new Game_image(2010, 40, 10, staticroot + "boardgames/images/mask-image2.png");
-                this.game_images[10] = new Game_image(2380, 130, 25, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[11] = new Game_image(2720, 330, 35, staticroot + "boardgames/images/mask-image2.png");
-                this.game_images[12] = new Game_image(3000, 575, 60, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[13] = new Game_image(3090, 945, 89, staticroot + "boardgames/images/mask-image2.png");
-                this.game_images[14] = new Game_image(3080, 1320, 100, staticroot + "boardgames/images/mask-image1.png");
-                this.game_images[15] = new Game_image(2940, 1650, 130, staticroot + "boardgames/images/mask-image2.png");
-                this.game_images[16] = new Game_image(2680, 1900, 155, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[17] = new Game_image(2330, 2050, 170, staticroot + "boardgames/images/mask-image5.png");
-                this.game_images[18] = new Game_image(1950, 2100, 175, staticroot + "boardgames/images/mask-image4.png");
-                this.game_images[19] = new Game_image(1570, 2100, 185, staticroot + "boardgames/images/mask-image4.png");
-                this.game_images[20] = new Game_image(1220, 1970, 215, staticroot + "boardgames/images/mask-image5.png");
-                this.game_images[21] = new Game_image(940, 1710, 240, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[22] = new Game_image(820, 1355, 270, staticroot + "boardgames/images/mask-image2.png");
-                this.game_images[23] = new Game_image(860, 999, 295, staticroot + "boardgames/images/mask-image5.png");
-                this.game_images[24] = new Game_image(1110, 719, 320, staticroot + "boardgames/images/mask-image4.png");
-                this.game_images[25] = new Game_image(1460, 590, 350, staticroot + "boardgames/images/mask-image5.png");
-                this.game_images[26] = new Game_image(1820, 629, 370, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[27] = new Game_image(2140, 770, 410, staticroot + "boardgames/images/mask-image2.png");
-                this.game_images[28] = new Game_image(2260, 1100, 450, staticroot + "boardgames/images/mask-image3.png");
-                this.game_images[29] = new Game_image(2160, 1440, 490, staticroot + "boardgames/images/mask-image5.png");
-
-                console.log(this.game_images);
+                this.pages = [
+                    // Page 1
+                    new Page("boardgames/images/a3space_background.jpg", "boardgames/images/a3space_foreground.png", [
+                        // Images on page 1 (hard coded positions)
+                        new Game_image(130, 1950, 250, staticroot + "boardgames/images/mask-image1.png"),
+                        new Game_image(60, 1600, 265, staticroot + "boardgames/images/mask-image1.png"),
+                        new Game_image(60, 1240, 280, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(160, 880, 295, staticroot + "boardgames/images/mask-image1.png"),
+                        new Game_image(320, 560, 305, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(550, 250, 315, staticroot + "boardgames/images/mask-image2.png"),
+                        new Game_image(860, 60, 340, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(1240, 10, 359, staticroot + "boardgames/images/mask-image1.png"),
+                        new Game_image(1630, 15, 2, staticroot + "boardgames/images/mask-image1.png"),
+                        new Game_image(2010, 40, 10, staticroot + "boardgames/images/mask-image2.png"),
+                        new Game_image(2380, 130, 25, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(2720, 330, 35, staticroot + "boardgames/images/mask-image2.png"),
+                        new Game_image(3000, 575, 60, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(3090, 945, 89, staticroot + "boardgames/images/mask-image2.png"),
+                        new Game_image(3080, 1320, 100, staticroot + "boardgames/images/mask-image1.png"),
+                        new Game_image(2940, 1650, 130, staticroot + "boardgames/images/mask-image2.png"),
+                        new Game_image(2680, 1900, 155, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(2330, 2050, 170, staticroot + "boardgames/images/mask-image5.png"),
+                        new Game_image(1950, 2100, 175, staticroot + "boardgames/images/mask-image4.png"),
+                        new Game_image(1570, 2100, 185, staticroot + "boardgames/images/mask-image4.png"),
+                        new Game_image(1220, 1970, 215, staticroot + "boardgames/images/mask-image5.png"),
+                        new Game_image(940, 1710, 240, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(820, 1355, 270, staticroot + "boardgames/images/mask-image2.png"),
+                        new Game_image(860, 999, 295, staticroot + "boardgames/images/mask-image5.png"),
+                        new Game_image(1110, 719, 320, staticroot + "boardgames/images/mask-image4.png"),
+                        new Game_image(1460, 590, 350, staticroot + "boardgames/images/mask-image5.png"),
+                        new Game_image(1820, 629, 370, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(2140, 770, 410, staticroot + "boardgames/images/mask-image2.png"),
+                        new Game_image(2260, 1100, 450, staticroot + "boardgames/images/mask-image3.png"),
+                        new Game_image(2160, 1440, 490, staticroot + "boardgames/images/mask-image5.png")
+                    ])
+                ]
     
                 break;
             case "lottery-4":
-                console.log("switch lottery 4")
                 this.listcount = 4;
                 this.list_size = 4;
                 this.filename = "lotteri_med_4_billeder";
-                this.bgimg_path = staticroot + "boardgames/images/lottery4_inka_background.png";
-                this.fgimg_path = "";
                 this.canvas_width = 2480; // A4 px
                 this.canvas_height = 3508; // A4 px
                 this.orientation = "p"; // portrait
@@ -91,33 +86,70 @@ class Game {
                 var y2 = 1168;
                 var y3 = 1838;
                 var y4 = 2408;
-                // Image placement needs to be hard coded for each indivisual board game.
-                this.game_images[0] = new Game_image(x1, y1, 0);
-                this.game_images[1] = new Game_image(x2, y1, 0);
-                this.game_images[2] = new Game_image(x1, y2, 0);
-                this.game_images[3] = new Game_image(x2, y2, 0);
-                this.game_images[4] = new Game_image(x3, y1, 0);
-                this.game_images[5] = new Game_image(x4, y1, 0);
-                this.game_images[6] = new Game_image(x3, y2, 0);
-                this.game_images[7] = new Game_image(x4, y2, 0);
 
-                this.game_images[8] = new Game_image(x1, y3, 0);
-                this.game_images[9] = new Game_image(x2, y3, 0);
-                this.game_images[10] = new Game_image(x1, y4, 0);
-                this.game_images[11] = new Game_image(x2, y4, 0);
-                this.game_images[12] = new Game_image(x3, y3, 0);
-                this.game_images[13] = new Game_image(x4, y3, 0);
-                this.game_images[14] = new Game_image(x3, y4, 0);
-                this.game_images[15] = new Game_image(x4, y4, 0);
+                this.pages = [
+                    // page 1 - grid med billedkort
+                    new Page("boardgames/images/lottery4_inka_card_frontside.png", "", [
+                        new Game_image(221, 737, 0),
+                        new Game_image(732, 737, 0),
+                        new Game_image(1246, 737, 0),
+                        new Game_image(1755, 737, 0),
+                        new Game_image(221, 1246, 0),
+                        new Game_image(732, 1246, 0),
+                        new Game_image(1246, 1246, 0),
+                        new Game_image(1755, 1246, 0),
+                        new Game_image(221, 1759, 0),
+                        new Game_image(732, 1759, 0),
+                        new Game_image(1246, 1759, 0),
+                        new Game_image(1755, 1759, 0),
+                        new Game_image(221, 2269, 0),
+                        new Game_image(732, 2269, 0),
+                        new Game_image(1246, 2269, 0),
+                        new Game_image(1755, 2269, 0)
+                    ]),
+                    // page 2 - billedkort baggrund
+                    new Page("boardgames/images/lottery4_inka_card_backside.png", "", []),
+
+                    // page 3 - lotteriplader
+                    new Page("boardgames/images/lottery4_inka_background.png", "", [
+                        new Game_image(x1, y1, 0),
+                        new Game_image(x2, y1, 0),
+                        new Game_image(x1, y2, 0),
+                        new Game_image(x2, y2, 0),
+                        new Game_image(x3, y1, 0),
+                        new Game_image(x4, y1, 0),
+                        new Game_image(x3, y2, 0),
+                        new Game_image(x4, y2, 0),
+                        new Game_image(x1, y3, 0),
+                        new Game_image(x2, y3, 0),
+                        new Game_image(x1, y4, 0),
+                        new Game_image(x2, y4, 0),
+                        new Game_image(x3, y3, 0),
+                        new Game_image(x4, y3, 0),
+                        new Game_image(x3, y4, 0),
+                        new Game_image(x4, y4, 0)
+                    ])
+                ]
+
+
+                // Image placement needs to be hard coded for each indivisual board game.
+ 
 
                 break;
             case "lottery-6":
-                // code block
-                this.listcount = 4;
-                this.list_size = 6;
-                this.filename = "lotteri_med_6_billeder";
-                this.bgimg_path = staticroot + "boardgames/images/a3space_background.jpg";
-                this.fgimg_path = staticroot + "boardgames/images/a3space_foreground.png";
+                // this.listcount = 4;
+                // this.list_size = 6;
+                // this.filename = "lotteri_med_6_billeder";
+                // this.canvas_width = 3508; // A4 px
+                // this.canvas_height = 2480; // A4 px
+                // this.orientation = "l"; // portrait
+                // this.square_img_size = 370;
+                // this.pages = [
+                //     // Page 1
+                //     new Page("boardgames/images/a3space_background.jpg", "boardgames/images/a3space_foreground.png", [
+                //         // new Gam_image...
+                //     ])
+                // ]
                 break;
             default:
                 // code block
@@ -126,26 +158,21 @@ class Game {
           
           
         this.imagecount = this.listcount * this.list_size;
-
-
     }
 
-    get image_paths(){
-        var word_image_paths = []
-        for(var i = 0; i < this.word_image_objects.length; i++) {
-            var obj = game.word_image_objects[i];
-            var image_path = staticroot + obj.path;
-            word_image_paths.push(image_path);
-        }
-        return word_image_paths; 
-    }
 
-    set image_objects(word_image_objects){
+    set image_objects(word_image_objects){ // is set with "=" so the thing after "=" becomes argument
         this.word_image_objects = word_image_objects;
-        for(var i = 0; i < this.word_image_objects.length; i++) {
-            var obj = game.word_image_objects[i];
-            var image_path = staticroot + obj.path;
-            this.game_images[i].path = image_path;
+        // Populate each page's images with paths in the order of word_image_objects' paths
+        var pages = this.pages;
+        for(var page_no=0; page_no < pages.length; page_no++) {
+            var page_images = pages[page_no].game_images;
+            for(var img_no=0; img_no < page_images.length; img_no++) {
+                var obj = game.word_image_objects[img_no];
+                var image_path = staticroot + obj.path;
+                page_images[img_no].path = image_path;
+
+            }
         }
     }
 }
@@ -161,13 +188,32 @@ class Game_image {
     }
 }
 
+class Page {
+
+    constructor(bgpath="", fgpath="", game_images=[]) {
+
+        this.bgpath = bgpath;
+        this.fgpath = fgpath;
+        this.game_images = game_images;
+
+        if (bgpath !== "") {
+            this.bgpath = staticroot + bgpath
+        }
+
+        if (fgpath !== "") {
+            this.fgpath = staticroot + fgpath
+        }
+
+        
+    }
+}
+
 
 // Step 2: Initialize sortable based on selected board game design (this will affect what is shown in step 2)
 // Sortable docs: https://api.jqueryui.com/sortable/ 
 function initialize_sortable(game) {
 
     var design = game.design
-    console.log("board game design is: " + design);
 
     // 1. Dynamically generate sortable with multiple lists (ids: sortable-0, sortable-1, sortable-2 ...)
     // For every list (fx lottery plate) add a new sortable with class connectedSortable)
@@ -187,12 +233,8 @@ function initialize_sortable(game) {
         ul.sortable({
             update: function( event, ui ) {}, // So update event can be watched
             connectWith: ".connectedSortable", 
-            update: function(){
-                console.log("update");
-            },
             // Long function in "stop" to reevaluate validity (list lengths) and enable/disable "next".
             stop: function(){
-                console.log("stop");
 
                 var allowed = true;
                 $(".connectedSortable").each(function(index, obj){
@@ -231,7 +273,6 @@ function put_words_in_DOM(game) {
     current_list_free_spaces = list_max_size
 
     $(game.word_image_objects).each(function(index){
-        // console.log(`Word ${index}, list ${list_number}, space left: ${current_list_free_spaces}`);
         sort = $("#sortable-" + list_number);
         var li = $("<li>", {"data-id": this.id});
         li.text(this.word);
@@ -316,23 +357,43 @@ async function addMaskedImage(x, y, degrees, mask_src, img_src, end_context, tem
 }
 
 
-async function build_board_game(end_context, temp_context){ // Only called if selected_game_design is "solar"
+async function build_board_game(end_context, temp_context){ 
 
-    word_image_paths = game.image_paths;
-    // Draw background image
-    await drawImageToCtx(end_context, 0, 0, game.bgimg_path, 0, true);
-    
-    obs = game.game_images;
-    for (i = 0; i < obs.length; i ++) {
-        await addMaskedImage(obs[i].x, obs[i].y, obs[i].rot, obs[i].mask_path, obs[i].path, end_context, temp_context);
-        $(".btn-loading").text(i);
+    canvas_image_data_list = []; // This is to be filled with "pages" image data and returned for pdf generation
+
+    for (p = 0; p < game.pages.length; p++) {
+        var page = game.pages[p];
+
+        // Clear and refill canvas
+        end_context.clearRect(0, 0, canvas.width, canvas.height);
+        end_context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw background image if any
+        if(page.bgpath !== "") {
+            await drawImageToCtx(end_context, 0, 0, page.bgpath, 0, true);
+        }
+        
+        // Draw game images by their assigned coordinates. Game images are contained in Page objects.
+        obs = page.game_images;
+        for (i = 0; i < obs.length; i ++) {
+            await addMaskedImage(obs[i].x, obs[i].y, obs[i].rot, obs[i].mask_path, obs[i].path, end_context, temp_context);
+        }
+        
+        // Draw foreground image if any
+        if(page.fgpath !== "") {
+            // Draw foreground
+            await drawImageToCtx(end_context, 0, 0, page.fgpath, 0, true);
+            
+        }
+        
+        // Convert canvas to downloadable image and prompt user to save it
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+        canvas_image_data_list.push(imgData);
+
     }
 
-    if(game.fgimg_path !== "") {
-        // Draw foreground
-        await drawImageToCtx(end_context, 0, 0, game.fgimg_path, 0, true);
-
-    }
+    return canvas_image_data_list;
 
 }
 
@@ -344,7 +405,7 @@ $(".selectable-theme").click(function(){
     var selected_game_design = elem.data("design"); // data-design can be: solar | lottery-4 | ...
     game = new Game(selected_game_design);
     
-    // Get an (ordered) list of word image objects from server (user's collection) based on count
+    // Get an (ordered) list of word image objects from server (user's collection) based on necessary count defined in Game object
     $.ajax({
         url: "/ajax_get_boardgame_filenames", // Gets list of file names
         data: {
@@ -358,12 +419,10 @@ $(".selectable-theme").click(function(){
         elem.addClass("selected");
         elem.parent().addClass("selected");
         game.image_objects = JSON.parse(data);
-        console.log(game.word_image_objects[0]);
         // Allow user to continue
         $(".sw-btn-next").prop( "disabled", false );
         
         initialize_sortable(game);
-        console.log("put words in DOM called:");
         put_words_in_DOM(game);
 
     });
@@ -371,8 +430,6 @@ $(".selectable-theme").click(function(){
 
 // When leaving a step update word_image_objects in the new order.
 $("#smartwizard").on("leaveStep", function(e, anchorObject, stepIndex, stepDirection) {
-
-    console.log("Leaving step. Updating order.");
 
     var sortedIDs = [];
 
@@ -411,10 +468,7 @@ $("#make_boardgame_btn").click(async function(){
 
     if (game.word_image_objects.length > 0) {
 
-
-        // game is already defined when clicking selectable theme
-
-        // Set canvas size to landscape A4 dimensions and make context
+        // Make canvases including a temporary one for the building process
         canvas = document.createElement('canvas');
         canvas.width=game.canvas_width; // A4 mm
         canvas.height=game.canvas_height; // A4 mm
@@ -423,48 +477,22 @@ $("#make_boardgame_btn").click(async function(){
         end_ctx.fillStyle = "white";
         end_ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Create a temporary, similar canvas for generating stuff before putting it onto the real canvas ----- solar specific
         canvas_tmp = document.createElement('canvas');
         canvas_tmp.width=canvas.width;
         canvas_tmp.height=canvas.height;
         var tmp_ctx = canvas_tmp.getContext("2d");
     
     
-    
+        // Show/hide feedback
         $("#make_boardgame_btn").prop('disabled', true);
         $(".btn-loading").show();
         $(".btn-ready").hide();
 
-        // Insert check here to ensure that there is a canvas to return to the user?
-        switch(game.design) {
-            case "solar":
-                console.log("building solar game");
-                // Takes a list of 30 image paths and fits the images onto the solar board game image
-                await build_board_game(end_ctx, tmp_ctx);    
-                break;
-            case "lottery-4":
-                console.log("building lottery-4, lalala");
-                await build_board_game(end_ctx, tmp_ctx);  
-                break;
-            case "lottery-6":
-                console.log("building lottery-6, lalala");
-                break;
-            default:
-                console.log("No valid design");
-                $("#make_boardgame_btn").prop('disabled', false);
-                $(".btn-loading").hide();
-                $(".btn-ready").show();
-                $("#make_boardgame_btn").css('opacity', '1.0');
-          }
+        // Make a list of canvas image data with "build_board_game" based on game object.
+        var pages_image_datas = await build_board_game(end_ctx, tmp_ctx);    
 
 
-
-
-
-    
-        // Convert canvas to downloadable image and prompt user to save it
-        var imgData = canvas.toDataURL("image/jpeg", 1.0);
-
+        // PDF generation: Determine dimensions
         if (game.orientation === "l") {
             var w = 420; // landscape mm width
             var h = 297; // landscape mm height
@@ -474,15 +502,36 @@ $("#make_boardgame_btn").click(async function(){
             var h = 420; // landscape mm height            
         }
 
-
+        // Open a new PDF
         var pdf = new jsPDF(game.orientation, 'mm', [w, h]);
-        // If canvas is generated as an element programatically
-        pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
-        
+
+
+        // Convert canvas to downloadable pdf file and prompt user to save it
+        for (i = 0; i < pages_image_datas.length; i++) {
+
+            if (i > 0) {
+                pdf.addPage([w, h], game.orientation);
+            }
     
+            var imgData = pages_image_datas[i];
+            // If canvas is generated as an element programatically
+            pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
+            
+
+        }
+
+
+        // Hide/show feedback when done building.
+        $("#make_boardgame_btn").prop('disabled', false);
+        $(".btn-loading").hide();
+        $(".btn-ready").show();
+        $("#make_boardgame_btn").css('opacity', '1.0');
+
+
+        
+        // Ask user to provide a filename and accept the download og the generated PDF
         var filename = prompt('Gem i "overførsler" som', game.filename);
         if (filename === null) {
-            console.log("cancel");
         }
         else {
             pdf.save(filename + ".pdf");
@@ -490,11 +539,6 @@ $("#make_boardgame_btn").click(async function(){
         $(canvas_tmp).remove();
         
 
-        // Reenable make_boardgame_btn
-        $("#make_boardgame_btn").prop('disabled', false);
-        $(".btn-loading").hide();
-        $(".btn-ready").show();
-        $("#make_boardgame_btn").css('opacity', '1.0');
     
     }
 });

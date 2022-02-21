@@ -70,6 +70,7 @@ var canvas_tmp;
 
 
 var test_selected_game_design = "lottery-4";
+var test_background = "boardgames/images/lottery4_inka_card_frontside.png";
 var test_square_img_src = staticroot + "images/bad.jpg";
 var test_x = 200;
 var test_y = 200;
@@ -142,7 +143,7 @@ class Game {
                 this.listcount = 4;
                 this.list_size = 4;
                 this.filename = "lotteri_med_4_billeder";
-                this.bgimg_path = staticroot + "boardgames/images/lottery4_inka_background.png";
+                this.bgimg_path = staticroot + test_background;
                 this.fgimg_path = staticroot + ""; // No foreground
                 this.canvas_width = 2480; // A4 mm same as solar?
                 this.canvas_height = 3508; // A4 mm same as solar?
