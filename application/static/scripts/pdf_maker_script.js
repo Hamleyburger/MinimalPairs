@@ -387,7 +387,7 @@ async function build_board_game(end_context, temp_context){
         }
         
         // Convert canvas to downloadable image and prompt user to save it
-        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var imgData = canvas.toDataURL("image/jpeg", 0.8);
 
         canvas_image_data_list.push(imgData);
 
@@ -503,7 +503,7 @@ $("#make_boardgame_btn").click(async function(){
         }
 
         // Open a new PDF
-        var pdf = new jsPDF(game.orientation, 'mm', [w, h]);
+        var pdf = new jsPDF(game.orientation, 'mm', [w, h], true);
 
 
         // Convert canvas to downloadable pdf file and prompt user to save it
@@ -515,7 +515,7 @@ $("#make_boardgame_btn").click(async function(){
     
             var imgData = pages_image_datas[i];
             // If canvas is generated as an element programatically
-            pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
+            pdf.addImage(imgData, 'JPEG', 0, 0, w, h, compression="MEDIUM");
             
 
         }
