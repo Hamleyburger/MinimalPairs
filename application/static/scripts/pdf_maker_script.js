@@ -364,6 +364,9 @@ async function build_board_game(end_context, temp_context){
     for (p = 0; p < game.pages.length; p++) {
         var page = game.pages[p];
 
+        console.log("building page " + p);
+        console.log(page);
+
         // Clear and refill canvas
         end_context.clearRect(0, 0, canvas.width, canvas.height);
         end_context.fillRect(0, 0, canvas.width, canvas.height);
@@ -387,12 +390,14 @@ async function build_board_game(end_context, temp_context){
         }
         
         // Convert canvas to downloadable image and prompt user to save it
-        var imgData = canvas.toDataURL("image/jpeg", 0.8);
+        var imgData = canvas.toDataURL("image/jpeg", 0.5);
 
         canvas_image_data_list.push(imgData);
 
     }
-
+    
+    console.log("returning image data list: ");
+    console.log(canvas_image_data_list);
     return canvas_image_data_list;
 
 }
@@ -489,7 +494,9 @@ $("#make_boardgame_btn").click(async function(){
         $(".btn-ready").hide();
 
         // Make a list of canvas image data with "build_board_game" based on game object.
-        var pages_image_datas = await build_board_game(end_ctx, tmp_ctx);    
+        var pages_image_datas = await build_board_game(end_ctx, tmp_ctx);  
+        console.log("this was returned: ");
+        console.log(pages_image_datas);  
 
 
         // PDF generation: Determine dimensions
@@ -508,14 +515,18 @@ $("#make_boardgame_btn").click(async function(){
 
         // Convert canvas to downloadable pdf file and prompt user to save it
         for (i = 0; i < pages_image_datas.length; i++) {
-
+            
             if (i > 0) {
+                console.log("addpage");
                 pdf.addPage([w, h], game.orientation);
             }
-    
+            
+            console.log("adding image data " + i);
             var imgData = pages_image_datas[i];
+            console.log(imgData);
             // If canvas is generated as an element programatically
-            pdf.addImage(imgData, 'JPEG', 0, 0, w, h, compression="MEDIUM");
+            pdf.addImage(imgData, 'JPEG', 0, 0, w, h, "", "SLOW");
+
             
 
         }
