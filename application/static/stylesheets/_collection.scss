@@ -250,7 +250,12 @@
                 [class*="col-"] {
                     display: flex;
                     align-items: center;
-                    height: 157px;
+                    //height: 157px;
+                    flex-direction: column;
+                    @media only screen and (min-width: 992px) {
+                        padding: 0 90px;
+                    }
+                    padding: 0 17px;;
                 }
                 .img-wrapper {
                     padding: 4px;

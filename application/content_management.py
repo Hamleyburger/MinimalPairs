@@ -121,6 +121,20 @@ def Content(locale=None):
         "step2_txt": "Arranger rækkefølge",
         "step3_txt": "Generer PDF",
 
+        # Collection - board game themes:
+        "board_game_info": [
+            {
+                "data_design":"solar",
+                "description":"Terningspil med solsystemet. Max 30 billeder",
+                "src": "permaimages/thumbnails/thumb_solarsystemboardgame.png"
+            },
+            {
+                "data_design":"lottery-4",
+                "description":"Billedlotteri med fire 2x2-plader. Bedst med 16 forskellige billeder",
+                "src": "permaimages/thumbnails/thumb_lottery-4-boardgame.png"
+            }
+        ],
+
 
         # Backside image names
         # actual files must be png for both source (static/permaimages) and thumbnail (static/permaimages/thumbnails/_thumb*)
@@ -246,6 +260,21 @@ def Content(locale=None):
         "step1_txt": "Select a theme",
         "step2_txt": "Order words",
         "step3_txt": "Generate PDF",
+
+
+        # Collection - board game themes:
+        "board_game_info": [
+            {
+                "data_design":"solar",
+                "description":"Solar system themed dice game. 30 images max",
+                "src": "permaimages/thumbnails/thumb_solarsystemboardgame.png"
+            },
+            {
+                "data_design":"lottery-4",
+                "description":"Image lottery with four two by two boards. Best with 16 different images",
+                "src": "permaimages/thumbnails/thumb_lottery-4-boardgame.png"
+            }
+        ],
 
 
 

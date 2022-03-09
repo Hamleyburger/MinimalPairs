@@ -254,22 +254,20 @@
                             -->
 
                             <div class="row">
-                                <div class="col-12 col-sm-6 justify-content-center justify-content-sm-end">
+                                <!-- add game info in content_management.py #Collection - board game themes and game metadata in pdf_maker_scripts.js -->
+                                {% for info in board_game_info %}
+                                {% if loop.index is divisibleby 2 %}
+                                    <div class="col-12 col-sm-6 justify-content-center justify-content-sm-start">
+                                    {% else %}
+                                    <div class="col-12 col-sm-6 justify-content-center justify-content-sm-end">
+                                    {% endif %}
                                     <div class="img-wrapper">
-                                        <img class="pdf-example selectable-theme shadow" data-design="solar"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of solar system boardgame">
+                                        <img class="pdf-example selectable-theme shadow" data-design="{{ info.data_design }}"  src="{{ url_for('static', filename=info.src) }}" alt="Example of solar system boardgame">
                                     </div>
-                                </div>        
-                                <div class="col-12 col-sm-6 justify-content-center justify-content-sm-start">
-                                    <div class="img-wrapper">
-                                        <img class="pdf-example selectable-theme shadow" data-design="lottery-4"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_lottery-4-boardgame.png') }}" alt="Example of image lottery-4">
-                                    </div>
-                                </div>   
-                                <div class="col-12 col-sm-6 justify-content-center justify-content-sm-start">
-                                    <!--div class="img-wrapper">
-                                        <img class="pdf-example selectable-theme shadow" data-design="lottery-4"  src="{{ url_for('static', filename='permaimages/thumbnails/thumb_solarsystemboardgame.png') }}" alt="Example of image lottery-4">
-                                    </div-->
-                                    <p>Flere designs kommer senere... :-)</p>
-                                </div>   
+                                    <p>{{ info.description }}</p>
+                                </div>
+                                {% endfor %}
+
                             </div>
                         </div>
 
@@ -278,17 +276,12 @@
                         <div id="step-2">
                             <div class="sortable-feedback">Fordel ordene i lister på <span id="list_size"></span></div>
                             <div id="step-2-sortable_wrapper">
-                                
-                                                            <!--
-                                
-                                                                <ul id="sortable" class="connectedSortable">
-                                                                    
-                                                                </ul>
-                                                                
-                                                                <ul id="sortable2" class="connectedSortable">
-                                                                    
-                                                                </ul>
-                                                            -->
+                                <!--
+                                    <ul id="sortable" class="connectedSortable">
+                                    </ul>
+                                    <ul id="sortable2" class="connectedSortable"> 
+                                    </ul>
+                                -->
                             </div>
                         </div>
 

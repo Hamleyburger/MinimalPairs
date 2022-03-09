@@ -390,7 +390,7 @@ async function build_board_game(end_context, temp_context){
         }
         
         // Convert canvas to downloadable image and prompt user to save it
-        var imgData = canvas.toDataURL("image/jpeg", 0.5);
+        var imgData = canvas.toDataURL("image/jpeg", 0.);
 
         canvas_image_data_list.push(imgData);
 

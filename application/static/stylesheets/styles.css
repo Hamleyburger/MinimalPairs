@@ -1556,7 +1556,17 @@ footer a {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 157px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 0 17px;
+}
+
+@media only screen and (min-width: 992px) {
+  .boardgame-wizard-modal .modal-content .theme-selector .row [class*="col-"] {
+    padding: 0 90px;
+  }
 }
 
 .boardgame-wizard-modal .modal-content .theme-selector .row .img-wrapper {
