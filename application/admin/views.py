@@ -12,6 +12,7 @@ admin_blueprint = Blueprint(
 @admin_blueprint.before_request
 def before_request_callback():
     session["locale"] = "en"
+    print("****** session locale was set to english")
 
 
 @admin_blueprint.route("/add", methods=["GET"])

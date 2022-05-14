@@ -67,12 +67,13 @@ class Game {
                         new Game_image(2160, 1440, 490, staticroot + "boardgames/images/mask-image5.png")
                     ])
                 ]
-    
                 break;
+
+
             case "lottery-4":
                 this.listcount = 4;
                 this.list_size = 4;
-                this.filename = "lotteri_med_4_billeder";
+                this.filename = "lotteri_med_4_billeder"; // What the user sees when saving
                 this.canvas_width = 2480; // A4 px
                 this.canvas_height = 3508; // A4 px
                 this.orientation = "p"; // portrait
@@ -130,27 +131,115 @@ class Game {
                         new Game_image(x4, y4, 0)
                     ])
                 ]
-
-
                 // Image placement needs to be hard coded for each indivisual board game.
- 
+                break;
 
-                break;
-            case "lottery-6":
-                // this.listcount = 4;
-                // this.list_size = 6;
-                // this.filename = "lotteri_med_6_billeder";
-                // this.canvas_width = 3508; // A4 px
-                // this.canvas_height = 2480; // A4 px
-                // this.orientation = "l"; // portrait
-                // this.square_img_size = 370;
-                // this.pages = [
-                //     // Page 1
-                //     new Page("boardgames/images/a3space_background.jpg", "boardgames/images/a3space_foreground.png", [
-                //         // new Gam_image...
-                //     ])
-                // ]
-                break;
+
+                case "lottery-6":
+                    this.listcount = 4;
+                    this.list_size = 6;
+                    this.filename = "lotteri_med_6_billeder";
+                    this.canvas_width = 2480; // A4 px
+                    this.canvas_height = 3508; // A4 px
+                    this.orientation = "p"; // portrait
+                    this.square_img_size = 502;
+    
+                    var x1 = 478;
+                    var x2 = 990;
+                    var x3 = 1500;
+                    
+                    var y1 = 735;
+                    var y2 = 1247;
+                    var y3 = 1757;
+                    var y4 = 2270;
+
+
+                    var a1 = 420;
+                    var a2 = 989;
+                    var a3 = 1560;
+                    
+                    var b1 = 460;
+                    var b2 = 1029;
+                    var b3 = 1964;
+                    var b4 = 2534;
+    
+                    this.pages = [
+                        // page 1 - grid med billedkort 1-12
+                        new Page("boardgames/images/lot6/imgsfront.jpg", "", [
+                            new Game_image(x1, y1, 0),
+                            new Game_image(x2, y1, 0),
+                            new Game_image(x3, y1, 0),
+                            new Game_image(x1, y2, 0),
+                            new Game_image(x2, y2, 0),
+                            new Game_image(x3, y2, 0),
+                            new Game_image(x1, y3, 0),
+                            new Game_image(x2, y3, 0),
+                            new Game_image(x3, y3, 0),
+                            new Game_image(x1, y4, 0),
+                            new Game_image(x2, y4, 0),
+                            new Game_image(x3, y4, 0),
+                        ]),
+                        // page 2 - billedkort baggrund
+                        new Page("boardgames/images/lot6/imgsbg.jpg", "", []),
+
+                        // page 3 - grid med billedkort 13-24
+                        new Page("boardgames/images/lot6/imgsfront.jpg", "", [
+                            new Game_image(x1, y1, 0),
+                            new Game_image(x2, y1, 0),
+                            new Game_image(x3, y1, 0),
+                            new Game_image(x1, y2, 0),
+                            new Game_image(x2, y2, 0),
+                            new Game_image(x3, y2, 0),
+                            new Game_image(x1, y3, 0),
+                            new Game_image(x2, y3, 0),
+                            new Game_image(x3, y3, 0),
+                            new Game_image(x1, y4, 0),
+                            new Game_image(x2, y4, 0),
+                            new Game_image(x3, y4, 0),
+                        ]),
+                        // page 4 - billedkort baggrund
+                        new Page("boardgames/images/lot6/imgsbg.jpg", "", []),
+    
+                        // page 5 - lotteriplader 1+2
+                        new Page("boardgames/images/lot6/preblank1.jpg", "", [
+                            new Game_image(a1, b1, 0),
+                            new Game_image(a2, b1, 0),
+                            new Game_image(a3, b1, 0),
+                            new Game_image(a1, b2, 0),
+                            new Game_image(a2, b2, 0),
+                            new Game_image(a3, b2, 0),
+                            new Game_image(a1, b3, 0),
+                            new Game_image(a2, b3, 0),
+                            new Game_image(a3, b3, 0),
+                            new Game_image(a1, b4, 0),
+                            new Game_image(a2, b4, 0),
+                            new Game_image(a3, b4, 0),
+                        ]),
+
+                        // p6 blank
+                        new Page("", "", []), // blank page
+
+                        // page 7 - lotteriplader 3+4
+                        new Page("boardgames/images/lot6/preblank2.jpg", "", [
+                            new Game_image(a1, b1, 0),
+                            new Game_image(a2, b1, 0),
+                            new Game_image(a3, b1, 0),
+                            new Game_image(a1, b2, 0),
+                            new Game_image(a2, b2, 0),
+                            new Game_image(a3, b2, 0),
+                            new Game_image(a1, b3, 0),
+                            new Game_image(a2, b3, 0),
+                            new Game_image(a3, b3, 0),
+                            new Game_image(a1, b4, 0),
+                            new Game_image(a2, b4, 0),
+                            new Game_image(a3, b4, 0),
+                        ]),
+
+                    ]
+                    // Image placement needs to be hard coded for each indivisual board game.
+                    break;
+
+
             default:
                 // code block
                 console.log("switch case defaulted");
@@ -162,16 +251,37 @@ class Game {
 
 
     set image_objects(word_image_objects){ // is set with "=" so the thing after "=" becomes argument
+
         this.word_image_objects = word_image_objects;
         // Populate each page's images with paths in the order of word_image_objects' paths
         var pages = this.pages;
-        for(var page_no=0; page_no < pages.length; page_no++) {
-            var page_images = pages[page_no].game_images;
-            for(var img_no=0; img_no < page_images.length; img_no++) {
-                var obj = game.word_image_objects[img_no];
-                var image_path = staticroot + obj.path;
-                page_images[img_no].path = image_path;
 
+        var addthis = 0;
+        // For hver side, sæt det antal billeder ind i puljen, der kan være, hvis ikke den opbruges fortsættes pulje til næste side.
+        for(var page_no=0; page_no < pages.length; page_no++) {
+            var page_image_slots = pages[page_no].game_images;
+            // For hvert slot til billeder på siden
+            for(var img_slot_no=0; img_slot_no < page_image_slots.length; img_slot_no++) {
+                var absolute_slot_no = img_slot_no + addthis;
+                // img slot nr is for this page. Absolute is for the whole object list across multiple pages.
+                var obj = game.word_image_objects[absolute_slot_no];
+                var image_path = staticroot + obj.path;
+                page_image_slots[img_slot_no].path = image_path;
+                if (img_slot_no === page_image_slots.length-1) { // if end of loop
+
+                    if (absolute_slot_no < game.word_image_objects.length - 1) {
+                        // billedpulje ikke brugt op. Fortsæt med de næste på næste side.
+                        addthis += page_image_slots.length;
+                    }
+                    else {
+                        // billedpulje er brugt op
+                        addthis = 0;
+                    }
+                    // Vi har fundet enden af slots korrekt. Nu skal vi tjekke om der er 
+                    // flere billeder og i så fald starte med det rigtige tal i næste iteration.
+                    // Ligeledes hvis vi også har nået enden af objects (length minus 1), skal 
+                    // vi resette addthis.
+                }
             }
         }
     }
@@ -203,8 +313,6 @@ class Page {
         if (fgpath !== "") {
             this.fgpath = staticroot + fgpath
         }
-
-        
     }
 }
 
@@ -365,7 +473,6 @@ async function build_board_game(end_context, temp_context){
         var page = game.pages[p];
 
         console.log("building page " + p);
-        console.log(page);
 
         // Clear and refill canvas
         end_context.clearRect(0, 0, canvas.width, canvas.height);
@@ -396,8 +503,6 @@ async function build_board_game(end_context, temp_context){
 
     }
     
-    console.log("returning image data list: ");
-    console.log(canvas_image_data_list);
     return canvas_image_data_list;
 
 }
@@ -423,7 +528,9 @@ $(".selectable-theme").click(function(){
         $(".selected").removeClass("selected");
         elem.addClass("selected");
         elem.parent().addClass("selected");
-        game.image_objects = JSON.parse(data);
+
+        game.image_objects = JSON.parse(data); // using "set image_objects" to set game.word_image_objects.
+
         // Allow user to continue
         $(".sw-btn-next").prop( "disabled", false );
         
@@ -495,8 +602,6 @@ $("#make_boardgame_btn").click(async function(){
 
         // Make a list of canvas image data with "build_board_game" based on game object.
         var pages_image_datas = await build_board_game(end_ctx, tmp_ctx);  
-        console.log("this was returned: ");
-        console.log(pages_image_datas);  
 
 
         // PDF generation: Determine dimensions
@@ -517,13 +622,11 @@ $("#make_boardgame_btn").click(async function(){
         for (i = 0; i < pages_image_datas.length; i++) {
             
             if (i > 0) {
-                console.log("addpage");
                 pdf.addPage([w, h], game.orientation);
             }
             
-            console.log("adding image data " + i);
             var imgData = pages_image_datas[i];
-            console.log(imgData);
+
             // If canvas is generated as an element programatically
             pdf.addImage(imgData, 'JPEG', 0, 0, w, h, "", "SLOW");
 

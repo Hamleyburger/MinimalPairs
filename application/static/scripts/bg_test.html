@@ -38,7 +38,7 @@
         <input type="number" id="test_x" value="50">
         <input type="number" id="test_y" value="300">
         <input type="number" id="test_rot" value="0">
-        <input type="number" id="test_size" value="600">
+        <input type="number" id="test_size" value="500">
     </form>
     <p>x, y, rot: 
     </p>
@@ -62,6 +62,8 @@
 <script>
 
 
+$( document ).ready(function() {
+    console.log( "ready!" );
 
 var staticroot = "../" // Static root is needed for loading any images into any productar staticroot = "/static/" // Static root is needed for loading any images into any product
 var game; // Will contain all information about game
@@ -69,13 +71,22 @@ var canvas;
 var canvas_tmp;
 
 
-var test_selected_game_design = "lottery-4";
-var test_background = "boardgames/images/lottery4_inka_card_frontside.png";
+var test_selected_game_design = "lottery-6"; //add new designs in Game object
+var test_background = "boardgames/images/lot6/preblank1.jpg";
 var test_square_img_src = staticroot + "images/bad.jpg";
 var test_x = 200;
 var test_y = 200;
 var test_rot = 0;
-var test_square_size = 900;
+var test_square_size = 500;
+
+var x1 = 420;
+var x2 = 989;
+var x3 = 460;
+
+var y1 = 460;
+var y2 = 1029;
+var y3 = 1964;
+var y4 = 2534;
 
 
 
@@ -153,8 +164,25 @@ class Game {
                 this.listcount = 4;
                 this.list_size = 6;
                 this.filename = "lotteri_med_6_billeder";
-                this.bgimg_path = staticroot + "boardgames/images/a3space_background.jpg";
-                this.fgimg_path = staticroot + "boardgames/images/a3space_foreground.png";
+                this.bgimg_path = staticroot + test_background;
+                this.fgimg_path = staticroot + ""; // No foreground
+                this.canvas_width = 2480; // A4 mm same as solar?
+                this.canvas_height = 3508; // A4 mm same as solar?
+
+                this.game_images[0] = new Game_image(480, 736, 0, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[1] = new Game_image(60, 1600, 265, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[2] = new Game_image(60, 1240, 280, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[3] = new Game_image(160, 880, 295, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[4] = new Game_image(320, 560, 305, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[5] = new Game_image(550, 250, 315, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[6] = new Game_image(860, 60, 340, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[7] = new Game_image(1240, 10, 359, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[8] = new Game_image(1630, 15, 2, staticroot + "boardgames/images/mask-image1.png");
+                this.game_images[9] = new Game_image(2010, 40, 10, staticroot + "boardgames/images/mask-image2.png");
+                this.game_images[10] = new Game_image(2380, 130, 25, staticroot + "boardgames/images/mask-image3.png");
+                this.game_images[11] = new Game_image(2720, 330, 35, staticroot + "boardgames/images/mask-image2.png");
+                new Game_image( 480, 736, 0);
+
                 break;
             default:
                 // code block
@@ -341,6 +369,8 @@ document.onkeydown = function(e) {
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
 };
+
+});
 
 </script>
 

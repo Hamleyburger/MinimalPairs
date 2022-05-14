@@ -160,6 +160,9 @@ function refreshBtns(wordids, session) {
     if (typeof renderedids !== typeof undefined) {
         refreshWordGroupBtns(session);
     }
+
+    // Refresh the number displayed in nav bar for length of collection
+    $("#collection-length").text("(" + session.length + ")");
 }
 
 function refreshWordGroupBtns(session) {

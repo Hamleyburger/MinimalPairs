@@ -21,11 +21,14 @@ def ensure_locale(func):
         # decide whether kwarg["locale"] should be taken from URL or session
         if not session.get("force_session_lang"):
             # force_session_lang is if the language button was pressed
+            print("force session lang is on")
+            print(session.get("locale"))
             if request.args.get("locale"):
                 session["locale"] = request.args.get("locale")
             
         else:
             session.pop("force_session_lang")
+            print("force session lang is off")
         
         kwargs["locale"] = session["locale"]
 

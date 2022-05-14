@@ -436,11 +436,19 @@ def ajax_get_boardgame_filenames():
     if number_of_words == 0:
         return "no words"
     words_needed = (int(request.form.get("count")))
+    print("words needed: {}".format(words_needed))
     duplicates_needed = words_needed - len(words)
     if duplicates_needed > 0:
         for i in range(duplicates_needed):
             j = i % number_of_words
             words.append(words[j])
+    elif duplicates_needed < 0:
+        excess = duplicates_needed * -1
+        for num in range(excess):
+            print("popping word: {}".format(words[-1]))
+            words.pop()
+        print(duplicates_needed*-1)
+        print("need to kick words")
     
     print(len(words))
     print(words)

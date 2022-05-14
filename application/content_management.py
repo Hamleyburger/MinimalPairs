@@ -35,19 +35,20 @@ def Content(locale=None):
                 <dt>Indholdet er tilpasset brug i logopædisk praksis</dt>\
                     <dd>Materialet er ikke videnskabeligt akkurat - ordparrene er tilføjet et af gangen efter behov, baseret på en kvalitativ vurdering</dd>\
                 <dt>Der sigtes efter ord, som er relativt nemme at billedliggøre</dt>\
-                    <dd>"ko" og "løbe" er nemme at se for sig. Men hvordan tegner man for eksempel "puds" (pudse i bydeform) og "hensigt" på en måde så børn har en change for at huske dem?</dd>\
                 <dt>Der kan tilføjes par, som ikke er ægte minimale par på fonemniveau</dt>\
                     <dd>"skyr" vs. "dyr" har mere end en enkelt lyd til forskel. Men parret er relevant til brug med elever, der erstatter [sg] med [d]</dd>\
-                <dt>Der kan tilføjes par, som <i>kan</i> være minimale alt afhængigt af elevens udtale.</dt>\
-                    <dd>"ruder" vs. "guder", kan have [ʁ] og [g] til forskel, med mindre [u] udsættes for nok r-påvirkning til at lyde mere som [o]. Så ville "ruder" i stedet danne [ʁ g]-par med "goder". </dd>\
+                <dt>Der kan tilføjes par, som <i>kan</i> være minimale alt afhængigt af hvordan man udtaler dem.</dt>\
+                    <dd>"ruder" vs. "guder", kan have [ʁ] og [g] til forskel, med mindre [u] udsættes for nok r-påvirkning til at lyde mere som [o]. Så ville "ruder" i stedet danne [ʁ g]-par med "goder".</dd>\
+                <dt>Der kan tilføjes ord, som bare er tæt nok på hinanden til at de kan bruges i praksis.</dt>\
+                    <dd>"Rist" og "hest" minder nok om hinanden til at man kan bruge dem, selv om vokalkvaliteten ikke er helt den samme.</dd>\
                 </dl>\
                 </p>\
                 \
-                <p>I siden <i>find kontraster</i> kan du søge på lyde med IPA-symboler og finde både minimale par og serier (multiple oppositioner). \
+                <p>På siden <i>find kontraster</i> kan du søge på lyde med IPA-symboler og finde både minimale par og serier (multiple oppositioner). \
                 Ordene kan tilføjes til en samling med <i class = "fas fa-plus-circle" > \
                 </i> og fjernes med <i class ="fas fa-minus-circle"></i> \
                 Fra siden <i>samling</i> kan du tilføje de billeder, der mangler, dublere ord og generere en PDF-fil, \
-                som kan downloades og printes tosidet, så du får et billedmateriale med en bagside.w </p>'
+                som kan downloades og printes tosidet, så du får et billedmateriale med en bagside. </p>'
         ],
 
         # Find contrasts
@@ -132,6 +133,11 @@ def Content(locale=None):
                 "data_design":"lottery-4",
                 "description":"Billedlotteri med fire 2x2-plader. Bedst med 16 forskellige billeder",
                 "src": "permaimages/thumbnails/thumb_lottery-4-boardgame.png"
+            },                                                                                                                                                                                                                                                        
+            {
+                "data_design":"lottery-6",
+                "description":"Billedlotteri med fire 2x3-plader. Bedst med 24 forskellige billeder",
+                "src": "permaimages/thumbnails/thumb_lot6.jpg"
             }
         ],
 
@@ -273,6 +279,11 @@ def Content(locale=None):
                 "data_design":"lottery-4",
                 "description":"Image lottery with four two by two boards. Best with 16 different images",
                 "src": "permaimages/thumbnails/thumb_lottery-4-boardgame.png"
+            },
+            {
+                "data_design":"lottery-6",
+                "description":"Image lottery with four two by three boards. Best with 24 different images",
+                "src": "permaimages/thumbnails/thumb_lot6.jpg"
             }
         ],
 
