@@ -488,6 +488,50 @@ body {
   font-style: normal;
 }
 
+body .container-fluid {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+body .mainrow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+body .maincol {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+body .sidecol {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  float: right;
+  width: 500px;
+  border: 1px solid red;
+}
+
+body .sidecol .sidebar {
+  width: 300px;
+}
+
 footer {
   background: #995f8b;
   color: #3b1734;
@@ -506,7 +550,7 @@ footer a {
 }
 
 .frontpage-container {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .frontpage-container .illustration-container {
@@ -549,6 +593,7 @@ footer a {
 .frontpage-container .illustration-container #illustration {
   position: absolute;
   z-index: -1;
+  overflow: visible;
   -webkit-transform-origin: center;
           transform-origin: center;
   -webkit-transform: scale(3.5, 3.5) translate(9%, 18%);
@@ -1302,6 +1347,22 @@ footer a {
   --color-yel1: #f3b08c;
   --color-yel2: #f8d894;
   --color-yel3: #fffae9;
+}
+
+.collectionpage-main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .pdfgenerator {

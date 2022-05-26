@@ -52,41 +52,42 @@ Content
 
 {% block main %}
 
-<!-- CROPPER MODAL -->
-<div class="modal fade" id="croppermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content my-cropper-modal">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <div id="preview" style="width: 100px; height: 100px; overflow: hidden;"></div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+<div class="collectionpage-main">
 
-                <!-- Wrap the image or canvas element with a block element (container) -->
-                <div class="container cropper_styles">
-                    <div>
-                        <img id="cropperimage" src="">
+    <!-- CROPPER MODAL -->
+    <div class="modal fade" id="croppermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content my-cropper-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <div id="preview" style="width: 100px; height: 100px; overflow: hidden;"></div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- Wrap the image or canvas element with a block element (container) -->
+                    <div class="container cropper_styles">
+                        <div>
+                            <img id="cropperimage" src="">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="cropper-confirm">Save</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="cropper-confirm">Save</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<!-- PDF wizard modal (macro) only displays if button pressed in PDF generator -->
-{{ smartwizardmodal(session) }}
+    <!-- PDF wizard modal (macro) only displays if button pressed in PDF generator -->
+    {{ smartwizardmodal(session) }}
 
 
-<!-- PDF generator -->
-{% if collection|length %}
-<div class="container-fluid text-center pdfgenerator">
-    <div class="row">
+    <!-- PDF generator -->
+    {% if collection|length %}
+    <div class="container-fluid text-center pdfgenerator">
 
         <button id="search-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
             data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">{{ btn_PDFtool }} <i
@@ -98,72 +99,73 @@ Content
         <button type="button" class="btn shadow" onclick="clear_collection(url_for_clear, event)" data-toggle="tooltip"
             data-placement="top" title="{{ tooltip_clearall }}"><i class="fas fa-trash-alt"></i> {{ btn_clearall
             }}</button>
-    </div>
 
-    <div class="collapse shadow pdf-generator-dropdown" id="pdf-form-collapsable">
-        <div class="row pt-4">
-            {{ help_container("pdf-", help_pdf_title, help_pdf_cue, help_pdf_content) }}
-        </div>
-        <form class="pdf-showcase" method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
-            {{ form.hidden_tag() }}
-            <div class="container-fluid background-choices pdf-showcase-inner">
-            <p>{{ help_pdf_choose_back }}</p>
-                <fieldset class="container">
-                    <div class="row">
-                        {% for subfield in form.background %}
-                        <div class="col">
-                            <div class="bg-btn-wrap" style="background-image:
-                            url(/static/permaimages/thumbnails/thumb_{{subfield.data}}.png);">
-                                <div class="text-background"></div>
-                                {{ subfield(class="btn-check") }}
-                                {{ subfield.label(class="bgexample shadow btn font-weight-bold") }}
+
+        <div class="collapse shadow pdf-generator-dropdown" id="pdf-form-collapsable">
+            <div class="row pt-4">
+                {{ help_container("pdf-", help_pdf_title, help_pdf_cue, help_pdf_content) }}
+            </div>
+            <form class="pdf-showcase" method="POST" action="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
+                {{ form.hidden_tag() }}
+                <div class="container-fluid background-choices pdf-showcase-inner">
+                    <p>{{ help_pdf_choose_back }}</p>
+                    <fieldset class="container">
+                        <div class="row">
+                            {% for subfield in form.background %}
+                            <div class="col">
+                                <div class="bg-btn-wrap" style="background-image:
+                                url(/static/permaimages/thumbnails/thumb_{{subfield.data}}.png);">
+                                    <div class="text-background"></div>
+                                    {{ subfield(class="btn-check") }}
+                                    {{ subfield.label(class="bgexample shadow btn font-weight-bold") }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="submit" class="pdfbtn shadow"><i class="fas fa-file-pdf"
+                                        formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i>
+                                    {{ btn_makePDF }} </button>
                             </div>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="pdfbtn shadow"><i class="fas fa-file-pdf"
-                                    formaction="{{ url_for('user_blueprint.collection', locale=session.locale) }}"></i>
-                                {{ btn_makePDF }} </button>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-        </form>
-        <div class="row pdf-showcase">
-            <div class="pdf-showcase-inner col-12 text-center d-flex flex-column align-items-center">
-                <button type="button" class="pdfbtn shadow" data-toggle="modal" data-target="#listWizardModal"> <i class="fas fa-file-pdf"></i> {{ pdf_game_btn }} </button>
+                    </fieldset>
+                </div>
+            </form>
+                
+            <div class="row pdf-showcase">
+                <div class="pdf-showcase-inner col-12 text-center d-flex flex-column align-items-center">
+                    <button type="button" class="pdfbtn shadow" data-toggle="modal" data-target="#listWizardModal"> <i class="fas fa-file-pdf"></i> {{ pdf_game_btn }} </button>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </div> <!-- pdf generator -->
 
 
-<!-- Collection of words/images: -->
-<div class="container contentbox">
-    <div class="row" id="collectionrow">
-        {% for word in collection %}
-        <div class="col-12 col-md-4 col-sm-6 wordcols" id="wordcol{{word.id}}">
-            {% if "default." in word.image.name %}
-            {{ word_card(word, uploadbutton=true, duplicatebutton=true) }}
-            {% else %}
-            {{ word_card(word, duplicatebutton=true) }}
-            {% endif %}
+    <!-- Collection of words/images: -->
+    <div class="container contentbox">
+        <div class="row" id="collectionrow">
+            {% for word in collection %}
+            <div class="col-12 col-md-4 col-sm-6 wordcols" id="wordcol{{word.id}}">
+                {% if "default." in word.image.name %}
+                {{ word_card(word, uploadbutton=true, duplicatebutton=true) }}
+                {% else %}
+                {{ word_card(word, duplicatebutton=true) }}
+                {% endif %}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+
     {% else %}
-
     <div class="sorry">
         <p>
             {{ collection_tip | safe }}
         </p>
     </div>
-    {% endif %}
-</div>
-</div>
+    {% endif %} <!-- collection length -->
 
+</div>
 
 
 

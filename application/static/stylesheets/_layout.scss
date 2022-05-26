@@ -142,6 +142,46 @@ body {
     font-family: century-gothic, sans-serif;
     font-weight: 400;
     font-style: normal;
+
+
+        .container-fluid {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        .mainrow {
+            display: flex;
+            flex-direction: row;
+
+            // with absolute (display still needs to be flex)
+            // position: relative;
+        }
+        .maincol {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .sidecol {
+            display: flex;
+            flex-direction: column;
+            float: right;
+            width: 500px;
+            border: 1px solid red;
+            .sidebar {
+                width: 300px;
+            }
+
+            //With absolute
+            // position: absolute;
+            // width: 300px;
+            // right: 0;
+            // height: 100%;
+            // border: 1px solid red;
+
+        }
+
+
+
 }
 
 

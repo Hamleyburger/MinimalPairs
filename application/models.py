@@ -237,7 +237,6 @@ class Sound(db.Model):
         return pairLists
 
 
-
 class Group(db.Model):
     __tablename__ = "groups"
     __table_args__ = {'extend_existing': True}
@@ -550,12 +549,6 @@ class SearchedPair(db.Model):
             db.session.commit()
 
 
-
-
-
-
-
-
 class Word(db.Model):
     """ Has ortographical representations of words """
     __tablename__ = "words"
@@ -684,6 +677,7 @@ class Word(db.Model):
         if newimg != "":
             try:
                 print("trying to store image")
+                print("\n\n*********\n\nold image is: {}".format(word.image))
                 image = Image.store(newimg)  # return appropriate image object
                 word.image = image
             except Exception as e:
@@ -965,6 +959,8 @@ class Image(db.Model):
 
     name = db.Column(db.String(), nullable=False,
                      server_default='default.svg', unique=True)
+    time_created = db.Column(db.DateTime(timezone=True), default=func.current_timestamp())
+    # time_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     # is pointed to by at least one word. One-to-many with word.
     words = db.relationship("Word", back_populates="image")
@@ -1016,6 +1012,7 @@ class Image(db.Model):
 
     @classmethod
     def cleanImages(cls):
+        print("cleaning images")
 
         images = cls.query.all()
 
@@ -1023,7 +1020,7 @@ class Image(db.Model):
         for image in images:
             if len(image.words) == 0:
                 print(
-                    "Warning: this image has no connected words. Deleting: {}".format(image.name))
+                    "\n\n\nWarning: this image has no connected words. Deleting: {}".format(image.name))
                 image.remove()
                 db.session.commit()
 
@@ -1038,7 +1035,7 @@ class Image(db.Model):
             # make sure we're not counting subdirectories as files
             if not os.path.isdir(os.path.join(imgdir, file)):
                 if not file == ".DS_Store":
-                    print("file in imagedir not folder or DS_Store: {}".format(file))
+                    #print("file in imagedir not folder or DS_Store: {}".format(file))
                     if file not in [image.name for image in images]:
                         print(file + " not linked to a word in database... and?")
                         os.remove(os.path.join(imgdir, file))

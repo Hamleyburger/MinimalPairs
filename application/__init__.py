@@ -60,7 +60,7 @@ from .user.models import User, Userimage
 user_manager = UserManager(app, db, User)
 
 # Flask migrate
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 
 
 # Views.py must be imported AFTER instantiating the app. Otherwise circular import problems

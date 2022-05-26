@@ -5,7 +5,9 @@
 
 
 .frontpage-container {
-    overflow: hidden;
+
+    overflow: visible;
+
 
     .illustration-container {
         padding: 0;
@@ -36,6 +38,7 @@
         #illustration {
             position: absolute;
             z-index: -1;
+            overflow: visible;
 
             // On phone screen, portrait
             transform-origin: center;

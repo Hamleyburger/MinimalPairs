@@ -7,6 +7,7 @@ from .helpers import getCollection, get_word_collection, json_to_ints, manageCol
 import random
 from application.models import Word, Group, Sound, SearchedPair
 from .models import User, Userimage
+from ..admin.models import News
 from application import db, app
 from .forms import SearchSounds, SearchMOs, toPDF_wrap
 from flask_weasyprint import HTML, CSS, render_pdf
@@ -27,8 +28,6 @@ user_blueprint = Blueprint("user_blueprint", __name__,
 def before_request_callback():
 
     locale = session.get("locale")
-    print("before request: session locale is {}".format(session.get("locale")))
-    print("request path: {}".format(request.path))
     g.locale = session.get("locale")
     if not locale:
         print("\nNo locale in session\n")
@@ -56,8 +55,13 @@ def before_request_callback():
             session["manifest"] = "manifest.webmanifest"
 
     if not session.get("collection"):
-        session["collection"] = [6, 8, 12]
+        if app.config["DEBUG"]:
+            session["collection"] = []
+        else:
+            session["collection"] = []
 
+    if not session.get("news"):
+        session["news"] = db.session.query(News).limit(10).all()
 
 @app.after_request
 def after_request_callback(response):

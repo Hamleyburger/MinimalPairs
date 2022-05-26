@@ -240,7 +240,23 @@
     </header>
     {% endif %} {% endwith %}
 
-    {% block main %}{% endblock %}
+    <div class="container-fluid">
+        <div class="mainrow">
+            <div class="maincol">
+                {% block main %}{% endblock %}
+            </div>
+            <div class="sidecol">
+                <div class="sidebar">
+                    {% for news in session.news %}
+                    {{ news }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+
 
 
     <footer class="small text-center">
