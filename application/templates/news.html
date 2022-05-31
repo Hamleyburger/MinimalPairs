@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% from 'admin_macros.html' import show_input_file_name, enable_chosenjs, chosenjs_filtering,
+chosenjs_highlight_suggestions %}
+
+{% block title %}
+Write News
+{% endblock %}
+
+{% block main %}
+
+
+
+<div class="content-section">
+
+    <!-- insert novalidate as attribute if you only want to user server side validation-->
+    <div class="container mt-5">
+        <div class="row mb-5">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <form id="newsForm" method="POST" action="{{ url_for('admin_blueprint.write_news') }}"
+                    enctype="multipart/form-data" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    
+                    <fieldset class="form-group">
+                        <legend>Write some news</legend>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="title">Titel dansk</label>
+                                    {{ form.title(class="form-control", autocomplete="off", autofocus=true, placeholder="Titel dansk")}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="text">Indhold dansk</label>
+                                    {{ form.text(class="form-control", autocomplete="off", autofocus=true, placeholder="Indhold dansk")}}
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="title_en">Title English</label>
+                                    {{ form.title_en(class="form-control", autocomplete="off", autofocus=true, placeholder="Title English")}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="text_en">Content English</label>
+                                    {{ form.text_en(class="form-control", autocomplete="off", autofocus=true, placeholder="Content English")}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="word_chosen">Word</label>
+                                    {{ form.word(class="chosen-select") }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.date_posted(class="form-control")}}
+                                </div>
+                                <input type="submit">
+                            </div>
+                        </div>
+                        <!--div class="form-group">
+                            form.add(class="btn btn-primary btn-outline-info") 
+                            form.cancel(class="btn btn-primary btn-outline-info") 
+                        </div-->   
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--end of row-->
+
+{% endblock %}
+
+{% block script %}
+<script>
+    // let url_for_suggested_pairs = {{ url_for('admin_blueprint.ajax_suggested_pairs') | tojson | safe }}
+</script>
+
+{{ chosenjs_filtering() }}
+{{ enable_chosenjs() }}
+
+{% endblock script %}

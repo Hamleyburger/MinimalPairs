@@ -588,7 +588,7 @@ class Word(db.Model):
         if isinstance(other, self.__class__):
             return self.id == other.id
         else:
-            print("{} and {} are not the same type".format(str(self), str(other)))
+            # print("{} and {} are not the same type".format(str(self), str(other)))
             return False
 
     @classmethod

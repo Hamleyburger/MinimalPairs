@@ -1,6 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
 from application.models import Word, Pair, Sound, Group
-from .forms import AddForm, AddPairForm, ChangePairForm
+from .forms import AddForm, AddPairForm, ChangePairForm, NewsForm
 from application import db, app
 from .filehelpers import store_image, configure_add_template
 from flask_user import roles_required
@@ -140,6 +140,25 @@ def change_pairs():
 @roles_required('Admin')
 def upload_image():
     return "Image uploaded"
+
+
+@admin_blueprint.route("/write_news",  methods=["GET", "POST"])
+@roles_required('Admin')
+def write_news():
+
+    form = NewsForm()
+
+    if form.validate_on_submit():
+        print("was valid")
+
+        # db.session.commit()
+
+        return redirect(url_for("admin_blueprint.write_news"))
+    else:
+        for name, error in form.errors.items():
+            flash(u"{}".format(str(name) + ": " + str(error[0])), "danger")
+
+    return render_template("news.html", form=form)
 
 
 @ admin_blueprint.route("/ajax_word_changer", methods=["POST"])

@@ -1,12 +1,15 @@
 from flask import session
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectMultipleField, SelectField, Form, FieldList, FormField, HiddenField
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, SelectMultipleField, SelectField, Form, FieldList, FormField, HiddenField, DateTimeField
 from wtforms.validators import DataRequired, Length, EqualTo, Required, ValidationError
 from application.models import Word
+from .models import News
 from flask_wtf.file import FileField, FileRequired
 from werkzeug.utils import secure_filename
 from ipapy import is_valid_ipa
 from .filehelpers import validate_image
+from datetime import datetime
+from wtforms_sqlalchemy.fields import QuerySelectField
 
 
 def emptyFiedList(fieldList):
@@ -87,7 +90,6 @@ def makePairList(form, field):
         return
     # emptyFiedList(form.pairSounds)
 
-
 def imageOK(form, field):
     if field.data:
         try:
@@ -153,7 +155,9 @@ class ChangeForm(FlaskForm):
     """
     pass
 
+
 class ChangePairForm(FlaskForm):
+
         # <form id="change_pair_form" action="#" method="post">
 
         #         <input type="hidden" id="pair_id" name="pair_id" value="#">
@@ -172,3 +176,31 @@ class ChangePairForm(FlaskForm):
     pair_id = HiddenField("pair_id", id="pair_id", validators=[DataRequired()])
     s1 = StringField("s1", id="s1-input", validators=[DataRequired(), Length(min=1, max=5)])
     s2 = StringField("s2", id="s2-input", validators=[DataRequired(), Length(min=1, max=5)])
+
+
+class AddForm(FlaskForm):
+    # First argument will be name and will be used as label
+    word = StringField("Word", validators=[
+        DataRequired(), Length(min=1, max=30), isHomonym])
+    cue = StringField("Cue", validators=[Length(min=0, max=30)])
+    image = FileField("Image", validators=[imageOK])
+    add = SubmitField("Add")
+    addAnyway = SubmitField("Add homonym")
+    cancel = SubmitField("Cancel")
+
+
+def word_query():
+    return Word.query
+
+
+class NewsForm(FlaskForm):
+
+    title = StringField("Titel (da)", validators=[Length(max=50)])
+    title_en = StringField("Title (en)", validators=[Length(max=50)])
+    text = TextAreaField("Indhold (da)", validators=[Length(max=2000)])
+    text_en = TextAreaField("Content (en)", validators=[Length(max=2000)])
+    date_posted = DateTimeField("Datetime", default=datetime.today)
+    word = QuerySelectField(query_factory=word_query, allow_blank=True, get_label='word')
+
+    def __repr__(self):
+        return f"News: {self.title}"
