@@ -178,6 +178,7 @@
                 {% if current_user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.write_news') }}">News</a></li>
                 {% endif %}
                 <li class="nav-item"><a class="nav-link"
                         href="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}">{{
@@ -248,7 +249,22 @@
             <div class="sidecol">
                 <div class="sidebar">
                     {% for news in session.news %}
-                    {{ news }}
+                    <div class="mb-4">
+                        <h3>
+                            {{ news.title }}
+                        </h3>
+                        <p>
+                            {{ news.text }}
+                        </p>
+                        {% if news.word %}
+                        <p>
+                            {{ news.word }}
+                        </p>
+                        {% endif %}
+                        <div>
+                            {{ news.date_posted }}
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
             </div>

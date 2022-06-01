@@ -1,9 +1,11 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
 from application.models import Word, Pair, Sound, Group
+from .models import News # admin models
 from .forms import AddForm, AddPairForm, ChangePairForm, NewsForm
 from application import db, app
 from .filehelpers import store_image, configure_add_template
 from flask_user import roles_required
+from datetime import datetime
 
 admin_blueprint = Blueprint(
     "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
@@ -145,19 +147,54 @@ def upload_image():
 @admin_blueprint.route("/write_news",  methods=["GET", "POST"])
 @roles_required('Admin')
 def write_news():
-
+    session["news"] = db.session.query(News).order_by(News.id.desc()).limit(10).all()
     form = NewsForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            print("was valid")
 
-    if form.validate_on_submit():
-        print("was valid")
+            title = request.form.get("title")
+            title_en = request.form.get("title_en")
+            text = request.form.get("text")
+            text_en = request.form.get("text_en")
+            date_posted_input = request.form.get("date_posted")
+            date_posted = datetime.strptime(date_posted_input, '%Y-%m-%d %H:%M:%S')
+            word_id = request.form.get("word")
+            word = None
+            # Check if word is provided by checking if not None
+            if word_id != None:
+                word = Word.query.get(word_id)
 
-        # db.session.commit()
+            if title:
+                print("title exists")
+
+            if title_en:
+                print("title_en exists")
+
+            if text:
+                print("text exists")
+
+            if text_en:
+                print("text_en exists")
+            
+            news = News(
+                title=title,
+                title_en=title_en,
+                text=text,
+                text_en=text_en,
+                date_posted=date_posted,
+                word=word
+            )
+
+            db.session.add(news)
+            db.session.commit()
+
+            # db.session.commit()
+        else:
+            for name, error in form.errors.items():
+                flash(u"{}".format(str(name) + ": " + str(error[0])), "danger")
 
         return redirect(url_for("admin_blueprint.write_news"))
-    else:
-        for name, error in form.errors.items():
-            flash(u"{}".format(str(name) + ": " + str(error[0])), "danger")
-
     return render_template("news.html", form=form)
 
 

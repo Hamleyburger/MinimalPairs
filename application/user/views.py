@@ -61,7 +61,7 @@ def before_request_callback():
             session["collection"] = []
 
     if not session.get("news"):
-        session["news"] = db.session.query(News).limit(10).all()
+        session["news"] = db.session.query(News).order_by(News.id.desc()).limit(10).all()
 
 @app.after_request
 def after_request_callback(response):
