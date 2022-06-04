@@ -3,7 +3,7 @@ import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used, hasimage, order_MOsets_by_image
+from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used, hasimage, order_MOsets_by_image, refresh_session_news
 import random
 from application.models import Word, Group, Sound, SearchedPair
 from .models import User, Userimage
@@ -61,7 +61,8 @@ def before_request_callback():
             session["collection"] = []
 
     if not session.get("news"):
-        session["news"] = db.session.query(News).order_by(News.id.desc()).limit(10).all()
+        session["news"] = refresh_session_news()
+
 
 @app.after_request
 def after_request_callback(response):

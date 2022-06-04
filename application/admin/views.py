@@ -1,5 +1,6 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
 from application.models import Word, Pair, Sound, Group
+from application.user.helpers import refresh_session_news
 from .models import News # admin models
 from .forms import AddForm, AddPairForm, ChangePairForm, NewsForm
 from application import db, app
@@ -147,11 +148,16 @@ def upload_image():
 @admin_blueprint.route("/write_news",  methods=["GET", "POST"])
 @roles_required('Admin')
 def write_news():
-    session["news"] = db.session.query(News).order_by(News.id.desc()).limit(10).all()
+    session["news"] = refresh_session_news()
     form = NewsForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            print("was valid")
+
+            if form.submit_news.data:
+                print("submit news pressed")
+            else:
+                print("submit news not pressed huh!")
+
 
             title = request.form.get("title")
             title_en = request.form.get("title_en")
@@ -189,7 +195,6 @@ def write_news():
             db.session.add(news)
             db.session.commit()
 
-            # db.session.commit()
         else:
             for name, error in form.errors.items():
                 flash(u"{}".format(str(name) + ": " + str(error[0])), "danger")
@@ -286,3 +291,30 @@ def ajax_suggested_pairs():
     return jsonify(
         error="something went wrong"
     )
+
+
+
+@ admin_blueprint.route("/ajax_delete_news", methods=["POST"])
+@roles_required('Admin')
+# Receives a word id and returns words in a way so client can see which pairs already exist
+def ajax_delete_news():
+    """ Receive id and delete news. Update session. Send ok back """
+
+    try:
+
+        news_id = json.loads(request.form.get("news_id"))
+        news_to_delete = News.query.get(int(news_id))
+        print("deleting news: {}".format(news_to_delete))
+        db.session.delete(news_to_delete)
+        db.session.commit()
+        session["news"] = refresh_session_news()
+        
+        return jsonify(
+            message="ok"
+        )
+    except Exception as e:
+        return jsonify(
+            message="Server error in ajax_delete_news: {}".format(e)
+        )
+
+

@@ -1,5 +1,6 @@
 from werkzeug.utils import redirect
 from application.models import Pair, Sound, Word
+from application.admin.models import News
 from application import db
 import json
 from flask import session, g, request, redirect, url_for, abort
@@ -9,6 +10,10 @@ from ..content_management import Content
 import uuid
 from PIL import Image as PIL_Image
 
+
+
+
+# General helpers
 
 # Decorator: redirect with localized url if no locale
 def ensure_locale(func):
@@ -46,7 +51,6 @@ def setlocale():
     print("set ses to firstarg {}".format(firstarg))
     return session["locale"]
 
-
 # turn json string into int or list of ints
 def json_to_ints(json_str):
     """ Takes string input and spits out a list of ints which might contain a single item """
@@ -59,6 +63,66 @@ def json_to_ints(json_str):
     return wordids
 
 
+def easyIPAtyping(typedSound):
+    """ Translates some keyboard inputs to the characters in the Sound table """
+
+    easyTypableSounds = {
+        'r': 'ʁ',
+        'sj': 'ɕ',
+        'ng': 'ŋ',
+        'ɡ': 'g'
+    }
+
+    if typedSound in easyTypableSounds:
+        typedSound = easyTypableSounds[typedSound]
+
+    # Change single characters in case of clusters
+    newSound = ""
+    for char in typedSound:
+        if char == 'ɡ':
+            char = 'g'
+        elif char == 'r':
+            char = 'ʁ'
+        newSound += char
+
+    return typedSound
+
+
+def refresh_session_news():
+
+    some_news = db.session.query(News).order_by(News.id.desc()).limit(12).all()
+    serialized_news = []
+
+    for news in some_news:
+        print(news.word)
+        serialized = {
+            "id": news.id,
+            "title": news.title,
+            "text": news.text,
+            "title_en": news.title_en,
+            "text_en": news.text_en,
+            "date_posted": news.date_posted.date().strftime("%d-%m-%Y"),
+            "word": news.word
+        }
+
+        if news.word:
+            serialized["word"] = {
+                "word": news.word.word,
+                "image_path": "images/thumbnails/{}".format(news.word.image.name),
+            }
+
+        serialized_news.append(serialized)
+    
+    return serialized_news
+    
+    #print("serialized news is:")
+    #print(serialized_news)
+
+
+
+
+#### Collection helpers
+
 def getCollection():
     """ saves you the time of checking if session['collection'] exists """
 
@@ -66,6 +130,7 @@ def getCollection():
         session["collection"] = []
 
     return session["collection"]
+
 
 def get_word_collection():
     
@@ -77,6 +142,7 @@ def get_word_collection():
             if int(id) == word.id:
                 words_with_duplicates.append(word)
     return words_with_duplicates
+
 
 def manageCollection(wordids, remove=False):
     """ Takes a list of word ids and adds them or removes them if remove is True\n
@@ -113,31 +179,25 @@ def MOcollected(MO: list):
     return False
 
 
-def easyIPAtyping(typedSound):
-    """ Translates some keyboard inputs to the characters in the Sound table """
+# Count how many times a word has been made into word cards by a user (from collection)
+def count_as_used(collection_ids):
+    new_ids = []
+    print(collection_ids)
+    new_ids = list(set(collection_ids))
+    print(new_ids)
+    for id in new_ids:
+        word = Word.query.get(id)
+        word.times_used += 1
 
-    easyTypableSounds = {
-        'r': 'ʁ',
-        'sj': 'ɕ',
-        'ng': 'ŋ',
-        'ɡ': 'g'
-    }
-
-    if typedSound in easyTypableSounds:
-        typedSound = easyTypableSounds[typedSound]
-
-    # Change single characters in case of clusters
-    newSound = ""
-    for char in typedSound:
-        if char == 'ɡ':
-            char = 'g'
-        elif char == 'r':
-            char = 'ʁ'
-        newSound += char
-
-    return typedSound
+    db.session.commit()
 
 
+
+
+
+#### Sound search helpers
+
+# Sound search: Used to find MOs matching search
 def stripEmpty(inputs):
     """ Returns the input list minus any empty strings """
     outputs = []
@@ -147,6 +207,7 @@ def stripEmpty(inputs):
     return outputs
 
 
+# Sound search: Helps finding the best MOs
 def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], counter=0):
     """ Return list of partially matching MO sets with words that haven't already been used\n
     MOsounds: Original list of sounds\n
@@ -207,7 +268,7 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
 
     return partialMatches
 
-
+# Sound search: Helps ordering searched pairs so the ones with images appear first
 def hasimage(pair):
     """ Checks if pair has image and returns boolean value """
     hasimage = False
@@ -215,7 +276,7 @@ def hasimage(pair):
         hasimage = True
     return hasimage
 
-
+# Sound search: Helps ordering searched MOs so the ones with images appear first
 def order_MOsets_by_image(MOsets):
     """ Checks a list of MOsets and sorts the sets so ones with images are first """
     all_sets = []
@@ -233,10 +294,7 @@ def order_MOsets_by_image(MOsets):
     all_sets = sets_with_images + sets_without_images
     return all_sets
 
-
-
-
-
+# User models: converts user id to string.
 def get_uid():
     """ Returns user id as string """
     uid = session.get("user_id")
@@ -305,13 +363,3 @@ def resize_crop_image(file):
 
     return im
 
-def count_as_used(collection_ids):
-    new_ids = []
-    print(collection_ids)
-    new_ids = list(set(collection_ids))
-    print(new_ids)
-    for id in new_ids:
-        word = Word.query.get(id)
-        word.times_used += 1
-
-    db.session.commit()

@@ -6,301 +6,342 @@
 
 <html lang="{{ locale_code }}">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="theme-color" content="#995f8b">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="theme-color" content="#995f8b">
 
-    {% if not g.get("errorpage") %}
-    <!-- page specific meta tags -->
-    <title> {{ title_all | safe }} -{% block title %}{% endblock %}</title>
+        {% if not g.get("errorpage") %}
+        <!-- page specific meta tags -->
+        <title> {{ title_all | safe }} -{% block title %}{% endblock %}</title>
 
-    {% block submeta %}
-    <!-- if no specific meta tags are supplied -->
-    <meta name="description" content="{{ index.description }}" />
+        {% block submeta %}
+        <!-- if no specific meta tags are supplied -->
+        <meta name="description" content="{{ index.description }}" />
 
-    <!-- if no specific open graph is supplied -->
-    <meta property="og:description" content="{{ layout.og_description }}" />
-    <meta property="og:image" content="{{ url_for('static', filename='{{ layout.og_image }}', _external=True ) }}">
-    <meta property="og:image:secure_url"
-        content="{{ url_for('static', filename='{{ layout.og_image }}', _external=True) }}">
-    <meta property="og:image:alt" content="{{ layout.og_image_alt }}" />
-    <meta property="og:title" content="Minimale Par" />
-    <meta property="og:url" content="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
-    <link rel="canonical" href="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
+        <!-- if no specific open graph is supplied -->
+        <meta property="og:description" content="{{ layout.og_description }}" />
+        <meta property="og:image" content="{{ url_for('static', filename='{{ layout.og_image }}', _external=True ) }}">
+        <meta property="og:image:secure_url"
+            content="{{ url_for('static', filename='{{ layout.og_image }}', _external=True) }}">
+        <meta property="og:image:alt" content="{{ layout.og_image_alt }}" />
+        <meta property="og:title" content="Minimale Par" />
+        <meta property="og:url" content="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
+        <link rel="canonical" href="{{ url_for('user_blueprint.index', locale=session.locale, _external=True) }}" />
 
-    <meta property="og:image:type" content="{{ layout.og_image_type }}" />
-    <meta property="og:image:width" content="{{ layout.og_image_width }}" />
-    <meta property="og:image:height" content="{{ layout.og_image_height }}" />
+        <meta property="og:image:type" content="{{ layout.og_image_type }}" />
+        <meta property="og:image:width" content="{{ layout.og_image_width }}" />
+        <meta property="og:image:height" content="{{ layout.og_image_height }}" />
 
-    {% endblock %}
-    <!-- general open grapg -->
-    <meta property="og:type" content="{{ layout.og_type }}" />
-    <meta property="og:site_name" content="{{ layout.og_site_name }}" />
-    <meta property="og:locale" content="{{ layout.og_locale }}" />
-    <meta property="og:locale:alternate" content="{{ layout.og_locale_alternate }}" />
-
-
-    <!-- fonts (century gothic)  -->
-    <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css">
-
-    <!-- favicons -->
-    <link rel="apple-touch-icon" sizes="180x180"
-        href="{{ url_for('static',filename='permaimages/logos/autogen/apple/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="192x192"
-        href="{{ url_for('static',filename='permaimages/logos/autogen/android-icon-192x192.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32"
-        href="{{ url_for('static',filename='permaimages/logos/favicon-32.ico') }}">
-    <link rel="icon" type="image/png" sizes="32x32"
-        href="{{ url_for('static',filename='permaimages/logos/favicon-32.svg') }}">
-    <link rel="icon" type="image/png" sizes="96x96"
-        href="{{ url_for('static',filename='permaimages/logos/autogen/favicon-96x96.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16"
-        href="{{ url_for('static',filename='permaimages/logos/autogen/favicon-16x16.png') }}">
-
-    {% set manifest_url = url_for('static',filename='permaimages/logos/autogen/' ~ session.manifest) %}
-
-    <link rel="manifest" href="{{ manifest_url }}" crossorigin="use-credentials">
-    <link rel="mask-icon" href="/static/permaimages/logos/autogen/apple/safari-pinned-tab.svg" color="#49184e">
-    <meta name="msapplication-TileColor" content="#603cba">
-    <meta name="msapplication-config" content="/static/permaimages/logos/autogen/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-
-    {% endif %}
-
-    <!-- jquery and popper -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-
-    <!-- Bootstrap 4 (for catching whatever doesn't work with bs5) -->
-    <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-    <!-- Bootstrap 5 which was released in the middle of development -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
+        {% endblock %}
+        <!-- general open grapg -->
+        <meta property="og:type" content="{{ layout.og_type }}" />
+        <meta property="og:site_name" content="{{ layout.og_site_name }}" />
+        <meta property="og:locale" content="{{ layout.og_locale }}" />
+        <meta property="og:locale:alternate" content="{{ layout.og_locale_alternate }}" />
 
 
-    <!-- Fontawesome -->
-    <script src="https://kit.fontawesome.com/603271f4a3.js" crossorigin="anonymous"></script>
+        <!-- fonts (century gothic)  -->
+        <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css">
 
-    <!-- moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        <!-- favicons -->
+        <link rel="apple-touch-icon" sizes="180x180"
+            href="{{ url_for('static',filename='permaimages/logos/autogen/apple/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="192x192"
+            href="{{ url_for('static',filename='permaimages/logos/autogen/android-icon-192x192.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32"
+            href="{{ url_for('static',filename='permaimages/logos/favicon-32.ico') }}">
+        <link rel="icon" type="image/png" sizes="32x32"
+            href="{{ url_for('static',filename='permaimages/logos/favicon-32.svg') }}">
+        <link rel="icon" type="image/png" sizes="96x96"
+            href="{{ url_for('static',filename='permaimages/logos/autogen/favicon-96x96.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16"
+            href="{{ url_for('static',filename='permaimages/logos/autogen/favicon-16x16.png') }}">
 
-    <!-- for DataTables-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap4.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css" rel="stylesheet" />
+        {% set manifest_url = url_for('static',filename='permaimages/logos/autogen/' ~ session.manifest) %}
 
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
-    <script src=https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js></script>
+        <link rel="manifest" href="{{ manifest_url }}" crossorigin="use-credentials">
+        <link rel="mask-icon" href="/static/permaimages/logos/autogen/apple/safari-pinned-tab.svg" color="#49184e">
+        <meta name="msapplication-TileColor" content="#603cba">
+        <meta name="msapplication-config" content="/static/permaimages/logos/autogen/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
 
-    <!-- plugin for DataTables and moment.js ( written at the time of moment v. 2.8.4 -->
-    <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+        {% endif %}
 
-    <!-- For jQuery Chosen (nice searchable select fields) script is below body -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css"
-        integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA=="
-        crossorigin="anonymous" />
+        <!-- jquery and popper -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 
+        <!-- Bootstrap 4 (for catching whatever doesn't work with bs5) -->
+        <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-    <!-- For owl-carousel used in pairs<id> for displaying word's partners-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-        integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
-        crossorigin="anonymous" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-        integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
-        crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
-        integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
-        crossorigin="anonymous"></script>
-
-    <!-- For animating SVG in front page -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js"></script>
-
-    <!-- For cropper.js for uploading user's own images and cropping to fit -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"
-        integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
-        integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- flag icons css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
-        integrity="sha512-Cv93isQdFwaKBV+Z4X8kaVBYWHST58Xb/jVOcV9aRsGSArZsgAnFIhMpDoMDcFNoUtday1hdjn0nGp3+KZyyFw=="
-        crossorigin="anonymous" />
-
-    <!-- my own custom styling -->
-    <link href="{{ url_for('static',filename='stylesheets/styles.css') }}" rel="stylesheet" />
-
-    {% block extrahead %}
-    {% endblock extrahead %}
-
-</head>
+        <!-- Bootstrap 5 which was released in the middle of development -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
 
 
+        <!-- Fontawesome -->
+        <script src="https://kit.fontawesome.com/603271f4a3.js" crossorigin="anonymous"></script>
 
-<body>
-    <nav class="navbar navbar-expand-md shadow">
+        <!-- moment.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
-        <a href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
-            <div class="logo">
-                {{ catmacro() }}
+        <!-- for DataTables-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap4.min.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css" rel="stylesheet" />
 
-            </div>
-        </a>
+        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+        <script src=https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js></script>
+
+        <!-- plugin for DataTables and moment.js ( written at the time of moment v. 2.8.4 -->
+        <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+
+        <!-- For jQuery Chosen (nice searchable select fields) script is below body -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css"
+            integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA=="
+            crossorigin="anonymous" />
 
 
-        <a class="logotext_a mx-md-4" href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
-            <div class="logotext">
-                {{ logotitle() }}
-            </div>
-        </a>
-        <a aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler hamburger"
-            data-target="#navbar" data-toggle="collapse">
-            <span class="navbar-toggler-icon"><i class="fas fa-ellipsis-v"></i></span>
-        </a>
-        <div class="collapse navbar-collapse" id="navbar">
+        <!-- For owl-carousel used in pairs<id> for displaying word's partners-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+            integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+            crossorigin="anonymous" />
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+            integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+            crossorigin="anonymous" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+            integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+            crossorigin="anonymous"></script>
 
-            <!-- nav links that sit on the right when expanded -->
-            <ul class="navbar-nav mr-auto">
-                {% if current_user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.write_news') }}">News</a></li>
-                {% endif %}
-                <li class="nav-item"><a class="nav-link"
-                        href="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}">{{
-                        nav_find
-                        |safe }}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link"
-                        href="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
-                        {{nav_collection |safe }} 
-                        <span id="collection-length"> &nbsp;({{ session["collection"]|length }})</span>
-                    </a>
-                </li>
-            </ul>
+        <!-- For animating SVG in front page -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/ScrollTrigger.min.js"></script>
 
-            <!-- nav links that sit on the right when expanded -->
-            <ul class="navbar-nav ml-auto">
+        <!-- For cropper.js for uploading user's own images and cropping to fit -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"
+            integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
+            integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- flag icons css -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+            integrity="sha512-Cv93isQdFwaKBV+Z4X8kaVBYWHST58Xb/jVOcV9aRsGSArZsgAnFIhMpDoMDcFNoUtday1hdjn0nGp3+KZyyFw=="
+            crossorigin="anonymous" />
 
-                {% if g.showglobe %}
-                {# showglobe makes language change show. Is set in decorator 'ensure_locale' #}
-                <!-- language select drop-down -->
-                <li class="nav-item dropdown">
-                    <a class="earthtoggle nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        {{ globeicon_detail() }}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <!-- my own custom styling -->
+        <link href="{{ url_for('static',filename='stylesheets/styles.css') }}" rel="stylesheet" />
 
-                        {% for lang, code in config["LANGUAGES"].items() %}
-                        <a class="dropdown-item"
-                            href='{{ url_for("user_blueprint.change_language", newlocale=lang) }}'><span
-                                class="flag-icon flag-icon-{{ code }} flag-icon-squared"></span>
-                            {{ lang }}</a>
-                        {% endfor %}
-                    </div>
-                </li>
-                {% endif %}
+        {% block extrahead %}
+        {% endblock extrahead %}
 
-                <!-- logout button -->
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
+    </head>
 
-    <!-- Alerts for messages from the server when refreshing -->
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %}
-    <header>
-        {% for category, message in messages %}
-        <div class="alert-wrapper">
-            <div class="alert alert-{{ category }} shadow text-center" role="alert">
-                <span>{{ message }}</span>
-            </div>
-        </div>
-        {% endfor %}
-    </header>
-    {% endif %} {% endwith %}
 
-    <div class="container-fluid">
-        <div class="mainrow">
-            <div class="maincol">
-                {% block main %}{% endblock %}
-            </div>
-            <div class="sidecol">
-                <div class="sidebar">
-                    {% for news in session.news %}
-                    <div class="mb-4">
-                        <h3>
-                            {{ news.title }}
-                        </h3>
-                        <p>
-                            {{ news.text }}
-                        </p>
-                        {% if news.word %}
-                        <p>
-                            {{ news.word }}
-                        </p>
-                        {% endif %}
-                        <div>
-                            {{ news.date_posted }}
+
+    <body>
+        <nav class="navbar navbar-expand-md shadow">
+
+            <a href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
+                <div class="logo">
+                    {{ catmacro() }}
+
+                </div>
+            </a>
+
+
+            <a class="logotext_a mx-md-4" href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
+                <div class="logotext">
+                    {{ logotitle() }}
+                </div>
+            </a>
+            <a aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler hamburger"
+                data-target="#navbar" data-toggle="collapse">
+                <span class="navbar-toggler-icon"><i class="fas fa-ellipsis-v"></i></span>
+            </a>
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <!-- nav links that sit on the right when expanded -->
+                <ul class="navbar-nav mr-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.write_news') }}">News</a></li>
+                    {% endif %}
+                    <li class="nav-item"><a class="nav-link"
+                            href="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}">{{
+                            nav_find
+                            |safe }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
+                            {{nav_collection |safe }} 
+                            <span id="collection-length"> &nbsp;({{ session["collection"]|length }})</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- nav links that sit on the right when expanded -->
+                <ul class="navbar-nav ml-auto">
+
+                    {% if g.showglobe %}
+                    {# showglobe makes language change show. Is set in decorator 'ensure_locale' #}
+                    <!-- language select drop-down -->
+                    <li class="nav-item dropdown">
+                        <a class="earthtoggle nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            {{ globeicon_detail() }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            {% for lang, code in config["LANGUAGES"].items() %}
+                            <a class="dropdown-item"
+                                href='{{ url_for("user_blueprint.change_language", newlocale=lang) }}'><span
+                                    class="flag-icon flag-icon-{{ code }} flag-icon-squared"></span>
+                                {{ lang }}</a>
+                            {% endfor %}
                         </div>
-                    </div>
-                    {% endfor %}
+                    </li>
+                    {% endif %}
+
+                    <!-- logout button -->
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Alerts for messages from the server when refreshing -->
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <header>
+            {% for category, message in messages %}
+            <div class="alert-wrapper">
+                <div class="alert alert-{{ category }} shadow text-center" role="alert">
+                    <span>{{ message }}</span>
                 </div>
             </div>
-        </div>
-        
-        
-    </div>
+            {% endfor %}
+        </header>
+        {% endif %} {% endwith %}
+
+        <div class="container-fluid">
+            <div class="mainrow">
+                <div class="maincol">
+                {% block main %}{% endblock %}
+                </div> <!-- main col -->
+                <div class="sidecol">
+                    <div class="sidebar">
+                        <div class="news-card sidebar-header shadow">
+                            <h4>
+                                {{ latest_news }}
+                            </h4>
+                        </div> <!-- news-card, the one on top with the header-->
+                
+                        {% for news in session.news %}
+                        <div class="news-card shadow">
+                            <div class="tiny-left">
+                            
+                                <h4 class="news-title">
+                                    {% if session.locale == "en" %}
+                                    {{ news.title_en }}
+                                    {% else %}
+                                    {{ news.title }}
+                                    {% endif %}
+                                </h4>
+                                <p class="news-date">
+                                    {{ news.date_posted }}
+                                </p>
+                                {% if news.text %}
+                                <div class="news-body">
+                                    <p>
+                                        {% if session.locale == "en" %}
+                                        {{ news.text_en }}
+                                        {% else %}
+                                        {{ news.text }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% if news.word %}
+                            <div class="tiny-right">
+
+                                <div class="news-word-image">
+                                    <img src="{{ url_for('static', filename=news.word.image_path) }}" alt="">
+                                </div>
+
+                            </div>
+                            {% endif %}
+                        
+                            {% if current_user.is_authenticated %}
+                            <div>
+                                <button class="delete-news-btn" data-id="{{ news.id }}" >DELETE</button>
+                            </div>
+                            {% endif %}
+                        </div> <!-- news for-->
+                        {% endfor %}
+
+                    </div> <!-- sidebar -->
+                </div> <!-- side col -->
+            </div> <!-- main row -->
+            
+            
+        </div> <!-- container fluid -->
 
 
 
-    <footer class="small text-center">
-        <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" property="dct:title"
-            rel="dct:type">This web app, its images and content</span> by <a xmlns:cc="http://creativecommons.org/ns#"
-            href='https://github.com/Hamleyburger' property="cc:attributionName" rel="cc:attributionURL">Alma Manley</a>
-        are
-        licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons
-            Attribution-NoDerivatives 4.0 International License</a>. <br> <a rel="license"
-            href="http://creativecommons.org/licenses/by-nd/4.0/"><br><img alt="Creative Commons License"
-                style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/80x15.png" /></a>
-    </footer>
 
 
-    <script type="text/javascript" src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
-    <script>
-        window.setTimeout(function () {
-            $(".alert").fadeTo(800, 0);
-        }, 3000);
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
-        integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g=="
-        crossorigin="anonymous"></script>
+
+        <footer class="small text-center">
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/StillImage" property="dct:title"
+                rel="dct:type">This web app, its images and content</span> by <a xmlns:cc="http://creativecommons.org/ns#"
+                href='https://github.com/Hamleyburger' property="cc:attributionName" rel="cc:attributionURL">Alma Manley</a>
+            are
+            licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons
+                Attribution-NoDerivatives 4.0 International License</a>. <br> <a rel="license"
+                href="http://creativecommons.org/licenses/by-nd/4.0/"><br><img alt="Creative Commons License"
+                    style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/80x15.png" /></a>
+        </footer>
 
 
-    {% block script %}{% endblock script %}
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
+        {% if current_user.is_authenticated %}
+        <script>
+            let url_for_delete_news = {{ url_for('admin_blueprint.ajax_delete_news') | tojson | safe }};
+        </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts/admin_scripts.js') }}"></script>
+        {% endif %}
+        <script>
+            window.setTimeout(function () {
+                $(".alert").fadeTo(800, 0);
+            }, 3000);
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
+            integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g=="
+            crossorigin="anonymous"></script>
 
 
-</body>
+        {% block script %}{% endblock script %}
+
+
+    </body>
 
 </html>

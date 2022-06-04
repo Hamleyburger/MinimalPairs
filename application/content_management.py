@@ -19,6 +19,7 @@ def Content(locale=None):
         "nav_find": "Find kontraster",
         "nav_collection": "Samling",
         "nav_language": "Sprog",
+        "latest_news": "Nyeste tilføjelser",
         "footer_copyright": "Copyright 2021 | <a href='https://github.com/Hamleyburger'>Alma Manley</a> | All Rights Reserved",
 
 
@@ -169,6 +170,7 @@ def Content(locale=None):
         "nav_find": "Find Contrasts",
         "nav_collection": "Collection",
         "nav_language": "Language",
+        "latest_news": "Latest additions",
         "footer_copyright": "Copyright 2021 | <a href='https://github.com/Hamleyburger'>Alma Manley</a> | All Rights Reserved",
 
         # Front page
