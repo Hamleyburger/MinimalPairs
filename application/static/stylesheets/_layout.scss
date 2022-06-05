@@ -133,6 +133,7 @@ body {
         circle at 0px 500px,
         $color-yel2 600px,
         $color-red2 110%);
+    background: $color-yel2;
     background-repeat: no-repeat;
 
     background-attachment: fixed;
@@ -172,7 +173,7 @@ body {
                 padding-top: 12px;
                 margin: 5px;
                 color: rgba($color-purp1, 1);
-                border-radius: 10px;
+                border-radius: $border-radius-modals;
 
                 .news-date {
                     //text-align: right;

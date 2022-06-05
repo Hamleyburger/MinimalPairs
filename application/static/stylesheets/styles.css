@@ -1,21 +1,34 @@
+@charset "UTF-8";
+/* Old, light yellow theme:
+$color-purp1: #3b1734; //kat og tekst
+$color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html
+$color-purp3: #caabbf; //lysere navbar?
+$color-red1: #eb757d; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #eba48b; // mørk himmel blend
+$color-yel1: #f3b08c; // ?
+$color-yel2: #f8d894; // Himmelen
+$color-yel3: #fffae9; // Næsten hvid
+*/
 :root {
   --color-purp1: #3b1734;
   --color-purp2: #995f8b;
   --color-purp3: #caabbf;
-  --color-red1: #eb757d;
+  --color-red1: #e98289;
   --color-red1-transparent: #fe586396;
-  --color-red2: #eba48b;
+  --color-red2: #efa19c;
   --color-yel1: #f3b08c;
-  --color-yel2: #f8d894;
-  --color-yel3: #fffae9;
+  --color-yel2: #dec7d6;
+  --color-yel2-sun: #f8d894;
+  --color-yel3: #fff8fb;
 }
 
 .orangebg {
-  background-color: #eba48b;
+  background-color: #efa19c;
 }
 
 .redbg {
-  background-color: #eb757d;
+  background-color: #e98289;
 }
 
 .purpletransbg {
@@ -23,8 +36,8 @@
 }
 
 .shadow {
-  -webkit-box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
-          box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.35) !important;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35) !important;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35) !important;
 }
 
 .word-font {
@@ -49,13 +62,13 @@
 
 .alert-wrapper .alert-danger {
   color: #3b1734;
-  background-color: #eb757d;
+  background-color: #e98289;
 }
 
 .ipa-container {
   margin: 50px auto;
   border: 2px solid #3b1734;
-  border-radius: 12px;
+  border-radius: 7px;
   background-color: rgba(255, 255, 255, 0.212);
   width: 600px;
   max-width: 100%;
@@ -134,7 +147,7 @@
 
 /* Ensure the size of the image fit the container perfectly */
 .fa-minus-circle {
-  color: #eb757d;
+  color: #e98289;
 }
 
 .fa-plus-circle {
@@ -151,7 +164,7 @@
   left: 50%;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
-  color: #fffae9;
+  color: #fff8fb;
 }
 
 .about-text .fa-plus-circle {
@@ -163,12 +176,12 @@
 }
 
 .card {
-  background-color: #fffae9;
+  background-color: #fff8fb;
 }
 
 .MO-row {
   border-radius: 3px;
-  background: #eb757d;
+  background: #e98289;
   margin: 0;
 }
 
@@ -182,7 +195,7 @@
 }
 
 .MO-row .MO-col .MO-wrapper {
-  background: #fffae9;
+  background: #fff8fb;
   margin: 8px;
   border-radius: 3px;
   height: 250px;
@@ -274,8 +287,8 @@
 }
 
 .help-modal, .my-cropper-modal {
-  background-color: #eba48b;
-  border-radius: 13px;
+  background-color: #efa19c;
+  border-radius: 7px;
 }
 
 .help-modal .modal-header, .my-cropper-modal .modal-header {
@@ -299,11 +312,11 @@
 }
 
 .help-modal .modal-body, .my-cropper-modal .modal-body {
-  background-color: #fffae9;
+  background-color: #fff8fb;
   margin: 0px 15px;
-  border-radius: 11px;
+  border-radius: 7px;
   text-align: left;
-  border: 2px solid #e68c6d;
+  border: 2px solid #ea847d;
 }
 
 .help-modal .modal-footer, .my-cropper-modal .modal-footer {
@@ -317,20 +330,41 @@
   margin-top: unset;
 }
 
+.top-button {
+  margin: 30px !important;
+}
+
+.page-title {
+  font-size: 30px;
+  margin-top: 30px;
+}
+
 .FU-container {
   margin-top: 50px;
 }
 
+/* Old, light yellow theme:
+$color-purp1: #3b1734; //kat og tekst
+$color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html
+$color-purp3: #caabbf; //lysere navbar?
+$color-red1: #eb757d; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #eba48b; // mørk himmel blend
+$color-yel1: #f3b08c; // ?
+$color-yel2: #f8d894; // Himmelen
+$color-yel3: #fffae9; // Næsten hvid
+*/
 :root {
   --color-purp1: #3b1734;
   --color-purp2: #995f8b;
   --color-purp3: #caabbf;
-  --color-red1: #eb757d;
+  --color-red1: #e98289;
   --color-red1-transparent: #fe586396;
-  --color-red2: #eba48b;
+  --color-red2: #efa19c;
   --color-yel1: #f3b08c;
-  --color-yel2: #f8d894;
-  --color-yel3: #fffae9;
+  --color-yel2: #dec7d6;
+  --color-yel2-sun: #f8d894;
+  --color-yel3: #fff8fb;
 }
 
 .navbar {
@@ -478,7 +512,8 @@ body {
   min-height: 100%;
   padding-bottom: 180px;
   background-color: var(--color-red2);
-  background: radial-gradient(circle at 0px 500px, #f8d894 600px, #eba48b 110%);
+  background: radial-gradient(circle at 0px 500px, #dec7d6 600px, #efa19c 110%);
+  background: #dec7d6;
   background-repeat: no-repeat;
   background-attachment: fixed;
   -webkit-box-sizing: border-box;
@@ -534,7 +569,7 @@ body .sidecol .sidebar .news-card {
   padding-top: 12px;
   margin: 5px;
   color: #3b1734;
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 body .sidecol .sidebar .news-card .news-date {
@@ -718,7 +753,7 @@ body footer a {
 }
 
 .frontpage-container .text-container [class*="col-"], .frontpage-container .text-container .col {
-  color: #fae1ac;
+  color: #e7d7e2;
 }
 
 .frontpage-container .text-container .about-text {
@@ -759,7 +794,7 @@ body footer a {
 }
 
 #illustration #inner-c {
-  stop-color: var(--color-yel2);
+  stop-color: var(--color-yel2-sun);
 }
 
 #illustration #outer-c {
@@ -930,23 +965,35 @@ body footer a {
 }
 
 .word-suggestions .word-suggestion {
-  background-color: #eba48b;
-  border: 1px solid #eb757d;
-  border-radius: 12px;
+  background-color: #efa19c;
+  border: 1px solid #e98289;
+  border-radius: 7px;
   margin: 3px;
   padding: 1px 7px;
 }
 
+/* Old, light yellow theme:
+$color-purp1: #3b1734; //kat og tekst
+$color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html
+$color-purp3: #caabbf; //lysere navbar?
+$color-red1: #eb757d; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #eba48b; // mørk himmel blend
+$color-yel1: #f3b08c; // ?
+$color-yel2: #f8d894; // Himmelen
+$color-yel3: #fffae9; // Næsten hvid
+*/
 :root {
   --color-purp1: #3b1734;
   --color-purp2: #995f8b;
   --color-purp3: #caabbf;
-  --color-red1: #eb757d;
+  --color-red1: #e98289;
   --color-red1-transparent: #fe586396;
-  --color-red2: #eba48b;
+  --color-red2: #efa19c;
   --color-yel1: #f3b08c;
-  --color-yel2: #f8d894;
-  --color-yel3: #fffae9;
+  --color-yel2: #dec7d6;
+  --color-yel2-sun: #f8d894;
+  --color-yel3: #fff8fb;
 }
 
 .titlebox {
@@ -956,7 +1003,7 @@ body footer a {
 }
 
 .titlebox .main-btn {
-  border-radius: 15px;
+  border-radius: 7px;
   font-size: 20px;
   background-color: #995f8b;
   margin-top: 15px;
@@ -964,7 +1011,7 @@ body footer a {
   min-width: 40px;
   background: #995f8b;
   font-size: 17px;
-  border-radius: 10px;
+  border-radius: 7px;
   border: none;
 }
 
@@ -972,12 +1019,8 @@ body footer a {
   cursor: pointer;
 }
 
-.titlebox .top-button {
-  margin: 40px 0px;
-}
-
 .titlebox .removeallbtn {
-  background-color: #eb757d;
+  background-color: #e98289;
 }
 
 .titlebox .removeallbtn i {
@@ -995,7 +1038,7 @@ body footer a {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-top: 30px;
+  margin-top: 0px;
 }
 
 .titlebox .search-tabs-flex-wrapper .search-tabs {
@@ -1016,7 +1059,7 @@ body footer a {
   border-radius: 3px;
   vertical-align: bottom;
   font-size: 15px;
-  background: #fffae9;
+  background: #fff8fb;
   padding-top: 5px;
   text-align: center;
 }
@@ -1068,7 +1111,7 @@ body footer a {
   width: 600px;
   max-width: 100%;
   margin: auto;
-  border-radius: 15px;
+  border-radius: 7px;
 }
 
 @media only screen and (max-width: 620px) {
@@ -1079,7 +1122,7 @@ body footer a {
 
 .wordcard {
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 @media only screen and (max-width: 576px) {
@@ -1161,8 +1204,8 @@ body footer a {
 }
 
 .nav-tab-wrapper .nav-tabs .nav-item {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 
 @media only screen and (max-width: 370px) {
@@ -1172,8 +1215,8 @@ body footer a {
 }
 
 .nav-tab-wrapper .nav-tabs .nav-item .nav-link {
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
   background-color: inherit;
   border: none;
   color: #3b1734;
@@ -1187,16 +1230,22 @@ body footer a {
 .tab-content .tab-pane {
   padding: 10px;
   padding-top: 15px;
-  border-bottom-left-radius: 15px;
+  border-bottom-left-radius: 7px;
   border-bottom-right-radius: 15%;
+  margin-bottom: 30px;
   color: #3b1734;
   min-height: 200px;
 }
 
 @media only screen and (min-width: 371px) {
   .tab-content .tab-pane {
-    border-radius: 15px;
+    border-radius: 7px;
   }
+}
+
+.tab-content .tab-pane .subtitle-sound-search {
+  margin-top: 10px;
+  font-size: 18px;
 }
 
 .tab-content .tab-pane .form-wrapper {
@@ -1214,16 +1263,28 @@ body footer a {
   height: 180px;
 }
 
+/* Old, light yellow theme:
+$color-purp1: #3b1734; //kat og tekst
+$color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html
+$color-purp3: #caabbf; //lysere navbar?
+$color-red1: #eb757d; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #eba48b; // mørk himmel blend
+$color-yel1: #f3b08c; // ?
+$color-yel2: #f8d894; // Himmelen
+$color-yel3: #fffae9; // Næsten hvid
+*/
 :root {
   --color-purp1: #3b1734;
   --color-purp2: #995f8b;
   --color-purp3: #caabbf;
-  --color-red1: #eb757d;
+  --color-red1: #e98289;
   --color-red1-transparent: #fe586396;
-  --color-red2: #eba48b;
+  --color-red2: #efa19c;
   --color-yel1: #f3b08c;
-  --color-yel2: #f8d894;
-  --color-yel3: #fffae9;
+  --color-yel2: #dec7d6;
+  --color-yel2-sun: #f8d894;
+  --color-yel3: #fff8fb;
 }
 
 .word-info-container .outer-row {
@@ -1294,7 +1355,7 @@ body footer a {
 
 .word-info-container .outer-row [class*='col-'] .word1-img-div img {
   width: 100%;
-  background-color: #fffae9;
+  background-color: #fff8fb;
 }
 
 .word-info-container .outer-row .slider {
@@ -1392,16 +1453,28 @@ body footer a {
   min-height: 200px;
 }
 
+/* Old, light yellow theme:
+$color-purp1: #3b1734; //kat og tekst
+$color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html
+$color-purp3: #caabbf; //lysere navbar?
+$color-red1: #eb757d; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #eba48b; // mørk himmel blend
+$color-yel1: #f3b08c; // ?
+$color-yel2: #f8d894; // Himmelen
+$color-yel3: #fffae9; // Næsten hvid
+*/
 :root {
   --color-purp1: #3b1734;
   --color-purp2: #995f8b;
   --color-purp3: #caabbf;
-  --color-red1: #eb757d;
+  --color-red1: #e98289;
   --color-red1-transparent: #fe586396;
-  --color-red2: #eba48b;
+  --color-red2: #efa19c;
   --color-yel1: #f3b08c;
-  --color-yel2: #f8d894;
-  --color-yel3: #fffae9;
+  --color-yel2: #dec7d6;
+  --color-yel2-sun: #f8d894;
+  --color-yel3: #fff8fb;
 }
 
 .collectionpage-main {
@@ -1463,7 +1536,7 @@ body footer a {
 }
 
 .pdfgenerator .pdf-generator-dropdown {
-  border-radius: 15px;
+  border-radius: 7px;
   background-color: #fe586396;
   margin: 0;
   padding-bottom: 20px;
@@ -1480,7 +1553,7 @@ body footer a {
 
 .pdfgenerator .pdf-generator-dropdown .pdf-showcase .pdf-showcase-inner {
   border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  border-radius: 7px;
   padding: 20px;
 }
 
@@ -1494,7 +1567,7 @@ body footer a {
 .pdfgenerator .bg-btn-wrap {
   background-size: cover;
   position: relative;
-  border-radius: 13px;
+  border-radius: 7px;
 }
 
 .pdfgenerator .bg-btn-wrap:active {
@@ -1505,9 +1578,9 @@ body footer a {
 }
 
 .pdfgenerator .bg-btn-wrap .btn-check:focus + .btn, .pdfgenerator .bg-btn-wrap .btn:focus, .pdfgenerator .bg-btn-wrap .btn-check:checked + .btn, .pdfgenerator .bg-btn-wrap .btn:checked {
-  border: 1px solid #f8d894;
-  -webkit-box-shadow: 0 0.1rem 0.5rem #f8d894 !important;
-          box-shadow: 0 0.1rem 0.5rem #f8d894 !important;
+  border: 1px solid #dec7d6;
+  -webkit-box-shadow: 0 0.1rem 0.5rem #dec7d6 !important;
+          box-shadow: 0 0.1rem 0.5rem #dec7d6 !important;
   border-radius: inherit;
   -webkit-transition: none;
   transition: none;
@@ -1539,7 +1612,7 @@ body footer a {
 .pdfgenerator .bg-btn-wrap .text-background {
   position: absolute;
   height: 2.5rem;
-  background-color: rgba(255, 250, 233, 0.5);
+  background-color: rgba(255, 248, 251, 0.5);
   width: 100%;
   z-index: 0;
   bottom: 0;
@@ -1548,7 +1621,7 @@ body footer a {
 }
 
 .pdfgenerator button {
-  border-radius: 15px;
+  border-radius: 7px;
   border: none;
   margin: 15px;
   font-size: larger;
@@ -1625,8 +1698,8 @@ body footer a {
 
 .boardgame-wizard-modal .sw-theme-default .step-content {
   width: 100%;
-  border: 2px solid #e68c6d;
-  border-radius: 15px;
+  border: 2px solid #ea847d;
+  border-radius: 7px;
 }
 
 .boardgame-wizard-modal .sw-theme-default .nav-tabs {
@@ -1654,8 +1727,8 @@ body footer a {
 }
 
 .boardgame-wizard-modal .modal-content {
-  background-color: #eba48b;
-  border-radius: 13px;
+  background-color: #efa19c;
+  border-radius: 7px;
 }
 
 .boardgame-wizard-modal .modal-content .theme-selector .row {
@@ -1715,7 +1788,7 @@ body footer a {
 }
 
 .boardgame-wizard-modal .sw-theme-default .sw-toolbar {
-  background-color: #eba48b;
+  background-color: #efa19c;
 }
 
 .boardgame-wizard-modal .form-control:focus {
@@ -1742,7 +1815,7 @@ body footer a {
 }
 
 .boardgame-wizard-modal ul.step-anchor > li.done > a::after {
-  background: #e68c6d !important;
+  background: #ea847d !important;
   -webkit-transform: scale(1);
   transform: scale(1);
 }
@@ -1755,7 +1828,7 @@ body footer a {
 
 .boardgame-wizard-modal .btn-secondary {
   color: #3b1734;
-  border-radius: 15px;
+  border-radius: 7px;
   font-size: 20px;
   background-color: #995f8b;
   margin-top: 15px;
@@ -1763,7 +1836,7 @@ body footer a {
   min-width: 40px;
   background: #995f8b;
   font-size: 17px;
-  border-radius: 10px;
+  border-radius: 7px;
   border: none;
 }
 
@@ -1795,7 +1868,7 @@ body footer a {
 }
 
 .boardgame-wizard-modal #step-2-sortable_wrapper .connectedSortable.error {
-  background-color: rgba(235, 164, 139, 0.5);
+  background-color: rgba(239, 161, 156, 0.5);
 }
 
 .boardgame-wizard-modal .sortable-feedback {
@@ -1805,7 +1878,7 @@ body footer a {
 }
 
 .boardgame-wizard-modal .sortable-feedback.error {
-  color: #eb757d;
+  color: #e98289;
 }
 
 .error-message {

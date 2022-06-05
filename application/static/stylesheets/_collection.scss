@@ -44,7 +44,7 @@
 
     .pdf-generator-dropdown {
 
-        border-radius: 15px;
+        border-radius: $border-radius-modals;
         background-color: $color-red1-transparent;
         margin: 0;
         padding-bottom: 20px;
@@ -61,7 +61,7 @@
             padding: 20px;
             .pdf-showcase-inner {
                 border: 1px solid rgba(0,0,0,0.3);
-                border-radius: 10px;
+                border-radius: $border-radius-modals;
                 padding: 20px;
 
             }
@@ -82,7 +82,7 @@
         background-size: cover;
         // background-image is set on element with jinja
         position: relative; // so there can be a semitransparent background colour behind the text in the button
-        border-radius: 13px;
+        border-radius: $border-radius-modals;
 
         &:active {
 
@@ -144,7 +144,7 @@
 
 
     button {
-        border-radius: 15px;
+        border-radius: $border-radius-modals;
         border: none;
         margin: 15px;
         font-size: larger;
@@ -223,7 +223,7 @@
         .step-content {
             width: 100%;
             border: 2px solid darken($color-red2, 7%);
-            border-radius: 15px;
+            border-radius: $border-radius-modals;
         }
         .nav-tabs {
             border-bottom: none;
@@ -331,7 +331,7 @@
     .btn-secondary {
         color: $color-purp1;
         // Remaining styles copied straight from main-btn (can't change class)
-        border-radius: 15px;
+        border-radius: $border-radius-modals;
         font-size: 20px;
         background-color: $color-purp2;
     
@@ -340,7 +340,7 @@
         min-width: 40px;
         background: $color-purp2;
         font-size: 17px;
-        border-radius: 10px;
+        border-radius: $border-radius-modals;
         border: none;
         &:hover {
         cursor:pointer;

@@ -66,7 +66,7 @@ flex-wrap: wrap;
     .word-suggestion {
         background-color: $color-red2;
         border: 1px solid $color-red1;
-        border-radius: 12px;
+        border-radius: $border-radius-modals;
         margin: 3px;
         padding: 1px 7px;
     }

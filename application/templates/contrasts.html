@@ -35,8 +35,9 @@
     var renderedWordGroups = [];
 </script>
 
-
 <div class="container-fluid text-center titlebox">
+    <div class="title-text"><h1 class="page-title">{{ title_soundsearch }}</h1></div>
+
     <!-- Buttons for collapsing forms -->
     <button id="search-pair-collapse-btn" type="button" class="btn shadow top-button main-btn" data-toggle="collapse"
         data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
@@ -54,7 +55,7 @@
                 class="fas fa-minus-circle"></i> {{
             btn_clearall }} </button>
 
-        <button type="button" class="top-button addgroupbtn btn shadow m-auto main-btn"
+        <button type="button" class="top-button addgroupbtn btn shadow main-btn"
             style="display: {{ 'none' if collectedAll else 'inline-block' }};"
             onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=false)"
             data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i
@@ -90,11 +91,11 @@
 
                 <!-- tab content -->
                 <div class="tab-content" id="search-tabs-content">
-
-
+                    
                     <!-- form pane: search for pairs -->
                     <div class="tab-pane shadow orangebg {{'show active' if not MOmode else ''}}" id="searchPairs"
-                        role="tabpanel" aria-labelledby="home-tab">
+                    role="tabpanel" aria-labelledby="home-tab">
+                        <h2 class="subtitle-sound-search">{{ subtitle_soundsearch }}</h2>
                         {{ help_container("pairs-", help_pairs_title, help_soundsearch_cue, help_pairs_content) }}
                         <div class="form-wrapper">
 
@@ -123,6 +124,7 @@
                     <!-- form pane: search for MOs -->
                     <div class="tab-pane shadow redbg {{'show active' if MOmode else ''}}" id="searchMOs"
                         role="tabpanel" aria-labelledby="profile-tab">
+                        <h2 class="subtitle-sound-search">{{ subtitle_soundsearch_MO }}</h2>
                         <!-- collapsing form: search for multiple opposition sets -->
                         {{ help_container("MO-", help_MO_title, help_soundsearch_cue, help_MO_content) }}
                         <div class="form-wrapper">

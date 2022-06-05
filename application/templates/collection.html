@@ -53,7 +53,11 @@ Content
 {% block main %}
 
 <div class="collectionpage-main">
-
+<div class="titlebox">
+    <div class="title-text">
+        <h1 class="page-title"> {{ title_collection }}</h1>
+    </div>
+</div>
     <!-- CROPPER MODAL -->
     <div class="modal fade" id="croppermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -89,14 +93,14 @@ Content
     {% if collection|length %}
     <div class="container-fluid text-center pdfgenerator">
 
-        <button id="search-collapse-btn" type="button" class="btn shadow" data-toggle="collapse"
+        <button id="search-collapse-btn" type="button" class="btn shadow top-button" data-toggle="collapse"
             data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">{{ btn_PDFtool }} <i
                 id="rotate-icon" class="fas fa-angle-down"></i>
         </button>
         <script>
             var url_for_clear = "{{ url_for('user_blueprint.ajax_clear') }}";
         </script>
-        <button type="button" class="btn shadow" onclick="clear_collection(url_for_clear, event)" data-toggle="tooltip"
+        <button type="button" class="btn shadow top-button" onclick="clear_collection(url_for_clear, event)" data-toggle="tooltip"
             data-placement="top" title="{{ tooltip_clearall }}"><i class="fas fa-trash-alt"></i> {{ btn_clearall
             }}</button>
 

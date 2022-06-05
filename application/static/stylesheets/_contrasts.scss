@@ -14,7 +14,7 @@
 
     .main-btn {
 
-        border-radius: 15px;
+        border-radius: $border-radius-modals;
         font-size: 20px;
         background-color: $color-purp2;
     
@@ -23,7 +23,7 @@
         min-width: 40px;
         background: $color-purp2;
         font-size: 17px;
-        border-radius: 10px;
+        border-radius: $border-radius-modals;
         border: none;
         &:hover {
         cursor:pointer;
@@ -31,10 +31,6 @@
         
     }
 
-    
-    .top-button {
-        margin: 40px 0px;
-    }
 
     .removeallbtn {
         background-color: $color-red1;
@@ -47,7 +43,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 30px;
+        margin-top: 0px;
         .search-tabs {
             width: 600px;
             max-width: 100%;
@@ -110,7 +106,7 @@
         width: 600px;
         max-width: 100%;
         margin: auto;
-        border-radius: 15px;
+        border-radius: $border-radius-modals;
         @media only screen and (max-width: 620px)
         {
             width: 340px;
@@ -120,7 +116,7 @@
 
 .wordcard {
 margin-top: 20px;
-margin-bottom: 20px;
+margin-bottom: 10px;
         // Adjusting image height the tedious way to align with width
         @media only screen and (max-width: 576px) {
             //border: 3px solid red;
@@ -186,15 +182,15 @@ margin-bottom: 20px;
 
         .nav-item {
             
-            border-top-left-radius: 15px; // must be applied to both nav-link and nav-item
-            border-top-right-radius: 15px; // must be applied to both nav-link and nav-item
+            border-top-left-radius: $border-radius-modals; // must be applied to both nav-link and nav-item
+            border-top-right-radius: $border-radius-modals; // must be applied to both nav-link and nav-item
             @media only screen and (max-width: 370px) { 
                 // This max width is where the tabs wrap on top of each other given the current size of content and width
                 width: 50%;
             }
             .nav-link {
-                border-top-left-radius: 15px; // must be applied to both nav-link and nav-item
-                border-top-right-radius: 15px; // must be applied to both nav-link and nav-item
+                border-top-left-radius: $border-radius-modals; // must be applied to both nav-link and nav-item
+                border-top-right-radius: $border-radius-modals; // must be applied to both nav-link and nav-item
                 background-color: inherit;
                 border: none;
                 color: $color-purp1;
@@ -215,13 +211,19 @@ margin-bottom: 20px;
       .tab-pane {
         padding: 10px;
         padding-top: 15px;
-        border-bottom-left-radius: 15px;
+        border-bottom-left-radius: $border-radius-modals;
         border-bottom-right-radius: 15%;
+        margin-bottom: 30px;
         @media only screen and (min-width: 371px) { 
-            border-radius: 15px;
+            border-radius: $border-radius-modals;
         }
         color: $color-purp1;
         min-height: 200px;
+
+        .subtitle-sound-search {
+            margin-top: 10px;
+            font-size: 18px;
+        }
 
         .form-wrapper {
             display: flex;

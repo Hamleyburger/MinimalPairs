@@ -3,13 +3,25 @@
 $color-purp1: #3b1734; //kat og tekst
 $color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html
 $color-purp3: #caabbf; //lysere navbar?
+$color-red1: #e98289; //solen
+$color-red1-transparent: #fe586396; //??
+$color-red2: #efa19c; // mørk himmel blend
+$color-yel1: #f3b08c; // ?
+$color-yel2: #dec7d6; // Himmelen
+$color-yel2-sun: #f8d894; // Himmelen
+$color-yel3: #fff8fb; // Næsten hvid
+
+/* Old, light yellow theme:
+$color-purp1: #3b1734; //kat og tekst
+$color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html
+$color-purp3: #caabbf; //lysere navbar?
 $color-red1: #eb757d; //solen
 $color-red1-transparent: #fe586396; //??
 $color-red2: #eba48b; // mørk himmel blend
 $color-yel1: #f3b08c; // ?
 $color-yel2: #f8d894; // Himmelen
 $color-yel3: #fffae9; // Næsten hvid
-
+*/
 
 :root {
 --color-purp1: #{$color-purp1};
@@ -20,12 +32,13 @@ $color-yel3: #fffae9; // Næsten hvid
 --color-red2: #{$color-red2};
 --color-yel1: #{$color-yel1}; 
 --color-yel2: #{$color-yel2};
+--color-yel2-sun: #{$color-yel2-sun};
 --color-yel3: #{$color-yel3};
 }
 
 $ipa-font: "Times New Roman";
 $border-radius-word-info: 3px;
-$border-radius-modals: 13px;
+$border-radius-modals: 7px;
 $footer-height: 180px; // becasue footer needs to be absolute positioned for when page has too little content
 @function neg($val) {
     @return $val * -1

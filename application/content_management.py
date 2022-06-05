@@ -54,6 +54,8 @@ def Content(locale=None):
 
         # Find contrasts
         "title_soundsearch": "Find kontraster",
+        "subtitle_soundsearch": "Find minimale par ved at søge på lyde",
+        "subtitle_soundsearch_MO": "Find multiple oppositioner ved at søge på lyde",
         "url_soundsearch": "find-kontraster",
         "btn_sound": "lydsøgning",
         "tab_pairs": "Minimale par",
@@ -201,6 +203,8 @@ def Content(locale=None):
 
         # Find contrasts
         "title_soundsearch": "Sound search",
+        "subtitle_soundsearch": "Find minimal pairs using sound search",
+        "subtitle_soundsearch_MO": "Find multiple oppositions using sound search",
         "url_soundsearch": "sound-search",
         "btn_sound": "sound search",
         "tab_pairs": "Pairs",
