@@ -188,8 +188,8 @@
                     <li class="nav-item">
                         <a class="nav-link"
                             href="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
-                            {{nav_collection |safe }} 
-                            <span id="collection-length"> &nbsp;({{ session["collection"]|length }})</span>
+                            {{nav_collection |safe }}&nbsp;
+                            <span id="collection-length"> ({{ session["collection"]|length }})</span>
                         </a>
                     </li>
                 </ul>
