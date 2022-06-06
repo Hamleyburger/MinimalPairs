@@ -31,7 +31,7 @@ def Content(locale=None):
                 Derfor er minimale par gode til at vise hvordan en lyd\
                 kan være afgørende for et ords betydning. Hvis jeg for eksempel erstatter [k] med [d], bliver "krage" til "drage", og\
                 så har jeg pludselig en flok drager på taget.\
-                <p> "Minimale Par" er en voksende database med ord og (nogle) billeder, der danner par på kryds og tværs. \
+                <p> "Minimale Par" er en voksende database med ord og billeder, der danner par på kryds og tværs. \
                 <dl>\
                 <dt>Indholdet er tilpasset brug i logopædisk praksis</dt>\
                     <dd>Materialet er ikke videnskabeligt akkurat - ordparrene er tilføjet et af gangen efter behov, baseret på en kvalitativ vurdering</dd>\
@@ -45,7 +45,7 @@ def Content(locale=None):
                 </dl>\
                 </p>\
                 \
-                <p>På siden <i>find kontraster</i> kan du søge på lyde med IPA-symboler og finde både minimale par og serier (multiple oppositioner). \
+                <p>På siden <i>find kontraster</i> kan du foretage en lydsøgning med IPA-symboler og finde både minimale par og multiple oppositioner. \
                 Ordene kan tilføjes til en samling med <i class = "fas fa-plus-circle" > \
                 </i> og fjernes med <i class ="fas fa-minus-circle"></i> \
                 Fra siden <i>samling</i> kan du tilføje de billeder, der mangler, dublere ord og generere en PDF-fil, \
