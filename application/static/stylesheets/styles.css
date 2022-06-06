@@ -567,7 +567,7 @@ body .sidecol .sidebar .news-card {
   background-color: #caabbf;
   padding: 13px;
   padding-top: 12px;
-  margin: 5px;
+  margin: 13px;
   color: #3b1734;
   border-radius: 7px;
 }
@@ -734,43 +734,38 @@ body footer a {
 }
 
 .frontpage-container .text-container {
-  font-size: 14px;
-  font-weight: normal;
-  position: relative;
-  margin-bottom: 50%;
+  padding: 13px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
-@media (min-width: 768px) {
+@media only screen and (min-width: 851px) {
   .frontpage-container .text-container {
-    padding-left: 2%;
+    padding-right: 0;
   }
 }
 
-@media (min-width: 992px) {
-  .frontpage-container .text-container {
-    padding-left: 5%;
-  }
-}
-
-.frontpage-container .text-container [class*="col-"], .frontpage-container .text-container .col {
-  color: #e7d7e2;
+.frontpage-container .text-container h1 {
+  font-size: 30px;
 }
 
 .frontpage-container .text-container .about-text {
-  padding: 0;
+  padding: 30px;
+  max-width: 845px;
+  background-color: #caabbf;
+  border-radius: 7px;
+  font-weight: normal;
 }
 
 .frontpage-container .text-container .about-text .text-wrapper {
   width: 100%;
   max-width: 540px;
   padding: 35px;
-  background-color: #3b1734;
   border-radius: 30px;
-  position: relative;
-}
-
-.frontpage-container .text-container .about-text .text-wrapper h1 {
-  font-size: 30px;
 }
 
 .frontpage-container .text-container .about-text .text-wrapper dd {

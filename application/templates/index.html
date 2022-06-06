@@ -28,24 +28,14 @@
     <div class="container-fluid illustration-container">
         {{ illustration() }}
     </div>
-    <div class="container-fluid text-container overflow-hidden">
-        <div class="row">
-            <div class="col"></div>
-        </div>
-        <div class="row justify-content-around">
+    <div class="container-fluid text-container">
+        <div class="about-text">
 
-            <div class="about-text col-sm-9 col-md-9 col-lg-8">
-
-                <div class="text-wrapper">
-                    <div class="purpletransbg"></div>
-                    <!-- class biggercircle used to be next to purpletransbg-->
-                    <h1>{{ about[0] |safe }}</h1>
-                    {{ about[1] |safe }}
-                    {{ planet() }}
-                </div>
-            </div>
-            <div class="col"></div>
+            <h1>{{ about[0] |safe }}</h1>
+            {{ about[1] |safe }}
+            {{ planet() }}
         </div>
+        
     </div>
 </div>
 
