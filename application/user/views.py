@@ -355,10 +355,9 @@ def ajax_clear():
     )
 
 
-@ user_blueprint.route("/ajax_change_language/<newlocale>", methods=["GET", "POST"])
+@ user_blueprint.route("/ajax_change_language/<newlocale>/", methods=["GET", "POST"])
 # Receives changes from user and makes changes in session
 def change_language(newlocale):
-    print(request.referrer)
 
     if newlocale in app.config["LANGUAGES"]:
         print("clicked valid lang button: {}".format(newlocale))
@@ -369,7 +368,10 @@ def change_language(newlocale):
 
     print("redirect request referrer: {}".format(request.referrer))
     print("endpoint: {}".format(request.endpoint))
-    return redirect(request.referrer)
+    redirect_url = request.referrer
+    if redirect_url == None:
+        redirect_url = url_for('user_blueprint.index', locale=newlocale)
+    return redirect(redirect_url)
 
 
 @ user_blueprint.route("/ajax_upload_image", methods=["POST"])
