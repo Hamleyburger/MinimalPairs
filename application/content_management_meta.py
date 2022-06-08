@@ -37,7 +37,7 @@ meta_da = {
     "contrasts": {
 
         # Layout (if nothing else is provided)
-        "description": "På \'find kontrster\' kan du søge på lyde med IPA-tegn og finde minimale par og multiple oppositioner, der kan bruges til at lave ord- og billedmaterialer.",
+        "description": "På \'find kontraster\' kan du søge på lyde med IPA-tegn og finde minimale par og multiple oppositioner, der kan bruges til at lave ord- og billedmaterialer.",
         "og_description": "Find minimale par ved at søge på IPA-tegn",
         "og_image": "permaimages/og/ogfindkontraster.jpg",  # Just the path to the image
         "og_image_alt": "Illustration til siden 'find kontraster'",
