@@ -282,7 +282,7 @@ def collection(locale):
     return render_template("collection.html", collection=collection, form=form)
 
 
-@ user_blueprint.route("/ajax_add2collection", methods=["POST"])
+@ user_blueprint.route("/ajax_add2collection/", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_add2collection():
 
@@ -304,7 +304,7 @@ def ajax_add2collection():
     )
 
 
-@ user_blueprint.route("/ajax_remove_from_collection", methods=["POST"])
+@ user_blueprint.route("/ajax_remove_from_collection/", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_remove_from_collection():
 
@@ -325,7 +325,7 @@ def ajax_remove_from_collection():
     )
 
 
-@ user_blueprint.route("/ajax_collect_many", methods=["POST"])
+@ user_blueprint.route("/ajax_collect_many/", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_collect_many():
 
@@ -344,7 +344,7 @@ def ajax_collect_many():
     )
 
 
-@ user_blueprint.route("/ajax_clear", methods=["POST"])
+@ user_blueprint.route("/ajax_clear/", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_clear():
 
@@ -374,7 +374,7 @@ def change_language(newlocale):
     return redirect(redirect_url)
 
 
-@ user_blueprint.route("/ajax_upload_image", methods=["POST"])
+@ user_blueprint.route("/ajax_upload_image/", methods=["POST"])
 # For user to upload image to be cropped
 def upload_image():
 
@@ -395,7 +395,7 @@ def upload_image():
     return jsonify({'error': 'Missing file'})
 
 
-@ user_blueprint.route("/ajax_validate_image", methods=["POST"])
+@ user_blueprint.route("/ajax_validate_image/", methods=["POST"])
 # For validating the image with python
 def validate_browser_image():
 
@@ -416,7 +416,7 @@ def validate_browser_image():
     return jsonify({'error': 'Missing file'})
 
 
-@ user_blueprint.route("/ajax_duplicate_in_collection", methods=["POST"])
+@ user_blueprint.route("/ajax_duplicate_in_collection/", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_duplicate_in_collection():
 
@@ -431,7 +431,7 @@ def ajax_duplicate_in_collection():
         session=getCollection()
     )
 
-@ user_blueprint.route("/ajax_get_boardgame_filenames", methods=["POST"])
+@ user_blueprint.route("/ajax_get_boardgame_filenames/", methods=["POST"])
 # Receives changes from user (required number of words/images) and makes changes in session ()
 def ajax_get_boardgame_filenames():
 
