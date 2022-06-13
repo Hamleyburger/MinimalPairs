@@ -157,6 +157,12 @@ def Content(locale=None):
         "title_pdf": "Ordkort",
         "missing_custom_image": "Brugerdefinerede billeder slettes efter noget tid. Hvis billedet mangler, så prøv at uploade billedet igen: ",
 
+
+        # Stripe checkout
+        "title_checkout": "Tjek ud",
+        "title_thankyou": "1000 tak! <3",
+        "text_thankyou": "Det er takket være mennesker som dig, at minimalepar.dk har et sted at bo.",
+        "title_cancelled": "Anulleret"
     }
 
     text_en = {
@@ -306,6 +312,14 @@ def Content(locale=None):
         # Rendered PDF
         "title_pdf": "Word cards",
         "missing_custom_image": "Custom images are removed from the server after a while. If the image is missing try uploading it again: ",
+
+
+        # Stripe checkout
+        "title_checkout": "Checkout",
+        "title_thankyou": "Thank you! <3",
+        "text_thankyou": "Thanks to people like you minimalepar.dk can continue to exist.",
+        "title_cancelled": "Cancelled"
+
     }
 
     text_da.update(meta_da)

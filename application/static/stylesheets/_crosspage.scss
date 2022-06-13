@@ -44,8 +44,29 @@
     }
 }
     
-// ipa picker used in add.html and contrasts.html as macro
 
+
+.main-btn {
+
+    border-radius: $border-radius-modals;
+    font-size: 20px;
+
+    margin-top: 15px;
+    height: 38px;
+    min-width: 40px;
+    background: $color-purp2;
+    font-size: 17px;
+    border-radius: $border-radius-modals;
+    border: none;
+    &:hover {
+    cursor:pointer;
+    }
+    
+}
+
+
+
+// ipa picker used in add.html and contrasts.html as macro
 .ipa-container {
     margin: 50px auto;
     border: 2px solid $color-purp1;

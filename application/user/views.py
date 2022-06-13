@@ -1,3 +1,4 @@
+from math import prod
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort, send_from_directory
 import json
 from user_agents import parse
@@ -6,7 +7,7 @@ from pyphen import LANGUAGES
 from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used, hasimage, order_MOsets_by_image, refresh_session_news
 import random
 from application.models import Word, Group, Sound, SearchedPair
-from .models import User, Userimage
+from .models import User, Userimage, Donation
 from ..admin.models import News
 from application import db, app
 from .forms import SearchSounds, SearchMOs, toPDF_wrap
@@ -16,6 +17,7 @@ from application.admin.filehelpers import validate_image
 import os
 from werkzeug.utils import secure_filename
 import sentry_sdk
+import stripe
 
 
 
@@ -122,7 +124,6 @@ def wordinfo(word_id, locale):
         return render_template("wordinfo.html", word=word, pairLists=pairLists, MOsets=MOsets, groups=groups)
     else:
         abort(404)
-
 
 
 @user_blueprint.route("/find-kontraster/", methods=["GET", "POST"])
@@ -280,6 +281,136 @@ def collection(locale):
                 return render_pdf(html, stylesheets=[css])
 
     return render_template("collection.html", collection=collection, form=form)
+
+
+@user_blueprint.route(f"/checkout/", methods=["GET"])
+@ensure_locale
+def checkout(locale):
+
+    stripe_products = stripe.Product.search(query="metadata['type']:'donation'")
+
+    products = []
+    for product in stripe_products:
+
+        this_product = {}
+        this_price = stripe.Price.retrieve(product["default_price"])
+        amount = int(this_price["unit_amount"] / 100) # comes out in øre
+
+        this_product["id"] = product["id"]
+        this_product["name"] = product["name"]
+        this_product["amount"] = amount
+        if product["images"]:
+            this_product["image_url"] = product["images"][0]
+        else:
+            this_product["image_url"] = ""
+    
+        products.append(this_product)
+
+    def get_amount(product):
+        return int(product["amount"])
+    products.sort(reverse=False, key=get_amount) # (sort function passes list item to key function automatically)
+
+    
+    
+
+    return render_template("stripe/checkout.html", products=products)
+
+
+@user_blueprint.route(f"/tak/", methods=["GET"])
+@ensure_locale
+def thankyou(locale):
+    session_id = request.args.get("session_id")
+    text = ""
+    love = None
+    if session_id:
+
+        stripe_session = stripe.checkout.Session.retrieve(session_id)
+        amount_paid = int(stripe_session["amount_total"]) / 100
+        supporter_name = stripe_session["customer_details"]["name"]
+        supporter_email = stripe_session["customer_details"]["email"]
+
+        try:
+            donor_exists = db.session.query(Donation).filter_by(session_id=session_id).first()
+            if not donor_exists:
+                new_donor = Donation(
+                    session_id=session_id, 
+                    name=supporter_name,
+                    email=supporter_email,
+                    amount=amount_paid
+                    )
+                db.session.add(new_donor)
+                db.session.commit()
+            else:
+                print("donor exists and this is an old session")
+        except Exception as e:
+            print(e)
+        text = Content()["text_thankyou"]
+        love = True
+    else:
+        text = "Nothing here."
+        love = False
+    return render_template("stripe/thankyou.html", text=text, love=love)
+
+
+@user_blueprint.route(f"/betaling-annulleret/", methods=["GET"])
+@ensure_locale
+def cancelled(locale):
+
+    return render_template("stripe/cancelled.html")
+
+
+@ user_blueprint.route("/ajax_get_stripe_key/") # can this be made post method only?
+def get_stripe_key():
+
+    stripe_config = {"publicKey": app.config["STRIPE_PUBLIC_KEY"]}
+    return jsonify(stripe_config)
+
+
+@user_blueprint.route("/ajax-create-checkout-session", methods=['GET', 'POST'])
+def create_checkout_session():
+
+    success_url = url_for('user_blueprint.thankyou', _external=True) + "?session_id={CHECKOUT_SESSION_ID}"
+    cancel_url = url_for('user_blueprint.cancelled', _external=True)
+
+    stripe.api_key = app.config["STRIPE_SECRET_KEY"]
+
+    try:
+
+        product_id = request.get_json()["product_id"]
+        product = stripe.Product.retrieve(product_id)
+        price = stripe.Price.retrieve(product["default_price"])
+        price_id = price["id"]
+
+        # TODO: Use json to get product id and use this to get price id to create the price of donation
+
+
+        # Create new Checkout Session for the order
+        # ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
+        checkout_session = stripe.checkout.Session.create(
+            success_url=success_url,
+            cancel_url=cancel_url,
+            payment_method_types=["card"],
+            mode="payment",
+            line_items=[
+                {
+                    "quantity": 1,
+                    "price": price_id,
+                }
+            ]
+        )
+        print("Checkout session id: {}".format(checkout_session["id"]))
+        return jsonify({"sessionId": checkout_session["id"]})
+    except Exception as e:
+        raise e
+        print("returning exception")
+        return jsonify(error=str(e)), 403
+
+
+
+
+
+
+
 
 
 @ user_blueprint.route("/ajax_add2collection/", methods=["POST"])

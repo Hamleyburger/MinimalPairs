@@ -11,10 +11,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager
 from .content_management import Content
 from flask_migrate import Migrate
+import stripe
 
 
 
-
+# Sentry
 def before_send(event, hint):
     if app.config["DEBUG"]:
         print("\n\nNot sending error event to Sentry.io")
@@ -29,7 +30,7 @@ sentry_sdk.init(
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.
-    traces_sample_rate=0.2,
+    traces_sample_rate=0,
     before_send=before_send
 
 )
@@ -59,8 +60,11 @@ migrate = Migrate(app, db)
 from .user.models import User, Userimage
 user_manager = UserManager(app, db, User)
 
-# Flask migrate
+# Instantiate Flask migrate
 migrate = Migrate(app, db, render_as_batch=True)
+
+# Configure Stripe
+stripe.api_key = app.config["STRIPE_SECRET_KEY"]
 
 
 # Views.py must be imported AFTER instantiating the app. Otherwise circular import problems

@@ -1,0 +1,57 @@
+.checkoutcontainer {
+
+
+
+    .checkoutrow {
+        
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 50px;
+        justify-content: center;
+        
+        .productcard {
+            
+            cursor: pointer;
+            width: 210px;
+            height: 250px;
+            padding: 10px;
+            padding-top: 30px;
+            padding-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            
+            margin: 20px;
+            border-radius: $border-radius-modals;
+            background-color: $color-yel3;
+            
+            text-align: center;
+            .price-tag {
+                font-size: 40px;
+                font-weight: 900;
+            }
+
+            img {
+                //width: 180px;
+                height: 58%;
+                //margin-bottom: 10px;;
+            }
+            p {
+                margin-bottom: 0;
+            }
+
+            .button {
+                margin-bottom: 20px;
+            }
+
+        }
+    }
+}
+
+// For cancelled and thankyou templates:
+.after-checkout-row {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}

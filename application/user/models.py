@@ -228,3 +228,16 @@ class Userimage(db.Model):
 
         cls.remove_orphan_files()
         cls.remove_empty_dirs()
+
+
+class Donation(db.Model):
+    """ An overview of donations and where they came from """
+    __tablename__ = "donations"
+    __table_args__ = {'extend_existing': True}
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    session_id = db.Column(db.String(), nullable=False)
+    name = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    amount = db.Column(db.Float, nullable=False)

@@ -7,29 +7,11 @@
 // For contrasts.html **************************
 .titlebox {
 
+    margin-top: 50px;
+    margin-bottom: 20px;
     color: $color-purp1;
     align-content: center;
     //font-family: Arial, Helvetica, sans-serif;
-
-
-    .main-btn {
-
-        border-radius: $border-radius-modals;
-        font-size: 20px;
-        background-color: $color-purp2;
-    
-        margin-top: 15px;
-        height: 38px;
-        min-width: 40px;
-        background: $color-purp2;
-        font-size: 17px;
-        border-radius: $border-radius-modals;
-        border: none;
-        &:hover {
-        cursor:pointer;
-        }
-        
-    }
 
 
     .removeallbtn {

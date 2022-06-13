@@ -1,4 +1,4 @@
-{% from 'catmacros.html' import illustration, planet %}
+{% from 'catmacros.html' import illustration %}
 {% extends "layout.html" %}
 <!-- {% from 'macros.html' import group_card, pair_card %} -->
 
@@ -33,7 +33,6 @@
 
             <h1>{{ about[0] |safe }}</h1>
             {{ about[1] |safe }}
-            {{ planet() }}
         </div>
         
     </div>
