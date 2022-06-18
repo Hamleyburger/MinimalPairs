@@ -283,9 +283,9 @@ def collection(locale):
     return render_template("collection.html", collection=collection, form=form)
 
 
-@user_blueprint.route(f"/checkout/", methods=["GET"])
+@user_blueprint.route(f"/donate/", methods=["GET"])
 @ensure_locale
-def checkout(locale):
+def donate(locale):
 
     stripe_products = stripe.Product.search(query="metadata['type']:'donation'")
 
@@ -313,7 +313,7 @@ def checkout(locale):
     
     
 
-    return render_template("stripe/checkout.html", products=products)
+    return render_template("stripe/donate.html", products=products)
 
 
 @user_blueprint.route(f"/tak/", methods=["GET"])
