@@ -162,7 +162,9 @@ def Content(locale=None):
         "title_checkout": "Tjek ud",
         "title_thankyou": "1000 tak! <3",
         "text_thankyou": "Det er takket være mennesker som dig, at minimalepar.dk har et sted at bo.",
-        "title_cancelled": "Anulleret"
+        "title_cancelled": "Anulleret",
+        "donation_text": "Minimalepar.dk er et enkeltmandsprojekt udviklet, tegnet og vedligeholdt i min fritid. Ved at donere, hjælper du til med at dække omkostningerne (server, domæne mv.) og dermed holde minimalepar.dk i live. Jeg er ekstremt taknemmelig for enhver støtte.",
+        "paypal_donation_link": "https://www.paypal.com/donate/?hosted_button_id=725GUDGS7PG5Q"
     }
 
     text_en = {
@@ -318,7 +320,9 @@ def Content(locale=None):
         "title_checkout": "Checkout",
         "title_thankyou": "Thank you! <3",
         "text_thankyou": "Thanks to people like you minimalepar.dk can continue to exist.",
-        "title_cancelled": "Cancelled"
+        "title_cancelled": "Cancelled",
+        "donation_text": "Minimalepar.dk is a one-man project developed, drawn and maintained in my free time. With your donation you will help cover the costs (server, domain etc.) and thus help keep minimalepar.dk alive. I am extremely grateful for any support.",
+        "paypal_donation_link": "https://www.paypal.com/donate/?hosted_button_id=725GUDGS7PG5Q"
 
     }
 

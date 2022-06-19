@@ -1864,12 +1864,33 @@ $color-yel3: #fffae9; // Næsten hvid
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.checkoutcontainer .checkoutrow .donation-text {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.checkoutcontainer .checkoutrow .donation-text p {
+  margin: auto;
+  max-width: 710px;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 1085px) {
+  .checkoutcontainer .checkoutrow .donation-text p {
+    max-width: 460px;
+  }
 }
 
 .checkoutcontainer .checkoutrow .productcard {
   cursor: pointer;
   width: 210px;
   height: 250px;
+  margin: 20px;
   padding: 10px;
   padding-top: 30px;
   padding-bottom: 20px;
@@ -1886,7 +1907,6 @@ $color-yel3: #fffae9; // Næsten hvid
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: 20px;
   border-radius: 7px;
   background-color: #fff8fb;
   text-align: center;
@@ -1897,8 +1917,11 @@ $color-yel3: #fffae9; // Næsten hvid
   font-weight: 900;
 }
 
-.checkoutcontainer .checkoutrow .productcard img {
+.checkoutcontainer .checkoutrow .productcard img, .checkoutcontainer .checkoutrow .productcard .ppicon {
   height: 58%;
+  font-size: 90px;
+  color: #3b1734;
+  margin-bottom: auto;
 }
 
 .checkoutcontainer .checkoutrow .productcard p {
@@ -1907,6 +1930,13 @@ $color-yel3: #fffae9; // Næsten hvid
 
 .checkoutcontainer .checkoutrow .productcard .button {
   margin-bottom: 20px;
+}
+
+.checkoutcontainer .paypal-btn {
+  margin-bottom: 40px;
+  margin-top: 40px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .after-checkout-row {

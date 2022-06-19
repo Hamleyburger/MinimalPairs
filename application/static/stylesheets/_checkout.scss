@@ -9,12 +9,33 @@
         flex-wrap: wrap;
         padding: 50px;
         justify-content: center;
+        max-width: 1000px;
+        margin: auto;
+
+        $cardwidth: 210px;
+        $margwidth: 20px;
+
+        .donation-text {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 30px;
+            p {
+                margin: auto;
+                max-width: ($cardwidth * 3) + ($margwidth * 4);
+                @media only screen and (max-width: 1085px) {
+                    max-width: ($cardwidth * 2) + ($margwidth * 2);
+                }
+                margin-bottom: 10px;
+            }
+
+        }
         
         .productcard {
             
             cursor: pointer;
-            width: 210px;
+            width: $cardwidth;
             height: 250px;
+            margin: $margwidth;
             padding: 10px;
             padding-top: 30px;
             padding-bottom: 20px;
@@ -23,7 +44,6 @@
             justify-content: flex-end;
             align-items: center;
             
-            margin: 20px;
             border-radius: $border-radius-modals;
             background-color: $color-yel3;
             
@@ -33,9 +53,12 @@
                 font-weight: 900;
             }
 
-            img {
+            img, .ppicon {
                 //width: 180px;
                 height: 58%;
+                font-size: 90px;
+                color: $color-purp1;
+                margin-bottom: auto;
                 //margin-bottom: 10px;;
             }
             p {
@@ -47,6 +70,13 @@
             }
 
         }
+    }
+
+    .paypal-btn {
+        margin-bottom: 40px;
+        margin-top: 40px;
+        text-decoration: none;
+        color: inherit;
     }
 }
 

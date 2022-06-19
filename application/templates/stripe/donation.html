@@ -33,7 +33,13 @@
             </div>
         </div>
         <div class="checkoutrow">
+            <div class="donation-text">
 
+                <p>
+                    {{ donation_text }}
+                </p>
+
+            </div>
             {% for product in products %}
             <div class="productcard shadow stripe-submitBtn" data-id="{{ product.id }}">
                 <img src="{{ product.image_url }}" alt="billede af produkt">
@@ -45,7 +51,16 @@
                  </p>
             </div>
             {% endfor %}
+            <a href="{{ paypal_donation_link }}" class="productcard shadow paypal-btn"">
+                <p class="ppicon">
+                    <i class="fa fa-paypal"></i>
+                </p>
+                <p>
+                    Valgfrit beløb med PayPal
+                </p>
 
+
+            </a>
 
         </div>
     </div>
