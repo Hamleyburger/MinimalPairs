@@ -26,12 +26,17 @@
 {% block main %}
 
   <section class="section">
-    <div class="row justify-content-center after-checkout-row">
+    <div class="row after-checkout-row">
       <div class=".col-10 col-sm-6 col-md-4 text-center">
         {% if love %}
         <h2>{{ title_thankyou }}</h2>
         {% endif %}
         <p class=""> {{ text }} </p>
+      </div>
+      <div class="col-12">
+
+        <img class="thankyouimage" src="{{ url_for('static', filename='permaimages/taklogokat.svg') }}"
+        alt="image for thanks">
       </div>
     </div>
   </section>

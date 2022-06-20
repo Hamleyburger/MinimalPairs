@@ -18,8 +18,10 @@ def Content(locale=None):
         "title_all": "Minimale Par",
         "nav_find": "Find kontraster",
         "nav_collection": "Samling",
+        "nav_donation": "Støt",
         "nav_language": "Sprog",
         "latest_news": "Nyeste tilføjelser",
+        "news_added": "Tilføjet",
         "footer_copyright": "Copyright 2021 | <a href='https://github.com/Hamleyburger'>Alma Manley</a> | All Rights Reserved",
 
 
@@ -159,8 +161,8 @@ def Content(locale=None):
 
 
         # Stripe checkout
-        "title_checkout": "Tjek ud",
-        "title_thankyou": "1000 tak! <3",
+        "title_checkout": "Støt",
+        "title_thankyou": "1000 tak!",
         "text_thankyou": "Det er takket være mennesker som dig, at minimalepar.dk har et sted at bo.",
         "title_cancelled": "Anulleret",
         "donation_text": "Minimalepar.dk er et enkeltmandsprojekt udviklet, tegnet og vedligeholdt i min fritid. Ved at donere, hjælper du til med at dække omkostningerne (server, domæne mv.) og dermed holde minimalepar.dk i live. Jeg er ekstremt taknemmelig for enhver støtte.",
@@ -179,8 +181,10 @@ def Content(locale=None):
         "title_all": "Minimal Pairs",
         "nav_find": "Find Contrasts",
         "nav_collection": "Collection",
+        "nav_donation": "Donate",
         "nav_language": "Language",
         "latest_news": "Latest additions",
+        "news_added": "Added",
         "footer_copyright": "Copyright 2021 | <a href='https://github.com/Hamleyburger'>Alma Manley</a> | All Rights Reserved",
 
         # Front page
@@ -317,8 +321,8 @@ def Content(locale=None):
 
 
         # Stripe checkout
-        "title_checkout": "Checkout",
-        "title_thankyou": "Thank you! <3",
+        "title_checkout": "Support",
+        "title_thankyou": "Thanks so much!",
         "text_thankyou": "Thanks to people like you minimalepar.dk can continue to exist.",
         "title_cancelled": "Cancelled",
         "donation_text": "Minimalepar.dk is a one-man project developed, drawn and maintained in my free time. With your donation you will help cover the costs (server, domain etc.) and thus help keep minimalepar.dk alive. I am extremely grateful for any support.",
