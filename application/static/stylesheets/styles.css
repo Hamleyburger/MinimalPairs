@@ -183,10 +183,6 @@ $color-yel3: #fffae9; // Næsten hvid
   color: #fff8fb;
 }
 
-.about-text .fa-plus-circle {
-  color: #caabbf;
-}
-
 .fa-search {
   color: #3b1734;
 }
@@ -352,7 +348,6 @@ $color-yel3: #fffae9; // Næsten hvid
 
 .page-title {
   font-size: 30px;
-  margin-top: 30px;
 }
 
 .FU-container {
@@ -404,8 +399,13 @@ $color-yel3: #fffae9; // Næsten hvid
           align-items: flex-end;
 }
 
-.navbar .nav-link:hover {
-  color: unset;
+.navbar .nav-link:hover, .navbar .nav-link:focus {
+  color: #3b1734;
+}
+
+.navbar .nav-link .donate-icon {
+  font-size: 28px;
+  text-decoration: none;
 }
 
 .navbar a {
@@ -981,7 +981,7 @@ $color-yel3: #fffae9; // Næsten hvid
 }
 
 .titlebox {
-  margin-top: 50px;
+  margin-top: 70px;
   margin-bottom: 20px;
   color: #3b1734;
   -ms-flex-line-pack: center;
@@ -1050,7 +1050,6 @@ $color-yel3: #fffae9; // Næsten hvid
 }
 
 .titlebox .title-text {
-  margin-top: 15px;
   font-size: 1.7rem;
   font-weight: 700;
   text-align: center;
@@ -1942,6 +1941,26 @@ $color-yel3: #fffae9; // Næsten hvid
 .after-checkout-row {
   margin-top: 100px;
   margin-bottom: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 30px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.after-checkout-row .col-12 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-self: center;
+}
+
+.thankyouimage {
+  width: 500px;
+  margin: auto;
+  max-width: 100%;
 }
 
 .error-message {

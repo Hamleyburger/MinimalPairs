@@ -7,6 +7,7 @@
     padding-top: 10px;
     padding-bottom: 26px;
 
+    
     .nav-link {
         font-size: 18px;
         text-align: center;
@@ -14,9 +15,15 @@
         margin-bottom: 12px; // used to align manually with SVG text logo
         display: flex;
         align-items: flex-end;
+        
+        &:hover, &:focus{
+            color: $color-purp1;
+        }
 
-        &:hover {
-            color: unset;
+        .donate-icon {
+            font-size: 28px;
+            text-decoration: none;
+
         }
     }
 

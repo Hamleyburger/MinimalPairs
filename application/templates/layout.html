@@ -89,6 +89,7 @@
 
         <!-- Fontawesome -->
         <script src="https://kit.fontawesome.com/603271f4a3.js" crossorigin="anonymous"></script>
+        
 
         <!-- moment.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
@@ -152,7 +153,7 @@
 
 
     <body>
-        <nav class="navbar navbar-expand-md shadow">
+        <nav class="navbar navbar-expand-lg shadow">
 
             <a href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
                 <div class="logo">
@@ -193,9 +194,17 @@
                         </a>
                     </li>
                 </ul>
-
+                
                 <!-- nav links that sit on the right when expanded -->
                 <ul class="navbar-nav ml-auto">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="{{ url_for('user_blueprint.donation', locale=session.locale) }}">
+                            <i class="fa-solid fa-piggy-bank donate-icon"></i>
+                            
+                        </a>
+                    </li>
 
                     {% if g.showglobe %}
                     {# showglobe makes language change show. Is set in decorator 'ensure_locale' #}
@@ -266,7 +275,7 @@
                                     {% endif %}
                                 </h4>
                                 <p class="news-date">
-                                    {{ news.date_posted }}
+                                    {{ news_added }} {{ news.date_posted }}
                                 </p>
                                 {% if news.text %}
                                 <div class="news-body">

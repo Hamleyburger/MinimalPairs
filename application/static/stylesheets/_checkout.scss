@@ -1,6 +1,6 @@
+// Styles for chackout and thankyou and cancel
+
 .checkoutcontainer {
-
-
 
     .checkoutrow {
         
@@ -84,4 +84,19 @@
 .after-checkout-row {
     margin-top: 100px;
     margin-bottom: 100px;
+    display: flex;
+    padding: 30px;
+    // flex-direction: column-reverse;
+    justify-content: center;
+    // align-items: center;
+    .col-12 {
+        display: flex;
+        justify-self: center;
+    }
+}
+
+.thankyouimage {
+    width: 500px;
+    margin: auto;
+    max-width: 100%;
 }
