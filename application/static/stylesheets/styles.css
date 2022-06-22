@@ -599,7 +599,7 @@ body .sidecol .sidebar .news-card .news-title {
   margin-bottom: 0;
 }
 
-body .sidecol .sidebar .news-card .news-word-image img {
+body .sidecol .sidebar .news-card .news-image img {
   width: 100%;
   -webkit-box-shadow: 2px 2px 10px 1px rgba(59, 23, 52, 0.1);
           box-shadow: 2px 2px 10px 1px rgba(59, 23, 52, 0.1);
@@ -648,7 +648,7 @@ body .sidecol .sidebar .news-card .news-word-image img {
         -ms-flex-pack: justify;
             justify-content: space-between;
   }
-  body .sidecol .sidebar .news-card .news-word-image {
+  body .sidecol .sidebar .news-card .news-image {
     max-width: 200px;
   }
 }

@@ -201,6 +201,7 @@ class NewsForm(FlaskForm):
     text_en = TextAreaField("Content (en)", validators=[Length(max=2000)])
     date_posted = DateTimeField("Datetime", default=datetime.today)
     word = QuerySelectField(query_factory=word_query, allow_blank=True, get_label='word', blank_text='None')
+    image = FileField("Image", validators=[imageOK])
     submit_news = SubmitField()
 
     def __repr__(self):

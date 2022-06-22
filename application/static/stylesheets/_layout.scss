@@ -196,7 +196,7 @@ body {
 
                 }
 
-                .news-word-image {
+                .news-image {
                     img {
                         width: 100%;
                         box-shadow: 2px 2px 10px 1px rgba($color-purp1, 0.1);
@@ -231,7 +231,7 @@ body {
                         display: flex;
                         flex-direction: row;
                         justify-content: space-between;
-                        .news-word-image {
+                        .news-image {
                             max-width: 200px;
                         }
                     }

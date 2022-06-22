@@ -7,6 +7,8 @@ from application import db, app
 from .filehelpers import store_image, configure_add_template
 from flask_user import roles_required
 from datetime import datetime
+from werkzeug.utils import secure_filename
+import os
 
 admin_blueprint = Blueprint(
     "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
@@ -167,21 +169,21 @@ def write_news():
             date_posted = datetime.strptime(date_posted_input, '%Y-%m-%d %H:%M:%S')
             word_id = request.form.get("word")
             word = None
+            imagepath = None
+
             # Check if word is provided by checking if not None
             if word_id != None:
                 word = Word.query.get(word_id)
 
-            if title:
-                print("title exists")
+            if form.image.data:
+                filename = secure_filename(form.image.data.filename)
+                static_path = app.config["STATIC_PATH"]
+                news_imagepath = "/permaimages/newsimages/" + filename
+                form.image.data.save(static_path + news_imagepath)
+                imagepath = news_imagepath
 
-            if title_en:
-                print("title_en exists")
 
-            if text:
-                print("text exists")
 
-            if text_en:
-                print("text_en exists")
             
             news = News(
                 title=title,
@@ -189,7 +191,8 @@ def write_news():
                 text=text,
                 text_en=text_en,
                 date_posted=date_posted,
-                word=word
+                word=word,
+                imagepath=imagepath
             )
 
             db.session.add(news)
@@ -305,6 +308,9 @@ def ajax_delete_news():
         news_id = json.loads(request.form.get("news_id"))
         news_to_delete = News.query.get(int(news_id))
         print("deleting news: {}".format(news_to_delete))
+        img_to_delete = news_to_delete.imagepath
+        if img_to_delete:
+            os.remove(app.config["STATIC_PATH"] + img_to_delete)
         db.session.delete(news_to_delete)
         db.session.commit()
         session["news"] = refresh_session_news()

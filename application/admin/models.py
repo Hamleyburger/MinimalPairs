@@ -25,6 +25,7 @@ class News(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     word_id = db.Column(db.Integer, db.ForeignKey("words.id"), nullable=True)
     word = db.relationship("Word")
+    imagepath = db.Column(db.String(), nullable=True)
 
     def __repr__(self):
         return f"News: {self.title}"

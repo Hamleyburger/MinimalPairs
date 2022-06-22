@@ -274,7 +274,7 @@ def collection(locale):
 
                 # This is bad code and proves that I need to make a db table for repeat patterns
                 bg_px_size = None
-                bg_px_size = "512" if bgfilename == "veggiepattern" else "256"
+                bg_px_size = "384" if bgfilename == "veggiepattern" else "256"
 
 
                 # This bit of CSS is dynamically generated, the rest is hard coded in the template

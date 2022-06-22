@@ -102,7 +102,8 @@ def refresh_session_news():
             "title_en": news.title_en,
             "text_en": news.text_en,
             "date_posted": news.date_posted.date().strftime("%d-%m-%Y"),
-            "word": news.word
+            "word": news.word,
+            "imagepath": news.imagepath
         }
 
         if news.word:

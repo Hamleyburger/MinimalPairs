@@ -119,7 +119,7 @@ def Content(locale=None):
             <p>Tryk på PDF-knapperne <i class="fas fa-file-pdf"></i> for at generere det valgte design.</p>\
             ',
         "help_pdf_choose_back": "Ordkort - vælg bagsidedekoration",
-        "pdf_game_btn": "Design et brætspil",
+        "pdf_game_btn": "Design et spil",
         "step1": "Trin 1",
         "step2": "Trin 2",
         "step3": "Trin 3",
@@ -286,7 +286,7 @@ def Content(locale=None):
             <p>Click the PDF buttons <i class="fas fa-file-pdf"></i> to generate a PDF with your chosen design.</p>\
             ',
         "help_pdf_choose_back": "Word cards - choose deoration on back",
-        "pdf_game_btn": "Design a board game",
+        "pdf_game_btn": "Design a game",
         "step1": "Step 1",
         "step2": "Step 2",
         "step3": "Step 3",

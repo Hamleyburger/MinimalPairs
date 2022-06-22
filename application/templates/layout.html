@@ -289,10 +289,17 @@
                                 </div>
                                 {% endif %}
                             </div>
-                            {% if news.word %}
+                            {% if news.imagepath %}
+                            <div class="tiny-right">
+                                <div class="news-image">
+                                    <img src="{{ url_for('static', filename=news.imagepath) }}" alt="">
+                                </div>
+
+                            </div>
+                            {% elif news.word %}
                             <div class="tiny-right">
 
-                                <div class="news-word-image">
+                                <div class="news-image">
                                     <img src="{{ url_for('static', filename=news.word.image_path) }}" alt="">
                                 </div>
 
