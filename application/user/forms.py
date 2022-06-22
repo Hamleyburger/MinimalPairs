@@ -72,6 +72,9 @@ def toPDF_wrap(locale):
 
         # First argument of each choice needs to be file name of the background image file
         background = RadioField(
-            'Label', choices=[(content["bs_filename_fishcookies"], content["bs_label_fishcookies"]), (content["bs_filename_logocat"], content["bs_label_logocat"])], validators=[DataRequired()])
+            'Label', choices=[
+                (content["bs_filename_fishcookies"], content["bs_label_fishcookies"],), 
+                (content["bs_filename_logocat"], content["bs_label_logocat"]), 
+                (content["bs_filename_veggies"], content["bs_label_veggies"])], validators=[DataRequired()])
 
     return toPDF

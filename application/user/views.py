@@ -272,9 +272,14 @@ def collection(locale):
                 template = render_template("mypdf.html", collection=collection)
                 html = HTML(string=template, base_url=request.base_url)
 
+                # This is bad code and proves that I need to make a db table for repeat patterns
+                bg_px_size = None
+                bg_px_size = "512" if bgfilename == "veggiepattern" else "256"
+
+
                 # This bit of CSS is dynamically generated, the rest is hard coded in the template
                 css = CSS(
-                    string='@page :left { background-image: url(/static/permaimages/' + bgfilename + '.png);}')
+                    string='@page :left { background-image: url(/static/permaimages/repeatpatterns/' + bgfilename + '.png); background-size: ' + bg_px_size + 'px;}')
                 
                 count_as_used(collection_ids)
 

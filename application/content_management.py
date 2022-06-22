@@ -151,9 +151,18 @@ def Content(locale=None):
         # actual files must be png for both source (static/permaimages) and thumbnail (static/permaimages/thumbnails/_thumb*)
         "bs_label_fishcookies": "Fiskekager",
         "bs_filename_fishcookies": "fiskpattern",
+        "bs_pxsize_fishcookies": 256,
 
         "bs_label_logocat": "Logokatte",
         "bs_filename_logocat": "catpattern",
+        "bs_pxsize_logocat": 256,
+
+        "bs_label_veggies": "Grøntsager",
+        "bs_filename_veggies": "veggiepattern",
+        "bs_pxsize_veggies": 512,
+
+        
+
 
         # Rendered PDF
         "title_pdf": "Ordkort",
@@ -311,9 +320,16 @@ def Content(locale=None):
         # actual files must be svg for source (static/permaimages) and png for thumbnail (static/permaimages/thumbnails/_thumb*)
         "bs_label_fishcookies": "Fish cookies",
         "bs_filename_fishcookies": "fiskpattern",
+        "bs_pxsize_fishcookies": 256,
+        
 
         "bs_label_logocat": "Logo cats",
         "bs_filename_logocat": "catpattern",
+        "bs_pxsize_logocat": 256,
+
+        "bs_label_veggies": "Veggies",
+        "bs_filename_veggies": "veggiepattern",
+        "bs_pxsize_veggies": 512,
 
         # Rendered PDF
         "title_pdf": "Word cards",
