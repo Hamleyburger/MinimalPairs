@@ -34,9 +34,10 @@
         <p class=""> {{ text }} </p>
       </div>
       <div class="col-12">
-
+        {% if love %}
         <img class="thankyouimage" src="{{ url_for('static', filename='permaimages/taklogokat.svg') }}"
         alt="image for thanks">
+        {% endif %}
       </div>
     </div>
   </section>

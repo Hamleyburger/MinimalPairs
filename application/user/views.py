@@ -329,31 +329,37 @@ def thankyou(locale):
     love = None
     if session_id:
 
-        stripe_session = stripe.checkout.Session.retrieve(session_id)
-        amount_paid = int(stripe_session["amount_total"]) / 100
-        supporter_name = stripe_session["customer_details"]["name"]
-        supporter_email = stripe_session["customer_details"]["email"]
-
         try:
-            donor_exists = db.session.query(Donation).filter_by(session_id=session_id).first()
-            if not donor_exists:
-                new_donor = Donation(
-                    session_id=session_id, 
-                    name=supporter_name,
-                    email=supporter_email,
-                    amount=amount_paid
-                    )
-                db.session.add(new_donor)
-                db.session.commit()
-            else:
-                print("donor exists and this is an old session")
+            stripe_session = stripe.checkout.Session.retrieve(session_id)
+            text = Content()["text_thankyou"]
+            love = True
+            ## Not storing donor information in database since repo including database is public
+            # supporter_name = stripe_session["customer_details"]["name"]
+            # supporter_email = stripe_session["customer_details"]["email"]
+
+            # try:
+            #     donor_exists = db.session.query(Donation).filter_by(session_id=session_id).first()
+            #     if not donor_exists:
+            #         new_donor = Donation(
+            #             session_id=session_id, 
+            #             name=supporter_name,
+            #             email=supporter_email,
+            #             amount=amount_paid
+            #             )
+            #         db.session.add(new_donor)
+            #         db.session.commit()
+            #     else:
+            #         print("donor exists and this is an old session")
+            # except Exception as e:
+            #     print(e)
         except Exception as e:
             print(e)
-        text = Content()["text_thankyou"]
-        love = True
+            text = Content()["text_notthankyou"]
+            love = False
     else:
-        text = "Nothing here."
+        text = Content()["text_notthankyou"]
         love = False
+
     return render_template("stripe/thankyou.html", text=text, love=love)
 
 
