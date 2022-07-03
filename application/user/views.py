@@ -162,6 +162,7 @@ def contrasts(locale):
                 else:
                     sound2 = Sound.get(inputSound2)
                 pairs = sound1.getContrasts(inputSound2)
+                print("**** CALLING SEARCHEDPAIRS WITH THIRD ARG: {}".format(len(pairs)))
                 SearchedPair.add(inputSound1, inputSound2, len(pairs))
 
                 pairs_with_images = []
