@@ -543,9 +543,7 @@ class SearchedPair(db.Model):
             searched_pair = cls(s1=sound1, s2=sound2, times_searched=1)
             db.session.add(searched_pair)
         if existing_pairs:
-            print("Existing pairs exist")
             searched_pair.existing_pairs = existing_pairs
-            print("searched_pair.existingpairs is {}".format(searched_pair.existing_pairs))
         if not current_app.config["DEBUG"]:
             print("Added {}".format(searched_pair))
             db.session.commit()
