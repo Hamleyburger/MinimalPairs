@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="error-message">
+    <h1>405</h1>
+    <h4>Method not allowed</h4>
+    <img src="{{ url_for('static', filename='permaimages/errorscreens/error403.svg') }}"
+        alt="image for 405 method not allowed">
+    <p>Can't touch this</p>
+</div>
+
+{% endblock main %}
