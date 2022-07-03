@@ -9,44 +9,44 @@
 
 
 <url>
-  <loc>https://www.minimalepar.dk/?locale=da/</loc>
+  <loc>https://www.minimalepar.dk/?locale=da</loc>
     <xhtml:link
                rel="alternate"
                hreflang="da"
-               href="https://www.minimalepar.dk/?locale=da/"/>
+               href="https://www.minimalepar.dk/?locale=da"/>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="https://www.minimalepar.dk/?locale=en/"/>
+               href="https://www.minimalepar.dk/?locale=en"/>
 
   <lastmod>2021-06-15T20:38:43+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 
 <url>
-    <loc>https://www.minimalepar.dk/find-kontraster/?locale=da/</loc>
+    <loc>https://www.minimalepar.dk/find-kontraster/?locale=da</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="da"
-                href="https://www.minimalepar.dk/find-kontraster/?locale=da/"/>
+                href="https://www.minimalepar.dk/find-kontraster/?locale=da"/>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.minimalepar.dk/find-kontraster/?locale=en/"/>
+                href="https://www.minimalepar.dk/find-kontraster/?locale=en"/>
   <lastmod>2021-06-15T20:38:43+00:00</lastmod>
   <priority>0.90</priority>
 </url>
 
 <url>
-  <loc>https://www.minimalepar.dk/samling/?locale=da/</loc>
+  <loc>https://www.minimalepar.dk/samling/?locale=da</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="da"
-                href="https://www.minimalepar.dk/samling/?locale=da/"/>
+                href="https://www.minimalepar.dk/samling/?locale=da"/>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://www.minimalepar.dk/samling/?locale=en/"/>
+                href="https://www.minimalepar.dk/samling/?locale=en"/>
   <lastmod>2021-06-15T20:38:43+00:00</lastmod>
   <priority>0.70</priority>
 </url>

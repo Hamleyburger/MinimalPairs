@@ -1,8 +1,10 @@
 User-agent: *
+Disallow: /ajax_change_language/*
 Disallow: /lukmigind/
 Disallow: /user/sign-in
 Disallow: /ajax_add2collection/*
 Disallow: /ajax_remove_from_collection/
+Disallow: /ajax_collect_many/
 Disallow: /ajax_clear/
 Disallow: /ajax_upload_image/
 Disallow: /ajax_validate_image/
