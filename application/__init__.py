@@ -59,6 +59,9 @@ migrate = Migrate(app, db)
 # Initialize flask-user and make an admin user if not exists
 from .user.models import User, Userimage
 user_manager = UserManager(app, db, User)
+# this is what makes user.login happen. All settings are default
+# user_manager.USER_ENABLE_REMEMBER_ME = False # sets remember me to false.
+
 
 # Instantiate Flask migrate
 migrate = Migrate(app, db, render_as_batch=True)

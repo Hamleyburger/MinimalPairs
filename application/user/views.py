@@ -1,5 +1,6 @@
 from math import prod
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort, send_from_directory
+from flask_login import current_user
 import json
 from user_agents import parse
 
@@ -162,8 +163,9 @@ def contrasts(locale):
                 else:
                     sound2 = Sound.get(inputSound2)
                 pairs = sound1.getContrasts(inputSound2)
-                print("**** CALLING SEARCHEDPAIRS WITH THIRD ARG: {}".format(len(pairs)))
-                SearchedPair.add(inputSound1, inputSound2, len(pairs))
+                # searched_pairs only triggers for non admin users
+                if not current_user.is_authenticated:
+                    SearchedPair.add(inputSound1, inputSound2, len(pairs))
 
                 pairs_with_images = []
                 pairs_without_images = []
