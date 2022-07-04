@@ -85,7 +85,11 @@
         <p class="card-text">
 
             {% for member in group.members %}
-            {{ member.word }} <br>
+            {{ member.word }} 
+            {% if member.cue %}
+            ({{ member.cue }}) 
+            {% endif %}
+            <br>
             {% endfor %}
         </p>
     </div>
@@ -293,7 +297,11 @@
                                     <span class="btn-ready">
                                         <i class="fas fa-file-pdf"></i> {{ btn_make_game_board }}
                                     </span>
-                                    <span class="btn-loading" style="display: none;">Arbejder... <i class="fas fa-spinner fa-pulse"></i></span>
+                                    <span class="btn-loading" style="display: none;">
+                                        <span id="btn-loading-inner">
+                                            {{ btn_makePDF_loading_text }}
+                                        </span>
+                                        <i class="fas fa-spinner fa-pulse"></i></span>
                                 </button>
                             </div>
 

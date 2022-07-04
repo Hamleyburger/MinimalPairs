@@ -436,6 +436,7 @@ async function drawImageToCtx(context, x, y, src, degrees, fullwidth=false, squa
     else {
         context.drawImage(loaded_image, x, y, width, height);
     }
+
 }
 
 
@@ -466,13 +467,14 @@ async function addMaskedImage(x, y, degrees, mask_src, img_src, end_context, tem
 
 
 async function build_board_game(end_context, temp_context){ 
-
+    $("#btn-loading-inner").text("Finder billeder");
     canvas_image_data_list = []; // This is to be filled with "pages" image data and returned for pdf generation
 
     for (p = 0; p < game.pages.length; p++) {
         var page = game.pages[p];
 
         console.log("building page " + p);
+        $("#btn-loading-inner").text("Forbereder lærred");
 
         // Clear and refill canvas
         end_context.clearRect(0, 0, canvas.width, canvas.height);
@@ -480,21 +482,31 @@ async function build_board_game(end_context, temp_context){
 
         // Draw background image if any
         if(page.bgpath !== "") {
+            $("#btn-loading-inner").text("Maler baggrund");
+
             await drawImageToCtx(end_context, 0, 0, page.bgpath, 0, true);
         }
         
         // Draw game images by their assigned coordinates. Game images are contained in Page objects.
         obs = page.game_images;
         for (i = 0; i < obs.length; i ++) {
+            count = i+1
+            $("#btn-loading-inner").text("Tegner billede " + count);
+
             await addMaskedImage(obs[i].x, obs[i].y, obs[i].rot, obs[i].mask_path, obs[i].path, end_context, temp_context);
         }
         
+        $("#btn-loading-inner").text("Serverer fil");
+        
         // Draw foreground image if any
         if(page.fgpath !== "") {
+
             // Draw foreground
             await drawImageToCtx(end_context, 0, 0, page.fgpath, 0, true);
+
             
         }
+        
         
         // Convert canvas to downloadable image and prompt user to save it
         var imgData = canvas.toDataURL("image/jpeg", 0.6); // compression of quality 0.6
@@ -517,7 +529,7 @@ $(".selectable-theme").click(function(){
     
     // Get an (ordered) list of word image objects from server (user's collection) based on necessary count defined in Game object
     $.ajax({
-        url: "/ajax_get_boardgame_filenames", // Gets list of file names
+        url: "/ajax_get_boardgame_filenames/", // Gets list of file names
         data: {
             count: game.imagecount
         },
@@ -601,6 +613,7 @@ $("#make_boardgame_btn").click(async function(){
         $(".btn-ready").hide();
 
         // Make a list of canvas image data with "build_board_game" based on game object.
+
         var pages_image_datas = await build_board_game(end_ctx, tmp_ctx);  
 
 

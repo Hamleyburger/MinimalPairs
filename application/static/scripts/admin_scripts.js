@@ -66,6 +66,7 @@ $('#pairs').on('change', function(evt, params) {
         }
     });
 
+
     $.ajax({
         data: {
             chosen_ids : JSON.stringify(selected_partner_ids),
@@ -100,14 +101,14 @@ function get_id_from_index(all_ids_indexed, selected_partner_elem) {
 
 function update_chosen_selection(suggested_ids) {
 
+    
     existing_selection = $('#pairs').val();
     existing_selection_ints = []
     $.each(existing_selection, function(index) {
         existing_selection_ints.push(parseInt(this));
     });
     updated_selection = $.merge(existing_selection_ints, suggested_ids)
-    console.log($('#pairs').val());
-    console.log(updated_selection);
+
     $('#pairs').val(updated_selection);
     $('#pairs').trigger('chosen:updated');
 }

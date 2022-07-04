@@ -63,7 +63,6 @@ Add word
                 <form id="pairForm" method="POST" action="{{ url_for('admin_blueprint.add_pairs') }}" novalidate>
                     {{ form.hidden_tag() }}
 
-
                     <fieldset>
                         <div class="form-group">
 
@@ -81,66 +80,65 @@ Add word
                     </fieldset>
 
                     {% if pairForm.pairSounds.data %}
-                    <h5 style="margin-top: 20px;">Indsæt betydningsadskillende lyde:</h5>
-                    {% for field in pairForm.pairSounds %}
-                    <div class="pairSoundTable">
-                        <div class="row">
+                        <h5 style="margin-top: 20px;">Indsæt betydningsadskillende lyde:</h5>
+                        {% for field in pairForm.pairSounds %}
+                            <div class="pairSoundTable">
+                                <div class="row">
+                                    {% for subfield in field %}
+                                        {% if (loop.index < 3) %} 
+                                            <div class="col-5">
 
-                            {% for subfield in field %}
-                            {% if (loop.index < 3) %} <div class="col-5">
+                                                {% if pairForm.addSounds.data %}
+                                                    {% if subfield.errors %}
+                                                        {{ subfield.label }}
+                                                        {{ subfield(class="sound_input_field", size="4", style="border: 1px solid red;") }}
+                                                    {% endif %} <!-- subfield errors -->
+                                                {% else %}
+                                                    {{ subfield.label }}
+                                                    {{ subfield(class="sound_input_field", size="4") }}
+                                                {% endif %} <!--if pairForm.addSounds.data -->
 
-                                {% if pairForm.addSounds.data %}
-                                {% if subfield.errors %}
+                                            </div>
+                                            {% if (loop.index == 1) %}
+                                                <div class="col-2 vs">
+                                                    VS
+                                                </div>
+                                            {% endif %} <!-- if loopindex == 1 -->
+                                        {% else %}
+                                            {{ subfield }}
+                                        {% endif %} <!-- if loop index > 3-->
+                                    {% endfor %} <!-- for subfield in field -->
+                                </div>
+                            </div> <!-- .pairSoundTable-->
+                        {% endfor %} <!-- field in pairForm.pairSounds -->
+                    
+                        {{ pairForm.addSounds(class="btn btn-primary btn-outline-info") }}
 
-                                {{ subfield.label }}
-                                {{ subfield(class="sound_input_field", size="4", style="border: 1px solid red;") }}
+                    {% endif %} <!-- if pairform pairsounds data -->
 
-                                {% endif %}
-                                {% else %}
-
-                                {{ subfield.label }}
-                                {{ subfield(class="sound_input_field", size="4") }}
-                                {% endif %}
-                        </div>
-                        {% if (loop.index == 1) %}
-                        <div class="col-2 vs">
-                            VS
-                        </div>
-                        {% endif %}
-
-                        {% else %}
-                        {{ subfield }}
-                        {% endif %}
+                    {% if session.existingPairs %}
+                        <br>Words already paired with {{pairForm.pairSounds[0].sound1.label.text }}
+                        {% for word in session.existingPairs %}
+                            {% if loop.index != 1 %}
+                            ,
+                            {% endif %}
+                            {{ word.word }}
                         {% endfor %}
-                    </div>
-            </div>
+                    {% endif %}
+                </form>
 
-            {% endfor %}
-
-
-
-
-
-
-            {{ pairForm.addSounds(class="btn btn-primary btn-outline-info") }}
-            {% endif %}
-            {% if session.existingPairs %}
-            <br>Words already paired with {{pairForm.pairSounds[0].sound1.label.text }}
-            {% for word in session.existingPairs %}{% if loop.index != 1 %},
-            {% endif %}{{ word.word }}{% endfor %}{% endif %}
-
-            </form>
-            <div class="word-suggestions" id="word-suggestions">
+                <div class="word-suggestions" id="word-suggestions">
+                </div>
             </div>
         </div>
-    </div>
-    <!-- end of container-->
+    </div> <!-- end of container mt-5 -->
+
     <div class="ipa-container container">
         {{ ipa_picker() }}
     </div>
-</div>
-</div>
-<!--end of row-->
+
+</div> <!-- end of content section -->
+
 
 {% endblock %}
 
@@ -153,3 +151,4 @@ Add word
 {{ enable_chosenjs() }}
 
 {% endblock script %}
+

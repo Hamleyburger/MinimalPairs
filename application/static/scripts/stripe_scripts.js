@@ -1,7 +1,7 @@
 console.log("loaded stripe scripts");
 
 // Get Stripe publishable key
-fetch("/ajax_get_stripe_key")
+fetch("/ajax_get_stripe_key/")
 .then((result) => { return result.json(); })
 .then((data) => {
   // Initialize Stripe.js

@@ -441,6 +441,12 @@ class Group(db.Model):
                 if sound not in groupsounds:
                     group.sounds.append(sound)
 
+    @classmethod
+    def check_member_compatibility(cls):
+        """ Checks if some members are not paired with other members and returns a list of members that aren't paired to all the others """
+
+
+
 
 class Pair(db.Model):
     """ Contains a word1 (caller) and its partner, word2 - \n
