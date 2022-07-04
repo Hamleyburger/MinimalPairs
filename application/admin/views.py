@@ -25,7 +25,6 @@ def before_request_callback():
 def add():
     """admin stuff"""
     Group.updateMeta()
-
     form = AddForm()
     pairForm = AddPairForm()
     configure_add_template(pairForm, db.session.query(Word).all())
@@ -273,29 +272,19 @@ def ajax_suggested_pairs():
 
     all_indexes = json.loads(request.form.get("all_indexes"))
     chosen_ids = json.loads(request.form.get("chosen_ids"))
-    print("chosen ids")
-    print(chosen_ids)
-    word1 = Word.query.get(int(chosen_ids[0]))
-    #chosen_ids = []
+    word1_id = int(request.form.get("word1_id"))
+    word1 = Word.query.get(word1_id)
     suggested_ids = []
-    suggested_indexes = []
-
-    print("word 1: {}".format(word1))
+    suggested_indexes = [] # indexes are for converting ids back to elements in list in current chosen-field in the browser
 
     if all_indexes and chosen_ids:
 
-        print("getting suggestions for word1 :-(")
-        print("chosen ids: {}".format(chosen_ids))
-
         suggested_ids = word1.get_partner_suggestions(chosen_ids)
-        print("suggested ids are now: {}".format(suggested_ids))
 
         for index, id in enumerate(all_indexes):
             if id in suggested_ids:
                 suggested_indexes.append(index)
 
-
-        print("suggested indexes: {}".format(suggested_indexes))
         return jsonify(
             suggested_indexes=suggested_indexes,
             suggested_ids=suggested_ids

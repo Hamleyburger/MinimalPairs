@@ -441,12 +441,6 @@ class Group(db.Model):
                 if sound not in groupsounds:
                     group.sounds.append(sound)
 
-    @classmethod
-    def check_member_compatibility(cls):
-        """ Checks if some members are not paired with other members and returns a list of members that aren't paired to all the others """
-
-
-
 
 class Pair(db.Model):
     """ Contains a word1 (caller) and its partner, word2 - \n
@@ -920,38 +914,28 @@ class Word(db.Model):
         """ Returns a list of word ids for forgotten/suggested partners based on existing partners\n
         and unadded ones whose ids must be passed in via unadded_ids """
 
-        # Get list of the words we're assuming that this word is or will be partnered with
-        expected_partners = self.partners
-        for word in expected_partners:
-            if word.id in unadded_ids:
-                unadded_ids.remove(word.id)
-        unadded_words = db.session.query(Word).filter(
-            Word.id.in_(unadded_ids)).all()
-        expected_partners = expected_partners + unadded_words
-        print("Expected partners: {}".format(
-            [word.word for word in expected_partners]))
+        admin_decided_partners = db.session.query(Word).filter(Word.id.in_(unadded_ids)).all()
 
         # Find relevant groups that have two or more expected partners.
-        relevant_group_ids = []
         relevant_groups = []
-        for word in expected_partners:
+        for word in admin_decided_partners:
             for group in word.groups:
-                if group.has_two_members_of(expected_partners):
-                    if group.id not in relevant_group_ids:
-                        relevant_group_ids.append(group.id)
+                if group.has_two_members_of(admin_decided_partners):
+                    if group not in relevant_groups:
                         relevant_groups.append(group)
 
-        print("Groups that contain forgotten partners:")
+        print("Relevant groups for partner suggestions:")
         for group in relevant_groups:
             group.textify()
 
-        # Pick out the words that are not already in ANY of expected partners (existing and AJAX picked) and suggest ids
+        # Pick out the words that are not already the word in question or the admin decided ones 
+        # (the ones we got with ajax) and make a list of ids for the suggested words.
         # Using set() to prevent duplicates since we might add from many groups
         suggest_word_ids = set()
         for group in relevant_groups:
             for word in group.members:
                 if word.id != self.id:
-                    if word.id not in [word.id for word in expected_partners]:
+                    if word.id not in [word.id for word in admin_decided_partners]:
                         suggest_word_ids.add(word.id)
 
         return list(suggest_word_ids)

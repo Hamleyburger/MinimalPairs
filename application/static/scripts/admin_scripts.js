@@ -50,6 +50,7 @@ $('#pairs').on('change', function(evt, params) {
     var selected_partner_elements = $("#pairs_chosen .search-choice a");
     var all_partners_elements = $("#pairs option");
     var all_ids_indexed = []
+    var word1_id = $("#word1").val();
     
     all_partners_elements.each(function( index ) {
         // Make array to see what indexes belong with which word ids
@@ -69,6 +70,7 @@ $('#pairs').on('change', function(evt, params) {
 
     $.ajax({
         data: {
+            word1_id : word1_id,
             chosen_ids : JSON.stringify(selected_partner_ids),
             all_indexes : JSON.stringify(all_ids_indexed)
         },
