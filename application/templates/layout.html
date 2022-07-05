@@ -158,37 +158,30 @@
             <a href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
                 <div class="logo">
                     {{ catmacro() }}
-
+                    
                 </div>
             </a>
-
-
+            
             <a class="logotext_a mx-md-4" href="{{ url_for('user_blueprint.index', locale=session.locale) }}">
                 <div class="logotext">
                     {{ logotitle() }}
                 </div>
             </a>
             <a aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler hamburger"
-                data-target="#navbar" data-toggle="collapse">
+            data-target="#navbar" data-toggle="collapse">
                 <span class="navbar-toggler-icon"><i class="fas fa-ellipsis-v"></i></span>
             </a>
             <div class="collapse navbar-collapse" id="navbar">
-
+            
                 <!-- nav links that sit on the right when expanded -->
                 <ul class="navbar-nav mr-auto">
-                    {% if current_user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.write_news') }}">News</a></li>
-                    {% endif %}
                     <li class="nav-item"><a class="nav-link"
-                            href="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}">{{
-                            nav_find
-                            |safe }}</a>
+                        href="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}">{{
+                            nav_find|safe }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
+                        href="{{ url_for('user_blueprint.collection', locale=session.locale) }}">
                             {{nav_collection |safe }}&nbsp;
                             <span id="collection-length"> ({{ session["collection"]|length }})</span>
                         </a>
@@ -200,55 +193,65 @@
                     
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="{{ url_for('user_blueprint.donation', locale=session.locale) }}">
-                            <i class="fa-solid fa-piggy-bank donate-icon"></i>
-                            
+                        href="{{ url_for('user_blueprint.donation', locale=session.locale) }}">
+                        <i class="fa-solid fa-piggy-bank donate-icon"></i>                            
                         </a>
                     </li>
-
+            
                     {% if g.showglobe %}
                     {# showglobe makes language change show. Is set in decorator 'ensure_locale' #}
-                    <!-- language select drop-down -->
-                    <li class="nav-item dropdown">
-                        <a class="earthtoggle nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        <!-- language select drop-down -->
+                        <li class="nav-item dropdown">
+                            <a class="earthtoggle nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            {{ globeicon_detail() }}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                            {% for lang, code in config["LANGUAGES"].items() %}
-                            <a class="dropdown-item"
+                                {{ globeicon_detail() }}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                
+                                {% for lang, code in config["LANGUAGES"].items() %}
+                                <a class="dropdown-item"
                                 href='{{ url_for("user_blueprint.change_language", newlocale=lang) }}'><span
-                                    class="flag-icon flag-icon-{{ code }} flag-icon-squared"></span>
+                                class="flag-icon flag-icon-{{ code }} flag-icon-squared"></span>
                                 {{ lang }}</a>
-                            {% endfor %}
-                        </div>
-                    </li>
+                                {% endfor %}
+                            </div>
+                        </li>
                     {% endif %}
-
+        
                     <!-- logout button -->
                     {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
         </nav>
+        {% if current_user.is_authenticated %}
+        <nav class="navbar admin-navbar">
+                <ul class="navbar-nav admin-navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.add') }}">Add</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.change') }}">Change</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.write_news') }}">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_blueprint.problems') }}">Problems</a></li>
+                </ul>
+        </nav>
+        {% endif %}
 
         <!-- Alerts for messages from the server when refreshing -->
-        {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
         <header>
             {% for category, message in messages %}
-            <div class="alert-wrapper">
-                <div class="alert alert-{{ category }} shadow text-center" role="alert">
-                    <span>{{ message }}</span>
+                <div class="alert-wrapper">
+                    <div class="alert alert-{{ category }} shadow text-center" role="alert">
+                        <span>{{ message }}</span>
+                    </div>
                 </div>
-            </div>
             {% endfor %}
         </header>
-        {% endif %} {% endwith %}
+        {% endif %}
+        {% endwith %}
 
         <div class="container-fluid">
             <div class="mainrow">
@@ -355,7 +358,8 @@
             crossorigin="anonymous"></script>
 
 
-        {% block script %}{% endblock script %}
+        {% block script %}
+        {% endblock script %}
 
 
     </body>

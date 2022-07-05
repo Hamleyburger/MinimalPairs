@@ -206,6 +206,16 @@ def write_news():
     return render_template("news.html", form=form)
 
 
+@ admin_blueprint.route("/problems/", methods=["GET"])
+@roles_required('Admin')
+# Receives a word id and returns words in a way so client can see which pairs already exist
+def problems():
+    """ Get an overview of words without partners and groups with unmatched words """
+
+    return render_template("problems.html")
+
+
+
 @ admin_blueprint.route("/ajax_word_changer/", methods=["POST"])
 @roles_required('Admin')
 # Receives changes from user and makes changes in database
