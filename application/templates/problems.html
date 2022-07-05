@@ -12,16 +12,54 @@ Problems
 
 
 <div class="content-section">
-
-<h1>Problems</h1>
-
+    <div class="problems-content-section">
+        {% if problems %}
+            <h1>Problems</h1>
+            {% for problem in problems %}
+                <div class="row" id="div-group-{{problem.id}}">
+                    <h3>Group {{ problem.id }}: {{ problem.type }}</h3>
+                        {% if problem.type == "Too few members" %}
+                            <div>
+                                <button class="delete-group-btn" data-id="{{ problem.id }}" >DELETE</button>
+                            </div>
+                        {% endif %}
+                    <div class="col-12 col-md-6">
+                        <h5>All group words</h5>
+                        <ul>
+                            {% for word in problem.members %}
+                            <li>
+                                {{ word.word }}
+                            </li>
+                            {% endfor %} <!-- for word in problem group members -->
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <h5>Problematic words</h5>
+                        <ul>
+                            {% for bad_member in problem.bad_members %}
+                            <li>
+                                {{ bad_member.word.word }} not linked to 
+                                {% for word in bad_member.missing_links %}
+                                    {{ word.word }}, 
+                                {% endfor %}
+                            </li>
+                            {% endfor %} <!-- member in prob. members -->
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %} <!-- for prob in problems -->
+        {% else %} <!-- if not problems else -->
+        <div class="m-auto celebration">No problems! Hooray!</div>
+        {% endif %} <!-- end if problems -->
+    </div>
 </div> <!-- end of content section -->
-
-
-{% endblock %}
+    
+    
+    {% endblock %}
 
 {% block script %}
-
-
+<script>
+    let url_for_delete_group = {{ url_for('admin_blueprint.ajax_delete_group') | tojson | safe }};
+</script>
 {% endblock script %}
 

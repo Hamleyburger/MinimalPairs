@@ -976,6 +976,53 @@ body footer a {
   padding: 1px 7px;
 }
 
+.problems-content-section {
+  margin: 40px;
+  height: 500px;
+}
+
+@media only screen and (max-width: 900px) {
+  .problems-content-section {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .problems-content-section {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+
+.problems-content-section ul {
+  list-style-type: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  height: 240px;
+}
+
+.problems-content-section .row {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 50px;
+}
+
+.problems-content-section .celebration {
+  height: 400px;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 150px;
+  font-size: 50px;
+}
+
 /* Old, light yellow theme:
 $color-purp1: #3b1734; //kat og tekst
 $color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html

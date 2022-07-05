@@ -136,7 +136,26 @@ $(".delete-news-btn").click(function() {
                 containing_news_card.remove();
             }
         });
+  });
 
+  $(".delete-group-btn").click(function() {
 
+    group_id = $(this).data("id");
+    if (confirm(`Really delete group ${group_id}?`)) {
 
+        $.ajax({
+            data: {
+                group_id : group_id
+            },
+            url: url_for_delete_group,
+            type: "POST"
+            
+        }).done(function (data) {
+            /* Suggested indexes is keeping track of which words in the dropdown to highlight */
+            console.log(data["message"]);
+            if (data["message"] === "ok") {
+                $("#div-group-" + group_id).remove();
+            }
+        });
+    }
   });

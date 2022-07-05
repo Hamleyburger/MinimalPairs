@@ -267,6 +267,21 @@ class Group(db.Model):
         return string
 
 
+    def serialize(self):
+        """ Serializes a group that has serialized members and sounds """
+        serialized = {
+            "id": self.id,
+            "members": [],
+            "sounds": [],
+        }
+        for member in self.members:
+            serialized["members"].append(member.serialize())
+        for sound in self.sounds:
+            serialized["sounds"].append(sound.sound)
+
+        return serialized
+
+
     def add(self, word=None, words=[]):
         """ Adds word or word list to caller group. Avoids duplicates. No commit. """
         if word:
@@ -331,7 +346,6 @@ class Group(db.Model):
             self.members.remove(member)
         db.session.flush()
         db.session.delete(self)
-
 
     @classmethod
     def check(cls, ko):
@@ -426,7 +440,7 @@ class Group(db.Model):
 
     @classmethod
     def updateMeta(cls):  # Group
-        """ Finds all pairs in a group and updates its collection of pairs and sounds """
+        """ Finds all pairs in a group and syncs the group's sounds with sounds in the group's pairs """
         groups = db.session.query(cls).all()
         for group in groups:
             soundList = []
@@ -437,9 +451,52 @@ class Group(db.Model):
                 if pair.s2 not in soundList:
                     soundList.append(pair.s2)
             groupsounds = group.sounds
+
             for sound in soundList:
                 if sound not in groupsounds:
                     group.sounds.append(sound)
+            for sound in groupsounds:
+                if sound not in soundList:
+                    group.sounds.remove(sound)
+            db.session.commit()
+
+    @classmethod
+    def get_group_problems(cls):
+        """ Find groups with too few members. Find grouped words that aren't matched with all group members """
+
+        problems = []
+        all_groups = Group.query.all()
+
+        for group in all_groups:
+            bad_members = []
+            for word in group.members:
+                missing_links = []
+
+                for member in group.members:
+                    if member != word:
+                        if member not in word.allPartners():
+                            missing_links.append(member.serialize())
+                
+                if missing_links:
+                    bad_members.append({
+                        "word": word.serialize(),
+                        "missing_links": missing_links
+                    })
+            if bad_members:
+                bad_group = group.serialize()
+                bad_group["type"] = "Loose members"
+                bad_group["bad_members"] = bad_members
+                problems.append(bad_group)
+            
+            liste = list(group.members)
+
+            if len(liste) < 3:
+                bad_group = group.serialize()
+                bad_group["type"] = "Too few members"
+                bad_group["bad_members"] = []
+                problems.append(bad_group)
+            
+        return problems
 
 
 class Pair(db.Model):
@@ -590,6 +647,24 @@ class Word(db.Model):
         else:
             # print("{} and {} are not the same type".format(str(self), str(other)))
             return False
+
+    def serialize(self):
+        "Serializes a word, but its partners do not have partners"
+        serialized = {
+            "id": self.id,
+            "word": self.word,
+            "cue": self.cue,
+            "partners": [],
+            "image": self.image.name
+        }
+        for partner in self.allPartners():
+            serialized["partners"].append({
+                "id": partner.id,
+                "word": partner.word,
+                "cue": partner.cue,
+            })
+        return serialized
+
 
     @classmethod
     def homonyms(cls, word):
@@ -924,19 +999,20 @@ class Word(db.Model):
                     if group not in relevant_groups:
                         relevant_groups.append(group)
 
-        print("Relevant groups for partner suggestions:")
-        for group in relevant_groups:
-            group.textify()
-
         # Pick out the words that are not already the word in question or the admin decided ones 
-        # (the ones we got with ajax) and make a list of ids for the suggested words.
+        # (the ones we got with ajax) or already partnered with word
+        # and make a list of ids for the suggested words.
         # Using set() to prevent duplicates since we might add from many groups
         suggest_word_ids = set()
         for group in relevant_groups:
             for word in group.members:
                 if word.id != self.id:
-                    if word.id not in [word.id for word in admin_decided_partners]:
-                        suggest_word_ids.add(word.id)
+                    owned_ids = []
+                    for part in self.allPartners():
+                        owned_ids.append(part.id)
+                    if word.id not in owned_ids:
+                        if word.id not in [word.id for word in admin_decided_partners]:
+                            suggest_word_ids.add(word.id)
 
         return list(suggest_word_ids)
 

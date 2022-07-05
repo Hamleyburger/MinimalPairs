@@ -210,10 +210,32 @@ def write_news():
 @roles_required('Admin')
 # Receives a word id and returns words in a way so client can see which pairs already exist
 def problems():
+    problems = Group.get_group_problems()
     """ Get an overview of words without partners and groups with unmatched words """
 
-    return render_template("problems.html")
+    return render_template("problems.html", problems=problems)
 
+
+@ admin_blueprint.route("/ajax_delete_group/", methods=["POST"])
+@roles_required('Admin')
+# Receives changes from user and makes changes in database
+def ajax_delete_group():
+
+    group_id = int(request.form["group_id"])
+    group_to_delete = Group.query.get(group_id) 
+    print("Deleting group {}".format(group_id))
+    print(group_to_delete)
+    try:
+        group_to_delete.remove()
+        db.session.commit()
+    except Exception as e:
+        return jsonify(
+            message=str(e)
+        )
+
+    return jsonify(
+        message="ok"
+    )
 
 
 @ admin_blueprint.route("/ajax_word_changer/", methods=["POST"])
