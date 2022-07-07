@@ -917,6 +917,50 @@ class Word(db.Model):
 
         return pairs
 
+    def getRoleInGroup(self, group):
+        """ For one word pairing get the version (in clusters) with the most sounds 
+        / the original - for automatically suggesting pair sounds in admin.add.
+        Returns sound object """
+
+        word2 = ""
+        for member in group.members:
+            if member == self:
+                continue
+            else:
+                word2 = member
+                break
+
+        incoming_pairs = self.getPairs(word2)
+        pairs = self.orderPairsByWord(incoming_pairs)
+
+        longest_sound = ""
+        longest_pair = None
+        for pair in pairs:
+            if not longest_pair:
+                longest_sound = pair.s1
+                longest_pair = pair
+            if len(pair.s1.sound) > len(longest_sound.sound):
+                longest_sound = pair.s1
+                longest_pair = pair
+
+        return longest_pair.s1
+
+        
+
+    def orderPairsByWord(self, pairs):
+        """ Takes a bunch of pairs and orders them so word1 is always w1 and s1 """
+        orderedpairs = []
+        for pair in pairs:
+            if pair.w1 == self:
+                orderedpairs.append(pair)
+            else:
+                flippedpair = Pair(id=pair.id, w1=pair.w2, w2=pair.w1,
+                            s1=pair.s2, s2=pair.s1)
+                orderedpairs.append(flippedpair)
+
+        return orderedpairs
+
+
     def orderedPairs(self):
         """ (Word) Orders words in pairs so first word is caller. If sound1 is given,
         \n only pairs where word 1 (caller) has sound 1 will be returned.\n
@@ -986,9 +1030,12 @@ class Word(db.Model):
         db.session.commit()
 
     def get_partner_suggestions(self, unadded_ids=None):
-        """ Returns a list of word ids for forgotten/suggested partners based on existing partners\n
-        and unadded ones whose ids must be passed in via unadded_ids """
+        """ Returns a list of tuples with word ids and their sounds. 
+        Word ids are for suggested partners based on the groups the admin suggesged
+        words belong to and the sounds are extracted by comparing each suggestion to
+        the rest of the group """
 
+        partner_suggestions = []
         admin_decided_partners = db.session.query(Word).filter(Word.id.in_(unadded_ids)).all()
 
         # Find relevant groups that have two or more expected partners.
@@ -1003,18 +1050,21 @@ class Word(db.Model):
         # (the ones we got with ajax) or already partnered with word
         # and make a list of ids for the suggested words.
         # Using set() to prevent duplicates since we might add from many groups
-        suggest_word_ids = set()
+
         for group in relevant_groups:
+
             for word in group.members:
                 if word.id != self.id:
                     owned_ids = []
                     for part in self.allPartners():
                         owned_ids.append(part.id)
                     if word.id not in owned_ids:
-                        if word.id not in [word.id for word in admin_decided_partners]:
-                            suggest_word_ids.add(word.id)
+                        suggested_sound = word.getRoleInGroup(group)
+                        partner_suggestions.append((word.id, suggested_sound.sound))
 
-        return list(suggest_word_ids)
+        # return the dict with both words and sounds and receive them as such
+        return partner_suggestions
+
 
 
 class Image(db.Model):

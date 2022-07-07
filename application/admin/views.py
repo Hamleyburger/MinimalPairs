@@ -306,20 +306,25 @@ def ajax_suggested_pairs():
     chosen_ids = json.loads(request.form.get("chosen_ids"))
     word1_id = int(request.form.get("word1_id"))
     word1 = Word.query.get(word1_id)
-    suggested_ids = []
-    suggested_indexes = [] # indexes are for converting ids back to elements in list in current chosen-field in the browser
+    partner_suggestions = [] # List of tuples
+    suggestion_indexes = [] # Indexes are for converting ids back to elements in list in current chosen-field in the browser
+    suggested_ids = [] # Only ids from suggested words
 
     if all_indexes and chosen_ids:
 
-        suggested_ids = word1.get_partner_suggestions(chosen_ids)
+        partner_suggestions = word1.get_partner_suggestions(chosen_ids)
 
         for index, id in enumerate(all_indexes):
-            if id in suggested_ids:
-                suggested_indexes.append(index)
+            for suggested_id, suggested_sound in partner_suggestions:
+                if id == suggested_id:
+                    suggestion_indexes.append(index)
+                    suggested_ids.append(id)
+
+        session["partner_suggestions"] = partner_suggestions
 
         return jsonify(
-            suggested_indexes=suggested_indexes,
-            suggested_ids=suggested_ids
+            suggestion_indexes=suggestion_indexes,
+            suggested_ids=suggested_ids,
         )
 
     return jsonify(

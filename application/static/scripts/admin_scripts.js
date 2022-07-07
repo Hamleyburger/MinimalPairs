@@ -7,8 +7,38 @@
 
 */
 
+// TODO: Hvis bruger inputter noget i pairSounds-(index)-sound1,
+// så tjek alle pairSounds-(whatever)-sound2, og hvis der står noget i dem, så
+// udfyld deres pairSound(samme index)-sound1 med den samme string.
+$( document ).ready(function() {
+    var pairSoundTables = document.querySelectorAll('.pairSoundTable');
+    pairSoundTables.forEach(function callback(thing, index) {
+        //                              Vigtigt at skelne mellem sound2 og word2_id, id er hidden
+        w1inputfield = document.getElementById("pairSounds-" + index + "-sound1");
+        w2inputfield = document.getElementById("pairSounds-" + index + "-sound2");
+        // IF input field has data/value whatever its called
+        
+        /* 
+        - identificer alle felter med på forhånd udfyldt sound2.
+        - marker alle de tilsvarende sound1. De kan autoudfyldes.
+        - lav css klasser til at highlighte alle de andre, for de SKAL udfyldes
+        - hver gang bruger skriver i et markeret felt, kopieres lyden til alle de andre markerede felter.
+        */
+       
+       if (w2inputfield.value) {
+            w1inputfield.setAttribute('value','WTFISTHIS');
+        }
+        else {
+            thing.classList.add("fillme");
+        }
+
+    });
+});
+
+
+
 // For admin add for suggesting words to admin when adding with jquery chosen
-let suggested_indexes = [];
+let suggestion_indexes = [];
 
 $("#pairs").on("chosen:showing_dropdown", function(e) {
 // In dropdown: Highlight suggested words based on "suggested indexes" if any
@@ -17,15 +47,17 @@ $("#pairs").on("chosen:showing_dropdown", function(e) {
     words_in_dropdown.each(function( index ) {
         dropdown_index = parseInt($(this).attr("data-option-array-index"));
         // If the dropdown index is one of the suggested, set CSS class "suggested-result"
-        if (suggested_indexes.includes(dropdown_index)) {
+        if (suggestion_indexes.includes(dropdown_index)) {
             $(this).addClass("suggested-result");
         }
     });
 });
 
 function display_suggested_words(indexes) {
+
     var words_in_multiselect = $("#pairs option");
     var display_container = $("#word-suggestions");
+
     display_container.empty();
     words_in_multiselect.each(function( index ) {
         // dropdown_index = parseInt($(this).attr("data-option-array-index"));
@@ -78,14 +110,14 @@ $('#pairs').on('change', function(evt, params) {
         type: "POST"
 
     }).done(function (data) {
-        /* Suggested indexes is keeping track of which words in the dropdown to highlight */
+        /* Suggested indexes is keeping track of which words in the dropdown to pull up */
         console.log("DATA:")
-        if (typeof data["suggested_indexes"] !== "undefined") {
-            suggested_indexes = data["suggested_indexes"];
+        if (typeof data["suggestion_indexes"] !== "undefined") {
+            suggestion_indexes = data["suggestion_indexes"];
             suggested_ids = data["suggested_ids"];
             // If I regret auto-adding: remove "update_chosen_selection" and 
             // reenable display_suggested_words(...) which relies on suggested_idexes
-            //display_suggested_words(suggested_indexes);
+            //display_suggested_words(suggestion_indexes);
 
             update_chosen_selection(suggested_ids)
         }

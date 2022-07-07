@@ -976,6 +976,10 @@ body footer a {
   padding: 1px 7px;
 }
 
+.fillme {
+  border: 2px solid blue;
+}
+
 .problems-content-section {
   margin: 40px;
   height: 500px;

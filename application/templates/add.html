@@ -86,8 +86,10 @@ Add word
                                 <div class="row">
                                     {% for subfield in field %}
                                         {% if (loop.index < 3) %} 
-                                            <div class="col-5">
 
+
+                                            <div class="col-5">
+                                                
                                                 {% if pairForm.addSounds.data %}
                                                     {% if subfield.errors %}
                                                         {{ subfield.label }}

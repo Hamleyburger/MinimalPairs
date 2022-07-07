@@ -20,8 +20,6 @@ def emptyFiedList(fieldList):
 def repopulateFieldList(formPairSounds, formPairs, word1):
     emptyFiedList(formPairSounds)
 
-    newPairIds = []
-
     session["existingPairs"] = word1.allPartners()
 
     # Modify fieldList to display pairs to add so user can add sounds
@@ -33,6 +31,13 @@ def repopulateFieldList(formPairSounds, formPairs, word1):
         field.word2_id.data = wordid  # This field is hidden
         field.sound1.label.text = "'" + word1.word + "':"
         field.sound2.label.text = "'" + word2 + "':"
+
+        if session.get("partner_suggestions"):
+            for id, sound in session["partner_suggestions"]:
+                if id == int(wordid):
+                    field.sound2.data = sound
+                else:
+                    field.sound2.addClass = ""
 
 
 def isHomonym(form, field):
