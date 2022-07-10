@@ -1030,7 +1030,7 @@ class Word(db.Model):
         db.session.commit()
 
     def get_partner_suggestions(self, unadded_ids=None):
-        """ Returns a list of tuples with word ids and their sounds. 
+        """ Returns a 2D list of tuples with word ids and their sounds. 
         Word ids are for suggested partners based on the groups the admin suggesged
         words belong to and the sounds are extracted by comparing each suggestion to
         the rest of the group """
@@ -1053,6 +1053,8 @@ class Word(db.Model):
 
         for group in relevant_groups:
 
+            group_partner_suggestions = []
+
             for word in group.members:
                 if word.id != self.id:
                     owned_ids = []
@@ -1060,9 +1062,9 @@ class Word(db.Model):
                         owned_ids.append(part.id)
                     if word.id not in owned_ids:
                         suggested_sound = word.getRoleInGroup(group)
-                        partner_suggestions.append((word.id, suggested_sound.sound))
+                        group_partner_suggestions.append((word.id, suggested_sound.sound))
+            partner_suggestions.append(group_partner_suggestions)
 
-        # return the dict with both words and sounds and receive them as such
         return partner_suggestions
 
 

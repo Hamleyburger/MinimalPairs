@@ -85,11 +85,18 @@ Add word
                             <div class="pairSoundTable">
                                 <div class="row">
                                     {% for subfield in field %}
-                                        {% if (loop.index < 3) %} 
+                                        {% if (loop.index == 3) %} 
+                                            
+                                            {% set classname=get_group_index(subfield.data) %}
+
+                                            {{ subfield(data_groupindex=classname) }}
 
 
+                                        {% else %}
+
+                                            
                                             <div class="col-5">
-                                                
+                                                    
                                                 {% if pairForm.addSounds.data %}
                                                     {% if subfield.errors %}
                                                         {{ subfield.label }}
@@ -106,9 +113,9 @@ Add word
                                                     VS
                                                 </div>
                                             {% endif %} <!-- if loopindex == 1 -->
-                                        {% else %}
-                                            {{ subfield }}
-                                        {% endif %} <!-- if loop index > 3-->
+
+
+                                        {% endif %} <!-- if loop index == 3-->
                                     {% endfor %} <!-- for subfield in field -->
                                 </div>
                             </div> <!-- .pairSoundTable-->

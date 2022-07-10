@@ -73,5 +73,6 @@ flex-wrap: wrap;
 }
 
 .fillme {
-    border: 2px solid blue;
+    border: 1px solid $color-purp2;
+    border-radius: 13px;
 }

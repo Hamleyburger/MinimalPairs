@@ -84,7 +84,21 @@ def add_pairs():
     else:
         print(pairForm.errors)
 
-    return render_template("add.html", form=form, pairForm=pairForm)
+    def get_group_index(field_id):
+        """ generate classname to identify which s2 fields to autofill 
+        based on which groups the suggestions came from. This function is
+        used in jinja template to set classes for fields for suggested partners so
+        admin_scripts.js can transfer input sound1 across similar fields """
+
+        suglists = session.get("partner_suggestion_lists")
+        if suglists:
+            for groupindex, suglist in enumerate(suglists):
+                for id, sound in suglist:
+                    if int(field_id) == id:
+                        return "{}".format(groupindex)
+        return ""
+
+    return render_template("add.html", form=form, pairForm=pairForm, get_group_index=get_group_index)
 
 
 @ admin_blueprint.route("/change", methods=["GET", "POST"])
@@ -312,15 +326,16 @@ def ajax_suggested_pairs():
 
     if all_indexes and chosen_ids:
 
-        partner_suggestions = word1.get_partner_suggestions(chosen_ids)
+        partner_suggestion_lists = word1.get_partner_suggestions(chosen_ids)
 
         for index, id in enumerate(all_indexes):
-            for suggested_id, suggested_sound in partner_suggestions:
-                if id == suggested_id:
-                    suggestion_indexes.append(index)
-                    suggested_ids.append(id)
+            for suglist in partner_suggestion_lists:
+                for suggested_id, suggested_sound in suglist:
+                    if id == suggested_id:
+                        suggestion_indexes.append(index)
+                        suggested_ids.append(id)
 
-        session["partner_suggestions"] = partner_suggestions
+        session["partner_suggestion_lists"] = partner_suggestion_lists
 
         return jsonify(
             suggestion_indexes=suggestion_indexes,

@@ -1,38 +1,42 @@
-/*
 
-
-    ADMIN SCRIPTS
-    These scripts are only loaded when current user is authenticated (checked with jinja)
-
-
-*/
-
-// TODO: Hvis bruger inputter noget i pairSounds-(index)-sound1,
-// så tjek alle pairSounds-(whatever)-sound2, og hvis der står noget i dem, så
-// udfyld deres pairSound(samme index)-sound1 med den samme string.
 $( document ).ready(function() {
+
+    /*
+    line 9-38:
+    When admin types in an s1 field that has a suggested partner (based on group),
+    this typed sound is transferred to all s1 fields for partners of same group.
+    */
     var pairSoundTables = document.querySelectorAll('.pairSoundTable');
     pairSoundTables.forEach(function callback(thing, index) {
         //                              Vigtigt at skelne mellem sound2 og word2_id, id er hidden
-        w1inputfield = document.getElementById("pairSounds-" + index + "-sound1");
-        w2inputfield = document.getElementById("pairSounds-" + index + "-sound2");
+        s1inputfield = document.getElementById("pairSounds-" + index + "-sound1");
+        s2inputfield = document.getElementById("pairSounds-" + index + "-sound2");
+        w2idfield = document.getElementById("pairSounds-" + index + "-word2_id");
         // IF input field has data/value whatever its called
         
-        /* 
-        - identificer alle felter med på forhånd udfyldt sound2.
-        - marker alle de tilsvarende sound1. De kan autoudfyldes.
-        - lav css klasser til at highlighte alle de andre, for de SKAL udfyldes
-        - hver gang bruger skriver i et markeret felt, kopieres lyden til alle de andre markerede felter.
-        */
-       
-       if (w2inputfield.value) {
-            w1inputfield.setAttribute('value','WTFISTHIS');
+        
+        var groupindex = w2idfield.dataset.groupindex;
+        if (groupindex) {
+            s1inputfield.classList.add("suggests1");
+            s1inputfield.dataset.groupindex = groupindex;
         }
         else {
             thing.classList.add("fillme");
         }
 
     });
+    $( ".suggests1" ).change(function() {
+        var target_group_index = $(this).data("groupindex");
+        var typed_text = $(this).val();
+        $(".suggests1").each(function() {
+            var elem = $(this);
+            console.log(elem.data("groupindex"));
+            if (elem.data("groupindex") == target_group_index) {
+                elem.val(typed_text);
+            }
+          });
+    });
+
 });
 
 

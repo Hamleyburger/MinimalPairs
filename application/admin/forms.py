@@ -31,13 +31,14 @@ def repopulateFieldList(formPairSounds, formPairs, word1):
         field.word2_id.data = wordid  # This field is hidden
         field.sound1.label.text = "'" + word1.word + "':"
         field.sound2.label.text = "'" + word2 + "':"
+        
 
-        if session.get("partner_suggestions"):
-            for id, sound in session["partner_suggestions"]:
-                if id == int(wordid):
-                    field.sound2.data = sound
-                else:
-                    field.sound2.addClass = ""
+        if session.get("partner_suggestion_lists"):
+            for sug_list in session["partner_suggestion_lists"]:
+                for id, sound in sug_list:
+                    if id == int(wordid):
+                        field.sound2.data = sound
+
 
 
 def isHomonym(form, field):
@@ -50,7 +51,6 @@ def isHomonym(form, field):
 
 
 def makePairList(form, field):
-    print("\nform.makePairList:")
     # Generates fields to fill out based on chosen pairs
 
     if not form.pairs.data:
@@ -80,8 +80,6 @@ def makePairList(form, field):
                 for word in form.pairSounds:
                     # get word2 from db with word id in hidden field and pair them up
                     word2 = Word.query.get(int(word.word2_id.data))
-                    print("incoming data says that word *{}: {}* and word *{}: {}*".format(
-                        word1.word, word.sound1.data, word2.word, word.sound2.data))
                     addedPairs = word1.pair(
                         word2, word.sound1.data, word.sound2.data)
                     if addedPairs:
@@ -91,9 +89,7 @@ def makePairList(form, field):
             else:
                 raise ValidationError("Sounds cannot be null")
 
-        # raise ValidationError("Need to define pair sound")
         return
-    # emptyFiedList(form.pairSounds)
 
 def imageOK(form, field):
     if field.data:
@@ -103,10 +99,13 @@ def imageOK(form, field):
             raise ValidationError(str(e))
 
 
+
 class PairSoundForm(Form):
     sound1 = StringField("Sound 1", validators=[DataRequired()])
     sound2 = StringField("Sound 2", validators=[DataRequired()])
     word2_id = HiddenField("word2_id")
+    
+
 
 
 class AddForm(FlaskForm):
