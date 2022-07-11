@@ -18,7 +18,10 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        height: 240px;
+        //height: 240px;
+        .li-marked {
+            background-color: rgba($color-purp2, 0.2);
+        }
     }
     
     .row {

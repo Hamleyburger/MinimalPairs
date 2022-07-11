@@ -13,41 +13,61 @@ Problems
 
 <div class="content-section">
     <div class="problems-content-section">
-        {% if problems %}
-            <h1>Problems</h1>
-            {% for problem in problems %}
-                <div class="row" id="div-group-{{problem.id}}">
-                    <h3>Group {{ problem.id }}: {{ problem.type }}</h3>
-                        {% if problem.type == "Too few members" %}
-                            <div>
-                                <button class="delete-group-btn" data-id="{{ problem.id }}" >DELETE</button>
-                            </div>
-                        {% endif %}
-                    <div class="col-12 col-md-6">
-                        <h5>All group words</h5>
-                        <ul>
-                            {% for word in problem.members %}
-                            <li>
-                                {{ word.word }}
-                            </li>
-                            {% endfor %} <!-- for word in problem group members -->
-                        </ul>
+        {% if (group_problems or pair_problems) %}
+            {% if group_problems %}
+                <h1>Group problems</h1>
+                {% for problem in group_problems %}
+                    <div class="row" id="div-group-{{problem.id}}">
+                        <h3>Group {{ problem.id }}: {{ problem.type }}</h3>
+                            {% if problem.type == "Too few members" %}
+                                <div>
+                                    <button class="delete-group-btn" data-id="{{ problem.id }}" >DELETE</button>
+                                </div>
+                            {% endif %}
+                        <div class="col-12 col-md-6">
+                            <h5>All group words</h5>
+                            <ul>
+                                {% for word in problem.members %}
+                                <li>
+                                    {{ word.word }}
+                                </li>
+                                {% endfor %} <!-- for word in problem group members -->
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <h5>Problematic words</h5>
+                            <ul>
+                                {% for bad_member in problem.bad_members %}
+                                <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
+                                    {{ bad_member.word.word }} 
+                                    <button class="float-right btn-remove-from-group" data-wordid="{{ bad_member.word.id }}" data-groupid="{{ problem.id }}" data-word="{{ bad_member.word.word }}"><i class="fa-solid fa-trash"></i></button>
+                                </li>
+                                <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
+                                    <span class="font-italic">
+                                        not linked to 
+                                        {% for word in bad_member.missing_links %}
+                                            {{ word.word }}, 
+                                        {% endfor %}
+                                    </span>
+                                </li>
+                                {% endfor %} <!-- member in prob. members -->
+                            </ul>
+                        </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <h5>Problematic words</h5>
-                        <ul>
-                            {% for bad_member in problem.bad_members %}
-                            <li>
-                                {{ bad_member.word.word }} not linked to 
-                                {% for word in bad_member.missing_links %}
-                                    {{ word.word }}, 
-                                {% endfor %}
-                            </li>
-                            {% endfor %} <!-- member in prob. members -->
-                        </ul>
-                    </div>
-                </div>
-            {% endfor %} <!-- for prob in problems -->
+                {% endfor %} <!-- for prob in problems -->
+            {% endif %} <!-- group_problems -->
+            {% if pair_problems %}
+                <h1>Pair problems</h1>
+                <p>These words have no partners</p>
+                <ul>
+                    {% for word in pair_problems %}
+                    <li>
+                        {{ word.id }}: {{ word.word }}
+
+                    </li>
+                    {% endfor %} <!-- problems in pair problems-->
+                </ul>
+            {% endif %} <!-- pair problems-->
         {% else %} <!-- if not problems else -->
         <div class="m-auto celebration">No problems! Hooray!</div>
         {% endif %} <!-- end if problems -->
@@ -60,6 +80,8 @@ Problems
 {% block script %}
 <script>
     let url_for_delete_group = {{ url_for('admin_blueprint.ajax_delete_group') | tojson | safe }};
+    let url_for_remove_from_group = {{ url_for('admin_blueprint.ajax_remove_from_group') | tojson | safe }};
+
 </script>
 {% endblock script %}
 

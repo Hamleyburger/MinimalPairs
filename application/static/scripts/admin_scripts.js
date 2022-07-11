@@ -195,3 +195,29 @@ $(".delete-news-btn").click(function() {
         });
     }
   });
+
+
+  $(".btn-remove-from-group").click(function() {
+
+    group_id = $(this).data("groupid");
+    word_id = $(this).data("wordid");
+    word = $(this).data("word");
+    if (confirm(`Really delete '${word}' from group ${group_id}?`)) {
+
+        $.ajax({
+            data: {
+                group_id : group_id,
+                word_id : word_id
+            },
+            url: url_for_remove_from_group,
+            type: "POST"
+            
+        }).done(function (data) {
+            /* Suggested indexes is keeping track of which words in the dropdown to highlight */
+            console.log(data["message"]);
+            if (data["message"] === "ok") {
+                $(".badword-" + word_id).remove();
+            }
+        });
+    }
+  });

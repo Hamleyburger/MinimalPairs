@@ -224,10 +224,15 @@ def write_news():
 @roles_required('Admin')
 # Receives a word id and returns words in a way so client can see which pairs already exist
 def problems():
-    problems = Group.get_group_problems()
+    group_problems = Group.get_group_problems()
+    pair_problems = []
+    for word in db.session.query(Word).all():
+        if len(word.allPartners()) < 1:
+            pair_problems.append(word)
+            
     """ Get an overview of words without partners and groups with unmatched words """
 
-    return render_template("problems.html", problems=problems)
+    return render_template("problems.html", group_problems=group_problems, pair_problems=pair_problems)
 
 
 @ admin_blueprint.route("/ajax_delete_group/", methods=["POST"])
@@ -241,6 +246,30 @@ def ajax_delete_group():
     print(group_to_delete)
     try:
         group_to_delete.remove()
+        db.session.commit()
+    except Exception as e:
+        return jsonify(
+            message=str(e)
+        )
+
+    return jsonify(
+        message="ok"
+    )
+
+
+@ admin_blueprint.route("/ajax_remove_from_group/", methods=["POST"])
+@roles_required('Admin')
+# Receives changes from user and makes changes in database
+def ajax_remove_from_group():
+
+    group_id = int(request.form["group_id"])
+    word_id = int(request.form["word_id"])
+    group = Group.query.get(group_id)
+    word = Word.query.get(word_id)
+
+    try:
+        print("Deleting word {} from {}".format(word, group))
+        group.members.remove(word)
         db.session.commit()
     except Exception as e:
         return jsonify(

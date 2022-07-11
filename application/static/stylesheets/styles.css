@@ -1011,7 +1011,10 @@ body footer a {
           flex-direction: column;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  height: 240px;
+}
+
+.problems-content-section ul .li-marked {
+  background-color: rgba(153, 95, 139, 0.2);
 }
 
 .problems-content-section .row {
