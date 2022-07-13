@@ -16,7 +16,8 @@ def isValidSymbol(form, field):
     """ Checks if input is valid IPA or accepted alternative. Accepts if lower case version is valid IPA """
 
     if not is_valid_ipa(field.data):
-        if field.data != "-":
+
+        if (field.data != "-") and (field.data != "å"):
             if not is_valid_ipa(field.data.lower()):
                 raise ValidationError("Not valid IPA")
             else:

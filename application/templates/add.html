@@ -99,6 +99,7 @@ Add word
                                                     
                                                 {% if pairForm.addSounds.data %}
                                                     {% if subfield.errors %}
+                                                    {{ subfield.errors }}
                                                         {{ subfield.label }}
                                                         {{ subfield(class="sound_input_field", size="4", style="border: 1px solid red;") }}
                                                     {% endif %} <!-- subfield errors -->

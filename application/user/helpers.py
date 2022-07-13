@@ -63,27 +63,40 @@ def json_to_ints(json_str):
     return wordids
 
 
+def invalid_IPA_convert(invalid_ipa):
+    # Take a sound string and convert invalid IPA characters, 
+    # if they can not be confused with more than one valid one.
+    # returns string
+    
+    newSound = ""
+    for char in invalid_ipa:
+        if char == 'ɡ':
+            char = 'g'
+        elif char == 'r':
+            char = 'ʁ'
+        elif char == 'å':
+            char = 'ɔ'
+        newSound += char
+        return newSound
+
+
 def easyIPAtyping(typedSound):
     """ Translates some keyboard inputs to the characters in the Sound table """
+
+    print("running easy IPA typing")
+    if typedSound == "å":
+        print("sound was å")
 
     easyTypableSounds = {
         'r': 'ʁ',
         'sj': 'ɕ',
+        'å': 'ɔ',
         'ng': 'ŋ',
         'ɡ': 'g'
     }
 
     if typedSound in easyTypableSounds:
         typedSound = easyTypableSounds[typedSound]
-
-    # Change single characters in case of clusters
-    newSound = ""
-    for char in typedSound:
-        if char == 'ɡ':
-            char = 'g'
-        elif char == 'r':
-            char = 'ʁ'
-        newSound += char
 
     return typedSound
 

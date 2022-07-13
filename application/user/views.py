@@ -112,7 +112,7 @@ def wordinfo(word_id, locale):
             if pairList:
                 pairLists.append(pairList)
 
-        MOsets = word.getMOSets()
+        MOsets = word.get_full_MOsets()
         for x in MOsets:
             print("")
             for y in x:
@@ -210,10 +210,9 @@ def contrasts(locale):
 
                 # Search database for exact and partial matches
                 sound1 = Sound.get(inputSound1)
-                print("Getting MO sets...")
+                print("Getting best and 2nd best MO sets...")
                 MOsets = sound1.getMOPairs(MOsounds)
                 MOsets = order_MOsets_by_image(MOsets)
-                print("Getting second best MO sets...")
                 MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
                 MOsets2 = order_MOsets_by_image(MOsets2)
 
@@ -336,25 +335,7 @@ def thankyou(locale):
             stripe_session = stripe.checkout.Session.retrieve(session_id)
             text = Content()["text_thankyou"]
             love = True
-            ## Not storing donor information in database since repo including database is public
-            # supporter_name = stripe_session["customer_details"]["name"]
-            # supporter_email = stripe_session["customer_details"]["email"]
 
-            # try:
-            #     donor_exists = db.session.query(Donation).filter_by(session_id=session_id).first()
-            #     if not donor_exists:
-            #         new_donor = Donation(
-            #             session_id=session_id, 
-            #             name=supporter_name,
-            #             email=supporter_email,
-            #             amount=amount_paid
-            #             )
-            #         db.session.add(new_donor)
-            #         db.session.commit()
-            #     else:
-            #         print("donor exists and this is an old session")
-            # except Exception as e:
-            #     print(e)
         except Exception as e:
             print(e)
             text = Content()["text_notthankyou"]

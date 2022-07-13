@@ -10,6 +10,7 @@ from ipapy import is_valid_ipa
 from .filehelpers import validate_image
 from datetime import datetime
 from wtforms_sqlalchemy.fields import QuerySelectField
+from application.user.helpers import invalid_IPA_convert
 
 
 def emptyFiedList(fieldList):
@@ -70,10 +71,12 @@ def makePairList(form, field):
 
             if form.pairSounds.data:
                 for word in form.pairSounds:
-                    if word.sound1.data == "" or word.sound2.data == "":
+                    s1 = invalid_IPA_convert(word.sound1.data)
+                    s2 = invalid_IPA_convert(word.sound2.data)
+                    if s1 == "" or s2 == "":
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
                         raise ValidationError("No empty sound fields allowed")
-                    if (not is_valid_ipa(word.sound1.data) and (word.sound1.data != "-")) or (not is_valid_ipa(word.sound2.data) and (word.sound2.data != "-")):
+                    if (not is_valid_ipa(s1) and (s1 != "-")) or (not is_valid_ipa(s2) and (s2 != "-")):
                         repopulateFieldList(form.pairSounds, form.pairs, word1)
                         raise ValidationError("Not valid IPA")
 

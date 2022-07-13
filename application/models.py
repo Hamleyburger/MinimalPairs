@@ -66,6 +66,8 @@ class Sound(db.Model):
                     char = 'g'
                 elif char == 'r':
                     char = 'ʁ'
+                elif char == 'å':
+                    char = 'ɔ'
                 newSound += char
 
             return newSound
@@ -129,17 +131,18 @@ class Sound(db.Model):
         # Order the items returned from query, add to instances of Contrast and append to contrasts list
         contrasts = []
         if contrastsQuery:
-            contrasts = sound1.orderedPairs(contrastsQuery)
+            contrasts = sound1.order_pairs_by_sound(contrastsQuery)
         else:
             print("This pair didn't exist. Suggestions?")
 
         return contrasts
 
-    def orderedPairs(self, pairs, sound2List=None):
+    def order_pairs_by_sound(self, pairs):
         """ (Sound) Sorts a given list of pairs so sound1 is self. Throws out pairs without sound1==self\n
-        If sound2List is given, only returns a list of pairs if all contrasts are present\n
         Returns every pair from a group where sound 1 is the same, but word 1 is NOT necessarily the same:\n
         (kor, Thor - klor, glor) <-- k is sound1 """
+        
+
         # Arranging words in pairs so given sound always comes first.
         swappedPairs = []
         for pair in pairs:
@@ -153,31 +156,35 @@ class Sound(db.Model):
             swappedPairs.append(pair)
 
         pairs = swappedPairs
+        return pairs
+
+
+    def MOset_has_sound2s(self, pairs, sound2List):
+        """ (Sound) Discards whole list if a desired sound2 is missing or filters out pairs with undesired sound2 """
+
         swapped_pairs_sound_2s = []
 
-        # If sound2list, deal with it in the following code block
-        if sound2List:
-            
-            # Convert strings to Sound objects in case they're strings
-            newSound2List = Sound.get(soundStringList=sound2List)
+        # Convert strings to Sound objects in case they're strings
+        newSound2List = Sound.get(soundStringList=sound2List)
 
-            # Filter out pairs without wanted sound2
-            filteredPairs = []
-            for pair in pairs:
-                if pair.s2 in newSound2List:
-                    filteredPairs.append(pair)
-                else:
-                    print("filtering out {}".format(pair))
+        # Filter out pairs with unwanted sound2
+        filteredPairs = []
+        for pair in pairs:
+            if pair.s2 in newSound2List:
+                filteredPairs.append(pair)
+                
 
-            # Check that all wanted sound2s are present
-            for pair in filteredPairs:
-                swapped_pairs_sound_2s.append(pair.s2)
-            if all(sound in swapped_pairs_sound_2s for sound in newSound2List):
-                pairs = filteredPairs
-            else:
-                pairs = []
+        # Filter out lists where one or more wanted sound2 are MISSING
+        for pair in filteredPairs:
+            swapped_pairs_sound_2s.append(pair.s2)
+        if all(sound in swapped_pairs_sound_2s for sound in newSound2List):
+            pairs = filteredPairs
+        else:
+            pairs = []
 
         return pairs
+
+
 
     def getMOPairs(self, sound2List=[]):
         """ (Sound) Returns 2D array.\n
@@ -185,11 +192,12 @@ class Sound(db.Model):
         Searches in relevant groups for Multiple Oppositions and returns\n
         a list of lists containg MO-sets for each group. """
 
-        print("sounds")
-        print(sound2List)
         def group_pairs_by_w1(inputList):
             """ Returns a list of pair lists where word 1 is the same in each list """
             newLists = []
+
+            if not inputList:
+                return newLists
 
             for checkpair in inputList: # pairList's pairs each need to be checked to be distributed into w1-unique lists
                 add_to_pairList = False # see if checkpair can be added to any of the pairlists in newlists, if not, add to new list in newlists
@@ -221,18 +229,18 @@ class Sound(db.Model):
 
         # Search relevant groups and add their MO-sets to pair list
         pairLists = []
-        for group in relevantGroups:
-            print("ordering pairs and only returning if all sound2s are present?")
-            pairs_ordered_by_sound = self.orderedPairs(group.pairs, sound2List)
-            for p in pairs_ordered_by_sound:
-                print(p)
-            # Split pair lists into smaller lists based on word 1 being the same. Only keep end result list if all sound2s are present.
-            uniqueLists = group_pairs_by_w1(pairs_ordered_by_sound)
-            # include only lists with more than one
-            for uniqueList in uniqueLists:
-                if len(uniqueList) > 1:
-                    pairLists.append(uniqueList)
 
+        for group in relevantGroups:
+            pairs_ordered_by_sound = self.order_pairs_by_sound(group.pairs)
+
+            # Split pair lists into smaller lists based on word 1 being the same. Only keep end result list if all sound2s are present.
+            all_MOsets = group_pairs_by_w1(pairs_ordered_by_sound)
+
+            # Include only lists with desired sound2s
+            for MOset in all_MOsets:
+                wanted_MOs = self.MOset_has_sound2s(MOset, sound2List)
+                if wanted_MOs:
+                    pairLists.append(wanted_MOs)
 
         return pairLists
 
@@ -962,9 +970,7 @@ class Word(db.Model):
 
 
     def orderedPairs(self):
-        """ (Word) Orders words in pairs so first word is caller. If sound1 is given,
-        \n only pairs where word 1 (caller) has sound 1 will be returned.\n
-        if sound2List is given, all pairings with any of those sounds are returned"""
+        """ (Word) Orders words in pairs so first word is caller """
 
         # Gets all pairs for word and makes self be word1 (w1)
         pairs = self.getPairs()
@@ -982,8 +988,8 @@ class Word(db.Model):
         # This part be replaced with function
         return newPairs
 
-    def getMOSets(self):
-        """ (Word) Gets all Multiple Opposition sets where word is key. Returns 2D array """
+    def get_full_MOsets(self):
+        """ (Word) Gets unfiltered Multiple Opposition sets where word is key. Returns 2D array """
         pairs = self.orderedPairs()
 
         # Find potential sound1s:
