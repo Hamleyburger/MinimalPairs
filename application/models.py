@@ -158,42 +158,14 @@ class Sound(db.Model):
         pairs = swappedPairs
         return pairs
 
-
-    def MOset_has_sound2s(self, pairs, sound2List):
-        """ (Sound) Discards whole list if a desired sound2 is missing or filters out pairs with undesired sound2 """
-
-        swapped_pairs_sound_2s = []
-
-        # Convert strings to Sound objects in case they're strings
-        newSound2List = Sound.get(soundStringList=sound2List)
-
-        # Filter out pairs with unwanted sound2
-        filteredPairs = []
-        for pair in pairs:
-            if pair.s2 in newSound2List:
-                filteredPairs.append(pair)
-                
-
-        # Filter out lists where one or more wanted sound2 are MISSING
-        for pair in filteredPairs:
-            swapped_pairs_sound_2s.append(pair.s2)
-        if all(sound in swapped_pairs_sound_2s for sound in newSound2List):
-            pairs = filteredPairs
-        else:
-            pairs = []
-
-        return pairs
-
-
-
     def getMOPairs(self, sound2List=[]):
-        """ (Sound) Returns 2D array.\n
+        """ (Sound) Returns 2D array of MOsets.\n
         Takes a key sound and a list of opposition sounds.\n
         Searches in relevant groups for Multiple Oppositions and returns\n
         a list of lists containg MO-sets for each group. """
 
         def group_pairs_by_w1(inputList):
-            """ Returns a list of pair lists where word 1 is the same in each list """
+            """ Takes a list and returns lists: Returns list of pair_lists where word 1 is the same in each list """
             newLists = []
 
             if not inputList:
@@ -216,33 +188,31 @@ class Sound(db.Model):
             return newLists
 
 
-        groups = db.session.query(Group).all()
-        relevantGroups = []
-
-        # Filter out groups that don't have all the sounds
+        relevant_groups = []
+        all_valid_MOsets = []
         sound2s = Sound.get(soundStringList=sound2List)
+        sound1and2s = sound2s + [self]
+        groups = db.session.query(Group).all()
+
+        # Filter out groups that don't have enough of the desired sounds
         for group in groups:
-            if all(elem in group.sounds for elem in (sound2s + [self])):
-                relevantGroups.append(group)
+            intersection = list(set(group.sounds).intersection(sound1and2s))
+            if len(intersection) > 2:
+                relevant_groups.append(group)
 
-                # print("Group {} has all the sounds!".format(group.id))
+        for group in relevant_groups:
+            pairs_by_sound = self.order_pairs_by_sound(group.pairs)
+            all_MOsets = group_pairs_by_w1(pairs_by_sound)
 
-        # Search relevant groups and add their MO-sets to pair list
-        pairLists = []
+            for MOset_candidate in all_MOsets:
+                moset = MOsetclass.create_valid(self, sound2s, MOset_candidate)
+                if moset:
+                    all_valid_MOsets.append(moset)
+        
 
-        for group in relevantGroups:
-            pairs_ordered_by_sound = self.order_pairs_by_sound(group.pairs)
-
-            # Split pair lists into smaller lists based on word 1 being the same. Only keep end result list if all sound2s are present.
-            all_MOsets = group_pairs_by_w1(pairs_ordered_by_sound)
-
-            # Include only lists with desired sound2s
-            for MOset in all_MOsets:
-                wanted_MOs = self.MOset_has_sound2s(MOset, sound2List)
-                if wanted_MOs:
-                    pairLists.append(wanted_MOs)
-
-        return pairLists
+        print("END OF TEST returning MOsets\n\n\n")
+        return all_valid_MOsets
+        # TEST
 
 
 class Group(db.Model):
@@ -288,7 +258,6 @@ class Group(db.Model):
             serialized["sounds"].append(sound.sound)
 
         return serialized
-
 
     def add(self, word=None, words=[]):
         """ Adds word or word list to caller group. Avoids duplicates. No commit. """
@@ -1074,7 +1043,6 @@ class Word(db.Model):
         return partner_suggestions
 
 
-
 class Image(db.Model):
     """ Image name must correspond to file name in image folder """
     __tablename__ = "images"
@@ -1184,3 +1152,29 @@ class Image(db.Model):
             db.session.commit()
         else:
             print("default image ok")
+
+
+class MOsetclass(object):
+    def __new__(self, valid_sorted_pairlist):
+
+        self.pairs = valid_sorted_pairlist
+        return self.pairs
+        
+    
+    @classmethod
+    def create_valid(cls, s1: Sound, s2list: list, MOset_candidate):
+
+        valid_MOset = []
+
+        for pair in MOset_candidate:
+            if pair.s2 in s2list:
+                valid_MOset.append(pair)
+
+        if len(valid_MOset) < 2:
+            return None
+        else:
+            return cls(valid_MOset)
+    
+
+
+

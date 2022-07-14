@@ -28,23 +28,23 @@ def Content(locale=None):
         # Front page
         "title_index": "Velkommen",
         "about": [
-            "Velkommen til minimalepar.dk",
-            ' <p><i>Minimale par</i> er kort beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd. </p>\
+            "En database af minimale par",
+            ' <p><i>Minimale par</i> er kort beskrevet par af ord, hvis betydning kun er adskilt af en enkelt lyd.\
                 Derfor er minimale par gode til at vise hvordan en lyd\
                 kan være afgørende for et ords betydning. Hvis jeg for eksempel erstatter [k] med [d], bliver "krage" til "drage", og\
-                så har jeg pludselig en flok drager på taget.\
+                så har jeg pludselig en flok drager på taget.</p>\
                 <p> "Minimale Par" er en voksende database med ord og billeder, der danner par på kryds og tværs. \
-                <dl>\
-                <dt>Indholdet er tilpasset brug i logopædisk praksis</dt>\
-                    <dd>Materialet er ikke videnskabeligt akkurat - ordparrene er tilføjet et af gangen efter behov, baseret på en kvalitativ vurdering</dd>\
-                <dt>Der sigtes efter ord, som er relativt nemme at billedliggøre</dt>\
-                <dt>Der kan tilføjes par, som ikke er ægte minimale par på fonemniveau</dt>\
-                    <dd>"skyr" vs. "dyr" har mere end en enkelt lyd til forskel. Men parret er relevant til brug med elever, der erstatter [sg] med [d]</dd>\
-                <dt>Der kan tilføjes par, som <i>kan</i> være minimale alt afhængigt af hvordan man udtaler dem.</dt>\
-                    <dd>"ruder" vs. "guder", kan have [ʁ] og [g] til forskel, med mindre [u] udsættes for nok r-påvirkning til at lyde mere som [o]. Så ville "ruder" i stedet danne [ʁ g]-par med "goder".</dd>\
-                <dt>Der kan tilføjes ord, som bare er tæt nok på hinanden til at de kan bruges i praksis.</dt>\
-                    <dd>"Rist" og "hest" minder nok om hinanden til at man kan bruge dem, selv om vokalkvaliteten ikke er helt den samme.</dd>\
-                </dl>\
+                Indholdet er tilpasset brug i logopædisk praksis. Det vil sige, at:\
+                <ul>\
+                <li>Materialet er ikke videnskabeligt akkurat - ordparrene er tilføjet et af gangen efter behov, baseret på en kvalitativ vurdering</li>\
+                <li>Der sigtes efter ord, som er relativt nemme at billedliggøre</li>\
+                <li>Der kan tilføjes par, som ikke er ægte minimale par på fonemniveau</li>\
+                    <i><dd>F.eks. "skyr" vs. "dyr" har mere end en enkelt lyd til forskel. Men parret er relevant til brug med elever, der erstatter [sg] med [d]</dd></i>\
+                <li>Der kan tilføjes par, som <i>kan</i> være minimale alt afhængigt af hvordan man udtaler dem.</li>\
+                     <i><dd>"ruder" vs. "guder", kan have [ʁ] og [g] til forskel, med mindre [u] udsættes for nok r-påvirkning til at lyde mere som [o]. Så ville "ruder" i stedet danne [ʁ g]-par med "goder".</dd> </i>\
+                <li>Der kan tilføjes ord, som bare er tæt nok på hinanden til at de kan bruges i praksis.</li>\
+                     <i><dd>"Rist" og "hest" minder nok om hinanden til at man kan bruge dem, selv om vokalkvaliteten ikke er helt den samme.</dd> </i>\
+                </ul>\
                 </p>\
                 \
                 <p>På siden <i>find kontraster</i> kan du foretage en lydsøgning med IPA-symboler og finde både minimale par og multiple oppositioner. \
@@ -189,7 +189,7 @@ def Content(locale=None):
         "close": "Close",
 
         # Layout.html
-        "title_all": "Minimal Pairs",
+        "title_all": "Minimale Par",
         "nav_find": "Find Contrasts",
         "nav_collection": "Collection",
         "nav_donation": "Donate",
@@ -201,14 +201,14 @@ def Content(locale=None):
         # Front page
         "title_index": "Home",
         "about": [
-            "Welcome to minimalepar.dk",
+            'A database of "minimale par"',
             ' <p> "Minimale Par" (Danish for "minimal pairs") is a growing database of minimal pairs. \
                 Here you can search and collect word pairs with images and generate \
                 convenient two-sided PDF files for printing and using in \
                 speech language therapy sessions or simply for practicing \
                 phonological contrasts in the Danish language. </p> \
-                <p> <i>"If you mean code but say this word: toad - I think of a \
-                toad(shows a picture of a toad) </i> </p> \
+                <p> <i>If you mean "code" but say "tode" - I think of a \
+                toad (here\'s a picture of a toad) </i> </p> \
                 <p> Minimal pairs are technically word pairs differing only by \
                 one sound in the same position in each word. \
                 However in speech sound disorders it is common to have mislearned \

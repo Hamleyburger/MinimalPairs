@@ -14,7 +14,7 @@
 
         {% if not g.get("errorpage") %}
         <!-- page specific meta tags -->
-        <title> {{ title_all | safe }} -{% block title %}{% endblock %}</title>
+        <title> {{ title_all | safe }}{% block title %}{% endblock %}</title>
 
         {% block submeta %}
         <!-- if no specific meta tags are supplied -->

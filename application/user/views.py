@@ -211,10 +211,16 @@ def contrasts(locale):
                 # Search database for exact and partial matches
                 sound1 = Sound.get(inputSound1)
                 print("Getting best and 2nd best MO sets...")
-                MOsets = sound1.getMOPairs(MOsounds)
+                all_MOsets = sound1.getMOPairs(MOsounds)
+                for MOset in all_MOsets:
+                    if len(MOset) == len(MOsounds):
+                        MOsets.append(MOset)
+                    else:
+                        MOsets2.append(MOset)
+
                 MOsets = order_MOsets_by_image(MOsets)
-                MOsets2 = getSecondBest(sound1, MOsounds, MOsets)
                 MOsets2 = order_MOsets_by_image(MOsets2)
+                MOsets2 = sorted(MOsets2, key=len, reverse=True)
 
                 for inputSound2 in MOsounds:
                     SearchedPair.add(inputSound1, inputSound2)
