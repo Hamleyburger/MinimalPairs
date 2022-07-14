@@ -9,101 +9,112 @@
 }
 </style>
 
-<div class="MO-wrapper shadow" style="overflow: scroll;">
-
-    <!-- It shouldn't be possible for an MOset to be less than 3, but we check anyway -->
-    {% if MOset|length >= 2 %}
-
-
-    <!-- make a list of ids in this MO set -->
-    {% set wordids = [] %}
-    {% do wordids.append(MOset[0].w1.id) %}
-    {% for pair in MOset %}
-    {% do wordids.append(pair.w2.id) %}
-    {% endfor %}
-
-    {% set ns = namespace(collected = true) %}
-
-    {% for id in wordids %}
-    {% if not id in session["collection"] %}
-    {% set ns.collected = false %}
+<!-- determine if MO has clusters -->
+{% set ns = namespace(iscluster=false) %}
+{% for pair in MOset %}
+    {% if pair.cluster_length() %}
+        {% set ns.iscluster = true %}
     {% endif %}
-    {% endfor %}
+{% endfor %}
+
+<div class="MO-col {% if ns.iscluster %}cluster-mo{% endif %}">
+    <div class="MO-wrapper shadow" style="overflow: scroll;">
+
+        <!-- It shouldn't be possible for an MOset to be less than 3, but we check anyway -->
+        {% if MOset|length >= 2 %}
 
 
-
-    <div class="MO-list-wrapper" id="MO-wrap-{{ index }}" style="position: relative">
-
-        <!-- Add/remove button for whole MO set -->
-        <div class="absolute-colour-overlay"></div>
-        <div class="wordgroup" data-ids='{{ wordids | safe }}'>
-            <a href="#" type="button" class="addgroupbtn addgroupbtn-MO btn"
-                style="display: {{ 'none' if ns.collected else 'inline-block' }};"
-                onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=false)"
-                data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="{{ tooltip_addMO }}"><i
-                    class="fas fa-plus-circle shadow"></i>
-            </a>
-            <a href="#" type="button" class="removegroupbtn removegroupbtn-MO btn"
-                style="display: {{ 'inline-block' if ns.collected else 'none' }};"
-                onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=true)"
-                data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmMO }}"><i
-                    class="fas fa-minus-circle shadow"></i>
-            </a>
-        </div>
-
-        <!-- Word 1 -->
-        {% set word1 = MOset[0].w1 %}
-        <div class="MO-wrap-hoverable"
-            onmouseover="show_thumbnail(this, 'MO-wrap-{{ index }}', img{{ word1.id }}url)"
-            onmouseout="hide_thumbnail(this, 'MO-wrap-{{ index }}')">
-
-            <script>
-                var img{{ word1.id }}url = "{{ url_for('static', filename='images/thumbnails/' + word1.image.name)}}";
-            </script>
-            {% if word1.image.name == "default.svg" or word1.image.name == "default.jpg" %}
-            <span style="display: inline-block; width: 16px;"> {{ possible_img_icon(word1) }} </span>
-            {% else %}
-            <i class="fas fa-image"> </i>
-            {% endif %}
-            <b>
-                {{ MOset[0].w1.word }} [<span class="ipa-font">{{ MOset[0].s1.sound }}</span>]
-                {{ word_card_buttons(MOset[0].w1) }}
-            </b>
-        </div>
-
-        <!-- loop over MO partners (word 2s) -->
+        <!-- make a list of ids in this MO set -->
+        {% set wordids = [] %}
+        {% do wordids.append(MOset[0].w1.id) %}
         {% for pair in MOset %}
-        {% set word2 = pair.w2 %}
-        <div class="MO-wrap-hoverable" onmouseover="show_thumbnail(this, 'MO-wrap-{{ index }}', img{{ word2.id }}url)"
-            onmouseout="hide_thumbnail(this, 'MO-wrap-{{ index }}')">
-            {{ possible_img_icon(word2) }}
-            {{ word2.word }} [<span class="ipa-font">{{pair.s2.sound }}</span>] {{ word_card_buttons(word2) }} <br>
-        </div>
+            {% do wordids.append(pair.w2.id) %}
         {% endfor %}
 
-    </div>
+        {% set ns = namespace(collected = true) %}
 
-    {% endif %}
+        {% for id in wordids %}
+            {% if not id in session["collection"] %}
+                {% set ns.collected = false %}
+            {% endif %}
+        {% endfor %}
+
+
+    
+            <div class="MO-list-wrapper" id="MO-wrap-{{ index }}" style="position: relative">
+
+                <!-- Add/remove button for whole MO set -->
+                <div class="absolute-colour-overlay"></div>
+                <div class="wordgroup" data-ids='{{ wordids | safe }}'>
+                    <a href="#" type="button" class="addgroupbtn addgroupbtn-MO btn"
+                        style="display: {{ 'none' if ns.collected else 'inline-block' }};"
+                        onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=false)"
+                        data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="{{ tooltip_addMO }}"><i
+                            class="fas fa-plus-circle shadow"></i>
+                    </a>
+                    <a href="#" type="button" class="removegroupbtn removegroupbtn-MO btn"
+                        style="display: {{ 'inline-block' if ns.collected else 'none' }};"
+                        onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=true)"
+                        data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmMO }}"><i
+                            class="fas fa-minus-circle shadow"></i>
+                    </a>
+                </div>
+
+                <!-- Word 1 -->
+                {% set word1 = MOset[0].w1 %}
+                <div class="MO-wrap-hoverable"
+                    onmouseover="show_thumbnail(this, 'MO-wrap-{{ index }}', img{{ word1.id }}url)"
+                    onmouseout="hide_thumbnail(this, 'MO-wrap-{{ index }}')">
+
+                    <script>
+                        var img{{ word1.id }}url = "{{ url_for('static', filename='images/thumbnails/' + word1.image.name)}}";
+                    </script>
+                    {% if word1.image.name == "default.svg" or word1.image.name == "default.jpg" %}
+                    <span style="display: inline-block; width: 16px;"> {{ possible_img_icon(word1) }} </span>
+                    {% else %}
+                    <i class="fas fa-image"> </i>
+                    {% endif %}
+                    <b>
+                        {{ MOset[0].w1.word }} [<span class="ipa-font">{{ MOset[0].s1.sound }}</span>]
+                        {{ word_card_buttons(MOset[0].w1) }}
+                    </b>
+                </div>
+
+                <!-- loop over MO partners (word 2s) -->
+                {% for pair in MOset %}
+                {% set word2 = pair.w2 %}
+                <div class="MO-wrap-hoverable" onmouseover="show_thumbnail(this, 'MO-wrap-{{ index }}', img{{ word2.id }}url)"
+                    onmouseout="hide_thumbnail(this, 'MO-wrap-{{ index }}')">
+                    {{ possible_img_icon(word2) }}
+                    {{ word2.word }} [<span class="ipa-font">{{pair.s2.sound }}</span>] {{ word_card_buttons(word2) }} <br>
+                </div>
+                {% endfor %}
+
+            </div>
+
+
+        {% endif %}
 
 
 
-    {% block script %}
-    <script>
-        function show_thumbnail(thing, id, imgurl) {
-            image_container = $(thing).parent($(".MO-list-wrapper"));
-            if (!imgurl.includes("default.")) {
-                image_container.css('background-image', 'url(' + imgurl + ')');
+        {% block script %}
+        <script>
+            function show_thumbnail(thing, id, imgurl) {
+                image_container = $(thing).parent($(".MO-list-wrapper"));
+                if (!imgurl.includes("default.")) {
+                    image_container.css('background-image', 'url(' + imgurl + ')');
+                }
+
             }
+            function hide_thumbnail(thing, id) {
+                image_container = $(thing).parent($(".MO-list-wrapper"));
+                image_container.css('background-image', 'none');
+            }
+            var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_many') }}";
+        </script>
+        {% endblock %}
 
-        }
-        function hide_thumbnail(thing, id) {
-            image_container = $(thing).parent($(".MO-list-wrapper"));
-            image_container.css('background-image', 'none');
-        }
-        var url_for_bulkmanage = "{{ url_for('user_blueprint.ajax_collect_many') }}";
-    </script>
-    {% endblock %}
-
+    </div>
 </div>
 {% endmacro %}
 

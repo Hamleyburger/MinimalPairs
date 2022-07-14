@@ -502,6 +502,7 @@ class Pair(db.Model):
         db.Integer, db.ForeignKey('sounds.id'), nullable=False)
     partner_sound_id = db.Column(
         db.Integer, db.ForeignKey('sounds.id'), nullable=False)
+    isinitial = db.Column(db.Boolean(), nullable=True)
 
     # These sounds should be replaced
     word_sound = db.Column(db.String())
@@ -527,6 +528,24 @@ class Pair(db.Model):
         string = "{}: {} / {} - ({} vs. {})".format(self.id, self.w1.word,
                                                     self.w2.word, self.s1.sound, self.s2.sound)
         return string
+
+
+
+    def sounds(self):
+        """ gives you a list with the two sounds in the current pair """
+        return [self.s1, self.s2]
+    
+    def cluster_length(self):
+        """ returns 0 i no clusters, else longest cluster length """
+        # is being used in MO-macros template to ad cluster class to MO, but has no function yet
+        max_length = 0
+        for sound in self.sounds():
+            length = len(sound.sound)
+            if (length > max_length) and (length > 1):
+                max_length = length
+        return max_length
+
+
 
 
 

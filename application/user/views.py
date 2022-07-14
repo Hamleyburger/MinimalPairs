@@ -222,8 +222,9 @@ def contrasts(locale):
                 MOsets2 = order_MOsets_by_image(MOsets2)
                 MOsets2 = sorted(MOsets2, key=len, reverse=True)
 
-                for inputSound2 in MOsounds:
-                    SearchedPair.add(inputSound1, inputSound2)
+                if not current_user.is_authenticated:
+                    for inputSound2 in MOsounds:
+                        SearchedPair.add(inputSound1, inputSound2)
 
                 # add each word id to list from every MO and strip duplicates using set
                 idList = [id for MO in MOsets +
