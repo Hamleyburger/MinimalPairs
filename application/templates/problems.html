@@ -35,23 +35,40 @@ chosenjs_highlight_suggestions %}
                             </ul>
                         </div>
                         <div class="col-12 col-md-6">
-                            <h5>Problematic words</h5>
-                            <ul>
-                                {% for bad_member in problem.bad_members %}
-                                <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
-                                    {{ bad_member.word.word }} 
-                                    <button class="float-right btn-remove-from-group" data-wordid="{{ bad_member.word.id }}" data-groupid="{{ problem.id }}" data-word="{{ bad_member.word.word }}"><i class="fa-solid fa-trash"></i></button>
-                                </li>
-                                <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
-                                    <span class="font-italic">
-                                        not linked to 
-                                        {% for word in bad_member.missing_links %}
-                                            {{ word.word }}, 
-                                        {% endfor %}
-                                    </span>
-                                </li>
-                                {% endfor %} <!-- member in prob. members -->
-                            </ul>
+                            {% if problem.bad_members %}
+                                <h5>Problematic words</h5>
+                                <ul>
+                                    {% for bad_member in problem.bad_members %}
+                                    <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
+                                        {{ bad_member.word.word }} 
+                                        <button class="float-right btn-remove-from-group" data-objid="{{ bad_member.word.id }}" data-groupid="{{ problem.id }}" data-objtype="badword" data-objstring="{{ bad_member.word.word }}"><i class="fa-solid fa-trash"></i></button>
+                                    </li>
+                                    <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
+                                        <span class="font-italic">
+                                            not linked to 
+                                            {% for word in bad_member.missing_links %}
+                                                {{ word.word }}, 
+                                            {% endfor %}
+                                        </span>
+                                    </li>
+                                    {% endfor %} <!-- member in prob. members -->
+                                </ul>
+                            {% endif %} <!-- if problem.bad_members-->
+                            {% if problem.bad_pairs %}
+                                <h5>Problematic pairs</h5>
+                                <ul>
+                                    {% for bad_pair in problem.bad_pairs %}
+                                    <li class="badpair-{{ bad_pair.id }} {{ loop.cycle('li-marked', '') }}">
+                                        {{ bad_pair.w1.word }} - {{ bad_pair.w2.word }} 
+                                        <button class="float-right btn-remove-from-group" data-objid="{{ bad_pair.id }}" data-groupid="{{ problem.id }}" data-objtype="badpair" data-objstring="{{ bad_pair.w1.word }}-{{ bad_pair.w2.word }}"><i class="fa-solid fa-trash"></i></button>
+                                    </li>
+                                    {% endfor %} <!-- member in prob. members -->
+                                </ul>
+                            {% endif %} <!-- if problem.bad_members-->
+
+
+
+
                         </div>
                     </div>
                 {% endfor %} <!-- for prob in problems -->

@@ -200,14 +200,17 @@ $(".delete-news-btn").click(function() {
   $(".btn-remove-from-group").click(function() {
 
     group_id = $(this).data("groupid");
-    word_id = $(this).data("wordid");
-    word = $(this).data("word");
-    if (confirm(`Really delete '${word}' from group ${group_id}?`)) {
+    obj_id = $(this).data("objid");
+    obj_string = $(this).data("objstring");
+    obj_type = $(this).data("objtype");
+    
+    if (confirm(`Really delete '${obj_string}' from group ${group_id}?`)) {
 
         $.ajax({
             data: {
                 group_id : group_id,
-                word_id : word_id
+                obj_id : obj_id,
+                obj_type : obj_type
             },
             url: url_for_remove_from_group,
             type: "POST"
@@ -216,7 +219,7 @@ $(".delete-news-btn").click(function() {
             /* Suggested indexes is keeping track of which words in the dropdown to highlight */
             console.log(data["message"]);
             if (data["message"] === "ok") {
-                $(".badword-" + word_id).remove();
+                $(".badword-" + obj_id).remove();
             }
         });
     }

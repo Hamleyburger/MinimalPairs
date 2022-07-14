@@ -225,14 +225,14 @@ def write_news():
 # Receives a word id and returns words in a way so client can see which pairs already exist
 def problems():
     group_problems = Group.get_group_problems()
-    pair_problems = []
+    word_problems = []
     for word in db.session.query(Word).all():
         if len(word.allPartners()) < 1:
-            pair_problems.append(word)
+            word_problems.append(word)
             
     """ Get an overview of words without partners and groups with unmatched words """
 
-    return render_template("problems.html", group_problems=group_problems, pair_problems=pair_problems)
+    return render_template("problems.html", group_problems=group_problems, word_problems=word_problems)
 
 
 @ admin_blueprint.route("/ajax_delete_group/", methods=["POST"])
@@ -263,14 +263,24 @@ def ajax_delete_group():
 def ajax_remove_from_group():
 
     group_id = int(request.form["group_id"])
-    word_id = int(request.form["word_id"])
+    obj_id = int(request.form["obj_id"])
+    obj_type = request.form["obj_type"]
     group = Group.query.get(group_id)
-    word = Word.query.get(word_id)
+
 
     try:
-        print("Deleting word {} from {}".format(word, group))
-        group.members.remove(word)
+        if obj_type == "badword":
+            word = Word.query.get(obj_id)
+            print("Deleting word {} from {}".format(word, group))
+            group.members.remove(word)
+        elif obj_type == "badpair":
+            pair = Pair.query.get(obj_id)
+            print("Deleting pair {} from {}".format(pair, group))
+            group.pairs.remove(pair)
+        else:
+            raise Exception("I don't if I should delete word or pair. Object type either invalid or missing")
         db.session.commit()
+
     except Exception as e:
         return jsonify(
             message=str(e)
@@ -285,7 +295,7 @@ def ajax_remove_from_group():
 @roles_required('Admin')
 # Receives changes from user and makes changes in database
 def ajax_change():
-    print("running ajax")
+    
     newword = request.form["newword"]
     newcue = request.form["newcue"]
     newimg = request.form["newimg"]

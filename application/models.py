@@ -201,6 +201,8 @@ class Sound(db.Model):
                 relevant_groups.append(group)
 
         for group in relevant_groups:
+
+            # sort, order and filter pairs for easier check
             pairs_by_sound = self.order_pairs_by_sound(group.pairs)
             all_MOsets = group_pairs_by_w1(pairs_by_sound)
 
@@ -209,10 +211,7 @@ class Sound(db.Model):
                 if moset:
                     all_valid_MOsets.append(moset)
         
-
-        print("END OF TEST returning MOsets\n\n\n")
         return all_valid_MOsets
-        # TEST
 
 
 class Group(db.Model):
@@ -446,6 +445,9 @@ class Group(db.Model):
 
         for group in all_groups:
             bad_members = []
+            bad_pairs = []
+
+            # CHECK FOR MISSING LINKS/UNPAIRED WORDS IN GROUP
             for word in group.members:
                 missing_links = []
 
@@ -465,12 +467,22 @@ class Group(db.Model):
                 bad_group["bad_members"] = bad_members
                 problems.append(bad_group)
             
+            # CHECK FOR TOO FEW WORDS IN GROUP
             liste = list(group.members)
-
             if len(liste) < 3:
                 bad_group = group.serialize()
                 bad_group["type"] = "Too few members"
-                bad_group["bad_members"] = []
+                problems.append(bad_group)
+            
+            # CHECK FOR PAIRS IN GROUP WITH WORDS THAT ARE NOT IN GROUP
+
+            for pair in group.pairs:
+                if (pair.w1 not in group.members) or (pair.w2 not in group.members):
+                    bad_pairs.append(pair) 
+            if bad_pairs:
+                bad_group = group.serialize()
+                bad_group["type"] = "Loose pairs"
+                bad_group["bad_pairs"] = bad_pairs
                 problems.append(bad_group)
             
         return problems
