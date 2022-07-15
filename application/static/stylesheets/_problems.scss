@@ -2,8 +2,17 @@
 
 .problems-content-section {
 
+    .row {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .col {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     margin: 40px;
-    height: 500px;
+    min-height: 500px;
     @media only screen and (max-width: 900px) {
         margin-left: 20px;
         margin-right: 20px;
@@ -18,18 +27,30 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
+        padding: 0;
         //height: 240px;
         .li-marked {
             background-color: rgba($color-purp2, 0.2);
         }
     }
+
+    .problem-showcase {
+        max-width: 100%;
+    }
     
-    .row {
+    .grouprow {
         margin: 0;
         padding: 0;
         margin-bottom: 50px;
 
     }
+
+    .paircol {
+        height: fit-content;
+        padding: 8px 0 0 0 !important;
+        text-align: center;
+    }
+
     .celebration {
         height: 400px;
         text-align: center;

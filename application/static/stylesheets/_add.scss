@@ -7,22 +7,44 @@
 
 // Pair sound table: Dynamically generated for defining pairs' sounds
 .pairSoundTable {
+    padding: 0 5px 10px;
 
+    .marked {
+            background-color: rgba($color-purp2, 0.2);
+    }
     input, label {
         display: block;
+        margin: auto;
     }
     label {
-        height: 2.5em;
+        height: 52px;
+        margin: 0;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+    }
+    .tickwrap {
+        height: 35px;
     }
 
-    .row {
-        margin-bottom: 30px;
+    .pstrow {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        .pstcol {
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+            .sound_input_field {
+                margin: auto;
+                height: 24px;
+            }
+        }
+    }
 
-    }
-    .vs {
-        font-weight: bolder;
-        padding-top: 30px;
-    }
 
 }
 
@@ -75,4 +97,13 @@ flex-wrap: wrap;
 .fillme {
     border: 1px solid $color-purp2;
     border-radius: 13px;
+}
+
+.admin-ipa-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+    margin: 0;
 }

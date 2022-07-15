@@ -12,3 +12,4 @@ Disallow: /ajax_duplicate_in_collection/
 Disallow: /ajax_get_boardgame_filenames/
 Disallow: /ajax_remove_group/
 Disallow: /ajax_delete_from_group/
+Disallow: /ajax_set_initial/

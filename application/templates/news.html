@@ -82,9 +82,7 @@ chosenjs_highlight_suggestions %}
 {% endblock %}
 
 {% block script %}
-<script>
-    // let url_for_suggested_pairs = {{ url_for('admin_blueprint.ajax_suggested_pairs') | tojson | safe }}
-</script>
+
 
 {{ chosenjs_filtering() }}
 {{ enable_chosenjs() }}

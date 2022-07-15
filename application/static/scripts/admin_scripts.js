@@ -224,3 +224,42 @@ $(".delete-news-btn").click(function() {
         });
     }
   });
+
+  $(".isinitial-yn").change(function() {
+
+    obj_id = $(this).data("objid");
+    obj_type = $(this).data("objtype");
+    typed_value = $(this).val();
+    console.log(typed_value);
+
+    if (typed_value === "y" || typed_value === "n") {
+        console.log("yes or no, ajax");
+        
+        $.ajax({
+            data: {
+                obj_id : obj_id,
+                typed_value: typed_value,
+                obj_type: obj_type
+            },
+            url: url_for_set_initial,
+            type: "POST"
+            
+        }).done(function (data) {
+            /* Suggested indexes is keeping track of which words in the dropdown to highlight */
+            console.log(data["message"]);
+            if (data["message"] === "ok") {
+                $(`#init-fix-${obj_type}-${obj_id}`).html("Fixed!");
+            }
+            else {
+                $(`#init-fix-${obj_type}-${obj_id}`).html(data["message"]);
+                $(`#init-fix-${obj_type}-${obj_id}`).css({"color": "red"});
+
+            }
+        });
+    }
+    else {
+        $(this).css({"background-color": "yellow", "border": "2px solid red"});
+        $(`#init-fix-${obj_type}-${obj_id}`).html("Y/N!");
+    }
+
+  });

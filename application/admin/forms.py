@@ -36,9 +36,11 @@ def repopulateFieldList(formPairSounds, formPairs, word1):
 
         if session.get("partner_suggestion_lists"):
             for sug_list in session["partner_suggestion_lists"]:
-                for id, sound in sug_list:
+                for id, sound, initial in sug_list:
+                    print("INITIAL IS {}".format(initial))
                     if id == int(wordid):
                         field.sound2.data = sound
+                        field.isinitial.data = initial
 
 
 
@@ -84,7 +86,7 @@ def makePairList(form, field):
                     # get word2 from db with word id in hidden field and pair them up
                     word2 = Word.query.get(int(word.word2_id.data))
                     addedPairs = word1.pair(
-                        word2, word.sound1.data, word.sound2.data)
+                        word2, word.sound1.data, word.sound2.data, word.isinitial.data)
                     if addedPairs:
                         for pair in addedPairs:
                             print("Added pair:" + pair.textify())
@@ -107,6 +109,7 @@ class PairSoundForm(Form):
     sound1 = StringField("Sound 1", validators=[DataRequired()])
     sound2 = StringField("Sound 2", validators=[DataRequired()])
     word2_id = HiddenField("word2_id")
+    isinitial = BooleanField("Init", default=False)
     
 
 

@@ -10,14 +10,13 @@ chosenjs_highlight_suggestions %}
 {% block main %}
 
 
-
 <div class="content-section">
     <div class="problems-content-section">
-        {% if (group_problems or pair_problems) %}
+        {% if (group_problems or word_problems or pair_problems) %}
             {% if group_problems %}
                 <h1>Group problems</h1>
                 {% for problem in group_problems %}
-                    <div class="row" id="div-group-{{problem.id}}">
+                    <div class="row grouprow" id="div-group-{{problem.id}}">
                         <h3>Group {{ problem.id }}: {{ problem.type }}</h3>
                             {% if problem.type == "Too few members" %}
                                 <div>
@@ -54,6 +53,7 @@ chosenjs_highlight_suggestions %}
                                     {% endfor %} <!-- member in prob. members -->
                                 </ul>
                             {% endif %} <!-- if problem.bad_members-->
+    
                             {% if problem.bad_pairs %}
                                 <h5>Problematic pairs</h5>
                                 <ul>
@@ -62,29 +62,57 @@ chosenjs_highlight_suggestions %}
                                         {{ bad_pair.w1.word }} - {{ bad_pair.w2.word }} 
                                         <button class="float-right btn-remove-from-group" data-objid="{{ bad_pair.id }}" data-groupid="{{ problem.id }}" data-objtype="badpair" data-objstring="{{ bad_pair.w1.word }}-{{ bad_pair.w2.word }}"><i class="fa-solid fa-trash"></i></button>
                                     </li>
-                                    {% endfor %} <!-- member in prob. members -->
+                                    {% endfor %} <!-- bad_pair in prob. bad_pairs -->
                                 </ul>
+                            {% endif %} <!-- if problem.bad_pairs-->
+            
+                            {% if problem.isinitial_null %}
+                                <div class="problem_showcase">
+                                    <h5 id="init-fix-group-{{ problem.id }}" >Are contrasts initial? y/n</h5>
+                                    <input class="isinitial-yn" data-objtype="group" data-objid="{{ problem.id }}" type="text" minlength="1" maxlength="1" size="4">
+                                </div>
                             {% endif %} <!-- if problem.bad_members-->
-
-
-
-
-                        </div>
-                    </div>
+                        </div> <!-- col-12 col-md-6 -->
+                    </div> <!-- row group problem id -->
                 {% endfor %} <!-- for prob in problems -->
             {% endif %} <!-- group_problems -->
-            {% if pair_problems %}
-                <h1>Pair problems</h1>
+
+            {% if word_problems %}
+                <h1>Word problems</h1>
                 <p>These words have no partners</p>
                 <ul>
-                    {% for word in pair_problems %}
+                    {% for word in word_problems %}
                     <li>
                         {{ word.id }}: {{ word.word }}
 
                     </li>
                     {% endfor %} <!-- problems in pair problems-->
                 </ul>
-            {% endif %} <!-- pair problems-->
+            {% endif %} <!-- word problems-->
+            {% if pair_problems %}
+                <h1>Pair problems</h1>
+                <p>These pairs' isinitial has not been defined</p>
+                <ul>
+                    {% for pair in pair_problems %}
+                    <li class="row {{ loop.cycle('li-marked', '') }}">
+                            <div class="col-6 paircol">
+                                {{ pair.w1.word }} - {{ pair.w2.word }} [{{ pair.s1 }}, {{ pair.s2 }}]
+                            </div>
+                            <div class="col-4 col-md-3 paircol">
+                                <span id="init-fix-pair-{{ pair.id }}" >init. y/n?</span>
+                            </div>
+                            <div class="col-1 col-md-1 paircol">
+                                <input class="isinitial-yn" data-objtype="pair" data-objid="{{ pair.id }}" type="text" minlength="1" maxlength="1" size="2">
+                            </div>
+                    </li>
+                    {% endfor %} <!-- problems in pair problems-->
+                    {% if assumed_noninitial %}
+                        {% for pair in assumed_noninitial %}
+                            <li>{{ pair }}</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            {% endif %} <!-- pair problems -->
         {% else %} <!-- if not problems else -->
         <div class="m-auto celebration">No problems! Hooray!</div>
         {% endif %} <!-- end if problems -->
@@ -98,7 +126,7 @@ chosenjs_highlight_suggestions %}
 <script>
     let url_for_delete_group = {{ url_for('admin_blueprint.ajax_delete_group') | tojson | safe }};
     let url_for_remove_from_group = {{ url_for('admin_blueprint.ajax_remove_from_group') | tojson | safe }};
-
+    let url_for_set_initial = {{ url_for('admin_blueprint.ajax_set_initial') | tojson | safe }};
 </script>
 {% endblock script %}
 

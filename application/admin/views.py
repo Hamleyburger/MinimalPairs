@@ -93,7 +93,7 @@ def add_pairs():
         suglists = session.get("partner_suggestion_lists")
         if suglists:
             for groupindex, suglist in enumerate(suglists):
-                for id, sound in suglist:
+                for id, sound, initial in suglist:
                     if int(field_id) == id:
                         return "{}".format(groupindex)
         return ""
@@ -137,7 +137,7 @@ def change_pairs():
                     s2 = form.s2.data
                     word1 = pair.w1
                     word2 = pair.w2
-                    word1.pair(word2, s1, s2)
+                    word1.pair(word2, s1, s2, pair.isinitial) # implement initial
 
                 elif request.form.get("submit") == "delete":
                     db.session.delete(pair)
@@ -226,13 +226,41 @@ def write_news():
 def problems():
     group_problems = Group.get_group_problems()
     word_problems = []
+    pair_problems = []
+
     for word in db.session.query(Word).all():
         if len(word.allPartners()) < 1:
             word_problems.append(word)
+    
+    uninit_pairs = db.session.query(Pair).filter_by(isinitial=None).all()
+    pair_problems = []
+    assumed_noninitial = []
+    likely_initial = []
+    unknown = []
+
+    for p in uninit_pairs:
+        str1 = p.w1.word
+        str2 = p.w2.word
+        smp1 = str1[0 : 3]
+        smp2 = str2[0 : 3]
+        if smp1.lower() == smp2.lower():
+            print("assuming {} - {} is NOT initial".format(p.w1.word, p.w2.word))
+            p.isinitial = False
+            assumed_noninitial.append(p)
+            db.session.commit()
+        else:
+            smp1b = str1[0 : 1]
+            smp2b = str2[0 : 1]
+            if smp1b.lower() != smp2b.lower():
+                likely_initial.append(p)
+            else:
+                unknown.append(p)
+    pair_problems = likely_initial + unknown
+
             
     """ Get an overview of words without partners and groups with unmatched words """
 
-    return render_template("problems.html", group_problems=group_problems, word_problems=word_problems)
+    return render_template("problems.html", group_problems=group_problems, word_problems=word_problems, pair_problems=pair_problems, assumed_noninitial=assumed_noninitial)
 
 
 @ admin_blueprint.route("/ajax_delete_group/", methods=["POST"])
@@ -280,6 +308,57 @@ def ajax_remove_from_group():
         else:
             raise Exception("I don't if I should delete word or pair. Object type either invalid or missing")
         db.session.commit()
+
+    except Exception as e:
+        return jsonify(
+            message=str(e)
+        )
+
+    return jsonify(
+        message="ok"
+    )
+
+
+@ admin_blueprint.route("/ajax_set_initial/", methods=["POST"])
+@roles_required('Admin')
+# Receives changes from user and makes changes in database
+def ajax_set_initial():
+
+    obj_id = int(request.form["obj_id"])
+    obj_type = request.form["obj_type"]
+    typed_value = request.form["typed_value"]
+    group = None
+    pair = None
+    initial = None
+
+    if obj_type == "group":
+        group = Group.query.get(obj_id)
+    elif obj_type == "pair":
+        pair = Pair.query.get(obj_id)
+
+    if typed_value == "y":
+        initial = True
+    elif typed_value == "n":
+        initial = False
+    
+
+    try:
+        if initial != None:
+            if group:
+                print("setting group and pairs initial to {}".format(initial))
+                group.isinitial = initial
+                for setpair in group.pairs:
+                    setpair.isinitial = initial
+                db.session.commit()
+                
+            elif pair:
+                print("setting pair {} initial to {}".format(pair, initial))
+                pair.isinitial = initial
+                db.session.commit()
+            else:
+                raise Exception("No object type received.")
+        else:
+            raise Exception("Must provide 'y' og 'n' value to set .initial")
 
     except Exception as e:
         return jsonify(
@@ -362,6 +441,7 @@ def ajax_suggested_pairs():
     partner_suggestions = [] # List of tuples
     suggestion_indexes = [] # Indexes are for converting ids back to elements in list in current chosen-field in the browser
     suggested_ids = [] # Only ids from suggested words
+    suggested_inits = []
 
     if all_indexes and chosen_ids:
 
@@ -369,7 +449,7 @@ def ajax_suggested_pairs():
 
         for index, id in enumerate(all_indexes):
             for suglist in partner_suggestion_lists:
-                for suggested_id, suggested_sound in suglist:
+                for suggested_id, suggested_sound, suggested_init in suglist:
                     if id == suggested_id:
                         suggestion_indexes.append(index)
                         suggested_ids.append(id)
@@ -378,13 +458,12 @@ def ajax_suggested_pairs():
 
         return jsonify(
             suggestion_indexes=suggestion_indexes,
-            suggested_ids=suggested_ids,
+            suggested_ids=suggested_ids
         )
 
     return jsonify(
         error="something went wrong"
     )
-
 
 
 @ admin_blueprint.route("/ajax_delete_news/", methods=["POST"])

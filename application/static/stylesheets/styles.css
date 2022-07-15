@@ -912,21 +912,63 @@ body footer a {
   width: 100%;
 }
 
+.pairSoundTable {
+  padding: 0 5px 10px;
+}
+
+.pairSoundTable .marked {
+  background-color: rgba(153, 95, 139, 0.2);
+}
+
 .pairSoundTable input, .pairSoundTable label {
   display: block;
+  margin: auto;
 }
 
 .pairSoundTable label {
-  height: 2.5em;
+  height: 52px;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: end;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
-.pairSoundTable .row {
-  margin-bottom: 30px;
+.pairSoundTable .tickwrap {
+  height: 35px;
 }
 
-.pairSoundTable .vs {
-  font-weight: bolder;
-  padding-top: 30px;
+.pairSoundTable .pstrow {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.pairSoundTable .pstrow .pstcol {
+  margin: 0;
+  padding: 0;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.pairSoundTable .pstrow .pstcol .sound_input_field {
+  margin: auto;
+  height: 24px;
 }
 
 .add-file-label::after {
@@ -981,9 +1023,28 @@ body footer a {
   border-radius: 13px;
 }
 
+.admin-ipa-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
+  text-align: center;
+  margin: 0;
+}
+
 .problems-content-section {
   margin: 40px;
-  height: 500px;
+  min-height: 500px;
+}
+
+.problems-content-section .row {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.problems-content-section .col {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 @media only screen and (max-width: 900px) {
@@ -1011,16 +1072,29 @@ body footer a {
           flex-direction: column;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  padding: 0;
 }
 
 .problems-content-section ul .li-marked {
   background-color: rgba(153, 95, 139, 0.2);
 }
 
-.problems-content-section .row {
+.problems-content-section .problem-showcase {
+  max-width: 100%;
+}
+
+.problems-content-section .grouprow {
   margin: 0;
   padding: 0;
   margin-bottom: 50px;
+}
+
+.problems-content-section .paircol {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 8px 0 0 0 !important;
+  text-align: center;
 }
 
 .problems-content-section .celebration {

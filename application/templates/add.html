@@ -16,7 +16,7 @@ chosenjs_highlight_suggestions %}
     <!-- insert novalidate as attribute if you only want to user server side validation-->
     <div class="container mt-5">
         <div class="row mb-5">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-4">
                 <form id="addForm" method="POST" action="{{ url_for('admin_blueprint.add_word') }}"
                     enctype="multipart/form-data" novalidate>
                     {{ form.hidden_tag() }}
@@ -59,7 +59,7 @@ chosenjs_highlight_suggestions %}
 
             </div>
 
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <form id="pairForm" method="POST" action="{{ url_for('admin_blueprint.add_pairs') }}" novalidate>
                     {{ form.hidden_tag() }}
 
@@ -83,20 +83,11 @@ chosenjs_highlight_suggestions %}
                         <h5 style="margin-top: 20px;">Indsæt betydningsadskillende lyde:</h5>
                         {% for field in pairForm.pairSounds %}
                             <div class="pairSoundTable">
-                                <div class="row">
+                                <div class="row pstrow {{ loop.cycle('marked', '') }}">
+
                                     {% for subfield in field %}
-                                        {% if (loop.index == 3) %} 
-                                            
-                                            {% set classname=get_group_index(subfield.data) %}
-
-                                            {{ subfield(data_groupindex=classname) }}
-
-
-                                        {% else %}
-
-                                            
-                                            <div class="col-5">
-                                                    
+                                        {% if (loop.index == 1) %}
+                                            <div class="col-5 pstcol">
                                                 {% if pairForm.addSounds.data %}
                                                     {% if subfield.errors %}
                                                     {{ subfield.errors }}
@@ -107,16 +98,38 @@ chosenjs_highlight_suggestions %}
                                                     {{ subfield.label }}
                                                     {{ subfield(class="sound_input_field", size="4") }}
                                                 {% endif %} <!--if pairForm.addSounds.data -->
-
                                             </div>
-                                            {% if (loop.index == 1) %}
-                                                <div class="col-2 vs">
-                                                    VS
-                                                </div>
-                                            {% endif %} <!-- if loopindex == 1 -->
+                                            {% endif %}
+                                        {% if (loop.index == 2) %}
+                                            <div class="col-5 pstcol">
+                                                {% if pairForm.addSounds.data %}
+                                                    {% if subfield.errors %}
+                                                    {{ subfield.errors }}
+                                                        {{ subfield.label }}
+                                                        {{ subfield(class="sound_input_field", size="4", style="border: 1px solid red;") }}
+                                                    {% endif %} <!-- subfield errors -->
+                                                {% else %}
+                                                    {{ subfield.label }}
+                                                    {{ subfield(class="sound_input_field", size="4") }}
+                                                {% endif %} <!--if pairForm.addSounds.data -->
+                                            </div>
+                                        {% endif %}
+                                        {% if (loop.index == 3) %}
+                                        
+                                            {% set classname=get_group_index(subfield.data) %}
+                                            {{ subfield(data_groupindex=classname) }}
 
-
-                                        {% endif %} <!-- if loop index == 3-->
+                                        {% endif %}
+                                        {% if (loop.index == 4) %}
+                                        <div class="col-2 pstcol">
+                                            {{ subfield.label }}
+                                            <div class="tickwrap">
+                                                {{ subfield }}
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        
                                     {% endfor %} <!-- for subfield in field -->
                                 </div>
                             </div> <!-- .pairSoundTable-->
@@ -143,7 +156,7 @@ chosenjs_highlight_suggestions %}
         </div>
     </div> <!-- end of container mt-5 -->
 
-    <div class="ipa-container container">
+    <div class="ipa-container admin-ipa-container container">
         {{ ipa_picker() }}
     </div>
 

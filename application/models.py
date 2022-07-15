@@ -150,7 +150,7 @@ class Sound(db.Model):
                 pass
             elif pair.s2 is self:
                 pair = Pair(id=pair.id, s1=pair.s2,
-                            s2=pair.s1, w1=pair.w2, w2=pair.w1)
+                            s2=pair.s1, w1=pair.w2, w2=pair.w1, isinitial=pair.isinitial)
             else:
                 continue
             swappedPairs.append(pair)
@@ -219,6 +219,7 @@ class Group(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    isinitial = db.Column(db.Boolean(), nullable=True)
 
     members = db.relationship(
         "Word",
@@ -376,12 +377,20 @@ class Group(db.Model):
             pairs = Pair.allPairCombinations(group.members)
             group.addPairs(pairs=pairs)
             group.updateSounds(pairs)
+            initial = None
+            for pair in pairs:
+                if initial == None:
+                    initial = pair.isinitial
+                elif initial != pair.isinitial:
+                    initial = None
+                    print("Pairs with different initials attempted added. Problem!")
+                    break
+            group.isinitial = initial
             db.session.commit()
 
             return group
 
         for candidates in candidateLists:
-            print("checking candidate list: {}".format(candidates))
             added = False
             for group in groups:
                 counter = 0
@@ -389,7 +398,7 @@ class Group(db.Model):
                     if member in candidates:
                         counter += 1
                         if counter == 2:  # it means there are two members from candidates existing in a group, meaning the rest of the candidates belong in this group too
-                            print("found group")
+
                             group = addGroupAndAll(group, candidates)
                             modifiedGroups.append(group)
                             added = True
@@ -404,7 +413,8 @@ class Group(db.Model):
                 db.session.add(newGroup)
                 db.session.commit()
                 group = addGroupAndAll(newGroup, candidates)
-                print("\nMade new group ({}):".format(group.id), end="")
+                print("\nMade new group ({}) initial:".format(group.id), end="")
+                print(group.isinitial)
 
                 for member in group.members:
                     print(member.word + ", ", end='')
@@ -446,6 +456,7 @@ class Group(db.Model):
         for group in all_groups:
             bad_members = []
             bad_pairs = []
+            isinitial_null = False
 
             # CHECK FOR MISSING LINKS/UNPAIRED WORDS IN GROUP
             for word in group.members:
@@ -475,7 +486,6 @@ class Group(db.Model):
                 problems.append(bad_group)
             
             # CHECK FOR PAIRS IN GROUP WITH WORDS THAT ARE NOT IN GROUP
-
             for pair in group.pairs:
                 if (pair.w1 not in group.members) or (pair.w2 not in group.members):
                     bad_pairs.append(pair) 
@@ -483,6 +493,16 @@ class Group(db.Model):
                 bad_group = group.serialize()
                 bad_group["type"] = "Loose pairs"
                 bad_group["bad_pairs"] = bad_pairs
+                problems.append(bad_group)
+
+            # CHECK FOR GROUPS WHERE ISINITIAL IS NOT YET DEFINED
+            if group.isinitial == None:
+                isinitial_null = True
+
+            if isinitial_null:
+                bad_group = group.serialize()
+                bad_group["type"] = "isinitial null"
+                bad_group["isinitial_null"] = True
                 problems.append(bad_group)
             
         return problems
@@ -774,7 +794,7 @@ class Word(db.Model):
 
         return word
 
-    def pair(self, word2, sound1, sound2):
+    def pair(self, word2, sound1, sound2, initial=None):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound\n
         Always put the longest cluster combinations as possible, so they can be reduced """
         
@@ -793,11 +813,11 @@ class Word(db.Model):
             return
 
         newPair = Pair(w1=self, w2=word2,
-                       s1=Sound.get(soundString=sound1), s2=Sound.get(soundString=sound2))
+                       s1=Sound.get(soundString=sound1), s2=Sound.get(soundString=sound2), isinitial=initial)
         db.session.add(newPair)
         db.session.commit()
 
-        pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[])
+        pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[], initial=initial)
 
         pairs.append(newPair)
 
@@ -821,7 +841,7 @@ class Word(db.Model):
                     return True
             return False
 
-    def getReducedPairs(self, word2, sound1, sound2, pairList=[]):
+    def getReducedPairs(self, word2, sound1, sound2, pairList=[], initial=None):
         """ Recursive function. Reduces pairs (subtracts mutual sounds) until\n
         nothing left to reduce.\n
         pairList is passed from within the function and will have new pairs\n
@@ -888,13 +908,13 @@ class Word(db.Model):
                     # Check if pair already exists in pairList:
                     if not pairExists(pairList, newSound1, newSound2, self, word2):
                         pair = Pair(w1=self, w2=word2,
-                                    s1=Sound.get(soundString=newSound1), s2=Sound.get(soundString=newSound2))
+                                    s1=Sound.get(soundString=newSound1), s2=Sound.get(soundString=newSound2), isinitial=initial)
                         db.session.add(pair)
                         db.session.flush()
                         pairList.append(pair)
                         # Recursive call:
                         self.getReducedPairs(
-                            word2, newSound1, newSound2, pairList)
+                            word2, newSound1, newSound2, pairList, initial)
         return pairList
 
     def allPartners(self):  # Word
@@ -963,7 +983,7 @@ class Word(db.Model):
                 orderedpairs.append(pair)
             else:
                 flippedpair = Pair(id=pair.id, w1=pair.w2, w2=pair.w1,
-                            s1=pair.s2, s2=pair.s1)
+                            s1=pair.s2, s2=pair.s1, isinitial=pair.isinitial)
                 orderedpairs.append(flippedpair)
 
         return orderedpairs
@@ -977,7 +997,7 @@ class Word(db.Model):
         newPairs = []
         for oldPair in pairs:
             pair = Pair(id=oldPair.id, w1=oldPair.w1, w2=oldPair.w2,
-                        s1=oldPair.s1, s2=oldPair.s2)
+                        s1=oldPair.s1, s2=oldPair.s2, isinitial=oldPair.isinitial)
             if oldPair.w2 == self:
                 pair.w1 = oldPair.w2
                 pair.w2 = oldPair.w1
@@ -1036,7 +1056,7 @@ class Word(db.Model):
         db.session.commit()
 
     def get_partner_suggestions(self, unadded_ids=None):
-        """ Returns a 2D list of tuples with word ids and their sounds. 
+        """ Returns a 2D list of triple tuples with word ids and their sounds. 
         Word ids are for suggested partners based on the groups the admin suggesged
         words belong to and the sounds are extracted by comparing each suggestion to
         the rest of the group """
@@ -1068,7 +1088,7 @@ class Word(db.Model):
                         owned_ids.append(part.id)
                     if word.id not in owned_ids:
                         suggested_sound = word.getRoleInGroup(group)
-                        group_partner_suggestions.append((word.id, suggested_sound.sound))
+                        group_partner_suggestions.append((word.id, suggested_sound.sound, group.isinitial))
             partner_suggestions.append(group_partner_suggestions)
 
         return partner_suggestions

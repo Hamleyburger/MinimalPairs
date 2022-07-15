@@ -5,7 +5,29 @@
 
 <div class="ipa_picker">
     <span class="label">{{ IPA_description | safe }}</span><br>
+    {% if current_user.is_authenticated %}
+    <a onclick="insertAtCursor('ŋ');" href="javascript:;">ŋ</a>
+    <a onclick="insertAtCursor('ð');" href="javascript:;">ð</a>
 
+    <a onclick="insertAtCursor('ɕ');" href="javascript:;">ɕ</a>
+
+    <a onclick="insertAtCursor('ə');" href="javascript:;">ə</a>
+    <a onclick="insertAtCursor('ɛ');" href="javascript:;">ɛ</a>
+    <a onclick="insertAtCursor('œ');" href="javascript:;">œ</a>
+    <a onclick="insertAtCursor('ʌ');" href="javascript:;">ʌ</a>
+    <a onclick="insertAtCursor('ɔ');" href="javascript:;">ɔ</a>
+    <a onclick="insertAtCursor('æ');" href="javascript:;">æ</a>
+    <a onclick="insertAtCursor('ɐ');" href="javascript:;">ɐ</a>
+    <a onclick="insertAtCursor('ɐ̯');" href="javascript:;">ɐ̯</a>
+    <a onclick="insertAtCursor('œ̞');" href="javascript:;">œ̞</a>
+    <span class="line">
+
+        <a onclick="insertAtCursor('ɶ');" href="javascript:;">ɶ</a>
+
+        <a onclick="insertAtCursor('ɑ');" href="javascript:;">ɑ</a>
+        <a onclick="insertAtCursor('ɒ');" href="javascript:;">ɒ</a>
+    </span>
+    {% else %}
     <a onclick="insertAtCursor('p');" href="javascript:;">p</a>
     <a onclick="insertAtCursor('b');" href="javascript:;">b</a>
     <a onclick="insertAtCursor('t');" href="javascript:;">t</a>
@@ -50,6 +72,8 @@
         <a onclick="insertAtCursor('ɑ');" href="javascript:;">ɑ</a>
         <a onclick="insertAtCursor('ɒ');" href="javascript:;">ɒ</a>
     </span>
+    {% endif %}
+
 </div>
 {% endmacro %}
 
