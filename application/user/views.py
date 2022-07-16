@@ -290,7 +290,8 @@ def collection(locale):
                 css = CSS(
                     string='@page :left { background-image: url(/static/permaimages/repeatpatterns/' + bgfilename + '.png); background-size: ' + bg_px_size + 'px;}')
                 
-                count_as_used(collection_ids)
+                if not current_user.is_authenticated:
+                    count_as_used(collection_ids)
 
                 return render_pdf(html, stylesheets=[css])
 

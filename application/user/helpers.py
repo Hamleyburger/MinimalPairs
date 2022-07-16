@@ -193,8 +193,9 @@ def MOcollected(MO: list):
     return False
 
 
-# Count how many times a word has been made into word cards by a user (from collection)
+
 def count_as_used(collection_ids):
+    """ Count how many times a word has been made into word cards by a user (from collection) """
     new_ids = []
     print(collection_ids)
     new_ids = list(set(collection_ids))
