@@ -9,5 +9,6 @@ styles.css.map
 ikkeværemed/
 minimalparimgs/
 configd.py
+configdmail.py
 .DS_Store
 tempuploads/
