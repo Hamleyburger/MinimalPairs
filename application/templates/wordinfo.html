@@ -79,13 +79,13 @@
 
     <div class="row MO-row shadow outer-row justify-content-center mb-5">
         {% for MOset in MOsets %}
-        <div class="MO-col col">
+        <div class="col">
             {{ MOmacro(MOset, loop.index) }}
         </div>
         {% endfor %}
     </div>
 
-    {% if current_user.is_authenticated %}
+    {% if (current_user.is_authenticated) and (current_user.has_role("Admin")) %}
     <div class="row outer-row group-row shadow">
         <div class="col">
             <div class="row m-0">
@@ -104,6 +104,20 @@
 
 
 {% block script %}
+
+
+
+<!-- For owl-carousel used in pairs<id> for displaying word's partners-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+    crossorigin="anonymous" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+    integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+    crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+    integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+    crossorigin="anonymous"></script>
 
 <script>
     console.log(pairCount);
@@ -165,3 +179,4 @@
 </script>
 
 {% endblock %}
+

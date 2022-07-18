@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import ipa_picker with context %}
-{% from 'admin_macros.html' import show_input_file_name, enable_chosenjs, chosenjs_filtering,
-chosenjs_highlight_suggestions %}
+
 
 {% block title %}
 - Problems
@@ -40,7 +38,7 @@ chosenjs_highlight_suggestions %}
                                     {% for bad_member in problem.bad_members %}
                                     <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
                                         {{ bad_member.word.word }} 
-                                        <button class="float-right btn-remove-from-group" data-objid="{{ bad_member.word.id }}" data-groupid="{{ problem.id }}" data-objtype="badword" data-objstring="{{ bad_member.word.word }}"><i class="fa-solid fa-trash"></i></button>
+                                        <button class="float-end btn-remove-from-group" data-objid="{{ bad_member.word.id }}" data-groupid="{{ problem.id }}" data-objtype="badword" data-objstring="{{ bad_member.word.word }}"><i class="fa-solid fa-trash"></i></button>
                                     </li>
                                     <li class="badword-{{ bad_member.word.id }} {{ loop.cycle('li-marked', '') }}">
                                         <span class="font-italic">
@@ -60,7 +58,7 @@ chosenjs_highlight_suggestions %}
                                     {% for bad_pair in problem.bad_pairs %}
                                     <li class="badpair-{{ bad_pair.id }} {{ loop.cycle('li-marked', '') }}">
                                         {{ bad_pair.w1.word }} - {{ bad_pair.w2.word }} 
-                                        <button class="float-right btn-remove-from-group" data-objid="{{ bad_pair.id }}" data-groupid="{{ problem.id }}" data-objtype="badpair" data-objstring="{{ bad_pair.w1.word }}-{{ bad_pair.w2.word }}"><i class="fa-solid fa-trash"></i></button>
+                                        <button class="float-end btn-remove-from-group" data-objid="{{ bad_pair.id }}" data-groupid="{{ problem.id }}" data-objtype="badpair" data-objstring="{{ bad_pair.w1.word }}-{{ bad_pair.w2.word }}"><i class="fa-solid fa-trash"></i></button>
                                     </li>
                                     {% endfor %} <!-- bad_pair in prob. bad_pairs -->
                                 </ul>

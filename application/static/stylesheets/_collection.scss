@@ -147,7 +147,7 @@
         border-radius: $border-radius-modals;
         border: none;
         margin: 15px;
-        font-size: larger;
+        font-size: large;
         background-color: $color-purp2;
         color: $color-purp1;
         padding: 8px 15px;
@@ -239,6 +239,8 @@
         .customclose {
             display: flex;
             color: $color-purp1;
+            background: none;
+            border: none;
             &:hover {
                 color: $color-purp1;
                 opacity: 0.6;

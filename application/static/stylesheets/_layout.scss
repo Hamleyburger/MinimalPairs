@@ -9,7 +9,7 @@
 
     
     .nav-link {
-        font-size: 18px;
+        font-size: 16px;
         text-align: center;
         padding: 0;
         margin-bottom: 12px; // used to align manually with SVG text logo
@@ -127,6 +127,17 @@
         }
     }
 
+    .collection-length {
+        background: $color-purp1;
+        border-radius: 50%;
+        width: 19px;
+        height: 19px;
+        font-size: 13px;
+        margin-bottom: 3px;
+        color: $color-purp2;
+        font-weight: 900;
+    }
+
 }
 html {
     height: 100%;
@@ -193,6 +204,7 @@ body {
                 }
                 .news-title {
                     margin-bottom: 0;
+                    font-size: 20px;
 
                 }
 

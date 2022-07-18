@@ -1,5 +1,16 @@
 // Styles for the admin page for adding and pairing words
 
+.my-form-groups {
+    .form-group {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    .btn-primary {
+        background-color: $color-purp1;
+        border: none;
+        color: rgb(248, 212, 255);
+    }
+}
 // Form in add.html for multiple selecting words to pair
 .chosen-select {
     width: 100%;

@@ -14,7 +14,7 @@ chosenjs_highlight_suggestions %}
 <div class="content-section">
 
     <!-- insert novalidate as attribute if you only want to user server side validation-->
-    <div class="container mt-5">
+    <div class="my-form-groups container mt-5">
         <div class="row mb-5">
             <div class="col-12 col-md-4">
                 <form id="addForm" method="POST" action="{{ url_for('admin_blueprint.add_word') }}"
@@ -82,8 +82,8 @@ chosenjs_highlight_suggestions %}
                     {% if pairForm.pairSounds.data %}
                         <h5 style="margin-top: 20px;">Indsæt betydningsadskillende lyde:</h5>
                         {% for field in pairForm.pairSounds %}
-                            <div class="pairSoundTable">
-                                <div class="row pstrow {{ loop.cycle('marked', '') }}">
+                            <div class="pairSoundTable {{ loop.cycle('marked', '') }}">
+                                <div class="row pstrow">
 
                                     {% for subfield in field %}
                                         {% if (loop.index == 1) %}

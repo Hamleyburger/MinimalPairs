@@ -5,7 +5,7 @@
 
 <div class="ipa_picker">
     <span class="label">{{ IPA_description | safe }}</span><br>
-    {% if current_user.is_authenticated %}
+    {% if (current_user.is_authenticated) and (current_user.has_role("Admin")) %}
     <a onclick="insertAtCursor('ŋ');" href="javascript:;">ŋ</a>
     <a onclick="insertAtCursor('ð');" href="javascript:;">ð</a>
 
@@ -174,22 +174,22 @@
 <div class="buttons">
     {% if isCollected %}
     <a class="w{{word.id}}-add addwordbtn" href="#" style="display: none;"
-        onclick="add_to_collection({{ word.id }}, url_for_add, event)" data-toggle="tooltip" data-placement="top"
+        onclick="add_to_collection({{ word.id }}, url_for_add, event)" data-bs-toggle="tooltip" data-bs-placement="top"
         title="{{ tooltip_addword }}"><i class="fas fa-plus-circle"></i></a>
     <a class="w{{word.id}}-remove removewordbtn" href="#"
-        onclick="remove_from_collection({{ word.id }}, url_for_remove, event)" data-toggle="tooltip"
-        data-placement="top" title="{{ tooltip_rmword }}"><i class="fas fa-minus-circle"></i></a>
+        onclick="remove_from_collection({{ word.id }}, url_for_remove, event)" data-bs-toggle="tooltip"
+        data-bs-placement="top" title="{{ tooltip_rmword }}"><i class="fas fa-minus-circle"></i></a>
     {% else %}
     <a class="w{{word.id}}-add addwordbtn" href="#" onclick="add_to_collection({{ word.id }}, url_for_add, event)"
-        data-toggle="tooltip" data-placement="top" title="{{ tooltip_addword}}"><i class="fas fa-plus-circle"></i>
+        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_addword}}"><i class="fas fa-plus-circle"></i>
     </a>
     <a class="w{{word.id}}-remove removewordbtn" style="display: none;" href="#"
-        onclick="remove_from_collection({{ word.id }}, url_for_remove, event)" data-toggle="tooltip"
-        data-placement="top" title="{{ tooltip_rmword }}"><i class="fas fa-minus-circle"></i></a>
+        onclick="remove_from_collection({{ word.id }}, url_for_remove, event)" data-bs-toggle="tooltip"
+        data-bs-placement="top" title="{{ tooltip_rmword }}"><i class="fas fa-minus-circle"></i></a>
     {% endif %}
     {% if infobutton %}
-    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id, locale=session.locale) }}" data-toggle="tooltip"
-        data-placement="top" title="{{ tooltip_wordinfo }}"><i class="fas fa-info-circle"></i></a>
+    <a href="{{ url_for('user_blueprint.wordinfo', word_id=word.id, locale=session.locale) }}" data-bs-toggle="tooltip"
+        data-bs-placement="top" title="{{ tooltip_wordinfo }}"><i class="fas fa-info-circle"></i></a>
     {% endif %}
     {% if uploadbutton %}
 
@@ -210,8 +210,8 @@
     {% endif %}
     {% if duplicatebutton %}
     <a class="w{{word.id}}-duplicate duplicatebtn" href="#"
-        onclick="duplicate_in_collection({{ word.id }}, url_for_duplicate, event)" data-toggle="tooltip"
-        data-placement="top" title="{{ tooltip_dupeword }}"><i class="fas fa-clone"></i></a>
+        onclick="duplicate_in_collection({{ word.id }}, url_for_duplicate, event)" data-bs-toggle="tooltip"
+        data-bs-placement="top" title="{{ tooltip_dupeword }}"><i class="fas fa-clone"></i></a>
     {% endif %}
 </div>
 {% endmacro %}
@@ -224,8 +224,8 @@
         {{ help_cue }}
 
         <button type="button" class="help-btn" data-bs-toggle="modal" data-bs-target="#{{ idprefix }}helpModal"
-            data-toggle="tooltip" data-placement="top">
-            <span data-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_help }}">
+            data-bs-toggle="tooltip" data-bs-placement="top">
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_help }}">
                 <i class="fas fa-question-circle"></i>
             </span>
         </button>
@@ -262,8 +262,11 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="listWizardModalLabel">{{ pdf_game_btn }}</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                <button type="button" class="close customclose" data-dismiss="modal" aria-label="Close"> <i class="fas fa-times-circle" aria-hidden="true"></i> </button>
+                <h5 class="modal-title" id="listWizardModalLabel">{{ pdf_game_btn }}</h5>
+                <!--button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> 
+                <span aria-hidden="true">&times;</span> 
+                </button-->
+                <button type="button" class="close customclose" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times-circle" aria-hidden="true"></i> </button>
             </div>
             <div class="modal-body">
                 <div id="smartwizard">

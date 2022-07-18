@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% from 'macros.html' import ipa_picker, word_card, help_container, word_card_buttons with context %}
-{% from 'admin_macros.html' import enable_chosenjs, chosenjs_filtering %}
 {% from 'MOmacro.html' import MOmacro with context%}
 
 {% block title %}
@@ -41,8 +40,8 @@
     </div>
 
     <!-- Buttons for collapsing forms -->
-    <button id="search-pair-collapse-btn" type="button" class="btn shadow top-button main-btn" data-toggle="collapse"
-        data-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
+    <button id="search-pair-collapse-btn" type="button" class="btn shadow top-button main-btn" data-bs-toggle="collapse"
+        data-bs-target="#search-collapsable" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-search"></i>
         {{ btn_sound }} <i id="rotate-icon" class='fas {{"fa-angle-down" if pairs else "fa-angle-up"}}'></i>
     </button>
 
@@ -53,14 +52,14 @@
         <button type="button" class="top-button removegroupbtn removeallbtn btn shadow main-btn m-auto"
             style="display: {{ 'inline-block' if collectedAll else 'none' }};"
             onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=true)"
-            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i
+            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_rmresults }}"><i
                 class="fas fa-minus-circle"></i> {{
             btn_clearall }} </button>
 
         <button type="button" class="top-button addgroupbtn btn shadow main-btn"
             style="display: {{ 'none' if collectedAll else 'inline-block' }};"
             onclick="collect_many({{ renderedids | safe }}, url_for_bulkmanage, event, remove=false)"
-            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmresults }}"><i
+            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_rmresults }}"><i
                 class="fas fa-plus-circle"></i> {{ btn_addall
             }}</button>
     </div>
@@ -79,11 +78,11 @@
                     <ul class="nav nav-tabs justify-content-center">
                         <li class="nav-item orangebg">
                             <a class="nav-link {{'active show' if not MOmode else ''}}" id="searchPairs-tab"
-                                data-toggle="tab" href="#searchPairs" role="tab" aria-controls="search-pairs"
+                                data-bs-toggle="tab" href="#searchPairs" role="tab" aria-controls="search-pairs"
                                 aria-selected="true">{{ tab_pairs }}</a>
                         </li>
                         <li class="nav-item redbg">
-                            <a class="nav-link {{'active show' if MOmode else ''}}" id="searchMOs-tab" data-toggle="tab"
+                            <a class="nav-link {{'active show' if MOmode else ''}}" id="searchMOs-tab" data-bs-toggle="tab"
                                 href="#searchMOs" role="tab" aria-controls="search-multiple-oppositions"
                                 aria-selected="false">{{ tab_MOs }}</a>
                         </li>
@@ -110,7 +109,7 @@
                                     {{ form.sound2(class="sound_input_field ipa-font", size="1") }}
                                 </div>
                                 <button name="searchBtn" value="pair" type="submit" class="shadow main-btn"
-                                    data-toggle="tooltip" data-placement="top" title="{{ tooltip_searchpairs }}"><i
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_searchpairs }}"><i
                                         class="fa fa-search"
                                         formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
                                 </button>
@@ -148,8 +147,8 @@
                                     </div>
 
                                     <button type="submit" name="searchBtn" value="MO"
-                                        class="shadow MO-search-button main-btn" data-toggle="tooltip"
-                                        data-placement="top" title="{{ tooltip_searchMOs }}"><i class="fa fa-search"
+                                        class="shadow MO-search-button main-btn" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="{{ tooltip_searchMOs }}"><i class="fa fa-search"
                                             formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
                                     </button>
                                 </div>
@@ -243,13 +242,13 @@
         <a href="#" type="button" class="addgroupbtn addgroupbtn-pair btn"
             style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=false)"
-            data-toggle="tooltip" data-placement="top" title="{{ tooltip_addpair }}"><i
+            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_addpair }}"><i
                 class="fas fa-plus-circle shadow"><i class="fas fa-circle"></i></i>
         </a>
         <a href="#" type="button" class="removegroupbtn removegroupbtn-pair btn"
             style="display: {{ 'inline-block' if pair.id in collectedPairs else 'none' }};"
             onclick="collect_many([{{ pair.w1.id }}, {{ pair.w2.id }}], url_for_bulkmanage, event, remove=true)"
-            data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmpair }}">
+            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_rmpair }}">
             <i class="fas fa-minus-circle shadow">
 
                 <i class="fas fa-circle"></i>

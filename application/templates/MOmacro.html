@@ -18,7 +18,7 @@
 {% endfor %}
 
 <div class="MO-col {% if ns.iscluster %}cluster-mo{% endif %}">
-    <div class="MO-wrapper shadow" style="overflow: scroll;">
+    <div class="MO-wrapper shadow">
 
         <!-- It shouldn't be possible for an MOset to be less than 3, but we check anyway -->
         {% if MOset|length >= 2 %}
@@ -49,13 +49,13 @@
                     <a href="#" type="button" class="addgroupbtn addgroupbtn-MO btn"
                         style="display: {{ 'none' if ns.collected else 'inline-block' }};"
                         onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=false)"
-                        data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="{{ tooltip_addMO }}"><i
+                        data-bs-toggle="tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_addMO }}"><i
                             class="fas fa-plus-circle shadow"></i>
                     </a>
                     <a href="#" type="button" class="removegroupbtn removegroupbtn-MO btn"
                         style="display: {{ 'inline-block' if ns.collected else 'none' }};"
                         onclick="collect_many({{ wordids | safe }}, url_for_bulkmanage, event, remove=true)"
-                        data-toggle="tooltip" data-placement="top" title="{{ tooltip_rmMO }}"><i
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ tooltip_rmMO }}"><i
                             class="fas fa-minus-circle shadow"></i>
                     </a>
                 </div>

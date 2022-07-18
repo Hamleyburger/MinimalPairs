@@ -13,11 +13,11 @@ var coloryel3 = getComputedStyle(document.documentElement).getPropertyValue('--c
 
 // Enable tooltips across pages
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip({
+    $('[data-bs-toggle="tooltip"]').tooltip({
         'delay': { show: 500, hide: 500 }
     });
 
-   $('[data-toggle="tooltip"]').on('click', function () {
+   $('[data-bs-toggle="tooltip"]').on('click', function () {
     $(this).tooltip('hide')
     });
 })
@@ -166,7 +166,7 @@ function refreshBtns(wordids, session) {
     }
 
     // Refresh the number displayed in nav bar for length of collection
-    $("#collection-length").text("(" + session.length + ")");
+    $("#collection-length").text(session.length);
 }
 
 function refreshWordGroupBtns(session) {

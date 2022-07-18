@@ -177,7 +177,19 @@ def Content(locale=None):
         "text_notthankyou": "Øredøvende tavshed...",
         "title_cancelled": "Anulleret",
         "donation_text": "Minimalepar.dk er et enkeltmandsprojekt udviklet, tegnet og vedligeholdt i min fritid. Ved at donere, hjælper du til med at dække omkostningerne (server, domæne mv.) og dermed holde minimalepar.dk i live. Jeg er ekstremt taknemmelig for enhver støtte.",
-        "paypal_donation_link": "https://www.paypal.com/donate/?hosted_button_id=725GUDGS7PG5Q"
+        "paypal_donation_link": "https://www.paypal.com/donate/?hosted_button_id=725GUDGS7PG5Q",
+
+    
+        # Contact
+        "title_contact": "Kontakt",
+        "form_label_name": "Navn",
+        "form_label_email": "Email",
+        "form_label_message": "Besked",
+        "form_label_agree": 'Jeg accepterer, at denne formular er beskyttet af <a target=”_blank” href="https://support.google.com/recaptcha/answer/6080904?hl=en">reCaptcha</a>, og at minimalepar.dk får min emailadresse udelukkende med henblik på at kunne svare. Emailadressen og eventuelle personoplysninger i beskeden slettes efter højest et år.',
+        "form_label_submit": "Send",
+        "introtext_contact": '<p class="mb-1">Har du ris, ros, spørgsmål eller forslag? Opdaget en fejl på siden? Savner du kontraster eller billeder? Jeg vil rigtig gerne høre fra dig, så jeg kan finde op og ned på min to do-liste.</p><p>~ Alma fra minimalepar.dk</p>'
+    
+    
     }
 
     text_en = {
@@ -346,7 +358,17 @@ def Content(locale=None):
         "text_notthankyou": "Abysmal silence..",
         "title_cancelled": "Cancelled",
         "donation_text": "Minimalepar.dk is a one-man project developed, drawn and maintained in my free time. With your donation you will help cover the costs (server, domain etc.) and thus help keep minimalepar.dk alive. I am extremely grateful for any support.",
-        "paypal_donation_link": "https://www.paypal.com/donate/?hosted_button_id=725GUDGS7PG5Q"
+        "paypal_donation_link": "https://www.paypal.com/donate/?hosted_button_id=725GUDGS7PG5Q",
+
+
+        # Contact
+        "title_contact": "Contact",
+        "form_label_name": "Name",
+        "form_label_email": "Email",
+        "form_label_message": "Message",
+        "form_label_agree": "I accept that this form is protected by <a target=”_blank” href='https://support.google.com/recaptcha/answer/6080904?hl=en'>reCaptcha</a> and that minimalepar.dk stores my email address with the sole purpose of replying. My email and any personal data in the message will be deleted within a year.",
+        "form_label_submit": "Send",
+        "introtext_contact": '<p class="mb-1">Do you have constructive criticism, questions, comments? Discovered an error on the site? Please write me a message and I\'ll try to get back to you as soon as possible.</p><p>~ Alma from minimalepar.dk</p>'
 
     }
 

@@ -10,8 +10,8 @@ import random
 from application.models import Word, Group, Sound, SearchedPair
 from .models import User, Userimage, Donation
 from ..admin.models import News
-from application import db, app
-from .forms import SearchSounds, SearchMOs, toPDF_wrap
+from application import db, app, mail
+from .forms import SearchSounds, SearchMOs, toPDF_wrap, contactForm
 from flask_weasyprint import HTML, CSS, render_pdf
 from application.content_management import da_content, en_content, Content
 from application.admin.filehelpers import validate_image
@@ -19,6 +19,8 @@ import os
 from werkzeug.utils import secure_filename
 import sentry_sdk
 import stripe
+from flask_mail import Mail, Message
+import requests
 
 
 
@@ -69,8 +71,6 @@ def before_request_callback():
 
 @app.after_request
 def after_request_callback(response):
-
-    # print stuff here for debugging
 
     return response
 
@@ -164,7 +164,7 @@ def contrasts(locale):
                     sound2 = Sound.get(inputSound2)
                 pairs = sound1.getContrasts(inputSound2)
                 # searched_pairs only triggers for non admin users
-                if not current_user.is_authenticated:
+                if not (current_user.is_authenticated and current_user.has_role("Admin")):
                     SearchedPair.add(inputSound1, inputSound2, len(pairs))
 
                 pairs_with_images = []
@@ -222,7 +222,7 @@ def contrasts(locale):
                 MOsets2 = order_MOsets_by_image(MOsets2)
                 MOsets2 = sorted(MOsets2, key=len, reverse=True)
 
-                if not current_user.is_authenticated:
+                if not (current_user.is_authenticated and current_user.has_role("Admin")):
                     for inputSound2 in MOsounds:
                         SearchedPair.add(inputSound1, inputSound2)
 
@@ -290,7 +290,7 @@ def collection(locale):
                 css = CSS(
                     string='@page :left { background-image: url(/static/permaimages/repeatpatterns/' + bgfilename + '.png); background-size: ' + bg_px_size + 'px;}')
                 
-                if not current_user.is_authenticated:
+                if not (current_user.is_authenticated and current_user.has_role("Admin")):
                     count_as_used(collection_ids)
 
                 return render_pdf(html, stylesheets=[css])
@@ -325,10 +325,38 @@ def donation(locale):
         return int(product["amount"])
     products.sort(reverse=False, key=get_amount) # (sort function passes list item to key function automatically)
 
-    
-    
-
     return render_template("stripe/donation.html", products=products)
+
+
+@user_blueprint.route(f"/kontakt/", methods=["GET", "POST"])
+@ensure_locale
+def contact(locale):
+
+    form = contactForm()
+    recaptcha_key = app.config["RECAPTCHA_PUBLIC_KEY"]
+    sent = ""
+    name = form.name.data
+    email = form.email.data
+    message = form.message.data
+    if request.args.get("sent"):
+        sent = request.args.get("sent")
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            try:
+                with app.app_context():
+                    msg = Message(subject="Besked fra {}".format(name),
+                                sender=email,
+                                recipients=[app.config.get("EGEN_MAIL")], # replace with your email for testing
+                                body="{}:\n{}".format(email, message))
+                    mail.send(msg)
+                sent = "yes"
+                return redirect(url_for('user_blueprint.contact', sent=sent, locale=locale))
+            except Exception as e:
+                raise e
+    
+    return render_template("contact.html", form=form, recaptcha_key=recaptcha_key, sent=sent)
+
 
 
 @user_blueprint.route(f"/tak/", methods=["GET"])
@@ -409,13 +437,6 @@ def create_checkout_session():
         return jsonify(error=str(e)), 403
 
 
-
-
-
-
-
-
-
 @ user_blueprint.route("/ajax_add2collection/", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_add2collection():
@@ -489,7 +510,7 @@ def ajax_clear():
     )
 
 
-@ user_blueprint.route("/ajax_change_language/<newlocale>/", methods=["GET", "POST"])
+@ user_blueprint.route("/change_language/<newlocale>/", methods=["GET"])
 # Receives changes from user and makes changes in session
 def change_language(newlocale):
 
@@ -505,6 +526,8 @@ def change_language(newlocale):
     redirect_url = request.referrer
     if redirect_url == None:
         redirect_url = url_for('user_blueprint.index', locale=newlocale)
+
+    print(redirect_url)
     return redirect(redirect_url)
 
 
@@ -611,4 +634,8 @@ def ajax_get_boardgame_filenames():
     session["pdf_wiz_word_list"] = ids_words_paths
 
     return json_words
+
+
+
+
 

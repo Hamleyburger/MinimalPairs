@@ -1,3 +1,4 @@
+from enum import unique
 from flask_user.user_manager import UserManager
 from application import db, app
 from flask_user import UserMixin, UserManager
@@ -7,6 +8,13 @@ from pathlib import Path, PurePath
 from flask import jsonify, url_for, session
 from .helpers import get_uid, resize_crop_image
 import sentry_sdk
+
+
+# TODO: husk at installere de nye dependencies på serveren
+# lav contact template og view.
+# content_management.py
+# robots.txt eller og/meta tags
+# sæt minimalepars gmail op til app password.
 
 
 user_roles = db.Table('user_roles',
@@ -26,10 +34,23 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, server_default='')
+    email = db.Column(db.String(255), nullable=False, unique=True)
+    email_confirmed_at = db.Column(db.DateTime())
 
     # Active and role will have to do with Flask-User
     active = db.Column(db.Boolean(), nullable=False, server_default='0')
     roles = db.relationship('Role', secondary='user_roles')
+
+
+    def has_role(self, rolename):
+
+        hasrole = False
+        for role in self.roles:
+            if role.name == rolename:
+                hasrole = True
+        return hasrole
+
+
 
     # Create admin user with 'Admin' role
     @classmethod
