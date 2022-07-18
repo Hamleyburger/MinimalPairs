@@ -46,7 +46,7 @@ app.jinja_env.add_extension('jinja2.ext.do')
 
 # All configs are taken from object in config.py
 app.config.from_object("configd.ProductionConfig")
-app.config.from_pyfile("configdmail.py")
+app.config.from_pyfile("../configdmail.py")
 
 
 # Instantiate Session
