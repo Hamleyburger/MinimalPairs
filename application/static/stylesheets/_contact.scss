@@ -1,0 +1,35 @@
+// Styles for the user page for contact
+
+.contactcontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+
+    .contact-formbox {
+        max-width: 600px;
+        padding: 32px;
+        border-radius: 7px;
+    }
+
+    form {
+        width: 100%;
+        margin-top: 30px;
+        .txtinput {
+            width: 100%;
+            &.message {
+                height: 200px;
+            }
+        }
+        .main-btn {
+            padding: 0 13px;
+        }
+
+    }
+    .errortext {
+        color: rgb(194, 26, 62);
+    }
+    .errorborder {
+        border: 1px solid rgb(194, 26, 62);
+    }
+}

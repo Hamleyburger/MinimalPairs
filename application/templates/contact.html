@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+- {{ title_contact }}
+{% endblock %}
+
+{% block submeta %}
+<!-- page specific tags -->
+<meta name="robots" content="noindex,follow" />
+<meta name="description" content="Kontakt minimalepar.dk" />
+
+<!-- page specific open graph -->
+<meta property="og:description" content="Kontakt minimalepar.dk" />
+<!--meta property="og:image" content="">
+<meta property=" og:image:secure_url" content="">
+<meta property="og:image:alt" content="" />
+<meta property="og:title" content="" />
+<meta property="og:url" content="" />
+<link rel="canonical" href="" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" /-->
+{% endblock submeta %}
+
+
+{% block main %}
+
+  <section class="section">
+    <div class="container-fluid">
+        <div class="titlebox">
+            <div class="title-text">
+                <h1 class="page-title"> {{ title_contact }} </h1>
+            </div>
+        </div>
+
+        <div class="contactcontainer">
+            <div class="contact-formbox orangebg shadow">
+                {% if sent == "yes" %}
+                <p>Mange tak for din besked! Svartid kan variere, men jeg bestræber mig på at svare snarest.</p>
+                {% else %}
+                {{ introtext_contact | safe }}
+                {% endif %}
+            
+            <form id="contactform" method="POST" action="{{ url_for('user_blueprint.contact') }}">
+                {{ form.csrf_token }}        
+                <p>
+                    <label for="name">
+                        {{ form_label_name }}
+                    </label>
+                    {% if form.name.errors %}
+                    <br>
+                        <span style="color: rgb(194, 26, 62)">
+                            {{ form.name.errors.0 }}
+                        </span>
+                    {% endif %}
+                    <br>
+                    {{ form.name(class="txtinput reqinput") }}
+                </p>
+                <p>
+                    <label for="email">
+                        {{ form_label_email }}
+                    </label>
+                    {% if form.email.errors %}
+                        <br>
+                        <span style="color: rgb(194, 26, 62)">
+                            {{ form.email.errors.0 }}
+                        </span>
+                    {% endif %}
+                    <br>
+                    {{ form.email(size=30, class="txtinput") }}
+                </p>
+                <p>
+                    <label for="message">
+                        {{ form_label_message }}
+                    </label>
+                    {% if form.message.errors %}
+                        <br>
+                        <span style="color: rgb(194, 26, 62)">
+                            {{ form.message.errors.0 }}
+                        </span>
+                    {% endif %}
+                    <br>
+                    {{ form.message(class="txtinput message reqinput") }}
+                </p>
+                <p>
+                    <label for="agree">
+                        {{ form_label_agree | safe }}
+                    </label>
+                    {% if form.agree.errors %}
+                        <span style="color: rgb(194, 26, 62)">
+                            {{ form.agree.errors.0 }}
+                        </span>
+                        <br>
+                    {% endif %}
+                    {{ form.agree(class="reqcheck") }}
+                </p>
+                {{ form.submitcontact(class="main-btn shadow") }}
+                {{ form.token }}
+            </form>
+        </div>
+
+        </div> 
+    </div>
+
+  </section>
+
+{% endblock main %}
+
+
+{% block script %}
+<script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_key }}"></script>
+
+<script>
+$( "#submitcontact" ).click(function( e ) {
+    e.preventDefault();
+    var valid = true;
+    $('.reqinput').each(function(){
+
+        var input = $(this);
+        var label = $(`label[for="${input.attr("id")}"]`);
+
+        if (input.hasClass("errorborder")) {
+            console.log("errorborder found");
+        }
+
+        if(!input.val()) {
+            valid = false;
+            input.addClass("errorborder");
+            label.addClass("errortext");
+        }
+        else {
+            input.removeClass("errorborder");
+            label.removeClass("errortext");
+        }
+    });
+    var emailinput = $("#email");
+    var emaillabel = $(`label[for="${emailinput.attr("id")}"]`);
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    if (emailReg.test( emailinput.val() ) && emailinput.val()) {
+        console.log("valid email");
+        emailinput.removeClass("errorborder");
+        emaillabel.removeClass("errortext");
+    }
+    else {
+        valid = false;
+        emailinput.addClass("errorborder");
+        emaillabel.addClass("errortext");
+    }
+
+    var checkinput = $("#agree");
+    var checklabel = $(`label[for="${checkinput.attr("id")}"]`);
+
+    if (checkinput.prop('checked') == false) {
+        valid = false;
+        checkinput.addClass("errorborder");
+        checklabel.addClass("errortext");
+    }
+    else {
+        checkinput.removeClass("errorborder");
+        checklabel.removeClass("errortext");
+    }
+
+
+    if (valid === false) {
+
+        return;
+    }
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ recaptcha_key }}', {action: 'submit'}).then(function(token) {
+            // Add your logic to submit to your backend server here.
+            console.log(token);
+            $("#rectoken").val(token);
+            $('#contactform').submit();
+        });
+      });
+    })
+</script>
+{% endblock script %}

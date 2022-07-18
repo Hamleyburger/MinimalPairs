@@ -1,5 +1,17 @@
 
 
+a {
+    color: $color-purp1;
+    &:hover {
+        color: lighten($color-purp1, 0.3);
+    }
+}
+
+input[type='checkbox'] { 
+    accent-color: $color-purp1;
+}
+
+
 
 .orangebg {
     background-color: $color-red2;
@@ -49,13 +61,13 @@
 .main-btn {
 
     border-radius: $border-radius-modals;
-    font-size: 20px;
+    font-size: 18px;
 
     margin-top: 15px;
     height: 38px;
     min-width: 40px;
     background: $color-purp2;
-    font-size: 17px;
+    font-size: 16px;
     border-radius: $border-radius-modals;
     border: none;
     &:hover {
@@ -180,13 +192,12 @@
         max-width: 300px;
         min-width: 267px;
         font-family: Arial, Helvetica, sans-serif;
-
         
         .MO-wrapper {
             background: $color-yel3;
             margin: 8px;
             border-radius: 3px;
-            height: 250px;
+
 
             .MO-list-wrapper {
                 padding: 30px; 
@@ -195,6 +206,21 @@
                 background-size: cover;
                 background-color: inherit;
                 background-blend-mode: normal;
+                min-height: 250px;
+
+                overflow: scroll;
+                /* Hide scrollbar for Chrome, Safari and Opera */
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+                /* Hide scrollbar for IE, Edge and Firefox */
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+                
+                //background image is set dynamically in template
+                background-position: center;
+
+
                 .buttons {
                     // For the add/remove button .buttons class in MOmacro
                     display: inline-flex;
@@ -326,3 +352,4 @@ margin: 0;
 .page-title {
     font-size: 30px;
 }
+

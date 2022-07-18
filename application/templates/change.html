@@ -4,6 +4,14 @@
 - Change word
 {% endblock %}
 
+{% block submeta %}
+    <!-- for DataTables and Moment-->
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.bootstrap4.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css" rel="stylesheet" />
+{% endblock %}
+
+
 {% block main %}
 
 <!-- Popup form-->
@@ -80,118 +88,130 @@
     </table>
 </div>
 
-<!-- Initialize DataTable -->
-<script>
-    // Necessary imports: jquery, DataTables, DataTables plugin:
-    // "Responsive" - see Layout.hmtl
-    $(document).ready(function () {
-        $('#changetable').DataTable();
-    });
-    $('#changetable').dataTable({
-        "columns": [
-            null,
-            null,
-            null,
-            { "width": "17%" }
-        ],
-        responsive: true
-    });
+{% endblock %}
+{% block script %}
+    <!-- Initialize DataTable -->
+    <script>
+        // Necessary imports: jquery, DataTables, DataTables plugin:
+        // "Responsive" - see Layout.hmtl
+        $(document).ready(function () {
+            $('#changetable').DataTable();
+        });
+        $('#changetable').dataTable({
+            "columns": [
+                null,
+                null,
+                null,
+                { "width": "17%" }
+            ],
+            responsive: true
+        });
 
-    // Popup form onclick generation -->
+        // Popup form onclick generation -->
 
-    var current_word_id;
+        var current_word_id;
 
-    function openForm(element, word_id, word, cue, image) {
-        document.getElementById("myForm").style.display = "block";
-        console.log(word_id);
-        $('#formtitle').html($("#word" + word_id).html());
-        $('input[name ="newword"]').attr("placeholder", word);
-        $('input[name ="newcue"]').attr("placeholder", cue);
-        $('.file-label-name').html(image);
-        $('input[name ="newwordid"]').attr("value", word_id);
+        function openForm(element, word_id, word, cue, image) {
+            document.getElementById("myForm").style.display = "block";
+            console.log(word_id);
+            $('#formtitle').html($("#word" + word_id).html());
+            $('input[name ="newword"]').attr("placeholder", word);
+            $('input[name ="newcue"]').attr("placeholder", cue);
+            $('.file-label-name').html(image);
+            $('input[name ="newwordid"]').attr("value", word_id);
 
-        let change_pair_url = "{{ url_for('admin_blueprint.change_pairs', word='DUMMYVAL') }}";
-        newurl = change_pair_url.replace("DUMMYVAL", word_id);
-        $('#change-pair-btn').attr('href', newurl);
-        console.log(word + cue + image);
+            let change_pair_url = "{{ url_for('admin_blueprint.change_pairs', word='DUMMYVAL') }}";
+            newurl = change_pair_url.replace("DUMMYVAL", word_id);
+            $('#change-pair-btn').attr('href', newurl);
+            console.log(word + cue + image);
 
-        current_word_id = word_id;
+            current_word_id = word_id;
 
-    }
+        }
 
-    function sendChanges() {
-        // Make it respond to file input instead
-        console.log("image value is " + $('input[name ="newimg"]').val());
-        if ($('input[name ="newimg"]').val() !== "") {
-            document.myform.submit();
-            console.log("resetting form")
-            document.myform.reset();
-            console.log(document.myform)
-            closeForm();
+        function sendChanges() {
+            // Make it respond to file input instead
+            console.log("image value is " + $('input[name ="newimg"]').val());
+            if ($('input[name ="newimg"]').val() !== "") {
+                document.myform.submit();
+                console.log("resetting form")
+                document.myform.reset();
+                console.log(document.myform)
+                closeForm();
 
-            return
+                return
+            }
+
+
+            console.log("ajax call from js");
+            $.ajax({
+                data: {
+                    newword: $('input[name ="newword"]').val(),
+                    newcue: $('input[name ="newcue"]').val(),
+                    newimg: $('input[name ="newimg"]').val(),
+                    id: current_word_id
+                },
+                // ajax is the name of the view function that processes the incoming ajax call
+                url: {{ url_for('admin_blueprint.ajax_change')| tojson | safe }},
+        type: "POST"
+
+            }).done(function (data) {
+            /* Server check: with parents().length I check if element has any parent with this ID
+            because an existing username is good (green) in Login but bad (red) in register. */
+
+            console.log(data);
+            $("#word" + current_word_id).html(data.newword);
+            $("#cue" + current_word_id).html(data.newcue);
+            //$("#image" + current_word_id).html(data.newimg);
+        });
+        document.myform.reset();
+        closeForm();
+        }
+
+        function requestDelete() {
+            console.log("ajax call from js");
+            $.ajax({
+                // sending word ID to "deletion" route
+                data: {
+                    id: current_word_id
+                },
+                // url is the ajax route in views.py
+                url: {{ url_for('admin_blueprint.ajax_delete')| tojson | safe }},
+        type: "POST"
+
+            }).done(function (data) {
+            /* Server check: with parents().length I check if element has any parent with this ID
+            because an existing username is good (green) in Login but bad (red) in register. */
+
+            console.log(data);
+            console.log(
+                $("#word" + current_word_id).parent()
+            )
+            $("#word" + current_word_id).parent().remove();
+        });
+        document.myform.reset();
+        closeForm();
         }
 
 
-        console.log("ajax call from js");
-        $.ajax({
-            data: {
-                newword: $('input[name ="newword"]').val(),
-                newcue: $('input[name ="newcue"]').val(),
-                newimg: $('input[name ="newimg"]').val(),
-                id: current_word_id
-            },
-            // ajax is the name of the view function that processes the incoming ajax call
-            url: {{ url_for('admin_blueprint.ajax_change')| tojson | safe }},
-    type: "POST"
+        function closeForm() {
+            console.log("running closeform");
 
-        }).done(function (data) {
-        /* Server check: with parents().length I check if element has any parent with this ID
-        because an existing username is good (green) in Login but bad (red) in register. */
+            document.getElementById("myForm").style.display = "none";
+            document.myform.reset();
 
-        console.log(data);
-        $("#word" + current_word_id).html(data.newword);
-        $("#cue" + current_word_id).html(data.newcue);
-        //$("#image" + current_word_id).html(data.newimg);
-    });
-    document.myform.reset();
-    closeForm();
-    }
+            // TODO/suggestion: Make an ajax call that changes objects.
 
-    function requestDelete() {
-        console.log("ajax call from js");
-        $.ajax({
-            // sending word ID to "deletion" route
-            data: {
-                id: current_word_id
-            },
-            // url is the ajax route in views.py
-            url: {{ url_for('admin_blueprint.ajax_delete')| tojson | safe }},
-    type: "POST"
+        }
+    </script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    <script src=https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js></script>
 
-        }).done(function (data) {
-        /* Server check: with parents().length I check if element has any parent with this ID
-        because an existing username is good (green) in Login but bad (red) in register. */
+    <!-- plugin for DataTables and moment.js ( written at the time of moment v. 2.8.4 -->
+    <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
 
-        console.log(data);
-        console.log(
-            $("#word" + current_word_id).parent()
-        )
-        $("#word" + current_word_id).parent().remove();
-    });
-    document.myform.reset();
-    closeForm();
-    }
-
-
-    function closeForm() {
-        console.log("running closeform");
-
-        document.getElementById("myForm").style.display = "none";
-        document.myform.reset();
-
-        // TODO/suggestion: Make an ajax call that changes objects.
-
-    }
-</script>
-{% endblock %}
+        <!-- moment.js -->
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script-->
+{% endblock script %}

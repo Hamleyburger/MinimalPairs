@@ -1,15 +1,18 @@
 from flask import session
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectMultipleField, RadioField, Form, FormField, PasswordField, FileField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectMultipleField, RadioField, Form, FormField, PasswordField, FileField
 from wtforms.fields.simple import HiddenField, PasswordField
-from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Email
 from .models import User
-from application import db
+from application import db, app
 # from flask_wtf.file import FileField, FileRequired
 # from werkzeug.utils import secure_filename
 from ipapy import is_valid_ipa
 from application.content_management import Content
 import imghdr
+import email_validator
+import requests
+  
 
 
 def isValidSymbol(form, field):
@@ -50,6 +53,23 @@ def minimumFields(form, field):
     if filledOut < 2:
         raise ValidationError("Input at least two opposition sounds")
 
+def reCaptcha_valid(form, field):
+
+    secret_key = app.config["RECAPTCHA_PRIVATE_KEY"]
+    token = form.token.data
+
+        # captcha verification
+    data = {
+        'response': token,
+        'secret': secret_key
+    }
+    resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+    result_json = resp.json()
+
+    print(result_json)
+
+    if not result_json.get('success'):
+        raise ValidationError("Failed reCaptcha check")
 
 class SearchSounds(FlaskForm):
     sound1 = StringField(validators=[DataRequired(), isValidSymbol])
@@ -79,3 +99,15 @@ def toPDF_wrap(locale):
                 (content["bs_filename_veggies"], content["bs_label_veggies"])], validators=[DataRequired()])
 
     return toPDF
+
+
+
+  
+class contactForm(FlaskForm):
+    name = StringField(label='Navn', validators=[DataRequired()])
+    email = StringField(label='Email', validators=[
+      DataRequired(), Email(granular_message=True)])
+    message= TextAreaField(label='Besked', validators=[DataRequired()])
+    submitcontact = SubmitField(label="Send")
+    token = HiddenField(id="rectoken", validators=[reCaptcha_valid])
+    agree = BooleanField("Send", validators=[DataRequired()])

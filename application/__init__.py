@@ -12,6 +12,8 @@ from flask_user import UserManager
 from .content_management import Content
 from flask_migrate import Migrate
 import stripe
+from flask_mail import Mail
+from flask_babelex import Babel
 
 
 
@@ -44,6 +46,7 @@ app.jinja_env.add_extension('jinja2.ext.do')
 
 # All configs are taken from object in config.py
 app.config.from_object("configd.ProductionConfig")
+app.config.from_pyfile("configdmail.py")
 
 
 # Instantiate Session
@@ -51,6 +54,11 @@ Session(app)
 
 # Instantiate debug toolbar
 debugToolbar = DebugToolbarExtension(app)
+
+
+# Initialize Flask-BabelEx
+babel = Babel(app)
+
 
 # Instantiate SQLAlchemy
 db = SQLAlchemy(app)
@@ -65,6 +73,9 @@ user_manager = UserManager(app, db, User)
 
 # Instantiate Flask migrate
 migrate = Migrate(app, db, render_as_batch=True)
+
+# Instantiate Mail
+mail = Mail(app)
 
 # Configure Stripe
 stripe.api_key = app.config["STRIPE_SECRET_KEY"]
@@ -91,9 +102,10 @@ def get_content():
 
 
 
-from . import setdefaults
-print("Checking defaults...")
-setdefaults.go()
+# If db is empty app needs these defaults to function (for admin)
+# from . import setdefaults
+# print("Checking defaults...")
+# setdefaults.go()
 
 
 

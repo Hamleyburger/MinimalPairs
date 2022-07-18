@@ -93,15 +93,15 @@ Content
     {% if collection|length %}
     <div class="container-fluid text-center pdfgenerator">
 
-        <button id="search-collapse-btn" type="button" class="btn shadow top-button" data-toggle="collapse"
-            data-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">{{ btn_PDFtool }} <i
+        <button id="search-collapse-btn" type="button" class="btn shadow top-button" data-bs-toggle="collapse"
+            data-bs-target="#pdf-form-collapsable" aria-expanded="true" aria-controls="collapseOne">{{ btn_PDFtool }} <i
                 id="rotate-icon" class="fas fa-angle-down"></i>
         </button>
         <script>
             var url_for_clear = "{{ url_for('user_blueprint.ajax_clear') }}";
         </script>
-        <button type="button" class="btn shadow top-button" onclick="clear_collection(url_for_clear, event)" data-toggle="tooltip"
-            data-placement="top" title="{{ tooltip_clearall }}"><i class="fas fa-trash-alt"></i> {{ btn_clearall
+        <button type="button" class="btn shadow top-button" onclick="clear_collection(url_for_clear, event)" data-bs-toggle="tooltip"
+            data-bs-placement="top" title="{{ tooltip_clearall }}"><i class="fas fa-trash-alt"></i> {{ btn_clearall
             }}</button>
 
 
@@ -139,7 +139,7 @@ Content
                 
             <div class="row pdf-showcase">
                 <div class="pdf-showcase-inner col-12 text-center d-flex flex-column align-items-center">
-                    <button type="button" class="pdfbtn shadow" data-toggle="modal" data-target="#listWizardModal"> <i class="fas fa-file-pdf"></i> {{ pdf_game_btn }} </button>
+                    <button type="button" class="pdfbtn shadow" data-bs-toggle="modal" data-bs-target="#listWizardModal"> <i class="fas fa-file-pdf"></i> {{ pdf_game_btn }} </button>
                 </div>
             </div>
         </div>
@@ -176,6 +176,13 @@ Content
 {% endblock %}
 
 {% block script %}
+<!-- For cropper.js for uploading user's own images and cropping to fit -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"
+    integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
+    integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     window.jsPDF = window.jspdf.jsPDF
 </script>

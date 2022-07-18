@@ -107,7 +107,7 @@ def refresh_session_news():
     serialized_news = []
 
     for news in some_news:
-        print(news.word)
+        # print(news.word)
         serialized = {
             "id": news.id,
             "title": news.title,
