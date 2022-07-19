@@ -2,8 +2,11 @@
 
 .my-form-groups {
     .form-group {
-        margin-top: 8px;
-        margin-bottom: 8px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .chosen-container-multi {
+        margin-top: 30px;
     }
     .btn-primary {
         background-color: $color-purp1;
@@ -51,7 +54,6 @@
             justify-content: center;
             .sound_input_field {
                 margin: auto;
-                height: 24px;
             }
         }
     }

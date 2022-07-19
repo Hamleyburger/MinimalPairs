@@ -945,8 +945,12 @@ body footer a {
 }
 
 .my-form-groups .form-group {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.my-form-groups .chosen-container-multi {
+  margin-top: 30px;
 }
 
 .my-form-groups .btn-primary {
@@ -1015,7 +1019,6 @@ body footer a {
 
 .pairSoundTable .pstrow .pstcol .sound_input_field {
   margin: auto;
-  height: 24px;
 }
 
 .add-file-label::after {
