@@ -61,6 +61,7 @@ class Sound(db.Model):
         def fixSoundTyping(soundString):
             # Fix g and r IPA typos that are definitely typos
             newSound = ""
+            previous_char = ""
             for char in soundString:
                 if char == 'ɡ':
                     char = 'g'
@@ -68,7 +69,17 @@ class Sound(db.Model):
                     char = 'ʁ'
                 elif char == 'å':
                     char = 'ɔ'
+
+                if previous_char == 's':
+                    if char == 'k':
+                        char = 'g'
+                    if char == 't':
+                        char = 'd'
+                    if char == 'p':
+                        char = 'b'
+                
                 newSound += char
+                previous_char = char
 
             return newSound
 
@@ -98,6 +109,7 @@ class Sound(db.Model):
             return thisSound
 
         if soundStringList:
+            print("there is sound string list")
             soundList = []
             for sound in soundStringList:
 

@@ -84,15 +84,16 @@ def easyIPAtyping(typedSound):
     """ Translates some keyboard inputs to the characters in the Sound table """
 
     print("running easy IPA typing")
-    if typedSound == "å":
-        print("sound was å")
 
     easyTypableSounds = {
         'r': 'ʁ',
         'sj': 'ɕ',
         'å': 'ɔ',
         'ng': 'ŋ',
-        'ɡ': 'g'
+        'ɡ': 'g',
+        'st': 'sd',
+        'sk': 'sg',
+        'sp': 'sb'
     }
 
     if typedSound in easyTypableSounds:
