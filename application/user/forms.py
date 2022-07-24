@@ -1,8 +1,11 @@
+from timeit import repeat
 from flask import session
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectMultipleField, RadioField, Form, FormField, PasswordField, FileField
 from wtforms.fields.simple import HiddenField, PasswordField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Email
+
+from application.models import PermaImage
 from .models import User
 from application import db, app
 # from flask_wtf.file import FileField, FileRequired
@@ -87,16 +90,23 @@ class SearchMOs(FlaskForm):
 
 def toPDF_wrap(locale):
 
-    content = Content(locale)
+    repeatpatterns = db.session.query(PermaImage).filter_by(type="repeatpattern").all()
+    choices = []
+    my_choice_objects = {}
+    for image in repeatpatterns:
+        if locale == "en":
+            choices.append((str(image.id), image.display_name_en))
+        else:
+            choices.append((str(image.id), image.display_name_da))
+
+        my_choice_objects[image.id] = image
 
     class toPDF(FlaskForm):
 
         # First argument of each choice needs to be file name of the background image file
         background = RadioField(
-            'Label', choices=[
-                (content["bs_filename_fishcookies"], content["bs_label_fishcookies"],), 
-                (content["bs_filename_logocat"], content["bs_label_logocat"]), 
-                (content["bs_filename_veggies"], content["bs_label_veggies"])], validators=[DataRequired()])
+            'Label', choices=choices, validators=[DataRequired()])
+        choice_objects = my_choice_objects
 
     return toPDF
 

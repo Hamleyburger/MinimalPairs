@@ -116,9 +116,9 @@ Content
                     <fieldset class="container">
                         <div class="row">
                             {% for subfield in form.background %}
-                            <div class="col">
+                            <div class="bgx-col">
                                 <div class="bg-btn-wrap" style="background-image:
-                                url(/static/permaimages/thumbnails/thumb_{{subfield.data}}.png);">
+                                url({{url_for('static', filename=choice_objects[subfield.data | int].get_thumb())}});">
                                     <div class="text-background"></div>
                                     {{ subfield(class="btn-check") }}
                                     {{ subfield.label(class="bgexample shadow btn font-weight-bold") }}

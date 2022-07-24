@@ -1,7 +1,8 @@
 from PIL.Image import new
+import PIL.Image as pil_image
 from application.exceptions import invalidImageError
 from flask import flash, current_app
-from application import db
+from application import db, app
 # import decimal
 import copy
 import os
@@ -9,6 +10,8 @@ from sqlalchemy.sql import func
 from sqlalchemy import or_, and_
 from .admin.filehelpers import store_image, ensureThumbnail
 from ipapy import is_valid_ipa
+from werkzeug.utils import secure_filename
+import os
 
 
 word_grouping = db.Table('groupwords',
@@ -1107,7 +1110,7 @@ class Word(db.Model):
 
 
 class Image(db.Model):
-    """ Image name must correspond to file name in image folder """
+    """ Images specifically for word cards. Image name must correspond to file name in image folder """
     __tablename__ = "images"
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -1215,6 +1218,42 @@ class Image(db.Model):
             db.session.commit()
         else:
             print("default image ok")
+
+
+class PermaImage(db.Model):
+    """ Any image belonging in permaimages. path is path from static. display width, name_da and name_en and type are optional """
+    __tablename__ = "permaimages"
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    path = db.Column(db.String(), nullable=False)
+    time_created = db.Column(db.DateTime(timezone=True), default=func.current_timestamp())
+    display_width = db.Column(db.Integer)
+    display_name_da = db.Column(db.String())
+    display_name_en = db.Column(db.String())
+
+    type = db.Column(db.String())
+
+    def get_thumb(self):
+        basename = os.path.basename(self.path)
+        thumb_path = "permaimages/thumbnails/thumb_" + basename
+        print(thumb_path)
+        return thumb_path
+
+    @classmethod
+    def store_and_get_path(cls, form_image_data, permaimages_path=""):
+        """ Store image in static/permaimages/??? and return path """
+
+        filename = secure_filename(form_image_data.filename)
+        static_path = app.config["STATIC_PATH"]
+        imagepath = "permaimages" + permaimages_path + filename
+        save_path = static_path + "/" + imagepath
+        form_image_data.save(save_path)
+        print("saving in {}".format(save_path))
+        return imagepath
+    
+
+        
+
 
 
 class MOsetclass(object):

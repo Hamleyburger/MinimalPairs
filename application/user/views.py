@@ -1,4 +1,5 @@
 from math import prod
+from timeit import repeat
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort, send_from_directory
 from flask_login import current_user
 import json
@@ -7,7 +8,7 @@ from user_agents import parse
 from pyphen import LANGUAGES
 from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used, hasimage, order_MOsets_by_image, refresh_session_news
 import random
-from application.models import Word, Group, Sound, SearchedPair
+from application.models import PermaImage, Word, Group, Sound, SearchedPair
 from .models import User, Userimage, Donation
 from ..admin.models import News
 from application import db, app, mail
@@ -262,10 +263,13 @@ def contrasts(locale):
 def collection(locale):
 
     form = toPDF_wrap(locale)()
+    choice_objects = form.choice_objects
+
     print(request.method)
     collection_ids = getCollection()
     collection = []
     custom_image_ids = []
+
 
     # Retrieve pair objects from session ids
     for id in collection_ids:
@@ -275,27 +279,34 @@ def collection(locale):
     # POST request for basic word card PDF (other pdfs are generated and served with ajax: see pdf_maker_script.js and ajax_get_boardgame_filenames() here )
     if request.method == "POST":
         if getCollection():
+
             if form.validate_on_submit():
                 # Background file name is defined in the declaration of wtf choices in forms.py
-                bgfilename = form.background.data
+
+                selected_bg = choice_objects[int(form.background.data)]
+                bgfilename = selected_bg.path
                 template = render_template("mypdf.html", collection=collection)
                 html = HTML(string=template, base_url=request.base_url)
 
                 # This is bad code and proves that I need to make a db table for repeat patterns
-                bg_px_size = None
-                bg_px_size = "384" if bgfilename == "veggiepattern" else "256"
+                bg_px_size = str(selected_bg.display_width)
 
 
                 # This bit of CSS is dynamically generated, the rest is hard coded in the template
                 css = CSS(
-                    string='@page :left { background-image: url(/static/permaimages/repeatpatterns/' + bgfilename + '.png); background-size: ' + bg_px_size + 'px;}')
+                    string='@page :left { background-image: url(/static/' + bgfilename + '); background-size: ' + bg_px_size + 'px;}')
                 
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):
                     count_as_used(collection_ids)
 
                 return render_pdf(html, stylesheets=[css])
+            else:
+                print("Form not valid")
+                for error in form.background.errors:
+                    print(error)
+                print("choice: {}".format(form.background.data))
 
-    return render_template("collection.html", collection=collection, form=form)
+    return render_template("collection.html", collection=collection, form=form, choice_objects=choice_objects)
 
 
 @user_blueprint.route(f"/donation/", methods=["GET"])

@@ -1,8 +1,8 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
-from application.models import Word, Pair, Sound, Group
+from application.models import Word, Pair, Sound, Group, PermaImage
 from application.user.helpers import refresh_session_news
 from .models import News # admin models
-from .forms import AddForm, AddPairForm, ChangePairForm, NewsForm
+from .forms import AddForm, AddPairForm, ChangePairForm, NewsForm, PermaimageForm
 from application import db, app
 from .filehelpers import store_image, configure_add_template
 from flask_user import roles_required
@@ -166,6 +166,7 @@ def upload_image():
 def write_news():
     session["news"] = refresh_session_news()
     form = NewsForm()
+
     if request.method == "POST":
         if form.validate_on_submit():
 
@@ -190,13 +191,12 @@ def write_news():
                 word = Word.query.get(word_id)
 
             if form.image.data:
+                print(type(form.image.data))
                 filename = secure_filename(form.image.data.filename)
                 static_path = app.config["STATIC_PATH"]
                 news_imagepath = "/permaimages/newsimages/" + filename
                 form.image.data.save(static_path + news_imagepath)
                 imagepath = news_imagepath
-
-
 
             
             news = News(
@@ -218,6 +218,34 @@ def write_news():
 
         return redirect(url_for("admin_blueprint.write_news"))
     return render_template("news.html", form=form)
+
+
+@admin_blueprint.route("/add_image",  methods=["GET", "POST"])
+@roles_required('Admin')
+def add_image():
+    form = PermaimageForm()
+    repeatpatterns = db.session.query(PermaImage).filter_by(type="repeatpattern").all()
+    
+    if request.method == "POST":
+        if form.validate_on_submit():
+            path = PermaImage.store_and_get_path(form.image.data, "/repeatpatterns/")
+            display_width = form.display_width.data
+            display_name_da = form.display_name_da.data
+            display_name_en = form.display_name_en.data
+            repeatpattern = PermaImage(
+                path=path,
+                display_width = display_width,
+                display_name_da = display_name_da,
+                display_name_en = display_name_en,
+                type = "repeatpattern"
+            )
+            db.session.add(repeatpattern)
+            db.session.commit()
+            print("returned path: {}".format(path))
+            return redirect(url_for("admin_blueprint.add_image"))
+        else:
+            print("form error")
+    return render_template("addimage.html", form=form, repeatpatterns=repeatpatterns)
 
 
 @ admin_blueprint.route("/problems/", methods=["GET"])

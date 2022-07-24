@@ -1709,9 +1709,9 @@ $color-yel3: #fffae9; // Næsten hvid
   padding-bottom: 20px;
 }
 
-.pdfgenerator .pdf-generator-dropdown .row .col {
+.pdfgenerator .pdf-generator-dropdown .row .bgx-col {
   max-width: 130px;
-  padding: 10px;
+  padding: 5px;
 }
 
 .pdfgenerator .pdf-generator-dropdown .pdf-showcase {
@@ -1756,6 +1756,7 @@ $color-yel3: #fffae9; // Næsten hvid
 .pdfgenerator .bg-btn-wrap .bgexample {
   height: 110px;
   margin: 0;
+  padding-bottom: 0;
   /* top and bottom padding must add up to 100% because they determine the height and makes div be square */
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1778,8 +1779,8 @@ $color-yel3: #fffae9; // Næsten hvid
 
 .pdfgenerator .bg-btn-wrap .text-background {
   position: absolute;
-  height: 2.5rem;
-  background-color: rgba(255, 248, 251, 0.5);
+  height: 25px;
+  background-color: rgba(255, 248, 251, 0.6);
   width: 100%;
   z-index: 0;
   bottom: 0;

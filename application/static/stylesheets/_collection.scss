@@ -50,9 +50,9 @@
         padding-bottom: 20px;
         
         .row {
-            .col {
+            .bgx-col {
                 max-width: 130px;
-                padding: 10px;
+                padding: 5px;
             }
         }
 
@@ -110,6 +110,7 @@
 
             height: 110px;
             margin: 0;
+            padding-bottom: 0;
             /* top and bottom padding must add up to 100% because they determine the height and makes div be square */
             //padding-bottom: 75%;
             //padding-top: 25%;
@@ -129,8 +130,8 @@
         }
         .text-background {
             position: absolute;
-            height: 2.5rem;
-            background-color: rgba($color-yel3, 0.5);
+            height: 25px;
+            background-color: rgba($color-yel3, 0.6);
             width: 100%;
             //top: 26%;
             z-index: 0;

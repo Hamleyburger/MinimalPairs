@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% from 'admin_macros.html' import show_input_file_name, enable_chosenjs, chosenjs_filtering,
+chosenjs_highlight_suggestions %}
+
+{% block title %}
+- Add permaimages
+{% endblock %}
+
+{% block main %}
+
+
+
+<div class="content-section">
+
+    <!-- insert novalidate as attribute if you only want to user server side validation-->
+    <div class="container mt-5">
+        <div class="row mb-5">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <form id="newsForm" method="POST" action="{{ url_for('admin_blueprint.add_image') }}"
+                    enctype="multipart/form-data" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    
+                    <fieldset class="form-group">
+                        <legend>Add some permaimage</legend>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="title">Image</label>
+                                    {{ form.image(class="form-control", autocomplete="off", autofocus=true)}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="text">Display width</label>
+                                    {{ form.display_width(class="form-control", autocomplete="off", autofocus=true)}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="text">Display name da</label>
+                                    {{ form.display_name_da(class="form-control", autocomplete="off", autofocus=true)}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="text">Display name en</label>
+                                    {{ form.display_name_en(class="form-control", autocomplete="off", autofocus=true)}}
+                                </div>
+                                {{ form.submit_image }}
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+                {% for image in repeatpatterns %}
+
+                <img src="{{ url_for('static', filename=image.get_thumb()) }}" alt="{{ image.display_name_da }}">
+                <img src="{{ url_for('static', filename=image.path) }}" alt="{{ image.display_name_da }}">
+                
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--end of row-->
+
+{% endblock %}
+
+{% block script %}
+
+
+{% endblock script %}
