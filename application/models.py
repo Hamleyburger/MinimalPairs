@@ -571,17 +571,21 @@ class Pair(db.Model):
         return [self.s1, self.s2]
     
     def cluster_length(self):
-        """ returns 0 i no clusters, else longest cluster length """
+        """ returns 0 if no clusters, else longest cluster length of all cluster from all potential pair combinations """
         # is being used in MO-macros template to ad cluster class to MO, but has no function yet
+
+        all_sounds = []
+        pair_combinations = Pair.allPairCombinations([self.w1, self.w2])
+        for pc in pair_combinations:
+            all_sounds.append(pc.s1)
+            all_sounds.append(pc.s2)
         max_length = 0
-        for sound in self.sounds():
+        for sound in all_sounds:
             length = len(sound.sound)
             if (length > max_length) and (length > 1):
                 max_length = length
+        
         return max_length
-
-
-
 
 
     @classmethod
