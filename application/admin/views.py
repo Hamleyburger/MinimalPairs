@@ -1,14 +1,15 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
-from application.models import Word, Pair, Sound, Group, PermaImage
+from application.models import SearchedPair, Word, Pair, Sound, Group, PermaImage
 from application.user.helpers import refresh_session_news
 from .models import News # admin models
 from .forms import AddForm, AddPairForm, ChangePairForm, NewsForm, PermaimageForm
 from application import db, app
 from .filehelpers import store_image, configure_add_template
 from flask_user import roles_required
-from datetime import datetime
+from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
 import os
+from sqlalchemy import desc
 
 admin_blueprint = Blueprint(
     "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
@@ -289,6 +290,52 @@ def problems():
     """ Get an overview of words without partners and groups with unmatched words """
 
     return render_template("problems.html", group_problems=group_problems, word_problems=word_problems, pair_problems=pair_problems, assumed_noninitial=assumed_noninitial)
+
+
+@ admin_blueprint.route("/stats/", methods=["GET"])
+@roles_required('Admin')
+# Receives a word id and returns words in a way so client can see which pairs already exist
+def stats():
+    searched_pairs = SearchedPair.query.order_by(desc(SearchedPair.last_searched)).all()
+
+    now = datetime.now()
+    month_ago = now - timedelta(days=30)
+    week_ago = now - timedelta(days=7)
+    day_ago = now - timedelta(hours=24)
+    last_3_hours = now - timedelta(hours=3)
+
+    last_week = []
+    last_month = []
+    last_24h = []
+    last_3h = []
+    most_popular = []
+    most_popular_wo_img = []
+
+    for searched_pair in searched_pairs:
+        if searched_pair.last_searched > last_3_hours:
+            last_3h.append(searched_pair)
+        elif searched_pair.last_searched > day_ago:
+            last_24h.append(searched_pair)
+        elif searched_pair.last_searched > week_ago:
+            last_week.append(searched_pair)
+        elif searched_pair.last_searched > month_ago:
+            last_month.append(searched_pair)
+    
+    print("Last three hours:")
+    for item in last_3h:
+        print(item.last_searched)
+    print("Today:")
+    for item in last_24h:
+        print(item.last_searched)
+    print("Last week:")
+    for item in last_week:
+        print(item.last_searched)
+    print("Last month")
+    for item in last_month:
+        print(item.last_searched)
+
+
+    return render_template("stats.html")
 
 
 @ admin_blueprint.route("/ajax_delete_group/", methods=["POST"])

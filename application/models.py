@@ -618,6 +618,7 @@ class SearchedPair(db.Model):
     s2 = db.Column(db.String(), nullable=False)
     times_searched = db.Column(db.Integer)
     existing_pairs = db.Column(db.Integer)
+    last_searched = db.Column(db.DateTime(timezone=True), server_default=func.current_timestamp(), nullable=False)
 
     def __str__(self):
         return "Search: [{} {}]".format(self.s1, self.s2)
@@ -1123,7 +1124,7 @@ class Image(db.Model):
                      server_default='default.svg', unique=True)
     time_created = db.Column(db.DateTime(timezone=True), default=func.current_timestamp())
     # time_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
-
+    artist = db.Column(db.String(), nullable=False, server_default='Alma Manley')
     # is pointed to by at least one word. One-to-many with word.
     words = db.relationship("Word", back_populates="image")
 
@@ -1234,6 +1235,7 @@ class PermaImage(db.Model):
     display_width = db.Column(db.Integer)
     display_name_da = db.Column(db.String())
     display_name_en = db.Column(db.String())
+    artist = db.Column(db.String(), nullable=False, server_default='Alma Manley')
 
     type = db.Column(db.String())
 

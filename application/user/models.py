@@ -92,6 +92,7 @@ class Userimage(db.Model):
     wordid = db.Column(db.Integer, db.ForeignKey('words.id'))
     created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
+
     @classmethod
     def store(cls, file, wordid):
         """ Stores a temporary user image. Returns url_for saved image """
