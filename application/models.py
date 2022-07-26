@@ -587,6 +587,14 @@ class Pair(db.Model):
         
         return max_length
 
+    def has_images(self):
+        image_count = 0
+        if self.w1.image.name != "default.svg":
+            image_count += 1
+        if self.w2.image.name != "default.svg":
+            image_count += 1
+        return image_count
+
 
     @classmethod
     def allPairCombinations(cls, wordSet):
@@ -631,6 +639,16 @@ class SearchedPair(db.Model):
         if sound1:
             pairs = sound1.getContrasts(sound2)
         return pairs
+    
+
+    def get_noimage_pairs(self):
+        returnpairs = []
+        for pair in self.getPairs():
+            if pair.has_images() < 2:
+                returnpairs.append(pair)
+            
+        return returnpairs
+
 
 
     @classmethod
@@ -724,7 +742,7 @@ class Word(db.Model):
             return None
 
     @classmethod
-    def add(cls, word, image=None, cue=None):
+    def add(cls, word, image=None, cue=None, artist=None):
         """ Adds string as word to database and an optional image name\n
         If any of them exist, asks whether to replace or make homonymous entry\n
         Remember to first call store_image to get appropriate file name in\n
@@ -760,7 +778,7 @@ class Word(db.Model):
             img = db.session.query(Image).filter_by(name=image).first()
             if not img:
                 print("Image does not exist in database")
-                img = Image(name=image)
+                img = Image(name=image, artist=artist) if artist else Image(name=image)
             elif entry in img.words:
                 print("This image is already connected to this word.")
                 return

@@ -1155,6 +1155,56 @@ body footer a {
   font-size: 50px;
 }
 
+.stats-content-section .pairheader {
+  width: 110px;
+}
+
+.stats-content-section .examples-col {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.stats-content-section .examples-col .pair-example {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border: 2px solid #3b1734;
+}
+
+.stats-content-section .examples-col .pair-example .wxs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.stats-content-section .examples-col .pair-example .wxs .xw1, .stats-content-section .examples-col .pair-example .wxs .xw2 {
+  width: 50px;
+  overflow-wrap: break-word;
+}
+
+.stats-content-section .examples-col .pair-example .wxs .xw1 img, .stats-content-section .examples-col .pair-example .wxs .xw2 img {
+  width: 100%;
+}
+
+.stats-content-section .examples-col .pair-example .pwords {
+  width: 100%;
+}
+
 /* Old, light yellow theme:
 $color-purp1: #3b1734; //kat og tekst
 $color-purp2: #995f8b; // hat og navbar. Meta tag theme-color must be same as this in layout.html

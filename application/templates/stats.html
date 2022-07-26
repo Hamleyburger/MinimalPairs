@@ -10,7 +10,80 @@
 
 <div class="content-section">
     <div class="stats-content-section">
-        Stats
+        <h3>Senest søgte</h3>
+        <div class="row">
+            <div class="col">
+                <h5>Sidste tre timer</h5>
+                <ul>
+                    {% for searched_pair in last_3h %}
+                    <li>
+                        {{ searched_pair }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <h5>Sidste 24 timer</h5>
+                <ul>
+                    {% for searched_pair in last_24h %}
+                    <li>
+                        {{ searched_pair }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <h5>Sidste uge</h5>
+                <ul>
+                    {% for searched_pair in last_week %}
+                    <li>
+                        {{ searched_pair }}
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+            <div class="col">
+                <h5>Sidste uge</h5>
+                <ul>
+                    {% for searched_pair in last_month %}
+                    <li>
+                        {{ searched_pair }}
+                    </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+        </div>
+        <h3>Mest populære</h3>
+            {% for search, pairs in searches_pairs %}
+                <div class="row">
+                    <h5>
+                        <span class="pairheader">[{{ search.s1 }}] [{{ search.s2 }}]</span> {{ search.times_searched }}
+                    </h5>
+
+                    <div class="col-12 examples-col">
+                        {% for pair in pairs %}
+                        <div class="pair-example">
+                            <div class="wxs">
+                                <div class="xw1">
+                                    <img src="{{ url_for('static', filename= 'images/thumbnails/' + pair.w1.image.name) }}" alt="">
+                                </div>
+                                <div class="xw2">
+                                    <img src="{{ url_for('static', filename= 'images/thumbnails/' + pair.w2.image.name) }}" alt="">
+                                </div>
+                            </div>
+                            <div class="pwords">
+                                {{ pair.w1.word }} <br>
+                                {{ pair.w2.word }}
+                            </div>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
     </div>
 </div> <!-- end of content section -->
     

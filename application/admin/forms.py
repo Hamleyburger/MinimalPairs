@@ -179,6 +179,7 @@ class AddForm(FlaskForm):
         DataRequired(), Length(min=1, max=30), isHomonym])
     cue = StringField("Cue", validators=[Length(min=0, max=30)])
     image = FileField("Image", validators=[imageOK])
+    artist = StringField("Artist", validators=[Length(min=0, max=30)])
     add = SubmitField("Add")
     addAnyway = SubmitField("Add homonym")
     cancel = SubmitField("Cancel")

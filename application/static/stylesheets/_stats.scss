@@ -1,0 +1,32 @@
+// Styles for the admin page for problems
+
+.stats-content-section {
+    .pairheader {
+        width: 110px;
+    }
+    .examples-col {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .pair-example {
+            display: flex;
+            flex-direction: column;
+            border: 2px solid $color-purp1;
+            .wxs {
+                display: flex;
+                flex-direction: row;
+                .xw1, .xw2 {
+                    width: 50px;
+                    overflow-wrap: break-word;
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+            .pwords {
+                width: 100%;
+            }
+        }
+    }
+
+}

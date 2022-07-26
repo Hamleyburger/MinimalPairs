@@ -6,7 +6,7 @@ import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, getSecondBest, ensure_locale, custom_images_in_collection, count_as_used, hasimage, order_MOsets_by_image, refresh_session_news
+from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, ensure_locale, custom_images_in_collection, count_as_used, order_MOsets_by_image, refresh_session_news
 import random
 from application.models import PermaImage, Word, Group, Sound, SearchedPair
 from .models import User, Userimage, Donation
@@ -168,17 +168,8 @@ def contrasts(locale):
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):
                     SearchedPair.add(inputSound1, inputSound2, len(pairs))
 
-                pairs_with_images = []
-                pairs_without_images = []
-
                 # Sort pair list so pairs with images come on top
-                for pair in pairs:
-                    if hasimage(pair):
-                        pairs_with_images.append(pair)
-                    else:
-                        pairs_without_images.append(pair)
-                pairs = pairs_with_images + pairs_without_images
-
+                pairs = sorted(pairs, key=lambda item : item.has_images(), reverse=True)
 
                 # Make a lists of ids rendered to determine if they're in collection
                 for pair in pairs:

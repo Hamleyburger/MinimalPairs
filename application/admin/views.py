@@ -52,13 +52,16 @@ def add_word():
 
         # first store word without image
         image_name = None
+        artist_name = ""
         # Store image if there was one
         if request.files["image"]:
             image_name = store_image(request.files["image"])
+            if form.artist.data:
+                artist_name = form.artist.data
 
         # Add word to db and also store in session
         wordToRemember = Word.add(word=form.word.data,
-                                  cue=form.cue.data, image=image_name)
+                                  cue=form.cue.data, image=image_name, artist=artist_name)
         session["word1"] = str(wordToRemember.id)
 
         db.session.commit()
@@ -296,6 +299,8 @@ def problems():
 @roles_required('Admin')
 # Receives a word id and returns words in a way so client can see which pairs already exist
 def stats():
+    """ Get an overview of what people are searching for at what content should be added. Fill out missing info in searched_pairs """
+
     searched_pairs = SearchedPair.query.order_by(desc(SearchedPair.last_searched)).all()
 
     now = datetime.now()
@@ -306,36 +311,56 @@ def stats():
 
     last_week = []
     last_month = []
-    last_24h = []
+    last_day = []
     last_3h = []
     most_popular = []
-    most_popular_wo_img = []
+    
+    commit = False
+
 
     for searched_pair in searched_pairs:
+
+        if searched_pair.s1 < searched_pair.s2:
+            temps1 = searched_pair.s2
+            temps2 = searched_pair.s1
+            searched_pair.s1 = temps1
+            searched_pair.s2 = temps2
+            commit = True
+
         if searched_pair.last_searched > last_3_hours:
             last_3h.append(searched_pair)
         elif searched_pair.last_searched > day_ago:
-            last_24h.append(searched_pair)
+            last_day.append(searched_pair)
         elif searched_pair.last_searched > week_ago:
             last_week.append(searched_pair)
         elif searched_pair.last_searched > month_ago:
             last_month.append(searched_pair)
+        
     
-    print("Last three hours:")
-    for item in last_3h:
-        print(item.last_searched)
-    print("Today:")
-    for item in last_24h:
-        print(item.last_searched)
-    print("Last week:")
-    for item in last_week:
-        print(item.last_searched)
-    print("Last month")
-    for item in last_month:
-        print(item.last_searched)
+    most_popular = sorted(searched_pairs, key=lambda pair: pair.times_searched, reverse=True)[0:10]
+    
+
+    searches_pairs = []
+    for search in most_popular:
+
+        pairs = sorted(search.getPairs(), key=lambda pair: pair.has_images(), reverse=True)
+        if not search.existing_pairs:
+            search.existing_pairs = len(pairs)
+            commit = True
+        searches_pairs.append((search, pairs))
+    if commit:
+        db.session.commit()
 
 
-    return render_template("stats.html")
+    return render_template(
+        "stats.html", 
+        last_3h=last_3h, 
+        last_day=last_day, 
+        last_week=last_week, 
+        last_month=last_month,
+        searches_pairs=searches_pairs,
+        #most_popular_wo_img=most_popular_wo_img
+        )
 
 
 @ admin_blueprint.route("/ajax_delete_group/", methods=["POST"])

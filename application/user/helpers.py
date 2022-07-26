@@ -284,13 +284,6 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
 
     return partialMatches
 
-# Sound search: Helps ordering searched pairs so the ones with images appear first
-def hasimage(pair):
-    """ Checks if pair has image and returns boolean value """
-    hasimage = False
-    if "default" not in pair.w1.image.name or "default" not in pair.w2.image.name: 
-        hasimage = True
-    return hasimage
 
 # Sound search: Helps ordering searched MOs so the ones with images appear first
 def order_MOsets_by_image(MOsets):
@@ -301,7 +294,7 @@ def order_MOsets_by_image(MOsets):
     for MOset in MOsets:
         MOset_has_image = False
         for pair in MOset:
-            if hasimage(pair):
+            if pair.has_images():
                 MOset_has_image = True
         if MOset_has_image:
             sets_with_images.append(MOset)
