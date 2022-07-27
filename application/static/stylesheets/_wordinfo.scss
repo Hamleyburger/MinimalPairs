@@ -37,7 +37,8 @@
     .inner-row {
         margin: 0;
         padding: 0;
-        height: 100%;
+        flex-direction: column;
+        align-items: center;
         // This part is responsible for word1 top row's items
         .cols-word .title {
             font-size: 25px;

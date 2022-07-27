@@ -46,17 +46,14 @@
                     {{ word_card_buttons(word, infobutton=false) }}
 
                 </div>
-                <div class="col-xl-6 col-0"></div>
-                <div class="col-xl-6 order-xl-12 col-md-5 col-sm-8 cols-word align-self-xl-end text-center">
+                <div class="col-xl-12 order-xl-12 col-md-5 col-sm-8 cols-word align-self-xl-end text-center">
                     <div class="title align-self-end">
 
                         <h1>{{ word.word }}</h1>
-                        <p>
-                            "{{word.cue}}"
-                        </p>
+                        <p><i>{{word.cue}}</i></p>
+                        <p><i>Tegner: {{ word.image.artist }}</i></p>
                     </div>
                 </div>
-                <div class="col-xl-6 order-xl-12 col-0"></div>
             </div>
         </div>
 

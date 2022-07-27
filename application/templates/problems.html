@@ -10,7 +10,15 @@
 
 <div class="content-section">
     <div class="problems-content-section">
-        {% if (group_problems or word_problems or pair_problems) %}
+        {% if (group_problems or word_problems or pair_init_problems or pair_samesound_problems) %}
+            {% if  pair_samesound_problems %}
+            <h3>Some words in these pairs should have separate entries</h3>
+                {% for pair in pair_samesound_problems %}
+                <p>
+                    {{ pair.w1.word }} - {{ pair.w2.word }} [{{ pair.s1.sound }}] [{{ pair.s2.sound }}]
+                </p>
+                {% endfor %}
+            {% endif %}
             {% if group_problems %}
                 <h1>Group problems</h1>
                 {% for problem in group_problems %}
@@ -87,11 +95,11 @@
                     {% endfor %} <!-- problems in pair problems-->
                 </ul>
             {% endif %} <!-- word problems-->
-            {% if pair_problems %}
+            {% if pair_init_problems %}
                 <h1>Pair problems</h1>
                 <p>These pairs' isinitial has not been defined</p>
                 <ul>
-                    {% for pair in pair_problems %}
+                    {% for pair in pair_init_problems %}
                     <li class="row {{ loop.cycle('li-marked', '') }}">
                             <div class="col-6 paircol">
                                 {{ pair.w1.word }} - {{ pair.w2.word }} [{{ pair.s1 }}, {{ pair.s2 }}]

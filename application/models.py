@@ -848,6 +848,7 @@ class Word(db.Model):
 
         # check if this particular pair exists
         if self.pairExists(word2, sound1, sound2):
+            print("pair exists alerady")
             return
 
         newPair = Pair(w1=self, w2=word2,
@@ -1011,8 +1012,6 @@ class Word(db.Model):
 
         return longest_pair.s1
 
-        
-
     def orderPairsByWord(self, pairs):
         """ Takes a bunch of pairs and orders them so word1 is always w1 and s1 """
         orderedpairs = []
@@ -1025,7 +1024,6 @@ class Word(db.Model):
                 orderedpairs.append(flippedpair)
 
         return orderedpairs
-
 
     def orderedPairs(self):
         """ (Word) Orders words in pairs so first word is caller """
@@ -1130,6 +1128,21 @@ class Word(db.Model):
             partner_suggestions.append(group_partner_suggestions)
 
         return partner_suggestions
+
+    def get_samesound_pairs(self):
+        pairs = self.orderedPairs()
+        sound2list = []
+        samesound_pairs = []
+        for pair in pairs:
+            if pair.s2 in sound2list:
+                for p2 in pairs:
+                    if (p2.s2 == pair.s2) and p2.id != pair.id:
+                        if p2.s1 == pair.s1:
+                            if p2.isinitial == pair.isinitial:
+                                samesound_pairs.append(p2)
+                                samesound_pairs.append(pair)
+            sound2list.append(pair.s2)
+        return samesound_pairs
 
 
 class Image(db.Model):

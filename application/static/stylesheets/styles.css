@@ -1536,7 +1536,13 @@ $color-yel3: #fffae9; // Næsten hvid
 .word-info-container .outer-row .inner-row {
   margin: 0;
   padding: 0;
-  height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .word-info-container .outer-row .inner-row .cols-word .title {

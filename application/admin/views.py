@@ -136,11 +136,15 @@ def change_pairs():
             pair = Pair.query.get(int(pair_id))
 
             if form.validate():
+                print("valid change pair form")
                 if request.form.get("submit") == "save":
                     s1 = form.s1.data
                     s2 = form.s2.data
                     word1 = pair.w1
                     word2 = pair.w2
+
+                    db.session.delete(pair)
+                    db.session.commit()
                     word1.pair(word2, s1, s2, pair.isinitial) # implement initial
 
                 elif request.form.get("submit") == "delete":
@@ -258,14 +262,15 @@ def add_image():
 def problems():
     group_problems = Group.get_group_problems()
     word_problems = []
-    pair_problems = []
+    pair_init_problems = []
+    pair_samesound_problems = []
 
     for word in db.session.query(Word).all():
         if len(word.allPartners()) < 1:
             word_problems.append(word)
     
     uninit_pairs = db.session.query(Pair).filter_by(isinitial=None).all()
-    pair_problems = []
+    pair_init_problems = []
     assumed_noninitial = []
     likely_initial = []
     unknown = []
@@ -287,12 +292,25 @@ def problems():
                 likely_initial.append(p)
             else:
                 unknown.append(p)
-    pair_problems = likely_initial + unknown
+    pair_init_problems = likely_initial + unknown
+
+    allwords = Word.query.all()
+    for word in allwords:
+        samesound_pairs = word.get_samesound_pairs()
+        if samesound_pairs:
+            pair_samesound_problems.extend(samesound_pairs)
+
 
             
     """ Get an overview of words without partners and groups with unmatched words """
 
-    return render_template("problems.html", group_problems=group_problems, word_problems=word_problems, pair_problems=pair_problems, assumed_noninitial=assumed_noninitial)
+    return render_template(
+        "problems.html", 
+        group_problems=group_problems, 
+        word_problems=word_problems, 
+        pair_init_problems=pair_init_problems, 
+        assumed_noninitial=assumed_noninitial, 
+        pair_samesound_problems=pair_samesound_problems)
 
 
 @ admin_blueprint.route("/stats/", methods=["GET"])
