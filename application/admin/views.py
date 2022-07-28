@@ -345,14 +345,15 @@ def stats():
             searched_pair.s2 = temps2
             commit = True
 
-        if searched_pair.last_searched > last_3_hours:
-            last_3h.append(searched_pair)
-        elif searched_pair.last_searched > day_ago:
-            last_day.append(searched_pair)
-        elif searched_pair.last_searched > week_ago:
-            last_week.append(searched_pair)
-        elif searched_pair.last_searched > month_ago:
-            last_month.append(searched_pair)
+        if searched_pair.times_searched:
+            if searched_pair.last_searched > last_3_hours:
+                last_3h.append(searched_pair)
+            elif searched_pair.last_searched > day_ago:
+                last_day.append(searched_pair)
+            elif searched_pair.last_searched > week_ago:
+                last_week.append(searched_pair)
+            elif searched_pair.last_searched > month_ago:
+                last_month.append(searched_pair)
         
     
     most_popular = sorted(searched_pairs, key=lambda pair: pair.times_searched, reverse=True)[0:10]

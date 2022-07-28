@@ -51,7 +51,9 @@
 
                         <h1>{{ word.word }}</h1>
                         <p><i>{{word.cue}}</i></p>
-                        <p><i>Tegner: {{ word.image.artist }}</i></p>
+                        {% if word.image.name != "default.svg" %}
+                        <p><i>{{ artist_wordinfo }}: {{ word.image.artist }}</i></p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

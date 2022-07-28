@@ -100,6 +100,7 @@ def Content(locale=None):
 
         # Word info
         "title_wordinfo": "info om ",  # set word.word in template
+        "artist_wordinfo": "Tegner",
         "url_wordinfo": "info-om-ord",
         "group_name": "Gruppe",
 
@@ -266,6 +267,7 @@ def Content(locale=None):
 
         # Word info
         "title_wordinfo": "info about ",  # set word.word in template
+        "artist_wordinfo": "Illustrator",
         "url_wordinfo": "word-info",
         "group_name": "Group",
 

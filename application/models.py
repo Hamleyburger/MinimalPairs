@@ -582,6 +582,8 @@ class Pair(db.Model):
         max_length = 0
         for sound in all_sounds:
             length = len(sound.sound)
+            if "ɐ̯" in sound.sound:
+                length -= 1
             if (length > max_length) and (length > 1):
                 max_length = length
         
