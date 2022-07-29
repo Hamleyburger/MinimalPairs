@@ -1276,7 +1276,6 @@ class PermaImage(db.Model):
     def get_thumb(self):
         basename = os.path.basename(self.path)
         thumb_path = "permaimages/thumbnails/thumb_" + basename
-        print(thumb_path)
         return thumb_path
 
     @classmethod

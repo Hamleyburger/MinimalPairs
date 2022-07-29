@@ -261,7 +261,6 @@ def collection(locale):
     form = toPDF_wrap(locale)()
     choice_objects = form.choice_objects
 
-    print(request.method)
     collection_ids = getCollection()
     collection = []
     custom_image_ids = []
@@ -271,9 +270,6 @@ def collection(locale):
     for id in collection_ids:
         collection.append(Word.query.get(int(id)))
     
-    print("words passed to colleciton before post:")
-    for x in collection:
-        print(x)
     custom_image_ids = custom_images_in_collection(collection)
 
     # POST request for basic word card PDF (other pdfs are generated and served with ajax: see pdf_maker_script.js and ajax_get_boardgame_filenames() here )
@@ -287,10 +283,6 @@ def collection(locale):
                 bgfilename = selected_bg.path
                 template = render_template("mypdf.html", collection=collection)
                 html = HTML(string=template, base_url=request.base_url)
-                print("words in collection passed in post to template:")
-                for x in collection:
-                    print(x)
-                    print(x.image.name)
 
                 # This is bad code and proves that I need to make a db table for repeat patterns
                 bg_px_size = str(selected_bg.display_width)
@@ -306,10 +298,8 @@ def collection(locale):
                 #return render_template("mypdf.html", collection=collection)
                 return render_pdf(html, stylesheets=[css])
             else:
-                print("Form not valid")
                 for error in form.background.errors:
                     print(error)
-                print("choice: {}".format(form.background.data))
 
     return render_template("collection.html", collection=collection, form=form, choice_objects=choice_objects)
 
@@ -449,15 +439,14 @@ def create_checkout_session():
         return jsonify({"sessionId": checkout_session["id"]})
     except Exception as e:
         raise e
-        print("returning exception")
         return jsonify(error=str(e)), 403
+
 
 
 @ user_blueprint.route("/ajax_add2collection/", methods=["POST"])
 # Receives changes from user and makes changes in session
 def ajax_add2collection():
 
-    print("add to collection with ajax")
     word_id = int(request.form["id"])
     word = Word.query.get(word_id)
     print("Adding word: " + str(word.word))
@@ -543,7 +532,6 @@ def change_language(newlocale):
     if redirect_url == None:
         redirect_url = url_for('user_blueprint.index', locale=newlocale)
 
-    print(redirect_url)
     return redirect(redirect_url)
 
 
