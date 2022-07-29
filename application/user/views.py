@@ -265,6 +265,10 @@ def collection(locale):
     # Retrieve pair objects from session ids
     for id in collection_ids:
         collection.append(Word.query.get(int(id)))
+    
+    print("words passed to colleciton before post:")
+    for x in collection:
+        print(x)
     custom_image_ids = custom_images_in_collection(collection)
 
     # POST request for basic word card PDF (other pdfs are generated and served with ajax: see pdf_maker_script.js and ajax_get_boardgame_filenames() here )
@@ -278,6 +282,10 @@ def collection(locale):
                 bgfilename = selected_bg.path
                 template = render_template("mypdf.html", collection=collection)
                 html = HTML(string=template, base_url=request.base_url)
+                print("words in collection passed in post to template:")
+                for x in collection:
+                    print(x)
+                    print(x.image.name)
 
                 # This is bad code and proves that I need to make a db table for repeat patterns
                 bg_px_size = str(selected_bg.display_width)
@@ -290,6 +298,7 @@ def collection(locale):
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):
                     count_as_used(collection_ids)
 
+                #return render_template("mypdf.html", collection=collection)
                 return render_pdf(html, stylesheets=[css])
             else:
                 print("Form not valid")
