@@ -109,11 +109,12 @@ def add_pairs():
 @roles_required('Admin')
 def change():
     if request.method == "POST":
-
+        print("change, not ajax change. Newartist: {}".format(request.form.get("newartis")))
+    
         if request.files:
             id = int(request.form.get("newwordid"))
             Word.change(id, newword=request.form.get("newword"),
-                        newcue=request.form.get("newcue"), newimg=request.files["newimg"])
+                        newcue=request.form.get("newcue"), newimg=request.files["newimg"], newartist=request.form.get("newartist"))
 
         return redirect(request.url)
 
@@ -338,6 +339,11 @@ def stats():
 
     for searched_pair in searched_pairs:
 
+        pairs = searched_pair.getPairs()
+        if not searched_pair.existing_pairs:
+            searched_pair.existing_pairs = len(pairs)
+            commit = True
+
         if searched_pair.s1 < searched_pair.s2:
             temps1 = searched_pair.s2
             temps2 = searched_pair.s1
@@ -363,9 +369,6 @@ def stats():
     for search in most_popular:
 
         pairs = sorted(search.getPairs(), key=lambda pair: pair.has_images(), reverse=True)
-        if not search.existing_pairs:
-            search.existing_pairs = len(pairs)
-            commit = True
         searches_pairs.append((search, pairs))
     if commit:
         db.session.commit()
@@ -493,23 +496,28 @@ def ajax_set_initial():
 @roles_required('Admin')
 # Receives changes from user and makes changes in database
 def ajax_change():
+    print("ajax_change, change. Newartist: {}".format(request.form.get("newartis")))
     
+    print("AJAX CHANGE RUN")
     newword = request.form["newword"]
     newcue = request.form["newcue"]
     newimg = request.form["newimg"]
     word_id = request.form["id"]
+    newartist = request.form.get("newartist")
+    print("received newartist: {}".format(newartist))
 
-    print("id: {}, new word: {}, new cue: {}, new image: {}".format(
-        word_id, newword, newcue, newimg))
+    print("id: {}, new word: {}, new cue: {}, new image: {}, new artist: {}".format(
+        word_id, newword, newcue, newimg, newartist))
 
     word = Word.change(id=int(word_id), newword=newword,
-                       newcue=newcue, newimg=newimg)
+                       newcue=newcue, newimg=newimg, newartist=newartist)
 
     return jsonify(
         id=word.id,
         newword=word.word,
         newcue=word.cue,
-        newimg=word.image.name
+        newimg=word.image.name,
+        newartist=word.image.artist
     )
 
 

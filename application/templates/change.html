@@ -33,6 +33,9 @@
         <input autocomplete="off" id="image" name="newimg" required="" type="file">
         <label class="change-file-label file-label-name" for="image"></label>
 
+        <label for="newartist"><b>Change artist</b></label>
+        <input type="text" placeholder="jinjaoldcue" name="newartist">
+
         <a id="change-pair-btn" href="" class="btn btn-warning">Change pairs</a>
         <button type="button" class="btn btn-success save" onclick="sendChanges()">Save</button>
         <button type="button" class="btn btn-danger delete" onclick="requestDelete()">Delete</button>
@@ -46,6 +49,7 @@
             <tr>
                 <th>Spelling</th>
                 <th>Cue</th>
+                <th>Artist</th>
                 <th>Image</th>
                 <th></th>
             </tr>
@@ -57,6 +61,7 @@
                 <!-- I'm using jinja to pass the id of td 0 to the function for onclick in td 3 -->
                 <td id="word{{ entry.id }}">{{ entry.word }}</td>
                 <td id="cue{{ entry.id }}">{{ entry.cue }}</td>
+                <td id="artist{{ entry.id }}">{{ entry.image.artist }}</td>
                 <td id="image{{ entry.id }}">
                     {{ entry.image.name }}
                     <div><img src="{{ url_for('static', filename='images/thumbnails/' + entry.image.name)}}"
@@ -64,7 +69,7 @@
                 </td>
                 <td style="text-align: center;">
                     <button class="lil-buttonon"
-                        onclick='openForm(this, {{ entry.id | tojson }}, {{ entry.word | tojson }}, {{ entry.cue | tojson }}, {{ entry.image.name | tojson }})'>
+                        onclick='openForm(this, {{ entry.id | tojson }}, {{ entry.word | tojson }}, {{ entry.cue | tojson }}, {{ entry.image.name | tojson }},  {{ entry.image.artist | tojson }})'>
                         <i class="fas fa-cogs"></i>
                     </button>
                     {% set url = url_for("user_blueprint.wordinfo", word_id=entry.id, locale=session.locale) %}
@@ -81,6 +86,7 @@
             <tr>
                 <th>Spelling</th>
                 <th>Cue</th>
+                <th>Artist</th>
                 <th>Image</th>
                 <th>Change</th>
             </tr>
@@ -111,7 +117,7 @@
 
         var current_word_id;
 
-        function openForm(element, word_id, word, cue, image) {
+        function openForm(element, word_id, word, cue, image, artist) {
             document.getElementById("myForm").style.display = "block";
             console.log(word_id);
             $('#formtitle').html($("#word" + word_id).html());
@@ -119,6 +125,7 @@
             $('input[name ="newcue"]').attr("placeholder", cue);
             $('.file-label-name').html(image);
             $('input[name ="newwordid"]').attr("value", word_id);
+            $('input[name ="newartist"]').attr("placeholder", artist);
 
             let change_pair_url = "{{ url_for('admin_blueprint.change_pairs', word='DUMMYVAL') }}";
             newurl = change_pair_url.replace("DUMMYVAL", word_id);
@@ -132,6 +139,7 @@
         function sendChanges() {
             // Make it respond to file input instead
             console.log("image value is " + $('input[name ="newimg"]').val());
+            console.log("new artist sent to server: " + $('input[name ="newartist"]').val())
             if ($('input[name ="newimg"]').val() !== "") {
                 document.myform.submit();
                 console.log("resetting form")
@@ -149,6 +157,7 @@
                     newword: $('input[name ="newword"]').val(),
                     newcue: $('input[name ="newcue"]').val(),
                     newimg: $('input[name ="newimg"]').val(),
+                    newartist: $('input[name ="newartist"]').val(),
                     id: current_word_id
                 },
                 // ajax is the name of the view function that processes the incoming ajax call
@@ -162,6 +171,7 @@
             console.log(data);
             $("#word" + current_word_id).html(data.newword);
             $("#cue" + current_word_id).html(data.newcue);
+            $("#artist" + current_word_id).html(data.newartist);
             //$("#image" + current_word_id).html(data.newimg);
         });
         document.myform.reset();

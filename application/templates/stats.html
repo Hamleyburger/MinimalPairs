@@ -17,7 +17,7 @@
                 <ul>
                     {% for searched_pair in last_3h %}
                     <li>
-                        {{ searched_pair }}
+                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
                     </li>
                     {% endfor %}
                 </ul>
@@ -27,7 +27,7 @@
                 <ul>
                     {% for searched_pair in last_day %}
                     <li>
-                        {{ searched_pair }}
+                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
                     </li>
                     {% endfor %}
                 </ul>
@@ -37,7 +37,7 @@
                 <ul>
                     {% for searched_pair in last_week %}
                     <li>
-                        {{ searched_pair }}
+                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
                     </li>
                     {% endfor %}
 
@@ -48,7 +48,7 @@
                 <ul>
                     {% for searched_pair in last_month %}
                     <li>
-                        {{ searched_pair }}
+                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
                     </li>
                     {% endfor %}
 

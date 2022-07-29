@@ -802,7 +802,7 @@ class Word(db.Model):
         return entry
 
     @classmethod
-    def change(cls, id, newword="", newcue="", newimg=""):
+    def change(cls, id, newword="", newcue="", newimg="", newartist=""):
         """ For admin to change entries. Anything goes.\n
         id(required), newword, newcue, newimg\n
         returns word or None if trying to link to unexisting image"""
@@ -826,7 +826,10 @@ class Word(db.Model):
             except Exception as e:
                 print(e)
                 flash(e, "danger")
-
+        print("Checking if new artist")
+        print(newartist)
+        if newartist:
+            word.image.artist = newartist
         print("Commit from 'change'")
         db.session.commit()
 
