@@ -17,8 +17,8 @@ admin_blueprint = Blueprint(
 
 @admin_blueprint.before_request
 def before_request_callback():
-    session["locale"] = "en"
-    print("****** before request callback: session locale was set to english")
+    session["locale"] = "da"
+    print("****** before request callback: session locale was set to da")
 
 
 @admin_blueprint.route("/add", methods=["GET"])
@@ -109,7 +109,6 @@ def add_pairs():
 @roles_required('Admin')
 def change():
     if request.method == "POST":
-        print("change, not ajax change. Newartist: {}".format(request.form.get("newartis")))
     
         if request.files:
             id = int(request.form.get("newwordid"))
@@ -496,18 +495,12 @@ def ajax_set_initial():
 @roles_required('Admin')
 # Receives changes from user and makes changes in database
 def ajax_change():
-    print("ajax_change, change. Newartist: {}".format(request.form.get("newartis")))
     
-    print("AJAX CHANGE RUN")
     newword = request.form["newword"]
     newcue = request.form["newcue"]
     newimg = request.form["newimg"]
     word_id = request.form["id"]
     newartist = request.form.get("newartist")
-    print("received newartist: {}".format(newartist))
-
-    print("id: {}, new word: {}, new cue: {}, new image: {}, new artist: {}".format(
-        word_id, newword, newcue, newimg, newartist))
 
     word = Word.change(id=int(word_id), newword=newword,
                        newcue=newcue, newimg=newimg, newartist=newartist)

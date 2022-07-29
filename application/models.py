@@ -819,18 +819,16 @@ class Word(db.Model):
             word.cue = newcue
         if newimg != "":
             try:
-                print("trying to store image")
                 print("\n\n*********\n\nold image is: {}".format(word.image))
                 image = Image.store(newimg)  # return appropriate image object
                 word.image = image
             except Exception as e:
                 print(e)
                 flash(e, "danger")
-        print("Checking if new artist")
-        print(newartist)
+
         if newartist:
             word.image.artist = newartist
-        print("Commit from 'change'")
+
         db.session.commit()
 
         Image.cleanImages()

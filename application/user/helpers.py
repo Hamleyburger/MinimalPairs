@@ -9,6 +9,7 @@ from application import app
 from ..content_management import Content
 import uuid
 from PIL import Image as PIL_Image
+import datetime
 
 
 
@@ -19,6 +20,10 @@ from PIL import Image as PIL_Image
 def ensure_locale(func):
     @functools.wraps(func)
     def decorated(*args, **kwargs):
+        arglocale = request.args.get("locale")
+        if arglocale:
+            if arglocale not in app.config["LANGUAGES"]:
+                abort(404)
 
         # Make sure routes with locale display globe icon for language change
         g.showglobe = True
@@ -26,30 +31,18 @@ def ensure_locale(func):
         # decide whether kwarg["locale"] should be taken from URL or session
         if not session.get("force_session_lang"):
             # force_session_lang is if the language button was pressed
-            print("force session lang is on")
-            print(session.get("locale"))
             if request.args.get("locale"):
-                session["locale"] = request.args.get("locale")
+                session["locale"] = arglocale
             
         else:
             session.pop("force_session_lang")
-            print("force session lang is off")
+            print("request arg lang bends to session lang")
         
         kwargs["locale"] = session["locale"]
-
-        print("language is session: {}".format(session["locale"]))
 
         return func(*args, **kwargs)
     return decorated
 
-
-def setlocale():
-
-    firstarg = request.path.split('/', 2)[1]
-    if firstarg in app.config['LANGUAGES']:
-        session["locale"] = firstarg
-    print("set ses to firstarg {}".format(firstarg))
-    return session["locale"]
 
 # turn json string into int or list of ints
 def json_to_ints(json_str):
@@ -104,7 +97,7 @@ def easyIPAtyping(typedSound):
 
 def refresh_session_news():
 
-    some_news = db.session.query(News).order_by(News.id.desc()).limit(12).all()
+    some_news = db.session.query(News).order_by(News.date_posted.desc()).limit(12).all()
     serialized_news = []
 
     for news in some_news:
@@ -125,8 +118,10 @@ def refresh_session_news():
                 "word": news.word.word,
                 "image_path": "images/thumbnails/{}".format(news.word.image.name),
             }
-
         serialized_news.append(serialized)
+
+    session["news"] = serialized_news
+    session["news_last_refreshed"] = datetime.datetime.now()
     
     return serialized_news
     

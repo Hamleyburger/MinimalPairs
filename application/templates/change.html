@@ -139,14 +139,10 @@
         function sendChanges() {
             // Make it respond to file input instead
             console.log("image value is " + $('input[name ="newimg"]').val());
-            console.log("new artist sent to server: " + $('input[name ="newartist"]').val())
             if ($('input[name ="newimg"]').val() !== "") {
                 document.myform.submit();
-                console.log("resetting form")
                 document.myform.reset();
-                console.log(document.myform)
                 closeForm();
-
                 return
             }
 
@@ -205,7 +201,6 @@
 
 
         function closeForm() {
-            console.log("running closeform");
 
             document.getElementById("myForm").style.display = "none";
             document.myform.reset();

@@ -22,6 +22,7 @@ import sentry_sdk
 import stripe
 from flask_mail import Mail, Message
 import requests
+import datetime
 
 
 
@@ -36,7 +37,7 @@ def before_request_callback():
     locale = session.get("locale")
     g.locale = session.get("locale")
     if not locale:
-        print("\nNo locale in session\n")
+        print("\nNo locale in session. Getting locale from user agent.\n")
         print(request.headers.get('User-Agent'))
         browser_lang = request.accept_languages.best_match(
             app.config["LANGUAGES"])
@@ -44,9 +45,10 @@ def before_request_callback():
         session["locale"] = browser_lang
         g.locale = browser_lang
         if not browser_lang:
+            print("No locale from user agent. Defaulting to da")
             session["locale"] = "da"
             g.locale = "da"
-        print("session locale set before request: {}".format(session["locale"]))
+
 
     if not session.get("userimages"):
         session["userimages"] = {}
@@ -66,8 +68,11 @@ def before_request_callback():
         else:
             session["collection"] = []
 
-    if not session.get("news"):
-        session["news"] = refresh_session_news()
+    if not session.get("news_last_refreshed"):
+        refresh_session_news()
+    if datetime.datetime.now() - session["news_last_refreshed"] > datetime.timedelta(minutes=15):
+        refresh_session_news()
+
 
 
 @app.after_request
