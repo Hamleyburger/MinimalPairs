@@ -1,6 +1,7 @@
 from PIL.Image import new
 import PIL.Image as pil_image
 from application.exceptions import invalidImageError
+from application import exceptions
 from flask import flash, current_app
 from application import db, app
 # import decimal
@@ -64,7 +65,7 @@ class Sound(db.Model):
         def fixSoundTyping(soundString):
             # Fix g and r IPA typos that are definitely typos
             newSound = ""
-            previous_char = ""
+
             for char in soundString:
                 if char == 'ɡ':
                     char = 'g'
@@ -73,34 +74,41 @@ class Sound(db.Model):
                 elif char == 'å':
                     char = 'ɔ'
 
-                if previous_char == 's':
-                    if char == 'k':
-                        char = 'g'
-                    if char == 't':
-                        char = 'd'
-                    if char == 'p':
-                        char = 'b'
-                
                 newSound += char
-                previous_char = char
+
+            newSound = newSound.replace("ʊ̯", "w")
+            newSound = newSound.replace("ɪ̯", "j")
+            newSound = newSound.replace("sp", "sb")
+            newSound = newSound.replace("st", "sd")
+            newSound = newSound.replace("sk", "sg")
+
+            if newSound != soundString:
+                print("fixSoundTyping fixed {} to {}".format(soundString, newSound))
 
             return newSound
 
         def objectifyAndAddSound(fixedSound):
+
+            # Check that syllabic and nonsyllabic are not combined
+
             thisSound = cls.query.filter_by(sound=fixedSound).first()
 
             if not thisSound:
-                print("'{}' is a new sound.".format(fixedSound))
-                thisSound = Sound(sound=fixedSound)
-                db.session.add(thisSound)
-                db.session.flush()
+                try:
+                    print("'{}' is a new sound. Checking. ".format(fixedSound))
+                    Sound.isvalidsound(fixedSound)
+                    thisSound = Sound(sound=fixedSound)
+                    db.session.add(thisSound)
+                    db.session.flush()
+                except Exception as e:
+                    raise e
 
             return thisSound
 
         if soundString:
             # If sound is a string given by user as opposed to Sound object
 
-            if isinstance(soundString, str):
+            if isinstance(soundString, str): # if string and not Sound object
 
                 fixedSound = fixSoundTyping(soundString)
                 thisSound = objectifyAndAddSound(fixedSound)
@@ -112,7 +120,6 @@ class Sound(db.Model):
             return thisSound
 
         if soundStringList:
-            print("there is sound string list")
             soundList = []
             for sound in soundStringList:
 
@@ -123,6 +130,71 @@ class Sound(db.Model):
                 soundList.append(sound)
             return soundList
 
+    @ classmethod
+    def syllable_safe(cls, soundString):
+        """  skal bruges efter easy IPA typing """
+
+        nonsyllabics = "ptkbdgvjʁfsɕhmnŋlðw"
+        syllabics = "ieɛæaɑyøœɶuoɔɒʌʊɪɐə"
+
+        syl_sounds = 0
+        nonsyl_sounds = 0
+
+        i = 0
+        while i < len(soundString):
+            symbol = soundString[i]
+            nextsymbol = "" if (i == len(soundString) -1) else soundString[i+1]
+
+            if symbol in nonsyllabics:
+                sylsymb = "m̩"[1]
+                if nextsymbol != sylsymb:
+                    nonsyl_sounds += 1
+                else:
+                    syl_sounds += 1
+            elif symbol in syllabics:
+                nonsylsymb = "ɐ̯"[1]
+                if nextsymbol != nonsylsymb:
+                    syl_sounds += 1
+                else:
+                    nonsyl_sounds += 1
+            # Hvis der overhovedet er stavelsesbærende i, så må der kun være en af det, og der må ikke være noget andet i. Hvis det er en stavelsesbærende diakritik på en konsonant, så tæller den bare ikke, så gælder den bare ikke.
+            # Hvis det er et ikke-stavelsesbærende tegn efter en vokal, skal den ikke tælles som stqvelsesbærende alligevel.
+            i += 1
+        #print("syllabic sounds: {} - nonsyllabic sounds: {}".format(syl_sounds, nonsyl_sounds))
+        if syl_sounds and nonsyl_sounds:
+            raise exceptions.syllableStructureError
+            return False
+        if syl_sounds > 1:
+            raise exceptions.multiSyllableError
+            return False
+        return True
+
+    @ classmethod
+    def isvalidsound(cls, soundString):
+        """ checks syllable safety and other validity checks """
+        validity = True
+        try:
+            Sound.syllable_safe(soundString)
+            i = 0
+            while i < len(soundString):
+                symbol = soundString[i]
+                nextsymbol = "" if (i == len(soundString) -1) else soundString[i+1]
+                if symbol == nextsymbol:
+                    raise exceptions.doubleSoundError
+                    validity = False
+                i+=1
+        except Exception as e:
+            raise e
+            validity = False
+
+        
+        return validity
+
+        # if it is single it can have -, else it can't
+        # * asterisk is solely for search form and must be dealt with on input.
+        pass
+
+
     def getContrasts(self, sound2):
         """ return a list of pairs\n
         The list is sorted so all word1 have the same sound.\n
@@ -130,7 +202,7 @@ class Sound(db.Model):
 
         sound1 = self
 
-        if sound2 != "*":
+        if sound2.sound != "*":
             # Make a query for populating the contrasts to be returned in the list
             clauseA = and_(Pair.s1 == sound1,
                            Pair.s2 == Sound.get(soundString=sound2))

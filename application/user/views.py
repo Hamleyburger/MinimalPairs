@@ -1,12 +1,12 @@
 from math import prod
 from timeit import repeat
-from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort, send_from_directory
+from flask import g, Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort, send_from_directory
 from flask_login import current_user
 import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, easyIPAtyping, stripEmpty, ensure_locale, custom_images_in_collection, count_as_used, order_MOsets_by_image, refresh_session_news
+from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, stripEmpty, ensure_locale, custom_images_in_collection, count_as_used, order_MOsets_by_image, refresh_session_news
 import random
 from application.models import PermaImage, Word, Group, Sound, SearchedPair
 from .models import User, Userimage, Donation
@@ -84,6 +84,7 @@ def after_request_callback(response):
 @user_blueprint.route("/", methods=["GET"])
 @ensure_locale
 def index(locale):
+
     """ cute front page """
 
     return render_template("index.html")
@@ -120,7 +121,6 @@ def wordinfo(word_id, locale):
 
         MOsets = word.get_full_MOsets()
         for x in MOsets:
-            print("")
             for y in x:
                 print(y.textify())
         print(str(url_for(
@@ -151,8 +151,9 @@ def contrasts(locale):
     collectedPairs = []  # For accurate button condition on reload
     MOmode = False  # Show MO form when user last searched for MOs
     searched = False
-    sound1 = None
-    sound2 = None
+    sound1_object = None
+    sound2_object = None
+    searched_sounds_list = ["", "", "", "", ""] # For user feedback on front end
 
     if request.method == "POST":
         if (request.form["searchBtn"] == "pair"):
@@ -160,23 +161,25 @@ def contrasts(locale):
             if pairSearchForm.validate_on_submit():
 
                 # Easy keyboard typing enabled:
-                inputSound1 = easyIPAtyping(pairSearchForm.sound1.data)
-                inputSound2 = easyIPAtyping(pairSearchForm.sound2.data)
+                sound1_str = pairSearchForm.sound1.data
+                sound2_str = pairSearchForm.sound2.data
 
-                sound1 = Sound.get(inputSound1)
-                if inputSound2 == "*":
-                    sound2 = "*"
-                else:
-                    sound2 = Sound.get(inputSound2)
-                pairs = sound1.getContrasts(inputSound2)
+                sound1_object = Sound.get(sound1_str)
+                sound2_object = Sound.get(sound2_str)
+                
+                searched_sounds_list[0] = sound1_object.sound
+                searched_sounds_list[1] = sound2_object.sound
+
+                pairs = sound1_object.getContrasts(sound2_object)
+
                 # searched_pairs only triggers for non admin users
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):
-                    SearchedPair.add(inputSound1, inputSound2, len(pairs))
+                    SearchedPair.add(sound1_str, sound2_str, len(pairs))
 
                 # Sort pair list so pairs with images come on top
                 pairs = sorted(pairs, key=lambda item : item.has_images(), reverse=True)
 
-                # Make a lists of ids rendered to determine if they're in collection
+                # Make a lists of ids rendered to determine if they're in collection on the front end
                 for pair in pairs:
                     idlist = [pair.w1.id, pair.w2.id]
                     renderedids.extend(idlist)
@@ -186,29 +189,38 @@ def contrasts(locale):
             else:
                 print("error in pair form: ")
                 print(pairSearchForm.errors)
+                for field, errormsg in pairSearchForm.errors.items():
+                    for msg in errormsg:
+                        g.errorfeedback = msg
+                        if "csrf" in msg.lower():
+                            g.errorfeedback = Content()["unknown_or_csrf_error"]
+
 
         if request.form["searchBtn"] == "MO":
             MOmode = True
             searched = True
             if MOSearchForm.validate_on_submit():
-                print("MOsearchform validated")
-
 
                 # Convert common typos to what user actually meant
-                inputSound1 = easyIPAtyping(MOSearchForm.sound1.data)
+                sound1_str = MOSearchForm.sound1.data
                 inputList = [
-                    easyIPAtyping(MOSearchForm.sound2.data),
-                    easyIPAtyping(MOSearchForm.sound3.data),
-                    easyIPAtyping(MOSearchForm.sound4.data),
-                    easyIPAtyping(MOSearchForm.sound5.data)]
+                    MOSearchForm.sound2.data,
+                    MOSearchForm.sound3.data,
+                    MOSearchForm.sound4.data,
+                    MOSearchForm.sound5.data]
 
                 # Ignore spaces that user left blank
                 MOsounds = stripEmpty(inputList)
 
                 # Search database for exact and partial matches
-                sound1 = Sound.get(inputSound1)
+                sound1_object = Sound.get(sound1_str)
+                searched_sounds_list[0] = sound1_object.sound
+
+                for i, sound in enumerate(MOsounds):
+                    searched_sounds_list[i+1] = Sound.get(sound).sound
+
                 print("Getting best and 2nd best MO sets...")
-                all_MOsets = sound1.getMOPairs(MOsounds)
+                all_MOsets = sound1_object.getMOPairs(MOsounds)
                 for MOset in all_MOsets:
                     if len(MOset) == len(MOsounds):
                         MOsets.append(MOset)
@@ -219,9 +231,10 @@ def contrasts(locale):
                 MOsets2 = order_MOsets_by_image(MOsets2)
                 MOsets2 = sorted(MOsets2, key=len, reverse=True)
 
+
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):
-                    for inputSound2 in MOsounds:
-                        SearchedPair.add(inputSound1, inputSound2)
+                    for sound2_str in MOsounds:
+                        SearchedPair.add(sound1_str, sound2_str)
 
                 # add each word id to list from every MO and strip duplicates using set
                 idList = [id for MO in MOsets +
@@ -231,6 +244,11 @@ def contrasts(locale):
             else:
                 print("MO search form error")
                 print(MOSearchForm.errors)
+                for field, errormsg in MOSearchForm.errors.items():
+                    for msg in errormsg:
+                        g.errorfeedback = msg
+                        if "csrf" in msg.lower():
+                            g.errorfeedback = Content()["unknown_or_csrf_error"]
 
         # Check if user has collected all rendered words (for toggling "remove all button")
         for id in list(renderedids):
@@ -241,8 +259,9 @@ def contrasts(locale):
 
     return render_template("contrasts.html",
                            pairs=pairs,
-                           sound1=sound1,
-                           sound2=sound2,
+                           sound1=sound1_object,
+                           sound2=sound2_object,
+                           searched_sounds_list=searched_sounds_list,
                            form=pairSearchForm,
                            form2=MOSearchForm,
                            renderedids=renderedids,

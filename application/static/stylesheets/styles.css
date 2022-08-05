@@ -1302,10 +1302,26 @@ $color-yel3: #fffae9; // Næsten hvid
   font-size: 1.7rem;
   font-weight: 700;
   text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .titlebox .title-text .ipa-font {
   font-size: 1.7rem;
+}
+
+.titlebox .title-text .feedback-text {
+  width: 600px;
+  max-width: 100%;
+  font-size: 20px;
 }
 
 .contentbox {
@@ -1469,6 +1485,10 @@ $color-yel3: #fffae9; // Næsten hvid
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -1477,7 +1497,12 @@ $color-yel3: #fffae9; // Næsten hvid
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  height: 180px;
+  min-height: 180px;
+}
+
+.tab-content .tab-pane .error-p {
+  margin-top: 20px;
+  margin-bottom: 0;
 }
 
 /* Old, light yellow theme:

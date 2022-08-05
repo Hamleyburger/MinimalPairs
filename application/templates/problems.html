@@ -10,7 +10,7 @@
 
 <div class="content-section">
     <div class="problems-content-section">
-        {% if (group_problems or word_problems or pair_init_problems or pair_samesound_problems) %}
+        {% if (group_problems or word_problems or pair_init_problems or pair_samesound_problems or pair_sound_validity_problems) %}
             {% if  pair_samesound_problems %}
             <h3>Some words in these pairs should have separate entries</h3>
                 {% for pair in pair_samesound_problems %}
@@ -96,7 +96,7 @@
                 </ul>
             {% endif %} <!-- word problems-->
             {% if pair_init_problems %}
-                <h1>Pair problems</h1>
+                <h1>Pair initialness problems</h1>
                 <p>These pairs' isinitial has not been defined</p>
                 <ul>
                     {% for pair in pair_init_problems %}
@@ -119,6 +119,15 @@
                     {% endif %}
                 </ul>
             {% endif %} <!-- pair problems -->
+            {% if pair_sound_validity_problems %}
+            <h1>Pair sound validity problems</h1>
+            <p>These pairs have impossible sounds</p>
+            <ul>
+                {% for pair in pair_sound_validity_problems %}
+                    <li>{{ pair }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} <!-- if pair sound validity problem -->
         {% else %} <!-- if not problems else -->
         <div class="m-auto celebration">No problems! Hooray!</div>
         {% endif %} <!-- end if problems -->

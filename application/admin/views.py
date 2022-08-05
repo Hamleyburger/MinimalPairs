@@ -264,6 +264,36 @@ def problems():
     word_problems = []
     pair_init_problems = []
     pair_samesound_problems = []
+    pair_sound_validity_problems = []
+
+    # Remove bad sounds
+    sounds = Sound.query.all()
+    for sound in sounds:
+        try:
+            Sound.isvalidsound(sound.sound)
+        except:
+            print("Sound not valid: {}".format(sound.sound))
+            db.session.delete(sound)
+
+    pairs = Pair.query.all()
+    for pair in pairs:
+        try:
+            Sound.isvalidsound(pair.s1.sound)
+            Sound.isvalidsound(pair.s2.sound)
+        except:
+            print("not valid pair sounds: {}".format(pair))
+            pair_sound_validity_problems.append(pair)
+
+    pairs = SearchedPair.query.all()
+    for searched_pair in pairs:
+        try:
+            Sound.isvalidsound(searched_pair.s1)
+            Sound.isvalidsound(searched_pair.s2)
+        except:
+            print("not valid sounds in searched_pair: {} - is deleted.".format(searched_pair))
+            db.session.delete(searched_pair)
+
+    db.session.commit()
 
     for word in db.session.query(Word).all():
         if len(word.allPartners()) < 1:
@@ -310,7 +340,9 @@ def problems():
         word_problems=word_problems, 
         pair_init_problems=pair_init_problems, 
         assumed_noninitial=assumed_noninitial, 
-        pair_samesound_problems=pair_samesound_problems)
+        pair_samesound_problems=pair_samesound_problems,
+        pair_sound_validity_problems=pair_sound_validity_problems # Should not be possible
+        )
 
 
 @ admin_blueprint.route("/stats/", methods=["GET"])

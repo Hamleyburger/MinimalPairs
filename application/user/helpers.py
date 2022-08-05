@@ -73,28 +73,6 @@ def invalid_IPA_convert(invalid_ipa):
         return newSound
 
 
-def easyIPAtyping(typedSound):
-    """ Translates some keyboard inputs to the characters in the Sound table """
-
-    print("running easy IPA typing")
-
-    easyTypableSounds = {
-        'r': 'ʁ',
-        'sj': 'ɕ',
-        'å': 'ɔ',
-        'ng': 'ŋ',
-        'ɡ': 'g',
-        'st': 'sd',
-        'sk': 'sg',
-        'sp': 'sb'
-    }
-
-    if typedSound in easyTypableSounds:
-        typedSound = easyTypableSounds[typedSound]
-
-    return typedSound
-
-
 def refresh_session_news():
 
     some_news = db.session.query(News).order_by(News.date_posted.desc()).limit(12).all()

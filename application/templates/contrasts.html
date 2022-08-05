@@ -114,6 +114,13 @@
                                         formaction="{{ url_for('user_blueprint.contrasts', locale=session.locale) }}"></i>
                                 </button>
                             </form>
+                            {% if not MOmode %}
+                                {% if g.errorfeedback %}
+
+                                    <p class="error-p">{{ g.errorfeedback | safe}}</p>
+
+                                {% endif %}
+                            {% endif %}
 
                         </div>
 
@@ -154,7 +161,11 @@
                                 </div>
                             </form>
                         </div>
-
+                        {% if MOmode %}
+                            {% if g.errorfeedback %}
+                                    <p class="error-p">{{ g.errorfeedback | safe }}</p>
+                            {% endif %}
+                        {% endif %}
                         <div class="ipa-container">
                             {{ ipa_picker() }}
                         </div>
@@ -223,11 +234,9 @@
     <div class="titlebox">
         <div class="title-text">
             <p>
-            {% if sound2 == "*" %}
-                [<span class="ipa-font">{{ sound1.sound }}</span>] vs *
-            {% else %}
-                [<span class="ipa-font">{{ sound1.sound }}</span>] vs [<span class="ipa-font">{{ sound2.sound }}</span>]
-            {% endif %}
+
+                [<span class="ipa-font">{{ searched_sounds_list[0] }}</span>] vs [<span class="ipa-font">{{ searched_sounds_list[1] }}</span>]
+
             </p>
         </div>
     </div>
@@ -275,13 +284,24 @@
             <p>
                 {{ nomatches }}
             </p>
+            {% if not g.errorfeedback %}
+                <div class="feedback-text">
+
+                    <p class="">{{ no_result_message.0 }}
+                        <span class="ipa-font">
+                            [{% for sound in searched_sounds_list %} {{ sound }}{% endfor %}],
+                        </span>
+                         {{ no_result_message.1 }} <a href="{{ url_for('user_blueprint.contact', locale=session.locale) }}">{{ no_result_message.2 }}</a>
+                    </p>
+                </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
         </div>
-    </div>
-    {% endif %}
-</div>
-
-{% endblock %}
-
+        
+        {% endblock %}
+        
 
 
 {% block script %}

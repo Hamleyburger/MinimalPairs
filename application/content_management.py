@@ -1,4 +1,4 @@
-from flask import session
+from flask import session, g
 from markupsafe import Markup
 from .content_management_meta import meta_en, meta_da
 
@@ -173,9 +173,30 @@ def Content(locale=None):
         "form_label_message": "Besked",
         "form_label_agree": 'Jeg accepterer, at denne formular er beskyttet af <a target=”_blank” href="https://support.google.com/recaptcha/answer/6080904?hl=en">reCaptcha</a>, og at minimalepar.dk får min emailadresse udelukkende med henblik på at kunne svare. Emailadressen og eventuelle personoplysninger i beskeden slettes efter højest et år.',
         "form_label_submit": "Send",
-        "introtext_contact": '<p class="mb-1">Har du ris, ros, spørgsmål eller forslag? Opdaget en fejl på siden? Savner du kontraster eller billeder? Jeg vil rigtig gerne høre fra dig, så jeg kan finde op og ned på min to do-liste.</p><p>~ Alma fra minimalepar.dk</p>'
-    
-    
+        "introtext_contact": '<p class="mb-1">Har du ris, ros, spørgsmål eller forslag? Opdaget en fejl på siden? Savner du kontraster eller billeder? Jeg vil rigtig gerne høre fra dig, så jeg kan finde op og ned på min to do-liste.</p><p>~ Alma fra minimalepar.dk</p>',
+
+
+        # Error messsages
+        "double_sound_error": "Man kan ikke søge på dobbeltlyde (to ens lyde) i et felt. Måske søgte du efter noget, der skrives med dobbeltkonsonant ortografisk, men faktisk udtales som en enkelt lyd?",
+        "double_wc_error": "Man kan desværre ikke søge på * vs. * (alting vs. alting), da søgningen er for stor. Venligst indsæt en lyd i mindst et af felterne.",
+        "wc_in_string_error": "\"*\" kan kun bruges alene, når du vil finde alle minimale par med én lyd. F.eks. [s] over for \"alt\"",
+        "MO_wc_error": "Man kan ikke bruge wildcard (*) i en søgning efter multiple oppositioner. Prøv med enkeltlyde og konsonantklynger",
+        "double_dash_error": "Man kan ikke søge på - over for -, fordi det er ingenting over for ingenting.",
+        "dash_in_string_error": "\"-\" kan kun bruges alene, når du vil søge efter par, hvor en lyd udelades. F.eks. [s] over for \"ikke noget [s]\"",
+        "syllable_structure_error": "Man kan kun søge på enkeltlyde eller konsonantklynger. Har du f.eks. søgt på 'kage' vs. 'smage', så prøv i stedet [k] vs. [sm]",
+        "multi_syllable_error": "Man kan kun søge på enkeltlyde eller konsonantklynger. Prøv at lade vokallyde eller stavelsesbærende konsonantlyde stå alene.",
+        "invalid_ipa_error": 'Der er søgt på noget, som søgemaskinen ikke kan fortolke som en lyd. Prøv at finde den lyd, du vil søge efter i tegnvælgeren. Hvis du har opdaget en fejl, så send meget gerne en besked fra kontaktsiden.',
+        "too_few_oppositions_error": "Der skal som minimum indsættes lyde i det øverste felt og to af felterne til kontrastlyde.",
+        "same_sound_error": "Søgningen fejlede, fordi der er søgt på to ens kontrastlyde.",
+        "pair_data_required_error": "Begge felter skal udfyldes.",
+        "unknown_or_csrf_error": "Noget gik galt. Måske hjælper det at genindlæse siden.",
+        "no_result_message": [
+            "Hvis du synes, at der mangler par med ",
+            "så send gerne en besked og eventuelle forslag fra",
+            "kontaktsiden"
+            ],
+
+
     }
 
     text_en = {
@@ -340,7 +361,29 @@ def Content(locale=None):
         "form_label_message": "Message",
         "form_label_agree": "I accept that this form is protected by <a target=”_blank” href='https://support.google.com/recaptcha/answer/6080904?hl=en'>reCaptcha</a> and that minimalepar.dk stores my email address with the sole purpose of replying. My email and any personal data in the message will be deleted within a year.",
         "form_label_submit": "Send",
-        "introtext_contact": '<p class="mb-1">Do you have constructive criticism, questions, comments? Discovered an error on the site? Please write me a message and I\'ll try to get back to you as soon as possible.</p><p>~ Alma from minimalepar.dk</p>'
+        "introtext_contact": '<p class="mb-1">Do you have constructive criticism, questions, comments? Discovered an error on the site? Please write me a message and I\'ll try to get back to you as soon as possible.</p><p>~ Alma from minimalepar.dk</p>',
+
+
+        # Error messsages
+        "double_sound_error": "Searching for double sounds (two sounds of a kind) is not possible. Maybe you meant to search for something that is written ortographically with double consonants, but is actually pronounced as one sound?",
+        "double_wc_error": "Searching for * vs. * is not possible because everything vs. everything is just too much data. Please insert at least one sound in one of the fields.",
+        "MO_wc_error": "Wild card (*) cannot be used in searches for multiple oppositions. Please use single sounds or consonant clusters.",
+        "double_dash_error": "Searching for - vs. - is not possible because it means nothing vs. nothing.",
+        "dash_in_string_error": "\"-\" can only be used alone to search for pairs where one sound is omitted. Fx [s] vs. \"no [s]\"",
+        "wc_in_string_error": "\"*\" can only be used alone to search for a sound and all its contrasts. Fx [s] vs. \"everything\"",
+        "syllable_structure_error": "Only searches for single sounds or consonant clusters are possible. Fx if you have searched for 'kage' vs. 'smage', then try instead to search for [k] vs. [sm]",
+        "multi_syllable_error": "Only searches for single sounds or consonant clusters are possible. Vowels and syllabic consonants must stand alone.",
+        "invalid_ipa_error": 'The search engine received an input that it cannot recognize as a sound. Try finding the sound you want in the IPA symbol picker. If you have found an error please send a message from the contact page.',
+        "too_few_oppositions_error": "As a minimum the field on top and two of the contrast fields must be filled out.",
+        "same_sound_error": "The search failed because the same sound was typed twice.",
+        "pair_data_required_error": "Both fields need to be filled out.",
+        "unknown_or_csrf_error": "Something went wrong. It may help to reload the page.",
+        "no_result_message": [
+            "If you're missing pairs with ",
+            "send a message and any suggestions through",
+            "the contact page"
+            ],
+
 
     }
 
