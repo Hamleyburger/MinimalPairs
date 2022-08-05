@@ -706,9 +706,9 @@ class SearchedPair(db.Model):
         return "Search: [{} {}]".format(self.s1, self.s2)
 
     def getPairs(self):
-        """ Returns the number of existing pairs with this sound combination. Haven't checked if this works. """
+        """ This might just be the same as get contrasts. Returns the number of existing pairs with this sound combination. Haven't checked if this works. """
         sound1 = Sound.get(self.s1)
-        sound2 = self.s2
+        sound2 = Sound.get(self.s2)
         pairs = []
         if sound1:
             pairs = sound1.getContrasts(sound2)
