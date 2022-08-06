@@ -108,12 +108,18 @@ def add_pairs():
 @ admin_blueprint.route("/change", methods=["GET", "POST"])
 @roles_required('Admin')
 def change():
+
+    """ just for changing images """
     if request.method == "POST":
     
         if request.files:
             id = int(request.form.get("newwordid"))
-            Word.change(id, newword=request.form.get("newword"),
+            word = Word.change(id, newword=request.form.get("newword"),
                         newcue=request.form.get("newcue"), newimg=request.files["newimg"], newartist=request.form.get("newartist"))
+            #news = db.session.query(News).filter_by(word=word)
+            #if news:
+            #    refresh_session_news()
+            # But it only refreshes my own session news so no point
 
         return redirect(request.url)
 
