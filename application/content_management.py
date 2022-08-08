@@ -51,7 +51,8 @@ def Content(locale=None):
                 Ordene kan tilføjes til en samling med <i class = "fas fa-plus-circle" > \
                 </i> og fjernes med <i class ="fas fa-minus-circle"></i> \
                 Fra siden <i>samling</i> kan du tilføje de billeder, der mangler, dublere ord og generere en PDF-fil, \
-                som kan downloades og printes tosidet, så du får et billedmateriale med en bagside. </p>'
+                som kan downloades og printes tosidet, så du får et billedmateriale med en bagside. </p>\
+                <p>Hvis du har brug for flere ressourcer til børnelogopædi, flere ord eller idéer, f.eks. til hvordan man kan arbejde med minimale par, så vil jeg anbefale at tage et smut forbi <a href="https://www.minkusinemaria.dk/" target="_blank" title="Besøg Min Kusine Maria">www.minkusinemaria.dk</a> - her findes i øvrigt også en fin <a href="https://www.minkusinemaria.dk/2022/08/genvej-til-oppositions-intervention.html" target="_blank" title="Besøg Min Kusine Maria">guide<a/> til, hvordan man bruger siden her til at finde multiple oppositioner.</p>' 
         ],
 
         # Find contrasts
@@ -240,7 +241,8 @@ def Content(locale=None):
                 be used when a number of different sounds are all replaced by the same \
                 sounds. </p> <p> When you like a word use <i class = "fas fa-plus-circle" > \
                 </i> to add it to your collection. Use <i class ="fas fa-minus-circle"></i> \
-                to remove it again. </p>'
+                to remove it again. </p>\
+                <p>If you\'d like more resources for Danish child speech language therapy I recommend visiting <a href="https://www.minkusinemaria.dk/" target="_blank" title="Visit Min Kusine Maria">www.minkusinemaria.dk</a></p>'
         ],
 
         # Find contrasts
