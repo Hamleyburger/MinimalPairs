@@ -1,6 +1,10 @@
 // Styles for the admin page for problems
 
 .stats-content-section {
+
+    h5 {
+        margin-top: 30px;
+    }
     .pairheader {
         width: 110px;
     }
@@ -29,4 +33,29 @@
         }
     }
 
+    table {
+        padding: 20px;
+
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+    }
+
+    .accordion-item {
+        background-color: unset;
+        .accordion-button {
+            
+            background-color: $color-purp2;
+            &:not(.collapsed) {
+                color: unset;
+            }
+            &::after {
+                display: none;
+            }
+        }
+    }
+        
 }

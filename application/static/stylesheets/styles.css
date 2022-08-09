@@ -1155,6 +1155,10 @@ body footer a {
   font-size: 50px;
 }
 
+.stats-content-section h5 {
+  margin-top: 30px;
+}
+
 .stats-content-section .pairheader {
   width: 110px;
 }
@@ -1203,6 +1207,32 @@ body footer a {
 
 .stats-content-section .examples-col .pair-example .pwords {
   width: 100%;
+}
+
+.stats-content-section table {
+  padding: 20px;
+}
+
+.stats-content-section table th, .stats-content-section table td {
+  border: 1px solid black;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.stats-content-section .accordion-item {
+  background-color: unset;
+}
+
+.stats-content-section .accordion-item .accordion-button {
+  background-color: #995f8b;
+}
+
+.stats-content-section .accordion-item .accordion-button:not(.collapsed) {
+  color: unset;
+}
+
+.stats-content-section .accordion-item .accordion-button::after {
+  display: none;
 }
 
 /* Old, light yellow theme:

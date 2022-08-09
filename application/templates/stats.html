@@ -12,50 +12,176 @@
     <div class="stats-content-section">
         <h3>Senest søgte</h3>
         <div class="row">
-            <div class="col">
+            <div class="col-11 col-md-5">
                 <h5>Sidste tre timer</h5>
-                <ul>
+                {% if last_3h %}
+                <table>
+                    <tr>
+                        <th>Lyde</th>
+                        <th>Par</th>
+                        <th>Søgt</th>
+                        <th>Seneste</th>
+                    </tr>
                     {% for searched_pair in last_3h %}
-                    <li>
-                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
-                    </li>
+                    <tr>
+                        <td class="tds1">
+                            {{ searched_pair.s1 }} - 
+                            {{ searched_pair.s2 }}
+                        </td>
+                        <td>
+                            {{ searched_pair.existing_pairs }}
+                        </td>
+                        <td>
+                            {{ searched_pair.times_searched }}x
+                        </td>
+                        <td>
+                            {{ searched_pair.last_searched.strftime("%H:%M") }}
+                        </td>
+                    </tr>
                     {% endfor %}
-                </ul>
+                </table>
+                {% else %}
+                Intet
+                {% endif %}
             </div>
-            <div class="col">
+
+            <div class="col-11 col-md-5">
                 <h5>Sidste 24 timer</h5>
-                <ul>
+                {% if last_day %}
+                <table>
+                    <tr>
+                        <th>Lyde</th>
+                        <th>Par</th>
+                        <th>Søgt</th>
+                        <th>Seneste</th>
+                    </tr>
                     {% for searched_pair in last_day %}
-                    <li>
-                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
-                    </li>
+                    <tr>
+                        <td class="tds1">
+                            {{ searched_pair.s1 }} - 
+                            {{ searched_pair.s2 }}
+                        </td>
+                        <td>
+                            {{ searched_pair.existing_pairs }}
+                        </td>
+                        <td>
+                            {{ searched_pair.times_searched }}x
+                        </td>
+                        <td>
+                            {{ searched_pair.last_searched.strftime("%H:%M") }}
+                        </td>
+                    </tr>
                     {% endfor %}
-                </ul>
-            </div>
-            <div class="col">
-                <h5>Sidste uge</h5>
-                <ul>
-                    {% for searched_pair in last_week %}
-                    <li>
-                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
-                    </li>
-                    {% endfor %}
-
-                </ul>
-            </div>
-            <div class="col">
-                <h5>Sidste måned</h5>
-                <ul>
-                    {% for searched_pair in last_month %}
-                    <li>
-                        {{ searched_pair }} ({{ searched_pair.existing_pairs }}) 
-                    </li>
-                    {% endfor %}
-
-                </ul>
+                </table>
+                {% else %}
+                Intet
+                {% endif %}
             </div>
 
         </div>
+
+
+
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Uge
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-11 col-md-5">
+                                <h5>Sidste uge</h5>
+                                {% if last_week %}
+                                <table>
+                                    <tr>
+                                        <th>Lyde</th>
+                                        <th>Par</th>
+                                        <th>Søgt</th>
+                                        <th>Seneste</th>
+                                    </tr>
+                                    {% for searched_pair in last_week %}
+                                    <tr>
+                                        <td class="tds1">
+                                            {{ searched_pair.s1 }} - 
+                                            {{ searched_pair.s2 }}
+                                        </td>
+                                        <td>
+                                            {{ searched_pair.existing_pairs }}
+                                        </td>
+                                        <td>
+                                            {{ searched_pair.times_searched }}x
+                                        </td>
+                                        <td>
+                                            {{ searched_pair.last_searched.strftime("%a %d. %H:%M") }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                                {% else %}
+                                Intet
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Måned
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <h5>Sidste måned</h5>
+                            {% for search_pair_list in last_month %}
+                            <div class="col-11 col-md-6">
+                                {% if last_month %}
+                                <table>
+                                    <tr>
+                                        <th>Lyde</th>
+                                        <th>Par</th>
+                                        <th>Søgt</th>
+                                        <th>Seneste</th>
+                                    </tr>
+                                    {% for searched_pair in search_pair_list %}
+                                    <tr>
+                                        <td class="tds1">
+                                            {{ searched_pair.s1 }} - 
+                                            {{ searched_pair.s2 }}
+                                        </td>
+                                        <td>
+                                            {{ searched_pair.existing_pairs }}
+                                        </td>
+                                        <td>
+                                            {{ searched_pair.times_searched }}x
+                                        </td>
+                                        <td>
+                                            {{ searched_pair.last_searched.strftime("%d/%m") }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                </table>
+                                {% else %}
+                                Intet
+                                {% endif %}
+                            </div>
+                            {% endfor %} <!-- looping over 2d list of last month -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
         <h3>Mest populære</h3>
             {% for search, pairs in searches_pairs %}
                 <div class="row">

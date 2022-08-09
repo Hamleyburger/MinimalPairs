@@ -398,9 +398,13 @@ def stats():
             elif searched_pair.last_searched > month_ago:
                 last_month.append(searched_pair)
         
+    last_month = [last_month[i:i+40] for i in range(0, len(last_month), 40)]
+    print(last_month)
+
     
     most_popular = sorted(searched_pairs, key=lambda pair: pair.times_searched, reverse=True)[0:10]
     
+
 
     searches_pairs = []
     for search in most_popular:

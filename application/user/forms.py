@@ -25,6 +25,7 @@ from flask import g
 def is_valid_symbol(form, field):
     """ Checks the input symbol. Previous check """
     field.data = field.data.lower()
+    field.data = field.data.replace(" ", "")
 
     # Check that dash and wildcard have been used properly
     if ("-" in field.data) and (len(field.data) > 1):
