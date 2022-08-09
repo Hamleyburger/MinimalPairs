@@ -47,11 +47,11 @@
     <table id="changetable" class="table table-striped table-bordered" style="width:100%;">
         <thead>
             <tr>
+                <th>Image</th>
                 <th>Spelling</th>
                 <th>Cue</th>
                 <th>Artist</th>
-                <th>Image</th>
-                <th></th>
+                <th>Change</th>
             </tr>
         </thead>
         <tbody>
@@ -59,14 +59,15 @@
 
             <tr>
                 <!-- I'm using jinja to pass the id of td 0 to the function for onclick in td 3 -->
-                <td id="word{{ entry.id }}">{{ entry.word }}</td>
-                <td id="cue{{ entry.id }}">{{ entry.cue }}</td>
-                <td id="artist{{ entry.id }}">{{ entry.image.artist }}</td>
                 <td id="image{{ entry.id }}">
                     {{ entry.image.name }}
                     <div><img src="{{ url_for('static', filename='images/thumbnails/' + entry.image.name)}}"
-                            class="img-thumbnail img-mpexample" /></div>
+                        class="img-thumbnail img-mpexample" />
+                    </div>
                 </td>
+                <td id="word{{ entry.id }}">{{ entry.word }}</td>
+                <td id="cue{{ entry.id }}">{{ entry.cue }}</td>
+                <td id="artist{{ entry.id }}">{{ entry.image.artist }}</td>
                 <td style="text-align: center;">
                     <button class="lil-buttonon"
                         onclick='openForm(this, {{ entry.id | tojson }}, {{ entry.word | tojson }}, {{ entry.cue | tojson }}, {{ entry.image.name | tojson }},  {{ entry.image.artist | tojson }})'>
@@ -84,10 +85,10 @@
         </tbody>
         <tfoot>
             <tr>
+                <th>Image</th>
                 <th>Spelling</th>
                 <th>Cue</th>
                 <th>Artist</th>
-                <th>Image</th>
                 <th>Change</th>
             </tr>
         </tfoot>
@@ -101,16 +102,16 @@
         // Necessary imports: jquery, DataTables, DataTables plugin:
         // "Responsive" - see Layout.hmtl
         $(document).ready(function () {
-            $('#changetable').DataTable();
-        });
-        $('#changetable').dataTable({
-            "columns": [
-                null,
-                null,
-                null,
-                { "width": "17%" }
-            ],
-            responsive: true
+            $('#changetable').DataTable({
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "width": "17%" },
+                ],
+                responsive: true
+            });
         });
 
         // Popup form onclick generation -->
