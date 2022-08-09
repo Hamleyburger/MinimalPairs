@@ -1,8 +1,12 @@
 // Styles for the admin page for problems
 
 .stats-content-section {
-
-    h5 {
+    .row {
+        margin-bottom: 40px;
+        justify-content: space-around;
+        align-items: center;
+    }
+    h5, h3 {
         margin-top: 30px;
     }
     .pairheader {
@@ -35,6 +39,7 @@
 
     table {
         padding: 20px;
+        width: 100%;
 
         th, td {
             border: 1px solid black;

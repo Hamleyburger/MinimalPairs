@@ -1155,7 +1155,16 @@ body footer a {
   font-size: 50px;
 }
 
-.stats-content-section h5 {
+.stats-content-section .row {
+  margin-bottom: 40px;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.stats-content-section h5, .stats-content-section h3 {
   margin-top: 30px;
 }
 
@@ -1211,6 +1220,7 @@ body footer a {
 
 .stats-content-section table {
   padding: 20px;
+  width: 100%;
 }
 
 .stats-content-section table th, .stats-content-section table td {
