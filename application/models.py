@@ -1,3 +1,4 @@
+from datetime import datetime
 from PIL.Image import new
 import PIL.Image as pil_image
 from application.exceptions import invalidImageError
@@ -715,16 +716,6 @@ class SearchedPair(db.Model):
         return pairs
     
 
-    def get_noimage_pairs(self):
-        returnpairs = []
-        for pair in self.getPairs():
-            if pair.has_images() < 2:
-                returnpairs.append(pair)
-            
-        return returnpairs
-
-
-
     @classmethod
     def add(cls, sound1, sound2, existing_pairs: int = None):
         """ Adds new searched pair to SearchedPairs. Make sure provided sounds are sounds or wildcards. """
@@ -735,8 +726,12 @@ class SearchedPair(db.Model):
         searched_pair = cls.query.filter(
             or_(clause1, clause2)).first()
         if searched_pair:
+            print("searched pair exists. Adding new meta")
             searched_pair.times_searched += 1
+            searched_pair.last_searched = func.current_timestamp()
         else:
+            print("searched is new. Adding new pair")
+
             searched_pair = cls(s1=sound1, s2=sound2, times_searched=1)
             db.session.add(searched_pair)
         if existing_pairs:
