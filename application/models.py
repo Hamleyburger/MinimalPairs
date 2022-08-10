@@ -14,6 +14,7 @@ from .admin.filehelpers import store_image, ensureThumbnail
 from ipapy import is_valid_ipa
 from werkzeug.utils import secure_filename
 import os
+import time
 
 
 word_grouping = db.Table('groupwords',
@@ -31,13 +32,21 @@ group_sounds = db.Table('groupsounds',
                         db.UniqueConstraint('group_id', 'sound_id')
                         )
 
-
 group_pairs = db.Table('grouppairs',
                        db.Column('group_id', db.Integer,
                                  db.ForeignKey('groups.id')),
                        db.Column('pair_id', db.Integer,
                                  db.ForeignKey('pairs.id'))
                        )
+
+sound_pairs = db.Table('soundpairs',
+                        db.Model.metadata,
+                       db.Column('sound_id', db.Integer,
+                                 db.ForeignKey('sounds.id'), primary_key=True),
+                       db.Column('pair_id', db.Integer,
+                                 db.ForeignKey('pairs.id'), primary_key=True)
+                       )
+
 
 
 class Sound(db.Model):
@@ -52,6 +61,12 @@ class Sound(db.Model):
         "Group",
         secondary=group_sounds,
         back_populates="sounds", lazy="select")
+    
+    pairs = db.relationship(
+        "Pair",
+        secondary=sound_pairs, backref="sounds")
+
+
     db.UniqueConstraint('sound')
 
 
@@ -197,9 +212,10 @@ class Sound(db.Model):
 
 
     def getContrasts(self, sound2):
-        """ return a list of pairs\n
+        """ Gets all pairs with self sound and sound2, returns a list of pairs\n
         The list is sorted so all word1 have the same sound.\n
         If no such pair exists list will be empty """
+        start_time = time.time()
 
         sound1 = self
 
@@ -223,6 +239,7 @@ class Sound(db.Model):
         else:
             print("This pair didn't exist. Suggestions?")
 
+        print("getContrasts for {}-{} took {}\n".format(self, sound2, time.time() - start_time))
         return contrasts
 
     def order_pairs_by_sound(self, pairs):
@@ -632,6 +649,12 @@ class Pair(db.Model):
         secondary=group_pairs,
         back_populates="pairs")
 
+    # sounds = db.relationship(
+    #     "Sound",
+    #     secondary=sound_pairs,
+    #     back_populates="pairs")
+
+
     def __str__(self):
         string = "{}: {} / {} - ({} vs. {})".format(self.id, self.w1.word,
                                                     self.w2.word, self.s1.sound, self.s2.sound)
@@ -707,7 +730,7 @@ class SearchedPair(db.Model):
         return "Search: [{} {}]".format(self.s1, self.s2)
 
     def getPairs(self):
-        """ This might just be the same as get contrasts. Returns the number of existing pairs with this sound combination. Haven't checked if this works. """
+        """ Gets all pairs of a searched pair (sound combination) """
         sound1 = Sound.get(self.s1)
         sound2 = Sound.get(self.s2)
         pairs = []
@@ -906,8 +929,10 @@ class Word(db.Model):
         """ word2 is the word to pair with. Sound1 is own sound. Sound2 is opposite sound\n
         Always put the longest cluster combinations as possible, so they can be reduced """
         
-        sound1 = str(Sound.get(sound1).sound)
-        sound2 = str(Sound.get(sound2).sound)
+        s1 = Sound.get(sound1)
+        s2 = Sound.get(sound2)
+        sound1 = s1.sound
+        sound2 = s2.sound
         print("attempting to pair {} {}".format(sound1, sound2))
 
         db.session.flush()
@@ -922,9 +947,12 @@ class Word(db.Model):
             return
 
         newPair = Pair(w1=self, w2=word2,
-                       s1=Sound.get(soundString=sound1), s2=Sound.get(soundString=sound2), isinitial=initial)
+                       s1=s1, s2=s2, isinitial=initial)
+        newPair.sounds = [s1, s2]
+
         db.session.add(newPair)
         db.session.commit()
+
 
         pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[], initial=initial)
 

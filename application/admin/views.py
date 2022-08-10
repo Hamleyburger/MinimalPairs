@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
 import os
 from sqlalchemy import desc
+import time
 
 admin_blueprint = Blueprint(
     "admin_blueprint", __name__, url_prefix="/admin", static_folder="static", template_folder="templates")
@@ -148,6 +149,7 @@ def change_pairs():
                     s2 = form.s2.data
                     word1 = pair.w1
                     word2 = pair.w2
+                    
 
                     db.session.delete(pair)
                     db.session.commit()
@@ -266,21 +268,46 @@ def add_image():
 @roles_required('Admin')
 # Receives a word id and returns words in a way so client can see which pairs already exist
 def problems():
+
+    print("Querying group problems")
+    start_time = time.time()
     group_problems = Group.get_group_problems()
+    print("took {} seconds\n".format(time.time() - start_time))
+
     word_problems = []
     pair_init_problems = []
     pair_samesound_problems = []
     pair_sound_validity_problems = []
 
+    # Clean pair sounds
+    print("Checking pair sounds")
+    start_time = time.time()
+
+    pairs = db.session.query(Pair).all()
+    for p in pairs:
+        if p.s1 not in p.sounds:
+            p.sounds.append(p.s1)
+        if p.s2 not in p.sounds:
+            p.sounds.append(p.s2)
+        if not p.sounds:
+            print("pair has no sounds! {}".format(p))
+    print("took {} seconds\n".format(time.time() - start_time))
+
     # Remove bad sounds
+    print("Removing any bad sounds that might have come into database")
+    start_time = time.time()
     sounds = Sound.query.all()
     for sound in sounds:
         try:
             Sound.isvalidsound(sound.sound)
         except:
             print("Sound not valid: {}".format(sound.sound))
+            print("Found bad sound: {}".format(sound))
             db.session.delete(sound)
+    print("took {} seconds\n".format(time.time() - start_time))
 
+    print("Checking pairs for bad sounds")
+    start_time = time.time()
     pairs = Pair.query.all()
     for pair in pairs:
         try:
@@ -290,6 +317,9 @@ def problems():
             print("not valid pair sounds: {}".format(pair))
             pair_sound_validity_problems.append(pair)
 
+    print("took {} seconds\n".format(time.time() - start_time))
+    print("Checking searched_pairs for bad sounds")
+    start_time = time.time()
     pairs = SearchedPair.query.all()
     for searched_pair in pairs:
         try:
@@ -301,10 +331,16 @@ def problems():
 
     db.session.commit()
 
+    print("took {} seconds\n".format(time.time() - start_time))
+    print("Checking for words with no pairs")
+    start_time = time.time()
     for word in db.session.query(Word).all():
         if len(word.allPartners()) < 1:
             word_problems.append(word)
     
+    print("took {} seconds\n".format(time.time() - start_time))
+    print("Checking for pairs with undefined initial")
+    start_time = time.time()
     uninit_pairs = db.session.query(Pair).filter_by(isinitial=None).all()
     pair_init_problems = []
     assumed_noninitial = []
@@ -330,11 +366,15 @@ def problems():
                 unknown.append(p)
     pair_init_problems = likely_initial + unknown
 
+    print("took {} seconds\n".format(time.time() - start_time))
+    print("Checking if any words have different pairs with same sounds")
+    start_time = time.time()
     allwords = Word.query.all()
     for word in allwords:
         samesound_pairs = word.get_samesound_pairs()
         if samesound_pairs:
             pair_samesound_problems.extend(samesound_pairs)
+    print("took {} seconds\n".format(time.time() - start_time))
 
 
             

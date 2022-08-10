@@ -1,28 +1,22 @@
-from math import prod
-from timeit import repeat
-from flask import g, Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, make_response, g, abort, send_from_directory
+from flask import g, Blueprint, session, request, redirect, render_template, jsonify, url_for, g, abort
 from flask_login import current_user
 import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
 from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, stripEmpty, ensure_locale, custom_images_in_collection, count_as_used, order_MOsets_by_image, refresh_session_news
-import random
-from application.models import PermaImage, Word, Group, Sound, SearchedPair
-from .models import User, Userimage, Donation
+from application.models import Word, Sound, SearchedPair
+from .models import Userimage
 from ..admin.models import News
 from application import db, app, mail
 from .forms import SearchSounds, SearchMOs, toPDF_wrap, contactForm
 from flask_weasyprint import HTML, CSS, render_pdf
-from application.content_management import da_content, en_content, Content
+from application.content_management import Content
 from application.admin.filehelpers import validate_image
-import os
-from werkzeug.utils import secure_filename
-import sentry_sdk
 import stripe
-from flask_mail import Mail, Message
-import requests
+from flask_mail import Message
 import datetime
+import time
 
 
 
@@ -87,6 +81,7 @@ def index(locale):
 
     """ cute front page """
 
+    db.session.commit()
     return render_template("index.html")
 
 
@@ -137,6 +132,8 @@ def wordinfo(word_id, locale):
 @ensure_locale
 def contrasts(locale):
 
+    start_time = time.time()
+
     # remove Pair from imports?
     # Get sounds with POST
 
@@ -156,6 +153,7 @@ def contrasts(locale):
     searched_sounds_list = ["", "", "", "", ""] # For user feedback on front end
 
     if request.method == "POST":
+        
         if (request.form["searchBtn"] == "pair"):
             searched = True
             if pairSearchForm.validate_on_submit():
@@ -185,6 +183,9 @@ def contrasts(locale):
                     renderedids.extend(idlist)
                     if pairCollected(pair):
                         collectedPairs.extend([pair.id])
+                
+                print("Whole post to contrasts() pair function for {}-{} took {}\n".format(sound1_str, sound2_str, time.time() - start_time))
+
 
             else:
                 print("error in pair form: ")
