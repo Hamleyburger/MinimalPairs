@@ -171,7 +171,7 @@ def contrasts(locale):
 
                 # pairs will be a Pagination object so we get page
                 page = request.args.get("page", 1, type=int)
-                pairs = sound1_object.getContrasts(sound2_object, page=page)
+                pairs = sound1_object.getContrasts(sound2_object, page=page, per_page=50)
 
                 # searched_pairs only triggers for non admin users
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):

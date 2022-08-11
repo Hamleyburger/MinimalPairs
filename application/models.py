@@ -212,7 +212,7 @@ class Sound(db.Model):
         pass
 
 
-    def getContrasts(self, sound2, page=None):
+    def getContrasts(self, sound2, page=None, per_page=None):
         """ Gets all pairs with self sound and sound2, returns a list of pairs\n
         The list is sorted so all word1 have the same sound.\n
         If no such pair exists list will be empty """
@@ -228,10 +228,10 @@ class Sound(db.Model):
             clauseB = and_(Pair.s1 == Sound.get(soundString=sound2),
                            Pair.s2 == sound1)
             contrastsQuery = db.session.query(Pair).filter(or_(
-                clauseA, clauseB)).order_by(Pair.img_count.desc()).paginate(per_page=50, page=page)
+                clauseA, clauseB)).order_by(Pair.img_count.desc()).paginate(per_page=per_page, page=page)
 
         else:
-            contrastsQuery = Pair.query.filter(Pair.sounds.any(id=self.id)).order_by(Pair.img_count.desc()).paginate(per_page=50, page=page)
+            contrastsQuery = Pair.query.filter(Pair.sounds.any(id=self.id)).order_by(Pair.img_count.desc()).paginate(per_page=per_page, page=page)
 
         # Order the items returned from query, add to instances of Contrast and append to contrasts list
         sound_ordered_contrasts = []
@@ -739,7 +739,7 @@ class SearchedPair(db.Model):
         sound2 = Sound.get(self.s2)
         pairs = []
         if sound1:
-            pairs = sound1.getContrasts(sound2)
+            pairs = sound1.getContrasts(sound2).items
         return pairs
     
 
