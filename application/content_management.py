@@ -68,10 +68,10 @@ def Content(locale=None):
         "exactmatch": "Resultater med alle lyde",
         "partialmatch": "Alternative forslag",
         "nomatches": "Ingen resultater",
-        "show_first_50": "Viser de første 50 resultater",
+        "show_first_50": "Viser de første 50 par",
         "show_results": [
             "Fandt",
-            "resultater i alt"
+            "par i alt"
         ],
 
         "help_soundsearch_cue": "Indtast mållyde",
@@ -265,10 +265,10 @@ def Content(locale=None):
         "exactmatch": "Exact matches",
         "partialmatch": "Partial matches",
         "nomatches": "No results",
-        "show_first_50": "Showing the first 50 results",
+        "show_first_50": "Showing the first 50 pairs",
         "show_results": [
             "Found",
-            "results"
+            "pairs in total."
         ],
 
 
