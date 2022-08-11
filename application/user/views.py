@@ -175,7 +175,7 @@ def contrasts(locale):
 
                 # searched_pairs only triggers for non admin users
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):
-                    SearchedPair.add(sound1_str, sound2_str, len(pairs))
+                    SearchedPair.add(sound1_str, sound2_str, len(pairs.items))
 
 
                 # Make a lists of ids rendered to determine if they're in collection on the front end
