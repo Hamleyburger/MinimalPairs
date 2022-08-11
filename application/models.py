@@ -218,6 +218,7 @@ class Sound(db.Model):
         start_time = time.time()
 
         sound1 = self
+        contrastsQuery = []
 
         if sound2.sound != "*":
             # Make a query for populating the contrasts to be returned in the list
@@ -225,12 +226,11 @@ class Sound(db.Model):
                            Pair.s2 == Sound.get(soundString=sound2))
             clauseB = and_(Pair.s1 == Sound.get(soundString=sound2),
                            Pair.s2 == sound1)
-        else:
-            clauseA = Pair.s1 == sound1
-            clauseB = Pair.s2 == sound1
+            contrastsQuery = db.session.query(Pair).filter(or_(
+                clauseA, clauseB)).all()
 
-        contrastsQuery = db.session.query(Pair).filter(or_(
-            clauseA, clauseB)).all()
+        else:
+            contrastsQuery = Pair.query.filter(Pair.sounds.any(id=self.id)).all()
 
         # Order the items returned from query, add to instances of Contrast and append to contrasts list
         contrasts = []
@@ -241,6 +241,7 @@ class Sound(db.Model):
 
         print("getContrasts for {}-{} took {}\n".format(self, sound2, time.time() - start_time))
         return contrasts
+
 
     def order_pairs_by_sound(self, pairs):
         """ (Sound) Sorts a given list of pairs so sound1 is self. Throws out pairs without sound1==self\n
