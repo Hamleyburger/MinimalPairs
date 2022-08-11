@@ -238,12 +238,18 @@
                 [<span class="ipa-font">{{ searched_sounds_list[0] }}</span>] vs [<span class="ipa-font">{{ searched_sounds_list[1] }}</span>]
 
             </p>
+            <p class="result-count">
+                {% if pairs.total > 50 %}
+                {{ show_first_50 }}
+                {% else %}
+                {{ show_results[0] }} {{ pairs.total }} {{ show_results[1] }}
+                {% endif %}
+            </p>
         </div>
     </div>
     <!-- For loop "pairs" for iterating over pairs -->
 
-
-    {% for pair in pairs %}
+    {% for pair in pairs.items %}
 
 
     <div class="row justify-content-center wordgroup {% if pair.cluster_length() %}iscluster{% endif %}" data-ids='[{{ pair.w1.id }}, {{ pair.w2.id }}]'>

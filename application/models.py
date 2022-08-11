@@ -97,6 +97,7 @@ class Sound(db.Model):
             newSound = newSound.replace("sp", "sb")
             newSound = newSound.replace("st", "sd")
             newSound = newSound.replace("sk", "sg")
+            newSound = newSound.replace("sj", "ɕ")
 
             if newSound != soundString:
                 print("fixSoundTyping fixed {} to {}".format(soundString, newSound))
@@ -211,7 +212,7 @@ class Sound(db.Model):
         pass
 
 
-    def getContrasts(self, sound2):
+    def getContrasts(self, sound2, page=None):
         """ Gets all pairs with self sound and sound2, returns a list of pairs\n
         The list is sorted so all word1 have the same sound.\n
         If no such pair exists list will be empty """
@@ -227,17 +228,22 @@ class Sound(db.Model):
             clauseB = and_(Pair.s1 == Sound.get(soundString=sound2),
                            Pair.s2 == sound1)
             contrastsQuery = db.session.query(Pair).filter(or_(
-                clauseA, clauseB)).all()
+                clauseA, clauseB)).order_by(Pair.img_count.desc()).paginate(per_page=50, page=page)
 
         else:
-            contrastsQuery = Pair.query.filter(Pair.sounds.any(id=self.id)).all()
+            contrastsQuery = Pair.query.filter(Pair.sounds.any(id=self.id)).order_by(Pair.img_count.desc()).paginate(per_page=50, page=page)
 
         # Order the items returned from query, add to instances of Contrast and append to contrasts list
-        contrasts = []
+        sound_ordered_contrasts = []
         if contrastsQuery:
-            contrasts = sound1.order_pairs_by_sound(contrastsQuery)
-        else:
-            print("This pair didn't exist. Suggestions?")
+            sound_ordered_contrasts = sound1.order_pairs_by_sound(contrastsQuery.items)
+
+        contrasts = contrastsQuery
+
+        if len(contrasts.items) == len(sound_ordered_contrasts):
+        # Should always be the same but just to avoid crash
+            for i, pitem in enumerate(contrasts.items):
+                contrasts.items[i] = sound_ordered_contrasts[i]
 
         print("getContrasts for {}-{} took {}\n".format(self, sound2, time.time() - start_time))
         return contrasts
@@ -256,7 +262,7 @@ class Sound(db.Model):
                 pass
             elif pair.s2 is self:
                 pair = Pair(id=pair.id, s1=pair.s2,
-                            s2=pair.s1, w1=pair.w2, w2=pair.w1, isinitial=pair.isinitial)
+                            s2=pair.s1, w1=pair.w2, w2=pair.w1, isinitial=pair.isinitial, img_count=pair.img_count)
             else:
                 continue
             swappedPairs.append(pair)

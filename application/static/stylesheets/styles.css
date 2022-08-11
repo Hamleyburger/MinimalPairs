@@ -1339,7 +1339,7 @@ $color-yel3: #fffae9; // Næsten hvid
 }
 
 .titlebox .title-text {
-  font-size: 1.7rem;
+  font-size: 25px;
   font-weight: 700;
   text-align: center;
   display: -webkit-box;
@@ -1361,6 +1361,10 @@ $color-yel3: #fffae9; // Næsten hvid
 .titlebox .title-text .feedback-text {
   width: 600px;
   max-width: 100%;
+  font-size: 20px;
+}
+
+.titlebox .title-text .result-count {
   font-size: 20px;
 }
 

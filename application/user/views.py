@@ -169,17 +169,17 @@ def contrasts(locale):
                 searched_sounds_list[0] = sound1_object.sound
                 searched_sounds_list[1] = sound2_object.sound
 
-                pairs = sound1_object.getContrasts(sound2_object)
+                # pairs will be a Pagination object so we get page
+                page = request.args.get("page", 1, type=int)
+                pairs = sound1_object.getContrasts(sound2_object, page=page)
 
                 # searched_pairs only triggers for non admin users
                 if not (current_user.is_authenticated and current_user.has_role("Admin")):
                     SearchedPair.add(sound1_str, sound2_str, len(pairs))
 
-                # Sort pair list so pairs with images come on top
-                pairs = sorted(pairs, key=lambda item : item.has_images(), reverse=True)
 
                 # Make a lists of ids rendered to determine if they're in collection on the front end
-                for pair in pairs:
+                for pair in pairs.items:
                     idlist = [pair.w1.id, pair.w2.id]
                     renderedids.extend(idlist)
                     if pairCollected(pair):

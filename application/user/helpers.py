@@ -267,7 +267,8 @@ def order_MOsets_by_image(MOsets):
     for MOset in MOsets:
         MOset_has_image = False
         for pair in MOset:
-            if pair.has_images():
+            print(pair.img_count)
+            if pair.img_count > 0:
                 MOset_has_image = True
         if MOset_has_image:
             sets_with_images.append(MOset)
