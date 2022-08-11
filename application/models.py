@@ -629,6 +629,7 @@ class Pair(db.Model):
     partner_sound_id = db.Column(
         db.Integer, db.ForeignKey('sounds.id'), nullable=False)
     isinitial = db.Column(db.Boolean(), nullable=True)
+    img_count = db.Column(db.Integer)
 
     # These sounds should be replaced
     word_sound = db.Column(db.String())

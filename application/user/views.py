@@ -20,6 +20,7 @@ import time
 
 
 
+
 user_blueprint = Blueprint("user_blueprint", __name__,
                            static_folder="static", template_folder="templates")
 
