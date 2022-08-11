@@ -269,6 +269,15 @@ def add_image():
 # Receives a word id and returns words in a way so client can see which pairs already exist
 def problems():
 
+    print("Updating pair image counts")
+    start_time = time.time()
+    allps = Pair.query.all()
+    for p in allps:
+        p.img_count = p.has_images()
+    db.session.commit()
+    print("took {} seconds\n".format(time.time() - start_time))
+
+
     print("Querying group problems")
     start_time = time.time()
     group_problems = Group.get_group_problems()

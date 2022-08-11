@@ -631,10 +631,6 @@ class Pair(db.Model):
     isinitial = db.Column(db.Boolean(), nullable=True)
     img_count = db.Column(db.Integer)
 
-    # These sounds should be replaced
-    word_sound = db.Column(db.String())
-    partner_sound = db.Column(db.String())
-
     # Each pair has a word 1 (word) and a word 2 (partner)
     w1 = db.relationship("Word", primaryjoin="Pair.word_id==Word.id")
     w2 = db.relationship("Word", primaryjoin="Pair.partner_id==Word.id")
@@ -914,12 +910,17 @@ class Word(db.Model):
                 print("\n\n*********\n\nold image is: {}".format(word.image))
                 image = Image.store(newimg)  # return appropriate image object
                 word.image = image
+                # Update this word's pairs' image counts:
+                wordpairs = word.getPairs()
+                for p in wordpairs:
+                    p.img_count = p.has_images()
             except Exception as e:
                 print(e)
                 flash(e, "danger")
 
         if newartist:
             word.image.artist = newartist
+
 
         db.session.commit()
 
@@ -952,8 +953,12 @@ class Word(db.Model):
                        s1=s1, s2=s2, isinitial=initial)
         newPair.sounds = [s1, s2]
 
+        newPair.img_count = newPair.has_images()
+
         db.session.add(newPair)
         db.session.commit()
+
+        print("added a new pair which has {} images".format(newPair.img_count))
 
 
         pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[], initial=initial)
