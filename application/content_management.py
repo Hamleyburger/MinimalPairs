@@ -134,6 +134,8 @@ def Content(locale=None):
         "step1_txt": "Vælg design",
         "step2_txt": "Arranger rækkefølge",
         "step3_txt": "Generer PDF",
+        "step2_mobile_alert": "Det er desværre ikke muligt at ændre rækkefølge på mobile enheder.",
+        "step2_distribute_words": "Fordel ordene i lister på ",
 
         # Collection - board game themes:
         "board_game_info": [
@@ -328,6 +330,8 @@ def Content(locale=None):
         "step1_txt": "Select a theme",
         "step2_txt": "Order words",
         "step3_txt": "Generate PDF",
+        "step2_mobile_alert": "Unfortunately it is not possible to change the order of words on mobile devices.",
+        "step2_distribute_words": "Distribute the words in lists of ",
 
 
         # Collection - board game themes:

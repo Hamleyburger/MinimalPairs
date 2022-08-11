@@ -327,6 +327,10 @@ function initialize_sortable(game) {
     // For every list (fx lottery plate) add a new sortable with class connectedSortable)
     $("#step-2-sortable_wrapper").empty();
     $("#list_size").text(game.list_size);
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+        // true for mobile device
+        $(".mobile-alert").show();
+    }
     if (game.listcount === 1) {
         $(".sortable-feedback").hide();
     }

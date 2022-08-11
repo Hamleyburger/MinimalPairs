@@ -2176,6 +2176,11 @@ $color-yel3: #fffae9; // Næsten hvid
   color: #e98289;
 }
 
+.boardgame-wizard-modal .mobile-alert {
+  text-align: center;
+  color: #ab002b;
+}
+
 .checkoutcontainer .checkoutrow {
   display: -webkit-box;
   display: -ms-flexbox;
