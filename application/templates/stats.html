@@ -15,6 +15,7 @@
             <div class="col-11 col-md-5">
                 <h5>Sidste tre timer</h5>
                 {% if last_3h %}
+                there is last 3h
                 <table>
                     <tr>
                         <th>Lyde</th>
@@ -35,7 +36,7 @@
                             {{ searched_pair.times_searched }}x
                         </td>
                         <td>
-                            {{ searched_pair.last_searched.strftime("%H:%M") }}
+                            {{ searched_pair.last_searched | datetime_format(format="%H:%M") }}
                         </td>
                     </tr>
                     {% endfor %}
@@ -68,7 +69,7 @@
                             {{ searched_pair.times_searched }}x
                         </td>
                         <td>
-                            {{ searched_pair.last_searched.strftime("%H:%M") }}
+                            {{ searched_pair.last_searched | datetime_format(format="%H:%M") }}
                         </td>
                     </tr>
                     {% endfor %}
@@ -115,7 +116,7 @@
                                             {{ searched_pair.times_searched }}x
                                         </td>
                                         <td>
-                                            {{ searched_pair.last_searched.strftime("%a %d. %H:%M") }}
+                                            {{ searched_pair.last_searched | datetime_format(format="%a %d. %H:%M") }}
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -161,7 +162,7 @@
                                             {{ searched_pair.times_searched }}x
                                         </td>
                                         <td>
-                                            {{ searched_pair.last_searched.strftime("%d/%m") }}
+                                            {{ searched_pair.last_searched | datetime_format(format="%d/%m") }}
                                         </td>
                                     </tr>
                                     {% endfor %}

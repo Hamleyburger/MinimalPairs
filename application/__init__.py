@@ -14,6 +14,7 @@ from flask_migrate import Migrate
 import stripe
 from flask_mail import Mail
 from flask_babelex import Babel
+import pytz
 
 
 
@@ -42,6 +43,15 @@ sentry_sdk.init(
 # Configure application
 app = Flask(__name__)
 app.jinja_env.add_extension('jinja2.ext.do')
+def datetime_format(datetime, format):
+    #return datetime.strftime(format)
+        # convert time zone and format time
+    utc = pytz.timezone('UTC')
+    tz_aware_dt = utc.localize(datetime)
+    tz = pytz.timezone('Europe/Copenhagen')
+    local_dt = tz_aware_dt.astimezone(tz)
+    return local_dt.strftime(format)
+app.jinja_env.filters["datetime_format"] = datetime_format
 
 
 # All configs are taken from object in config.py

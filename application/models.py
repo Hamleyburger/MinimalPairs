@@ -245,7 +245,7 @@ class Sound(db.Model):
             for i, pitem in enumerate(contrasts.items):
                 contrasts.items[i] = sound_ordered_contrasts[i]
 
-        print("getContrasts for {}-{} took {}\n".format(self, sound2, time.time() - start_time))
+        #print("getContrasts for {}-{} took {}\n".format(self, sound2, time.time() - start_time))
         return contrasts
 
 
@@ -758,8 +758,9 @@ class SearchedPair(db.Model):
             searched_pair.last_searched = func.current_timestamp()
         else:
             print("searched is new. Adding new pair")
-
-            searched_pair = cls(s1=sound1, s2=sound2, times_searched=1)
+            s1 = Sound.get(s1)
+            s2 = Sound.get(s2)
+            searched_pair = cls(s1=s1, s2=s2, times_searched=1)
             db.session.add(searched_pair)
         if existing_pairs:
             searched_pair.existing_pairs = existing_pairs

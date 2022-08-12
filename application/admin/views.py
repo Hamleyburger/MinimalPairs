@@ -409,10 +409,12 @@ def stats():
     searched_pairs = SearchedPair.query.order_by(desc(SearchedPair.last_searched)).all()
 
     now = datetime.now()
+    print("now is now: {}".format(now))
     month_ago = now - timedelta(days=30)
     week_ago = now - timedelta(days=7)
     day_ago = now - timedelta(hours=24)
     last_3_hours = now - timedelta(hours=3)
+    print("3h ago is {}".format(last_3_hours))
 
     last_week = []
     last_month = []
@@ -424,6 +426,17 @@ def stats():
 
 
     for searched_pair in searched_pairs:
+
+        # Ensure that only allowed sounds are stored in searchedpairs
+        # soundobject1 = Sound.get(searched_pair.s1)
+        # if searched_pair.s1 != soundobject1.sound:
+        #     print("found bad sound in searchedpairs")
+        #     searched_pair.s1 = soundobject1.sound
+        # soundobject2 = Sound.get(searched_pair.s2)
+        # if searched_pair.s2 != soundobject2.sound:
+        #     print("found bad sound in searchedpairs")
+        #     searched_pair.s2 = soundobject2.sound
+            
 
         pairs = searched_pair.getPairs()
         if not searched_pair.existing_pairs:
@@ -446,9 +459,10 @@ def stats():
                 last_week.append(searched_pair)
             elif searched_pair.last_searched > month_ago:
                 last_month.append(searched_pair)
-        
+    
+    db.session.commit()
+
     last_month = [last_month[i:i+40] for i in range(0, len(last_month), 40)]
-    print(last_month)
 
     
     most_popular = sorted(searched_pairs, key=lambda pair: pair.times_searched, reverse=True)[0:10]
