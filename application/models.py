@@ -758,9 +758,9 @@ class SearchedPair(db.Model):
             searched_pair.last_searched = func.current_timestamp()
         else:
             print("searched is new. Adding new pair")
-            s1 = Sound.get(s1)
-            s2 = Sound.get(s2)
-            searched_pair = cls(s1=s1, s2=s2, times_searched=1)
+            s1 = Sound.get(sound1)
+            s2 = Sound.get(sound2)
+            searched_pair = cls(s1=s1.sound, s2=s2.sound, times_searched=1)
             db.session.add(searched_pair)
         if existing_pairs:
             searched_pair.existing_pairs = existing_pairs

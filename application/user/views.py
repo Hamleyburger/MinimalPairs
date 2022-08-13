@@ -4,7 +4,7 @@ import json
 from user_agents import parse
 
 from pyphen import LANGUAGES
-from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, stripEmpty, ensure_locale, custom_images_in_collection, count_as_used, order_MOsets_by_image, refresh_session_news
+from .helpers import getCollection, get_word_collection, json_to_ints, manageCollection, pairCollected, stripEmpty, ensure_locale, count_as_used, order_MOsets_by_image, refresh_session_news
 from application.models import Word, Sound, SearchedPair
 from .models import Userimage
 from ..admin.models import News
@@ -31,6 +31,7 @@ def before_request_callback():
 
     locale = session.get("locale")
     g.locale = session.get("locale")
+
     if not locale:
         print("\nNo locale in session. Getting locale from user agent.\n")
         print(request.headers.get('User-Agent'))
@@ -72,7 +73,9 @@ def before_request_callback():
 
 @app.after_request
 def after_request_callback(response):
-
+    # request_time = session.get("before_request_time")
+    # if request_time:
+    #     print("Request took {} s".format(time.time() - request_time))
     return response
 
 
@@ -133,14 +136,15 @@ def wordinfo(word_id, locale):
 @ensure_locale
 def contrasts(locale):
 
-    start_time = time.time()
-
-    # remove Pair from imports?
-    # Get sounds with POST
 
     pairSearchForm = SearchSounds()
     MOSearchForm = SearchMOs()
 
+    # Pagination check variables
+    pairSearch = False # Only pairs are relevant for pagination
+    oldSearch = False
+
+    # Search and display variables
     pairs = []  # Pairs resulting from search
     MOsets = []  # MOs exact matches
     MOsets2 = []  # MOs partial matches
@@ -153,39 +157,35 @@ def contrasts(locale):
     sound2_object = None
     searched_sounds_list = ["", "", "", "", ""] # For user feedback on front end
 
+
+
+    # Figure out whether to get search query outside form validation
+    if not request.args.get("page"):
+        session.pop("latest_sound_search", None)
+    elif session.get("latest_sound_search"):
+        oldSearch = True
+        if len(session["latest_sound_search"]) == 2:
+            pairSearch = True
+    
+
+
     if request.method == "POST":
         
         if (request.form["searchBtn"] == "pair"):
+
             searched = True
+
             if pairSearchForm.validate_on_submit():
 
-                # Easy keyboard typing enabled:
+                pairSearch = True
+                
+                # Get all necessary data having to do with when the form is submitted:
                 sound1_str = pairSearchForm.sound1.data
                 sound2_str = pairSearchForm.sound2.data
-
                 sound1_object = Sound.get(sound1_str)
                 sound2_object = Sound.get(sound2_str)
-                
-                searched_sounds_list[0] = sound1_object.sound
-                searched_sounds_list[1] = sound2_object.sound
 
-                # pairs will be a Pagination object so we get page
-                page = request.args.get("page", 1, type=int)
-                pairs = sound1_object.getContrasts(sound2_object, page=page, per_page=50)
-
-                # searched_pairs only triggers for non admin users
-                if not (current_user.is_authenticated and current_user.has_role("Admin")):
-                    SearchedPair.add(sound1_str, sound2_str, len(pairs.items))
-
-
-                # Make a lists of ids rendered to determine if they're in collection on the front end
-                for pair in pairs.items:
-                    idlist = [pair.w1.id, pair.w2.id]
-                    renderedids.extend(idlist)
-                    if pairCollected(pair):
-                        collectedPairs.extend([pair.id])
-                
-                print("Whole post to contrasts() pair function for {}-{} took {}\n".format(sound1_str, sound2_str, time.time() - start_time))
+                session["latest_sound_search"] = [sound1_object.id, sound2_object.id]
 
 
             else:
@@ -219,7 +219,9 @@ def contrasts(locale):
                 searched_sounds_list[0] = sound1_object.sound
 
                 for i, sound in enumerate(MOsounds):
-                    searched_sounds_list[i+1] = Sound.get(sound).sound
+                    append_sound = Sound.get(sound)
+                    searched_sounds_list[i+1] = append_sound.sound
+
 
                 print("Getting best and 2nd best MO sets...")
                 all_MOsets = sound1_object.getMOPairs(MOsounds)
@@ -252,12 +254,46 @@ def contrasts(locale):
                         if "csrf" in msg.lower():
                             g.errorfeedback = Content()["unknown_or_csrf_error"]
 
-        # Check if user has collected all rendered words (for toggling "remove all button")
-        for id in list(renderedids):
-            if id not in getCollection():
-                collectedAll = False
+    if pairSearch:
+        # do all pair search here so pagination object can be carried over between requests
+        page = request.args.get("page", 1, type=int)
+        if oldSearch:
+            s1id = int(session.get("latest_sound_search")[0])
+            s2id = int(session.get("latest_sound_search")[1])
+            sound1_object = Sound.query.get(s1id)
+            sound2_object = Sound.query.get(s2id)
+            sound1_str = sound1_object.sound
+            sound2_str = sound2_object.sound
+   
+        searched_sounds_list[0] = sound1_str
+        searched_sounds_list[1] = sound2_str
+
+        # Even with image load time taken into concideration a long search result takes much longer to load
+        pairs = sound1_object.getContrasts(sound2_object, page=page, per_page=10)
+
+
+        # searched_pairs only triggers for non admin users
+        if not (current_user.is_authenticated and current_user.has_role("Admin")):
+            if not oldSearch:
+                SearchedPair.add(sound1_str, sound2_str, len(pairs.items))
+
+
+        # Make a lists of ids rendered to determine if they're in collection on the front end
+        for pair in pairs.items:
+            idlist = [pair.w1.id, pair.w2.id]
+            renderedids.extend(idlist)
+            if pairCollected(pair):
+                collectedPairs.extend([pair.id])
+        
+
+
+    # Check if user has collected all rendered words (for toggling "remove all button")
+    for id in list(renderedids):
+        if id not in getCollection():
+            collectedAll = False #  Just to see if the ollect all button should be red or not
 
     renderedids = json.dumps(renderedids)
+
 
     return render_template("contrasts.html",
                            pairs=pairs,
@@ -284,14 +320,12 @@ def collection(locale):
 
     collection_ids = getCollection()
     collection = []
-    custom_image_ids = []
 
 
     # Retrieve pair objects from session ids
     for id in collection_ids:
         collection.append(Word.query.get(int(id)))
     
-    custom_image_ids = custom_images_in_collection(collection)
 
     # POST request for basic word card PDF (other pdfs are generated and served with ajax: see pdf_maker_script.js and ajax_get_boardgame_filenames() here )
     if request.method == "POST":

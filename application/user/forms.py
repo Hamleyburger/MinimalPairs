@@ -101,7 +101,7 @@ def is_valid_pair_search(form, field):
 
 
 def required(form, field):
-    if field.data.isspace() or field.data == None:
+    if field.data == None or field.data.isspace():
         g.errorfeedback = "Der skal stå noget i begge søgefelter. Hvis en lyd skal være tom/udeladt, så brug minus, altså \"-\""
 
 

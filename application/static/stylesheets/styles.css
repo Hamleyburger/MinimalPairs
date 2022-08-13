@@ -367,10 +367,17 @@ input[type='checkbox'] {
 }
 
 .top-button {
-  margin: 30px !important;
+  margin: 10px !important;
 }
 
-.page-title {
+.titlebox-top {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #3b1734;
+}
+
+.titlebox-top .page-title {
+  text-align: center;
   font-size: 30px;
 }
 
@@ -1269,23 +1276,27 @@ $color-yel3: #fffae9; // Næsten hvid
   --color-yel3: #fff8fb;
 }
 
-.titlebox {
-  margin-top: 70px;
+.contrasts-box {
+  margin-top: 10px;
   margin-bottom: 20px;
   color: #3b1734;
   -ms-flex-line-pack: center;
       align-content: center;
 }
 
-.titlebox .removeallbtn {
+.contrasts-box .search-collapsable {
+  margin-top: 30px;
+}
+
+.contrasts-box .removeallbtn {
   background-color: #e98289;
 }
 
-.titlebox .removeallbtn i {
+.contrasts-box .removeallbtn i {
   color: #3b1734;
 }
 
-.titlebox .search-tabs-flex-wrapper {
+.contrasts-box .search-tabs-flex-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1299,18 +1310,18 @@ $color-yel3: #fffae9; // Næsten hvid
   margin-top: 0px;
 }
 
-.titlebox .search-tabs-flex-wrapper .search-tabs {
+.contrasts-box .search-tabs-flex-wrapper .search-tabs {
   width: 600px;
   max-width: 100%;
 }
 
 @media only screen and (max-width: 620px) {
-  .titlebox .search-tabs-flex-wrapper .search-tabs {
+  .contrasts-box .search-tabs-flex-wrapper .search-tabs {
     width: 340px;
   }
 }
 
-.titlebox .search-sounds-field input, .titlebox .search-sounds-field select, .titlebox .search-sounds-field .chosen-container .chosen-choices {
+.contrasts-box .search-sounds-field input, .contrasts-box .search-sounds-field select, .contrasts-box .search-sounds-field .chosen-container .chosen-choices {
   min-width: 40px;
   height: 40px;
   border: 1px solid #995f8b;
@@ -1322,7 +1333,7 @@ $color-yel3: #fffae9; // Næsten hvid
   text-align: center;
 }
 
-.titlebox .MO-search-sounds-field {
+.contrasts-box .MO-search-sounds-field {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1338,8 +1349,8 @@ $color-yel3: #fffae9; // Næsten hvid
           align-items: center;
 }
 
-.titlebox .title-text {
-  font-size: 25px;
+.contrasts-box .contrast-title-text {
+  font-size: 18px;
   font-weight: 700;
   text-align: center;
   display: -webkit-box;
@@ -1354,18 +1365,32 @@ $color-yel3: #fffae9; // Næsten hvid
           align-items: center;
 }
 
-.titlebox .title-text .ipa-font {
-  font-size: 1.7rem;
+.contrasts-box .contrast-title-text .ipa-font {
+  font-size: 25px;
 }
 
-.titlebox .title-text .feedback-text {
+.contrasts-box .contrast-title-text .feedback-text {
   width: 600px;
   max-width: 100%;
   font-size: 20px;
 }
 
-.titlebox .title-text .result-count {
-  font-size: 20px;
+.contrasts-box .contrast-title-text .result-count {
+  font-size: 18px;
+}
+
+.contrasts-box .page-selector {
+  text-align: center;
+}
+
+.contrasts-box .page-selector a {
+  text-decoration: none;
+  padding: 0 5px;
+}
+
+.contrasts-box .page-selector .current-page-link {
+  font-weight: 900;
+  border-bottom: 2px solid #3b1734;
 }
 
 .contentbox {
@@ -1395,6 +1420,10 @@ $color-yel3: #fffae9; // Næsten hvid
   .contentbox .row {
     width: 340px;
   }
+}
+
+.contentbox .MO-row {
+  margin-bottom: 20px !important;
 }
 
 .wordcard {

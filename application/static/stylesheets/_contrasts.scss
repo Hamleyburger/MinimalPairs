@@ -5,14 +5,17 @@
 
 
 // For contrasts.html **************************
-.titlebox {
+.contrasts-box {
 
-    margin-top: 70px;
+    margin-top: 10px;
     margin-bottom: 20px;
     color: $color-purp1;
     align-content: center;
     //font-family: Arial, Helvetica, sans-serif;
 
+        .search-collapsable {
+            margin-top: 30px;
+        }
 
     .removeallbtn {
         background-color: $color-red1;
@@ -62,12 +65,12 @@
         align-items: center;
     }
 
-    .title-text {
-        font-size: 25px;
+    .contrast-title-text {
+        font-size: 18px;
         font-weight: 700;
         text-align: center;
         .ipa-font {
-            font-size: 1.7rem;
+            font-size: 25px;
         }
 
         display: flex;
@@ -79,12 +82,23 @@
             max-width: 100%;
             font-size: 20px;
         }
-
         .result-count {
-            font-size: 20px;
+            font-size: 18px;
         }
+
     }
 
+    .page-selector {
+        text-align: center;
+        a {
+            text-decoration: none;
+            padding: 0 5px;
+        }
+        .current-page-link {
+            font-weight: 900;
+            border-bottom: 2px solid $color-purp1;
+        }
+    }
 }
 
 
@@ -106,6 +120,9 @@
         {
             width: 340px;
         }
+    }
+    .MO-row { // Mainly styled in crosspage
+        margin-bottom: 20px !important;
     }
 }
 

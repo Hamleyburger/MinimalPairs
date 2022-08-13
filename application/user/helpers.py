@@ -288,26 +288,6 @@ def get_uid():
     return str(uid)
 
 
-def custom_images_in_collection(collection):
-    """ Use user's own uploaded images for displaying in collection.
-    Takes a collection of WORDS and returns a dict {id: 'staticpath'} 
-    where path points to user's own cropped images """
-
-    image_ids = {}
-
-    user_id = session.get("user_id")
-    if not user_id:
-        return image_ids
-
-    for word in collection:
-        for userimage in word.userimages:
-            if userimage.userid == user_id:
-                print("user has image")
-                image_ids[userimage.wordid] = userimage.staticpath
-
-    return image_ids
-
-
 def resize_crop_image(file):
     """ Resizes a square image and crops an unsquared image
     (if for some reason javascript has been disabled in the

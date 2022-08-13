@@ -347,9 +347,16 @@ margin: 0;
 }
 
 .top-button {
-    margin: 30px !important;
+    margin: 10px !important;
 }
-.page-title {
-    font-size: 30px;
+
+.titlebox-top {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: $color-purp1;
+    .page-title {
+        text-align: center;
+        font-size: 30px;
+    }
 }
 
