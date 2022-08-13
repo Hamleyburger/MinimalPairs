@@ -99,8 +99,8 @@ class Sound(db.Model):
             newSound = newSound.replace("sk", "sg")
             newSound = newSound.replace("sj", "ɕ")
 
-            if newSound != soundString:
-                print("fixSoundTyping fixed {} to {}".format(soundString, newSound))
+            # if newSound != soundString:
+            #     print("fixSoundTyping fixed {} to {}".format(soundString, newSound))
 
             return newSound
 
@@ -447,7 +447,7 @@ class Group(db.Model):
         koCandidateSets = []
         return_groups = []
 
-        print("checking word '{}' to see if it can be grouped anywhere.".format(ko.word))
+        #print("checking word '{}' to see if it can be grouped anywhere.".format(ko.word))
         # Check if new word has mutual friends with its partners
         for to in ko.allPartners():
             for tøbo in to.allPartners():
@@ -943,7 +943,6 @@ class Word(db.Model):
         s2 = Sound.get(sound2)
         sound1 = s1.sound
         sound2 = s2.sound
-        print("attempting to pair {} {}".format(sound1, sound2))
 
         db.session.flush()
 
@@ -965,8 +964,6 @@ class Word(db.Model):
         db.session.add(newPair)
         db.session.commit()
 
-        print("added a new pair which has {} images".format(newPair.img_count))
-
 
         pairs = self.getReducedPairs(word2, sound1, sound2, pairList=[], initial=initial)
 
@@ -977,9 +974,6 @@ class Word(db.Model):
         db.session.commit()
 
         any_groups = Group.check(self)
-
-        for group in any_groups:
-            group.textify()
 
         return pairs
 
@@ -1014,8 +1008,7 @@ class Word(db.Model):
 
                 if not (sound1.startswith(char) and sound2.startswith(char)):
                     if not (sound1.endswith(char) and sound2.endswith(char)):
-                        print(
-                            "{} {} - '{}' has a bad position".format(sound1, sound2, char))
+                        # sounds are not positioned at the same end of cluster so cannot be reduced
                         return None
                     else:
                         # Ends with same char, meaning index -1

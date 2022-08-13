@@ -87,9 +87,7 @@ def makePairList(form, field):
                     word2 = Word.query.get(int(word.word2_id.data))
                     addedPairs = word1.pair(
                         word2, word.sound1.data, word.sound2.data, word.isinitial.data)
-                    if addedPairs:
-                        for pair in addedPairs:
-                            print("Added pair:" + pair.textify())
+                    # This is where pairs are added from add
 
             else:
                 raise ValidationError("Sounds cannot be null")
