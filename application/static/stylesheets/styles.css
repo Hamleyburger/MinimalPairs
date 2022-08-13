@@ -1199,7 +1199,10 @@ body footer a {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  border: 2px solid #3b1734;
+  background-color: #caabbf;
+  padding: 2px;
+  margin: 2px;
+  min-width: 104px;
 }
 
 .stats-content-section .examples-col .pair-example .wxs {
@@ -1250,6 +1253,71 @@ body footer a {
 
 .stats-content-section .accordion-item .accordion-button::after {
   display: none;
+}
+
+.stats-content-section .most-popular-words-wo-imgs {
+  -webkit-column-count: 4;
+          column-count: 4;
+}
+
+.stats-content-section .most-popular-words-wo-imgs .row {
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
+  margin: 5px;
+  background-color: #caabbf;
+}
+
+.stats-content-section .most-popular-words-wo-imgs .row .col {
+  padding: 1px;
+}
+
+@media only screen and (max-width: 700px) {
+  .stats-content-section .most-popular-words-wo-imgs {
+    -webkit-column-count: 3;
+            column-count: 3;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .stats-content-section .most-popular-words-wo-imgs {
+    -webkit-column-count: 2;
+            column-count: 2;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .stats-content-section .most-popular-words-wo-imgs {
+    -webkit-column-count: 1;
+            column-count: 1;
+  }
+}
+
+.stats-content-section .most-popular-words {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.stats-content-section .most-popular-words .pop-card {
+  width: 60px;
+  margin: 2px;
+  padding: 2px;
+  background-color: #caabbf;
+}
+
+.stats-content-section .most-popular-words .pop-card p {
+  margin-bottom: 2px;
+}
+
+.stats-content-section .most-popular-words .pop-card img {
+  width: 100%;
 }
 
 /* Old, light yellow theme:

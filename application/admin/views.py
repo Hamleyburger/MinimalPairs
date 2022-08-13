@@ -460,6 +460,20 @@ def stats():
             elif searched_pair.last_searched > month_ago:
                 last_month.append(searched_pair)
     
+
+
+    # Get stats for most used words:
+    most_used_words = Word.query.order_by(desc(Word.times_used)).all()
+    most_used_words_wo_images = []
+    for word in most_used_words:
+        if len(most_used_words_wo_images) < 20:
+            if word.image.name == "default.svg":
+                most_used_words_wo_images.append(word)
+        else:
+            break
+    most_used_words = most_used_words[:32]
+
+
     db.session.commit()
 
     last_month = [last_month[i:i+40] for i in range(0, len(last_month), 40)]
@@ -485,7 +499,8 @@ def stats():
         last_week=last_week, 
         last_month=last_month,
         searches_pairs=searches_pairs,
-        #most_popular_wo_img=most_popular_wo_img
+        most_used_words=most_used_words,
+        most_used_words_wo_images=most_used_words_wo_images
         )
 
 

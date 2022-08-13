@@ -19,7 +19,10 @@
         .pair-example {
             display: flex;
             flex-direction: column;
-            border: 2px solid $color-purp1;
+            background-color: $color-purp3;
+            padding: 2px;
+            margin: 2px;
+            min-width: 104px;
             .wxs {
                 display: flex;
                 flex-direction: row;
@@ -62,5 +65,43 @@
             }
         }
     }
-        
+    
+    .most-popular-words-wo-imgs {
+        .row {
+            justify-content: left;
+            margin: 5px;
+            background-color: $color-purp3;
+            .col {
+                padding: 1px;
+            }
+        }
+        column-count: 4;
+        @media only screen and (max-width: 700px) {
+            column-count: 3;
+        }
+        @media only screen and (max-width: 450px) {
+            column-count: 2;
+        }
+        @media only screen and (max-width: 350px) {
+            column-count: 1;
+        }
+    }
+
+    .most-popular-words {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .pop-card {
+            width: 60px;
+            margin: 2px;
+            padding: 2px;
+            background-color: $color-purp3;
+            p {
+                margin-bottom: 2px;
+            }
+            img {
+                width: 100%;
+            }
+        }
+    }
 }
