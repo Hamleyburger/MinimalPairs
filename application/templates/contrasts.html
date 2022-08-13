@@ -256,7 +256,7 @@
     
 
         {% for pair in pairs.items %}
-        <div class="row justify-content-center wordgroup {% if pair.cluster_length() %}iscluster{% endif %}" data-ids='[{{ pair.w1.id }}, {{ pair.w2.id }}]'>
+        <div class="row justify-content-center wordgroup {% if pair.cluster_length() %}iscluster{% endif %} {% if pair.isinitial %}isinitial{% endif %}" data-ids='[{{ pair.w1.id }}, {{ pair.w2.id }}]'>
 
             <a href="#" type="button" class="addgroupbtn addgroupbtn-pair btn"
                 style="display: {{ 'none' if pair.id in collectedPairs else 'inline-block' }};"
