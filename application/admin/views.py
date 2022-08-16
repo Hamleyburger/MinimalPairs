@@ -438,8 +438,9 @@ def stats():
         #     searched_pair.s2 = soundobject2.sound
             
 
-        pairs = searched_pair.getPairs()
-        if not searched_pair.existing_pairs:
+        pairs = searched_pair.get_SP_pairs()
+
+        if searched_pair.existing_pairs < len(pairs):
             searched_pair.existing_pairs = len(pairs)
             commit = True
 
@@ -486,7 +487,7 @@ def stats():
     searches_pairs = []
     for search in most_popular:
 
-        pairs = sorted(search.getPairs(), key=lambda pair: pair.has_images(), reverse=True)
+        pairs = sorted(search.get_SP_pairs(), key=lambda pair: pair.has_images(), reverse=True)
         searches_pairs.append((search, pairs))
     if commit:
         db.session.commit()

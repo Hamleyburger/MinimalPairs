@@ -98,6 +98,7 @@ class Sound(db.Model):
             newSound = newSound.replace("st", "sd")
             newSound = newSound.replace("sk", "sg")
             newSound = newSound.replace("sj", "ɕ")
+            newSound = newSound.replace("ng", "ŋ")
 
             # if newSound != soundString:
             #     print("fixSoundTyping fixed {} to {}".format(soundString, newSound))
@@ -227,11 +228,23 @@ class Sound(db.Model):
                            Pair.s2 == Sound.get(soundString=sound2))
             clauseB = and_(Pair.s1 == Sound.get(soundString=sound2),
                            Pair.s2 == sound1)
-            contrastsQuery = db.session.query(Pair).filter(or_(
-                clauseA, clauseB)).order_by(Pair.img_count.desc()).paginate(per_page=per_page, page=page)
+
+            if per_page:
+                contrastsQuery = db.session.query(Pair).filter(or_(
+                    clauseA, clauseB)).order_by(Pair.img_count.desc()).paginate(per_page=per_page, page=page)
+            else:
+                contrastsQueryAll = db.session.query(Pair).filter(or_(
+                    clauseA, clauseB)).order_by(Pair.img_count.desc()).all()
 
         else:
-            contrastsQuery = Pair.query.filter(Pair.sounds.any(id=self.id)).order_by(Pair.img_count.desc()).paginate(per_page=per_page, page=page)
+            if per_page:
+                contrastsQuery = Pair.query.filter(Pair.sounds.any(id=self.id)).order_by(Pair.img_count.desc()).paginate(per_page=per_page, page=page)
+            else:
+                contrastsQueryAll = Pair.query.filter(Pair.sounds.any(id=self.id)).order_by(Pair.img_count.desc()).all()
+
+        if not per_page:
+            return contrastsQueryAll
+        # sound_ordered_contrasts are only relevant for user search results
 
         # Order the items returned from query, add to instances of Contrast and append to contrasts list
         sound_ordered_contrasts = []
@@ -733,13 +746,16 @@ class SearchedPair(db.Model):
     def __str__(self):
         return "Search: [{} {}]".format(self.s1, self.s2)
 
-    def getPairs(self):
-        """ Gets all pairs of a searched pair (sound combination) """
+    def get_SP_pairs(self, per_page=None):
+        """ (SearchedPair) Gets all pairs of a searched pair (sound combination). If per_page is set returns Pagination object """
         sound1 = Sound.get(self.s1)
         sound2 = Sound.get(self.s2)
         pairs = []
         if sound1:
-            pairs = sound1.getContrasts(sound2).items
+            if per_page:
+                pairs = sound1.getContrasts(sound2, per_page).items
+            else:
+                pairs = sound1.getContrasts(sound2, per_page)
         return pairs
     
 
@@ -1072,7 +1088,7 @@ class Word(db.Model):
         return allPartners
 
     def getPairs(self, word2=None):
-        """ Returns a list with all possible pairings\n
+        """ (Word) Returns a list with all possible pairings\n
         \n if word2 is given, only pairings between the two words are returned
         \nReturns None if no pairs exist """
         pairs = []
