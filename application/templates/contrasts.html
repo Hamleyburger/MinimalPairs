@@ -230,7 +230,7 @@
         {% endif %}
 
 
-        {% if pairs %}
+        {% if pairs.total %}
 
             <div class="contrast-title-text">
                 <p>
@@ -239,7 +239,9 @@
 
                 </p>
                 <p class="result-count">
+
                     {{ show_results[0] }} {{ (pairs.page - 1) * pairs.per_page + 1 }} - {{ (pairs.page - 1) * pairs.per_page + (pairs.items | length) }}  {{ show_results[1] }} {{ pairs.total }} {{ show_results[2] }}
+                
                 </p>
                 <div class="page-selector">
                     {% for page_num in pairs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
@@ -299,7 +301,7 @@
 
         {% endif %}
 
-        {% if searched and not pairs and not MOsets and not MOsets2 %}
+        {% if searched and not pairs.total and not MOsets and not MOsets2 %}
 
             <div class="contrast-title-text">
                 <p>
