@@ -90,7 +90,7 @@ def add_pairs():
         print(pairForm.errors)
 
     def get_group_index(field_id):
-        """ generate classname to identify which s2 fields to autofill 
+        """ generate classname to identify which s2 fields to autofill
         based on which groups the suggestions came from. This function is
         used in jinja template to set classes for fields for suggested partners so
         admin_scripts.js can transfer input sound1 across similar fields """
@@ -112,7 +112,7 @@ def change():
 
     """ just for changing images """
     if request.method == "POST":
-    
+
         if request.files:
             id = int(request.form.get("newwordid"))
             word = Word.change(id, newword=request.form.get("newword"),
@@ -149,7 +149,7 @@ def change_pairs():
                     s2 = form.s2.data
                     word1 = pair.w1
                     word2 = pair.w2
-                    
+
 
                     db.session.delete(pair)
                     db.session.commit()
@@ -214,7 +214,7 @@ def write_news():
                 form.image.data.save(static_path + news_imagepath)
                 imagepath = news_imagepath
 
-            
+
             news = News(
                 title=title,
                 title_en=title_en,
@@ -241,7 +241,7 @@ def write_news():
 def add_image():
     form = PermaimageForm()
     repeatpatterns = db.session.query(PermaImage).filter_by(type="repeatpattern").all()
-    
+
     if request.method == "POST":
         if form.validate_on_submit():
             path = PermaImage.store_and_get_path(form.image.data, "/repeatpatterns/")
@@ -346,7 +346,7 @@ def problems():
     for word in db.session.query(Word).all():
         if len(word.allPartners()) < 1:
             word_problems.append(word)
-    
+
     print("took {} seconds\n".format(time.time() - start_time))
     print("Checking for pairs with undefined initial")
     start_time = time.time()
@@ -386,15 +386,15 @@ def problems():
     print("took {} seconds\n".format(time.time() - start_time))
 
 
-            
+
     """ Get an overview of words without partners and groups with unmatched words """
 
     return render_template(
-        "problems.html", 
-        group_problems=group_problems, 
-        word_problems=word_problems, 
-        pair_init_problems=pair_init_problems, 
-        assumed_noninitial=assumed_noninitial, 
+        "problems.html",
+        group_problems=group_problems,
+        word_problems=word_problems,
+        pair_init_problems=pair_init_problems,
+        assumed_noninitial=assumed_noninitial,
         pair_samesound_problems=pair_samesound_problems,
         pair_sound_validity_problems=pair_sound_validity_problems # Should not be possible
         )
@@ -421,7 +421,7 @@ def stats():
     last_day = []
     last_3h = []
     most_popular = []
-    
+
     commit = False
 
 
@@ -436,7 +436,7 @@ def stats():
         # if searched_pair.s2 != soundobject2.sound:
         #     print("found bad sound in searchedpairs")
         #     searched_pair.s2 = soundobject2.sound
-            
+
 
         pairs = searched_pair.get_SP_pairs()
 
@@ -460,7 +460,7 @@ def stats():
                 last_week.append(searched_pair)
             elif searched_pair.last_searched > month_ago:
                 last_month.append(searched_pair)
-    
+
 
 
     # Get stats for most used words:
@@ -479,9 +479,9 @@ def stats():
 
     last_month = [last_month[i:i+40] for i in range(0, len(last_month), 40)]
 
-    
+
     most_popular = sorted(searched_pairs, key=lambda pair: pair.times_searched, reverse=True)[0:10]
-    
+
 
 
     searches_pairs = []
@@ -494,10 +494,10 @@ def stats():
 
 
     return render_template(
-        "stats.html", 
-        last_3h=last_3h, 
-        last_day=last_day, 
-        last_week=last_week, 
+        "stats.html",
+        last_3h=last_3h,
+        last_day=last_day,
+        last_week=last_week,
         last_month=last_month,
         searches_pairs=searches_pairs,
         most_used_words=most_used_words,
@@ -511,7 +511,7 @@ def stats():
 def ajax_delete_group():
 
     group_id = int(request.form["group_id"])
-    group_to_delete = Group.query.get(group_id) 
+    group_to_delete = Group.query.get(group_id)
     print("Deleting group {}".format(group_id))
     print(group_to_delete)
     try:
@@ -582,7 +582,7 @@ def ajax_set_initial():
         initial = True
     elif typed_value == "n":
         initial = False
-    
+
 
     try:
         if initial != None:
@@ -592,7 +592,7 @@ def ajax_set_initial():
                 for setpair in group.pairs:
                     setpair.isinitial = initial
                 db.session.commit()
-                
+
             elif pair:
                 print("setting pair {} initial to {}".format(pair, initial))
                 pair.isinitial = initial
@@ -616,7 +616,7 @@ def ajax_set_initial():
 @roles_required('Admin')
 # Receives changes from user and makes changes in database
 def ajax_change():
-    
+
     newword = request.form["newword"]
     newcue = request.form["newcue"]
     newimg = request.form["newimg"]
@@ -724,7 +724,7 @@ def ajax_delete_news():
         db.session.delete(news_to_delete)
         db.session.commit()
         session["news"] = refresh_session_news()
-        
+
         return jsonify(
             message="ok"
         )
