@@ -11,6 +11,7 @@
 <div class="content-section">
     <div class="stats-content-section">
 
+        {% if userimgs %}
         <div class="row">
             {% for img in userimgs %}
             <div class="col-4 col-sm-1" style="border: 1px solid black">
@@ -18,8 +19,8 @@
             <p>Used {{ img.created_date | datetime_format(format="%a %d. %H:%M") }}</p>
             </div>
             {% endfor %}
-
         </div>
+        {% endif %}
 
         <h3>Senest søgte</h3>
         <div class="row">
