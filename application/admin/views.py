@@ -442,11 +442,14 @@ def stats():
         pairs = searched_pair.get_SP_pairs()
 
         if pairs:
-            if searched_pair.existing_pairs < len(pairs):
-                searched_pair.existing_pairs = len(pairs)
-                commit = True
+            if searched_pair.existing_pairs != None:
+                if searched_pair.existing_pairs != len(pairs):
+                    searched_pair.existing_pairs = len(pairs)
+            else:
+                searched_pair.existing_pairs = 0
         else:
             searched_pair.existing_pairs = 0
+        commit = True
 
         if searched_pair.s1 < searched_pair.s2:
             temps1 = searched_pair.s2
