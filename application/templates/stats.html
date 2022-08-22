@@ -10,6 +10,17 @@
 
 <div class="content-section">
     <div class="stats-content-section">
+
+        <div class="row">
+            {% for img in userimgs %}
+            <div class="col-4 col-sm-1" style="border: 1px solid black">
+            <img src="{{ url_for('static', filename = img.staticpath) }}" alt="" style="max-width: 100%;">
+            <p>Used {{ img.created_date | datetime_format(format="%a %d. %H:%M") }}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+
         <h3>Senest søgte</h3>
         <div class="row">
             <div class="col-11 col-md-5">

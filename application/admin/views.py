@@ -1,7 +1,8 @@
 from flask import Blueprint, session, request, redirect, render_template, flash, jsonify, url_for, json
 from application.models import SearchedPair, Word, Pair, Sound, Group, PermaImage
 from application.user.helpers import refresh_session_news
-from .models import News # admin models
+from .models import News# admin models
+from ..user.models import Userimage 
 from .forms import AddForm, AddPairForm, ChangePairForm, NewsForm, PermaimageForm
 from application import db, app
 from .filehelpers import store_image, configure_add_template
@@ -495,6 +496,12 @@ def stats():
     if commit:
         db.session.commit()
 
+    # Find out when someone last did something with a user image
+    lastuserimages = db.session.query(Userimage).order_by(desc(Userimage.created_date)).all()
+    for img in lastuserimages:
+        print(img)
+        print(img.staticpath)
+
 
     return render_template(
         "stats.html",
@@ -504,7 +511,8 @@ def stats():
         last_month=last_month,
         searches_pairs=searches_pairs,
         most_used_words=most_used_words,
-        most_used_words_wo_images=most_used_words_wo_images
+        most_used_words_wo_images=most_used_words_wo_images,
+        userimgs=lastuserimages
         )
 
 
