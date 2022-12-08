@@ -10,7 +10,7 @@ Brotli==1.0.9
 cachelib==0.1.1
 cairocffi==1.2.0
 CairoSVG==2.5.2
-certifi==2020.4.5.1
+certifi==2022.12.7
 cffi==1.14.4
 chardet==3.0.4
 click==8.0.1
