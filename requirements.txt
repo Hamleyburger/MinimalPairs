@@ -78,7 +78,7 @@ urllib3==1.26.5
 user-agents==2.2.0
 weasyprint==53.4
 webencodings==0.5.1
-Werkzeug==2.0.1
+Werkzeug==2.2.3
 wrapt==1.11.2
 WTForms==2.3.1
 WTForms-SQLAlchemy==0.3
