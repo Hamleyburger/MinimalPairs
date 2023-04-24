@@ -262,19 +262,28 @@ def getSecondBest(sound1: Sound, MOsounds, completeMatches, partialMatches=[], c
 def order_MOsets_by_image(MOsets):
     """ Checks a list of MOsets and sorts the sets so ones with images are first """
     all_sets = []
-    sets_with_images = []
-    sets_without_images = []
+    set_by_count = [] #list of dicts
     for MOset in MOsets:
-        MOset_has_image = False
+        set_dict = { # add to set_by_count to arrange by image count
+            "moset": MOset,
+            "imgcount": 0
+        }
         for pair in MOset:
-            print(pair.img_count)
+            if pair.img_count == None:
+                num = pair.has_images()
+                pair.img_count = num
+                db.session.commit()
+                db.session.flush()
             if pair.img_count > 0:
-                MOset_has_image = True
-        if MOset_has_image:
-            sets_with_images.append(MOset)
-        else:
-            sets_without_images.append(MOset)
-    all_sets = sets_with_images + sets_without_images
+                set_dict["imgcount"] += pair.img_count
+
+        set_by_count.append(set_dict)
+
+    new_list = sorted(set_by_count, key=lambda set_dict: set_dict["imgcount"], reverse=True)
+
+    for set_dict in new_list:
+        all_sets.append(set_dict["moset"])
+
     return all_sets
 
 # User models: converts user id to string.
